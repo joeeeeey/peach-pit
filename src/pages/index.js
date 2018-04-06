@@ -10,9 +10,11 @@ import { createBrowserHistory } from "history";
 
 // 首屏组件
 import Home from '../pages/index/home'
-// import AppBar from '../components/index/appBar'
+
+// 其他路由组件
 import ChooseTmp from './buildSites/chooseTmp'
-// import FullWidthGrid from '../components/common/fullWidthGrid'
+import Inputs from './sites/edit'
+
 
 export const history = createBrowserHistory();
 
@@ -33,6 +35,7 @@ class Index extends Component {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/chooseTmp" exact component={ChooseTmp} />
+          <Route path="/sites/:id/edit" component={Inputs} />
         </Switch>
       </Router>
     );

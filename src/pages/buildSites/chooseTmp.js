@@ -13,15 +13,13 @@ const styles = theme => ({
 });
 
 class ChooseTmp extends Component {
-  render() {
-    const { classes } = this.props;
-    let containerConfig = {
-      justify: "center",
-      spacing: 8,
-    }
+  constructor(props) {
+    super(props);
+    this.state = {currentCount: 0, lists: []};
+  }
 
-    // TODO list data from backend
-    let lists = [
+  componentDidMount() {
+    this.setState({ lists: [
       { data: { content: "网页模板1", imgUrl: "IMG_7881.jpg", templateId: 1, }, key: 1 },
       { data: { content: "网页模板2", imgUrl: "ORG_DSC01101.jpg", templateId: 2, }, key: 2 },
       { data: { content: "网页模板3", imgUrl: "ORG_DSC01113.jpg", templateId: 3, }, key: 3 },
@@ -32,15 +30,31 @@ class ChooseTmp extends Component {
       { data: { content: "网页模板8", imgUrl: "ORG_DSC01118.JPEG", templateId: 8, }, key: 8 },
       { data: { content: "网页模板9", imgUrl: "ORG_DSC01137.JPEG", templateId: 9, }, key: 9 },
       { data: { content: "网页模板10", imgUrl: "ORG_DSC01174.JPEG", templateId: 10, }, key: 10 },
-    ]
+    ]   })
+  }
+
+  render() {
+    // console.log(this.props)
+    const { classes } = this.props;
+    let containerConfig = {
+      justify: "center",
+      spacing: 8,
+    }
 
     let itemsConfig = {
       Card: WebTemplate,
-      lists: lists,
+      lists: this.state.lists,
     }
+
+    let appBar = {className: ButtonAppBar}
+
     return (
       <div className={classes.root}>
-        < ButtonAppBar />
+        {React.createElement(
+          appBar.className,
+          null
+        )}        
+        {/* < ButtonAppBar /> */}
         < TitleAndSubTitle
           titleContent="选择一个模板"
           subTitleContent="随意选择，模板选择后可随意更换" />

@@ -1,5 +1,6 @@
 // Card 组件
 // 网页模板 
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
@@ -25,7 +26,6 @@ const styles = theme => ({
 
 class WebTemplate extends React.Component {
   render() {
-    console.log(this.props)
     const { classes, data } = this.props;
     const { content, imgUrl, templateId } = data
 

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "babel-standalone": "^6.26.0",
     "material-ui": "1.0.0-beta.40",
     "material-ui-icons": "^1.0.0-beta.36",
     "prop-types": "15.6.1",
