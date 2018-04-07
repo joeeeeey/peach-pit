@@ -3,6 +3,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
+// 引入所有 GridView 可能会加载的 card
+import WebTemplateCard from '../common/cards/webTemplate'
+
+
 
 const styles = theme => ({
   root: {
@@ -11,6 +15,10 @@ const styles = theme => ({
 });
 
 // 可接受参数
+// <FullWidthGrid 
+    // containerConfig={spacing: 20, justify: 'space-around'}
+    // itemsConfig={lists: [], itemName: 'WebTemplateCard'}
+    // />
 
 // container 参数, 用于控制其中的 Grid Items:
 // containerConfig = {}
@@ -28,15 +36,21 @@ const styles = theme => ({
 //   lg: integer 1280px 屏幕占比 lg/12
 //   xl: integer 1920px 屏幕占比 xl/12
 //     为适应 meterial-ui 定义的 breakpoints, 设置 md={5} sm={5} xs={11} 比较好
-// Card: 定义 gridItem 模板为哪个 card 
-
+// itemName: 定义 gridItem 模板为哪个 itemName 
+// lists: 数据
 
 class FullWidthGrid extends React.Component {
+  constructor(props) {
+    super(props);
+    // TODO add more
+    this.state = {WebTemplateCard: WebTemplateCard};
+  }
+
   render() {
     const { classes, containerConfig, itemsConfig } = this.props;
-
     const { justify, spacing } = containerConfig
-    const { Card, lists } = itemsConfig
+    const { lists, itemName } = itemsConfig
+    const Item = this.state[itemName]
 
     return (
       < div className={classes.root} >
@@ -49,7 +63,7 @@ class FullWidthGrid extends React.Component {
               // to be duplicated and/or omitted — the behavior is unsupported 
               // and could change in a future version.
               <Grid item lg={5} md={5} sm={5} xs={11} key={value.key}>
-                <Card data={value.data} />
+                <Item data={value.data} />
               </Grid>
             ))
           }

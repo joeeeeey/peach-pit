@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import FullWidthGrid from '../../components/common/fullWidthGrid'
 import { withStyles } from 'material-ui/styles';
-import WebTemplate from '../../components/common/cards/webTemplate'
 import TitleAndSubTitle from '../../components/common/titleAndSubTitle'
 import ButtonAppBar from '../../components/common/appBar'
 
@@ -15,26 +14,27 @@ const styles = theme => ({
 class ChooseTmp extends Component {
   constructor(props) {
     super(props);
-    this.state = {currentCount: 0, lists: []};
+    this.state = { currentCount: 0, lists: [] };
   }
 
   componentDidMount() {
-    this.setState({ lists: [
-      { data: { content: "网页模板1", imgUrl: "IMG_7881.jpg", templateId: 1, }, key: 1 },
-      { data: { content: "网页模板2", imgUrl: "ORG_DSC01101.jpg", templateId: 2, }, key: 2 },
-      { data: { content: "网页模板3", imgUrl: "ORG_DSC01113.jpg", templateId: 3, }, key: 3 },
-      { data: { content: "网页模板4", imgUrl: "ORG_DSC01157.JPEG", templateId: 4, }, key: 4 },
-      { data: { content: "网页模板5", imgUrl: "ORG_DSC01191.JPEG", templateId: 5, }, key: 5 },
-      { data: { content: "网页模板6", imgUrl: "ORG_DSC01034.jpg", templateId: 6, }, key: 6 },
-      { data: { content: "网页模板7", imgUrl: "ORG_DSC01110.jpg", templateId: 7, }, key: 7 },
-      { data: { content: "网页模板8", imgUrl: "ORG_DSC01118.JPEG", templateId: 8, }, key: 8 },
-      { data: { content: "网页模板9", imgUrl: "ORG_DSC01137.JPEG", templateId: 9, }, key: 9 },
-      { data: { content: "网页模板10", imgUrl: "ORG_DSC01174.JPEG", templateId: 10, }, key: 10 },
-    ]   })
+    this.setState({
+      lists: [
+        { data: { content: "网页模板1", imgUrl: "IMG_7881.jpg", templateId: 1, }, key: 1 },
+        { data: { content: "网页模板2", imgUrl: "ORG_DSC01101.jpg", templateId: 2, }, key: 2 },
+        { data: { content: "网页模板3", imgUrl: "ORG_DSC01113.jpg", templateId: 3, }, key: 3 },
+        { data: { content: "网页模板4", imgUrl: "ORG_DSC01157.JPEG", templateId: 4, }, key: 4 },
+        { data: { content: "网页模板5", imgUrl: "ORG_DSC01191.JPEG", templateId: 5, }, key: 5 },
+        { data: { content: "网页模板6", imgUrl: "ORG_DSC01034.jpg", templateId: 6, }, key: 6 },
+        { data: { content: "网页模板7", imgUrl: "ORG_DSC01110.jpg", templateId: 7, }, key: 7 },
+        { data: { content: "网页模板8", imgUrl: "ORG_DSC01118.JPEG", templateId: 8, }, key: 8 },
+        { data: { content: "网页模板9", imgUrl: "ORG_DSC01137.JPEG", templateId: 9, }, key: 9 },
+        { data: { content: "网页模板10", imgUrl: "ORG_DSC01174.JPEG", templateId: 10, }, key: 10 },
+      ]
+    })
   }
 
   render() {
-    // console.log(this.props)
     const { classes } = this.props;
     let containerConfig = {
       justify: "center",
@@ -42,18 +42,18 @@ class ChooseTmp extends Component {
     }
 
     let itemsConfig = {
-      Card: WebTemplate,
       lists: this.state.lists,
+      itemName: 'WebTemplateCard'
     }
 
-    let appBar = {className: ButtonAppBar}
+    let appBar = { className: ButtonAppBar }
 
     return (
       <div className={classes.root}>
         {React.createElement(
           appBar.className,
           null
-        )}        
+        )}
         {/* < ButtonAppBar /> */}
         < TitleAndSubTitle
           titleContent="选择一个模板"
