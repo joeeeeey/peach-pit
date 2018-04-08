@@ -2,8 +2,8 @@ import React from 'react';
 // 转义
 import * as babel from 'babel-standalone';
 // 此处需要引入所有可编辑组件
-import AppBar from '../../components/common/appBar'
-import FullWidthGrid from '../../components/common/fullWidthGrid'
+import AppBar from '../../components/common/layouts/appBar'
+import FullWidthGrid from '../../components/common/grids/fullWidthGrid'
 
 function getTmpData() {
   //  TODO 数据从后端返回
@@ -21,12 +21,16 @@ function getTmpData() {
           native: false, nodeName: 'FullWidthGrid',
           props: {
             containerConfig: { spacing: 40, justify: 'space-around' },
-            itemsConfig: { lists: [{ data: { content: "网页模板1", imgUrl: "IMG_7881.jpg", templateId: 1, }, key: 1 }], itemName: 'WebTemplateCard' }
+            itemsConfig: {
+              lists: [{ data: { content: "网页模板1", imgUrl: "IMG_7881.jpg", templateId: 1, }, key: 1 }],
+              itemName: 'WebTemplateCard'
+            }
           }
         }
       ]
   }]
 }
+
 
 // 递归将 dom 数据转化为 react 语法
 function transfor(nodeData, code = '') {
@@ -51,7 +55,7 @@ function transfor(nodeData, code = '') {
       `React.createElement(
           ${tagName},
           ${props}${childrenCode}
-      )${(nodeData.length > 1 && i != nodeData.length - 1) ? ',' : ''}`
+      )${(nodeData.length > 1 && i !== nodeData.length - 1) ? ',' : ''}`
   }
 
   return code

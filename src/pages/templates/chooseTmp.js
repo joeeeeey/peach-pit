@@ -1,9 +1,9 @@
 // 选择模板界面
 import React, { Component } from 'react';
-import FullWidthGrid from '../../components/common/fullWidthGrid'
+import FullWidthGrid from '../../components/common/grids/fullWidthGrid'
 import { withStyles } from 'material-ui/styles';
 import TitleAndSubTitle from '../../components/common/titleAndSubTitle'
-import ButtonAppBar from '../../components/common/appBar'
+import ButtonAppBar from '../../components/common/layouts/appBar'
 
 const styles = theme => ({
   root: {

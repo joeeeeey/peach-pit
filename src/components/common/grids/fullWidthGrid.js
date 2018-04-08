@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
 // 引入所有 GridView 可能会加载的 card
-import WebTemplateCard from '../common/cards/webTemplate'
-
+import WebTemplateCard from '../cards/webTemplate'
 
 
 const styles = theme => ({

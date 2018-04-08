@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import AppBar from '../../components/common/appBar'
-import GuideInfo from '../../components/index/guideInfo'
+import AppBar from '../../common/layouts/appBar'
+import GuideInfo from './guideInfo'
 
 import { withStyles } from 'material-ui/styles';
 

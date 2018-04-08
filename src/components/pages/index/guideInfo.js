@@ -6,7 +6,7 @@ import { withStyles } from 'material-ui/styles';
 
 // 单页路由 用法 https://reacttraining.com/react-router/
 import { Redirect } from 'react-router-dom'
-import TitleAndSubTitle from '../common/titleAndSubTitle'
+import TitleAndSubTitle from '../../common/titleAndSubTitle'
 
 const styles = theme => ({
   root: {
