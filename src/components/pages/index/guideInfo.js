@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import Button from 'material-ui/Button';
-
-// import Typography from 'material-ui/Typography'; // 规范字体
 import { withStyles } from 'material-ui/styles';
 
 // 单页路由 用法 https://reacttraining.com/react-router/

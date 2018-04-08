@@ -7,33 +7,38 @@ import FullWidthGrid from '../../components/common/grids/fullWidthGrid'
 
 function getTmpData() {
   //  TODO 数据从后端返回
-  return [{
-    native: true, nodeName: 'div', props: { style: { color: "blue" } },
-    children:
-      [
-        { native: false, nodeName: 'AppBar', props: null },
-        {
-          native: true, nodeName: 'h1',
-          props: { style: { color: "blue" } },
-          children: "Hello World"
-        },
-        {
-          native: false, nodeName: 'FullWidthGrid',
-          props: {
-            containerConfig: { spacing: 40, justify: 'space-around' },
-            itemsConfig: {
-              lists: [{ data: { content: "网页模板1", imgUrl: "IMG_7881.jpg", templateId: 1, }, key: 1 }],
-              itemName: 'WebTemplateCard'
+  return [
+    {
+      native: true, nodeName: 'div', props: { style: { color: 'blue' } },
+      children:
+        [
+          { native: false, nodeName: 'AppBar', props: null },
+          {
+            native: true, nodeName: 'h1',
+            props: { style: { color: "blue" } },
+            children: "Hello World"
+          },
+          {
+            native: false, nodeName: 'FullWidthGrid',
+            props: {
+              containerConfig: { spacing: 40, justify: 'space-around' },
+              itemsConfig: {
+                lists: [{ data: { content: "网页模板1", imgUrl: "IMG_7881.jpg", templateId: 1, }, key: 1 }],
+                itemName: 'WebTemplateCard'
+              }
             }
           }
-        }
-      ]
-  }]
+        ]
+    },
+  ]
 }
 
-
-// 递归将 dom 数据转化为 react 语法
 function transfor(nodeData, code = '') {
+  // 是 {} 类型就转化为数组
+  if(!Array.isArray(nodeData) && nodeData !== null && typeof nodeData === 'object'){
+    nodeData = [nodeData]
+  }
+  
   for (let i = 0; i < nodeData.length; i++) {
     let data = nodeData[i]
     let tagName = data.native ? JSON.stringify(data.nodeName) : `Components.${data.nodeName}`
@@ -60,6 +65,54 @@ function transfor(nodeData, code = '') {
 
   return code
 }
+
+// object 降维
+function flattenDomTree(nodeData, parentKey = '', flattenData = { _relation: {} }) {
+  if(!Array.isArray(nodeData) && nodeData !== null && typeof nodeData === 'object'){
+    flattenData._root = `(0){${nodeData.nodeName}}`
+    nodeData = [nodeData]
+  }
+
+  for (let i = 0; i < nodeData.length; i++) {
+    let node = nodeData[i]
+    let key = `${parentKey}(${i}){${node.nodeName}}`
+    if (parentKey !== '') {
+      let childrenKeys = flattenData._relation[parentKey]
+      if (Array.isArray(childrenKeys) && childrenKeys.length > 0) {
+        childrenKeys.push(key)
+      } else {
+        flattenData._relation[parentKey] = [key]
+      }
+    }
+    let { children, ...value } = node;
+    if (Array.isArray(children) && children.length > 0) {
+      flattenData[key] = value
+      flattenData = flattenDomTree(children, key, flattenData)
+    } else {
+      flattenData[key] = node
+    }
+  }
+  return flattenData
+}
+
+// 还原 dom
+function heightenDomTree(flattenData, startDom=null){
+  if(startDom===null){
+    startDom = flattenData._root
+  }
+  let domData = flattenData[startDom]
+  let childrenNames = flattenData._relation[startDom]
+  if(Array.isArray(childrenNames) && childrenNames.length > 0){
+    domData.children = []
+    for (let i = 0; i < childrenNames.length; i++) {
+      domData.children.push( heightenDomTree(flattenData, childrenNames[i])) 
+    }
+  }
+
+  return domData
+}
+
+
 function assemblyCode() {
   return `function App() {
             return (

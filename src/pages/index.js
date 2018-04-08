@@ -14,7 +14,7 @@ import Home from '../components/pages/index/home'
 // 其他路由组件
 import ChooseTmp from './templates/chooseTmp'
 import Inputs from './sites/edit'
-
+import Test from './test'
 
 export const history = createBrowserHistory();
 
@@ -35,7 +35,7 @@ class Index extends Component {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/chooseTmp" exact component={ChooseTmp} />
-          <Route path="/sites/:id/edit" component={Inputs} />
+          <Route path="/sites/:id/edit" component={Test} />
         </Switch>
       </Router>
     );
