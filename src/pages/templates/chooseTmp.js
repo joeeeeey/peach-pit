@@ -17,7 +17,13 @@ class ChooseTmp extends Component {
     this.state = { currentCount: 0, lists: [] };
   }
 
+  timer = () => {
+    // setState method is used to update the state
+    this.setState({ currentCount: this.state.currentCount +1 });
+  }
+
   componentDidMount() {
+    var intervalId = setInterval(this.timer, 1000);
     this.setState({
       lists: [
         { data: { content: "网页模板1", imgUrl: "IMG_7881.jpg", templateId: 1, }, key: 1 },
@@ -42,7 +48,7 @@ class ChooseTmp extends Component {
     }
 
     let itemsConfig = {
-      lists: this.state.lists,
+      lists: this.state.lists.slice(0, this.state.currentCount),
       itemName: 'WebTemplateCard'
     }
 

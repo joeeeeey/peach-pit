@@ -52,20 +52,17 @@ class Test extends Component {
   render() {
     return (
       <div style={{ textAlign: 'center' }}>
+        {/* 纵向布局，把屏幕分为左右两块的布局 */}
         <Grid container direction="row" spacing={16} justify={'center'} alignItems={'baseline'}>
           <Grid item lg={5} md={5} sm={5} xs={11} style={{ border: '0.005rem solid #6d6d6d' }}>
             <Grid container direction="column" >
-              <Grid item lg={12} md={12} sm={12} xs={12} >
                 <EditableTextArea children={this.state.children1} handler = {this.handler} />
                 <EditableTextArea children={this.state.children2} handler = {this.handler} />
-              </Grid>
             </Grid>
           </Grid>
           <Grid item lg={6} md={6} sm={6} xs={11} style={{ border: '0.005rem solid #6d6d6d' }}>
             <Grid container direction="column" >
-              <Grid item lg={12} md={12} sm={12} xs={12}>
                 <EditableTextArea children={this.state.children3} handler = {this.handler} />
-              </Grid>
             </Grid>
           </Grid>
         </Grid>
@@ -78,27 +75,3 @@ class Test extends Component {
 export default Test;
 
 
-// class Parent extends React.Component {
-//   constructor(props) {
-//     super(props)
-
-//     this.handler = this.handler.bind(this)
-//   }
-
-//   handler(e) {
-//     e.preventDefault()
-//     this.setState({
-//       someVar: someValue
-//     })
-//   }
-
-//   render() {
-//     return <Child handler = {this.handler} />
-//   }
-// }
-
-// class Child extends React.Component {
-//   render() {
-//     return <Button onClick = {this.props.handler}/ >
-//   }
-// }
