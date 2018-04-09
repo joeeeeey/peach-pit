@@ -18,12 +18,12 @@ export default class MetaTextArea extends Component {
 
   render() {
     // const style = { fontSize: 20, fontWeight: 900, color: "#1c1a1a" }
-    const {style, children} = this.props
+    const {style, content} = this.props
     return (
       <div>
         <div style={style}>
           <ContentEditable
-            html={children} // innerHTML of the editable div
+            html={content} // innerHTML of the editable div
             disabled={true}       // use true to disable edition
           />
         </div>

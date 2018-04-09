@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import Typography from 'material-ui/Typography';
+// import Typography from 'material-ui/Typography';
 import ContentEditable from 'react-contenteditable'
+import PropTypes from 'prop-types';
+
 import Grid from 'material-ui/Grid';
 
 // 文档: https://material-ui-next.com/customization/default-theme/?expend-path=$.typography
@@ -18,16 +20,26 @@ import Grid from 'material-ui/Grid';
 //   float    'left', 'center', 'right'
 // 禁止可编辑 dom 的警告 https://github.com/gautamarora/fullstackjs-todos/commit/9e58c2fff3e79222d9857421a804abc0af857554
 export default class EditableTextArea extends Component {
-  constructor(props) {
+  constructor(props, context) {
     super(props);
-    this.state = { hovered: false, children: props.children }
+    this.state = { hovered: false}
   }
 
   handleChange = (e) => {
     // this.setState({ children: e.target.value });
     e.target.props = this.props
-    console.log(this.props)
-    // this.props.handler(e)
+    // console.log(this.context.store.getState())
+    // selfkey: "(0){div}(1){EditableTextArea}", parentkey: "(0){div}(1){EditableTextArea}"
+    // console.log(this.props)
+    let nestedKey = `${this.props.selfkey},props,content`
+    this.context.store.dispatch({
+      type: 'update',
+      payload: {nestedKey: nestedKey, value: e.target.value}
+    });
+
+    // this.context.store[selfkey]['props']['content'] = e.target.value
+    // "(0){div}(1){EditableTextArea},props,content"
+    // {content: "发的所发生的", style: {…}, selfkey: "(0){div}(1){EditableTextArea}", parentkey: "(0){div}(1){EditableTextArea}"}
   }
 
 
@@ -47,27 +59,18 @@ export default class EditableTextArea extends Component {
 
   render() {
     // const style = { fontSize: 20, fontWeight: 900, color: "#1c1a1a", float: "center" }
-    const style = this.props.style
-    
+    const {style, content} = this.props
+
     return (
       <div>
         <div
           onMouseOver={this.onMouseOver}
           onMouseOut={this.onMouseOut}
           style={this.hovorStyle()}>
-          {/* <Typography
-          onInput={this.handleChange} 
-          gutterBottom={true}
-            // contentEditable="true"
-            align={'center'}
-            style={style}
-            suppressContentEditableWarning={true}>
-            fd
-          </Typography> */}
-          <div style={this.props.style}>
+          <div style={style}>
             {/* <Grid item lg={12} md={12} sm={12} xs={12} > */}
               <ContentEditable
-                html={this.state.children} // innerHTML of the editable div
+                html={content} // innerHTML of the editable div
                 disabled={false}       // use true to disable edition
                 onChange={this.handleChange} // handle innerHTML change
               />
@@ -80,6 +83,9 @@ export default class EditableTextArea extends Component {
 }
 
 
+EditableTextArea.contextTypes = {
+  store: PropTypes.object
+};
 
 
 
