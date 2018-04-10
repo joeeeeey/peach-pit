@@ -3,14 +3,15 @@ import AppBar from '../../common/layouts/appBar'
 import GuideInfo from './guideInfo'
 
 import { withStyles } from 'material-ui/styles';
-
+import EditableVerticalGrid from '../../edit/verticalGrid'
+import Grid from 'material-ui/Grid';
 const styles = theme => ({
   root: {
     textAlign: 'center',
     backgroundColor: 'grey',
     [theme.breakpoints.up('md')]: {
       backgroundColor: 'white',
-    }, 
+    },
     height: window.innerHeight,
   },
   imgae: {
@@ -30,7 +31,7 @@ class Home extends Component {
         <div >
           <img
             src={'/images/panda.jpg'}
-            className={classes.imgae}/>
+            className={classes.imgae} />
         </div>;
       </div>
     );

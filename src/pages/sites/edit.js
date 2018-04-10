@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 import AppBar from '../../components/common/layouts/appBar'
 import FullWidthGrid from '../../components/common/grids/fullWidthGrid'
 import EditableTextArea from '../../components/edit/textArea'
-
+import EditableVerticalGrid from '../../components/edit/verticalGrid'
+import md5 from 'md5';
 // const func = (function (React, Components) {
 //   return function App() {
 //     return (
@@ -31,6 +32,7 @@ class Edit extends React.Component {
   constructor(props, context) {
     super(props);
     this.state = { nodeData: null }
+    // console.log(md5('fdsfds'))
   }
   // 最适合取到数据的地方
   componentWillMount = () => {
@@ -38,11 +40,11 @@ class Edit extends React.Component {
       native: true, nodeName: 'div', props: { style: { color: 'blue' } },
       children:
         [
-          {
-            native: true, nodeName: 'h1',
-            props: { style: { color: "blue" } },
-            children: "Hello World"
-          },
+          // {
+          //   native: true, nodeName: 'h1',
+          //   props: { style: { color: "blue" } },
+          //   children: "Hello World"
+          // },
           // {
           //   native: true, nodeName: 'h2',
           //   props: { style: { color: "green" } },
@@ -54,27 +56,55 @@ class Edit extends React.Component {
           //   children: "Hello World3"
           // },
           // { native: false, nodeName: 'AppBar', props: null },
-          { native: false, nodeName: 'EditableTextArea', props: 
-          { content: "发的所发生的", style: { fontSize: 30, fontWeight: 500, color: "#1c1a1a", float: "center" } } },
+          {
+            native: false, nodeName: 'TextArea', props:
+              {
+                content: "发的所发生的", style:
+                  { fontSize: 30, fontWeight: 500, color: "#1c1a1a", float: "center" }
+              }
+          },
+          {
+            native: false, nodeName: 'VerticalGrid', props: { style: {} },
+            children: [
+              {
+                native: false, nodeName: 'TextArea', props:
+                  {
+                    content: "hello1", style:
+                      { fontSize: 30, fontWeight: 500, color: "#1c1a1a", float: "center" }
+                  }              
+              },
+              {
+                native: false, nodeName: 'TextArea', props:
+                  {
+                    content: "hello2", style:
+                      { fontSize: 30, fontWeight: 500, color: "#1c1a1a", float: "center" }
+                  }              
+              }              
+            ]
+          }
         ]
     }
 
     // 模拟向后端取数据
     setTimeout(() => {
       let ftData = this.flattenDomTree(nodeData)
+      console.log(ftData)
       this.setState({ nodeData: ftData })
       this.context.store.dispatch({
         type: 'replace',
         payload: ftData
       });
     }, 1);
-    // this.setState({ nodeData: this.flattenDomTree(nodeData)})
   }
 
   toF = (code) => {
     const func = new Function("React", "Components", `return ${code}`);
     // TODO ADD ALL components here
-    const App = func(React, { AppBar: AppBar, EditableTextArea: EditableTextArea })
+    const App = func(React, {
+      AppBar: AppBar,
+      EditableTextArea: EditableTextArea,
+      EditableVerticalGrid: EditableVerticalGrid
+    })
     return App
   }
 
@@ -109,12 +139,7 @@ class Edit extends React.Component {
 
   }
   render = () => {
-    // console.log(this.context.store)
     // console.log(this.state)
-    // console.log(this.flattenedData2Code(this.state.nodeData))
-
-    // console.log(this.flattenDomTree(store.getState()))
-    // console.log(this.state.nodeData)
     return (
       <div>
         {this.toF(this.flattenedData2Code(this.state.nodeData))}
@@ -123,19 +148,36 @@ class Edit extends React.Component {
   }
 
   getChildContext() {
-    return {store: this.context.store};
-  } 
+    return { store: this.context.store };
+  }
 
+  incryptKey = (key) => {
+    return md5(`${Math.random().toString()+key}`)
+  }
   // object 降维
   flattenDomTree = (nodeData, parentKey = '', flattenData = { _relation: {} }) => {
+    // 是根节点的情况
     if (!Array.isArray(nodeData) && nodeData !== null && typeof nodeData === 'object') {
-      flattenData._root = `(0){${nodeData.nodeName}}`
-      nodeData = [nodeData]
+      let rootKey = `Root_${nodeData.nodeName}_${this.incryptKey(nodeData.nodeName)}`
+      flattenData._root = rootKey
+      // nodeData = [nodeData]
+      let { children, ...value } = nodeData;
+      
+      if (Array.isArray(children) && children.length > 0) {
+        flattenData[rootKey] = value
+        this.flattenDomTree(children, rootKey, flattenData)
+      } else {
+        flattenData[rootKey] = nodeData
+        return flattenData
+      }      
     }
 
+    // 是子节点
     for (let i = 0; i < nodeData.length; i++) {
       let node = nodeData[i]
-      let key = `${parentKey}(${i}){${node.nodeName}}`
+      let key = `${node.nodeName}_${this.incryptKey(node.nodeName)}`
+      // let key = `${parentKey}(${i}){${node.nodeName}}`
+      console.log(key)
       if (parentKey !== '') {
         let childrenKeys = flattenData._relation[parentKey]
         if (Array.isArray(childrenKeys) && childrenKeys.length > 0) {
@@ -164,12 +206,12 @@ class Edit extends React.Component {
       selfDomKey = flattenData._root
     }
     let data = flattenData[selfDomKey]
-    let tagName = data.native ? JSON.stringify(data.nodeName) : `Components.${data.nodeName}`
+    let tagName = data.native ? JSON.stringify(data.nodeName) : `Components.Editable${data.nodeName}`
 
     let props = data.props
     if (props !== null && typeof props === 'object' && !Array.isArray(props)) {
       props.selfkey = selfDomKey
-      props.parentkey = selfDomKey
+      props.parentkey = parentDomKey
     } else {
       props = { selfkey: selfDomKey, parentkey: parentDomKey }
     }

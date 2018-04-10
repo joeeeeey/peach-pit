@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 // import Typography from 'material-ui/Typography';
 import ContentEditable from 'react-contenteditable'
 import PropTypes from 'prop-types';
-
 import Grid from 'material-ui/Grid';
 
 // 文档: https://material-ui-next.com/customization/default-theme/?expend-path=$.typography
@@ -26,20 +25,14 @@ export default class EditableTextArea extends Component {
   }
 
   handleChange = (e) => {
-    // this.setState({ children: e.target.value });
+    // TODO 增加更多编辑功能
     e.target.props = this.props
-    // console.log(this.context.store.getState())
-    // selfkey: "(0){div}(1){EditableTextArea}", parentkey: "(0){div}(1){EditableTextArea}"
-    // console.log(this.props)
+
     let nestedKey = `${this.props.selfkey},props,content`
     this.context.store.dispatch({
       type: 'update',
       payload: {nestedKey: nestedKey, value: e.target.value}
     });
-
-    // this.context.store[selfkey]['props']['content'] = e.target.value
-    // "(0){div}(1){EditableTextArea},props,content"
-    // {content: "发的所发生的", style: {…}, selfkey: "(0){div}(1){EditableTextArea}", parentkey: "(0){div}(1){EditableTextArea}"}
   }
 
 
@@ -64,9 +57,7 @@ export default class EditableTextArea extends Component {
     return (
       <div>
         <div
-          onMouseOver={this.onMouseOver}
-          onMouseOut={this.onMouseOut}
-          style={this.hovorStyle()}>
+      >
           <div style={style}>
             {/* <Grid item lg={12} md={12} sm={12} xs={12} > */}
               <ContentEditable
