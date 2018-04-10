@@ -23,7 +23,7 @@ class ChooseTmp extends Component {
   }
 
   componentDidMount() {
-    var intervalId = setInterval(this.timer, 1000);
+    // var intervalId = setInterval(this.timer, 1000);
     this.setState({
       lists: [
         { data: { content: "网页模板1", imgUrl: "IMG_7881.jpg", templateId: 1, }, key: 1 },

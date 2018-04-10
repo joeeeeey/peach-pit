@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import nodeOperation from '../../share/nodeOperation'
 // 转义
 // import * as babel from 'babel-standalone';
 // 此处需要引入所有可编辑组件
@@ -7,7 +8,6 @@ import AppBar from '../../components/common/layouts/appBar'
 import FullWidthGrid from '../../components/common/grids/fullWidthGrid'
 import EditableTextArea from '../../components/edit/textArea'
 import EditableVerticalGrid from '../../components/edit/verticalGrid'
-import md5 from 'md5';
 // const func = (function (React, Components) {
 //   return function App() {
 //     return (
@@ -32,7 +32,6 @@ class Edit extends React.Component {
   constructor(props, context) {
     super(props);
     this.state = { nodeData: null }
-    // console.log(md5('fdsfds'))
   }
   // 最适合取到数据的地方
   componentWillMount = () => {
@@ -71,15 +70,15 @@ class Edit extends React.Component {
                   {
                     content: "hello1", style:
                       { fontSize: 30, fontWeight: 500, color: "#1c1a1a", float: "center" }
-                  }              
+                  }
               },
               {
                 native: false, nodeName: 'TextArea', props:
                   {
                     content: "hello2", style:
                       { fontSize: 30, fontWeight: 500, color: "#1c1a1a", float: "center" }
-                  }              
-              }              
+                  }
+              }
             ]
           }
         ]
@@ -87,7 +86,7 @@ class Edit extends React.Component {
 
     // 模拟向后端取数据
     setTimeout(() => {
-      let ftData = this.flattenDomTree(nodeData)
+      let ftData = nodeOperation.flattenDomTree(nodeData)
       console.log(ftData)
       this.setState({ nodeData: ftData })
       this.context.store.dispatch({
@@ -112,7 +111,7 @@ class Edit extends React.Component {
     // this.state.nodeData['(0){div}(1){h2}'].nodeName = this.state.nodeData['(0){div}(1){h2}'].nodeName == 'h1' ? 'h2' : 'h1'
     this.context.store.dispatch({
       type: 'set',
-      payload: this.flattenDomTree({
+      payload: nodeOperation.flattenDomTree({
         native: true, nodeName: 'h1',
         props: { style: { color: "red" } },
         children: "Hello World2"
@@ -142,97 +141,13 @@ class Edit extends React.Component {
     // console.log(this.state)
     return (
       <div>
-        {this.toF(this.flattenedData2Code(this.state.nodeData))}
+        {this.toF(nodeOperation.flattenedData2Code(this.state.nodeData))}
       </div>
     );
   }
 
   getChildContext() {
     return { store: this.context.store };
-  }
-
-  incryptKey = (key) => {
-    return md5(`${Math.random().toString()+key}`)
-  }
-  // object 降维
-  flattenDomTree = (nodeData, parentKey = '', flattenData = { _relation: {} }) => {
-    // 是根节点的情况
-    if (!Array.isArray(nodeData) && nodeData !== null && typeof nodeData === 'object') {
-      let rootKey = `Root_${nodeData.nodeName}_${this.incryptKey(nodeData.nodeName)}`
-      flattenData._root = rootKey
-      // nodeData = [nodeData]
-      let { children, ...value } = nodeData;
-      
-      if (Array.isArray(children) && children.length > 0) {
-        flattenData[rootKey] = value
-        this.flattenDomTree(children, rootKey, flattenData)
-      } else {
-        flattenData[rootKey] = nodeData
-        return flattenData
-      }      
-    }
-
-    // 是子节点
-    for (let i = 0; i < nodeData.length; i++) {
-      let node = nodeData[i]
-      let key = `${node.nodeName}_${this.incryptKey(node.nodeName)}`
-      // let key = `${parentKey}(${i}){${node.nodeName}}`
-      console.log(key)
-      if (parentKey !== '') {
-        let childrenKeys = flattenData._relation[parentKey]
-        if (Array.isArray(childrenKeys) && childrenKeys.length > 0) {
-          childrenKeys.push(key)
-        } else {
-          flattenData._relation[parentKey] = [key]
-        }
-      }
-      let { children, ...value } = node;
-      if (Array.isArray(children) && children.length > 0) {
-        flattenData[key] = value
-        flattenData = this.flattenDomTree(children, key, flattenData)
-      } else {
-        flattenData[key] = node
-      }
-    }
-    return flattenData
-  }
-
-  // 降维数据转化为代码
-  flattenedData2Code = (flattenData, selfDomKey = null, parentDomKey = 'root', code = "") => {
-    if (flattenData === null) {
-      return code;
-    }
-    if (selfDomKey === null) {
-      selfDomKey = flattenData._root
-    }
-    let data = flattenData[selfDomKey]
-    let tagName = data.native ? JSON.stringify(data.nodeName) : `Components.Editable${data.nodeName}`
-
-    let props = data.props
-    if (props !== null && typeof props === 'object' && !Array.isArray(props)) {
-      props.selfkey = selfDomKey
-      props.parentkey = parentDomKey
-    } else {
-      props = { selfkey: selfDomKey, parentkey: parentDomKey }
-    }
-    props = JSON.stringify(props)
-    let childrenNames = flattenData._relation[selfDomKey]
-    let children = data.children
-    let childrenCode = ""
-    if (typeof children === 'string') {
-      childrenCode += `,\n${JSON.stringify(children)}`
-    } else if (Array.isArray(childrenNames) && childrenNames.length > 0) {
-      for (let i = 0; i < childrenNames.length; i++) {
-        childrenCode += this.flattenedData2Code(flattenData, childrenNames[i], selfDomKey, ",\n")
-      }
-    }
-
-    code +=
-      `React.createElement(
-        ${tagName},
-        ${props}${childrenCode}
-    )`
-    return code
   }
 }
 

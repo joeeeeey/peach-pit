@@ -57,7 +57,9 @@ export default class EditableTextArea extends Component {
     return (
       <div>
         <div
-      >
+          onMouseOver={this.onMouseOver}
+          onMouseOut={this.onMouseOut}
+          style={this.hovorStyle()}>
           <div style={style}>
             {/* <Grid item lg={12} md={12} sm={12} xs={12} > */}
               <ContentEditable

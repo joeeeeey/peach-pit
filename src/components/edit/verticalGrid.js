@@ -28,9 +28,7 @@ export default class EditableVerticalGrid extends Component {
     let nodeName = this.state.addNodeName
     switch (nodeName) {
       case 'TextArea':
-        console.log(this.props)
         let {selfkey} = this.props
-        // console.log(this.context.store.getState())
         this.context.store.dispatch({
           type: 'addNode',
           payload: {selfKey: selfkey, nodeName: nodeName}
@@ -39,7 +37,22 @@ export default class EditableVerticalGrid extends Component {
       default:
         return false
     }    
-    console.log('addNode')
+  }
+
+  removeNode = () => {
+    console.log('grid removeNode')
+    let nodeName = 'TextArea'
+    switch (nodeName) {
+      case 'TextArea':
+        let {selfkey, parentkey} = this.props
+        this.context.store.dispatch({
+          type: 'removeNode',
+          payload: {selfKey: selfkey, parentKey: parentkey, nodeName: nodeName}
+        });
+        return 'state'
+      default:
+        return false
+    }    
   }
 
   render() {
@@ -57,8 +70,8 @@ export default class EditableVerticalGrid extends Component {
             </Grid>
           </Grid>
         </Grid> */}
-        <Button onClick={this.addNode}>增加一个 h1</Button>
-        <Button>去掉一个 h1</Button>
+        <Button onClick={this.addNode}>增加一个子节点</Button>
+        <Button onClick={this.removeNode}>把自己删掉</Button>
       </div>
     );
   }

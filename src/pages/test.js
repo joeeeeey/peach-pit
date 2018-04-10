@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import EditableButton from '../components/edit/button'
+// import EditableButton from '../components/edit/button'
 import EditableTextArea from '../components/edit/textArea'
 
 import Grid from 'material-ui/Grid';
