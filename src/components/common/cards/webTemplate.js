@@ -8,7 +8,7 @@ import Card, { CardActions, CardContent, CardMedia } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import { Link } from 'react-router-dom';
-
+import Grid from 'material-ui/Grid';
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -30,7 +30,7 @@ class WebTemplate extends React.Component {
     const { content, imgUrl, templateId } = data
 
     return (
-      <div className={classes.root}>
+      <Grid item lg={5} md={5} sm={5} xs={11} >
         <Card className={classes.card}>
           <CardMedia
             component={Link} to={`/sites/${templateId}/edit`}
@@ -51,7 +51,8 @@ class WebTemplate extends React.Component {
             </Button>
           </CardActions>
         </Card>
-      </div>
+      </Grid>
+
     );
   }
 }

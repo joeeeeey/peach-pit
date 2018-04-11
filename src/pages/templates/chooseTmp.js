@@ -14,7 +14,7 @@ const styles = theme => ({
 class ChooseTmp extends Component {
   constructor(props) {
     super(props);
-    this.state = { currentCount: 0, lists: [] };
+    this.state = { currentCount: 10, lists: [] };
   }
 
   timer = () => {

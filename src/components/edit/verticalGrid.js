@@ -64,13 +64,7 @@ export default class EditableVerticalGrid extends Component {
         <Grid container direction="column" >
           {this.props.children}
         </Grid>
-        {/* <Grid container direction="row" spacing={16} justify={'center'} alignItems={'baseline'}>
-          <Grid item lg={5} md={5} sm={5} xs={11} style={{ border: '0.005rem solid #6d6d6d' }}>
-            <Grid container direction="column">
-            </Grid>
-          </Grid>
-        </Grid> */}
-        <Button onClick={this.addNode}>增加一个子节点</Button>
+        <Button onClick={this.addNode}>增加一个竖直布局</Button>
         <Button onClick={this.removeNode}>把自己删掉</Button>
       </div>
     );

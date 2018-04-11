@@ -4,14 +4,18 @@ import ContentEditable from 'react-contenteditable'
 import PropTypes from 'prop-types';
 import Grid from 'material-ui/Grid';
 
+import '../../css/customize.css'
 // 文档: https://material-ui-next.com/customization/default-theme/?expend-path=$.typography
-// text
-//     频繁使用
 
 // 可以传入 props
+// { content : {'好吃的东西'}, 
+//   style: {{ textAlign: 'center', fontSize: 30, fontWeight: 500, color: "#1c1a1a" }}}
+
+
+// 说明
 // 对齐方式
 // align: 'inherit', 'left', 'center', 'right', 'justify'
-// children: "内容"
+// content: "内容"
 // styles
 //   color 可以传入 rgb
 //   fontSize
@@ -21,7 +25,7 @@ import Grid from 'material-ui/Grid';
 export default class EditableTextArea extends Component {
   constructor(props, context) {
     super(props);
-    this.state = { hovered: false}
+    this.state = { hovered: false }
   }
 
   handleChange = (e) => {
@@ -31,14 +35,20 @@ export default class EditableTextArea extends Component {
     let nestedKey = `${this.props.selfkey},props,content`
     this.context.store.dispatch({
       type: 'update',
-      payload: {nestedKey: nestedKey, value: e.target.value}
+      payload: { nestedKey: nestedKey, value: e.target.value }
     });
   }
 
+  // emitChange: function(){
+  //   var html = this.target.value;
+  //   this.setState({html: html})
+  // },
 
   hovorStyle = () => {
     if (this.state.hovered) {
-      return { border: '0.005rem solid #6d6d6d' }
+      return { border: '0.005rem solid #6d6d6d', marginLeft: 20,  }
+    }else{
+      return {marginLeft: 20,}
     }
   }
 
@@ -52,8 +62,9 @@ export default class EditableTextArea extends Component {
 
   render() {
     // const style = { fontSize: 20, fontWeight: 900, color: "#1c1a1a", float: "center" }
-    const {style, content} = this.props
-
+    const { style, content } = this.props
+    // TODO 用 ref 解决 editable 鼠标乱跳的问题
+    // https://github.com/facebook/react/issues/2047
     return (
       <div>
         <div
@@ -61,13 +72,13 @@ export default class EditableTextArea extends Component {
           onMouseOut={this.onMouseOut}
           style={this.hovorStyle()}>
           <div style={style}>
-            {/* <Grid item lg={12} md={12} sm={12} xs={12} > */}
-              <ContentEditable
-                html={content} // innerHTML of the editable div
-                disabled={false}       // use true to disable edition
-                onChange={this.handleChange} // handle innerHTML change
-              />
-            {/* </Grid> */}
+            <ContentEditable
+              // style={{style}}
+              placeholder={"填入内容..."}
+              html={content} // innerHTML of the editable div
+              disabled={false}       // use true to disable edition
+              onChange={this.handleChange} // handle innerHTML change
+            />
           </div>
         </div>
       </div>

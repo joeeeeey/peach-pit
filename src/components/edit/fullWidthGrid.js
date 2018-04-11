@@ -1,22 +1,10 @@
-// 自适应 Grid Views 组件
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
-// 引入所有 GridView 可能会加载的 card
-import WebTemplateCard from '../cards/webTemplate'
-
-
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-  },
-});
 
 // 可接受参数
 // <FullWidthGrid 
-    // containerConfig={spacing: 20, justify: 'space-around'}
-    // itemsConfig={lists: [], itemName: 'WebTemplateCard'}
+    // spacing=20, justify='space-around'
     // />
 
 // container 参数, 用于控制其中的 Grid Items:
@@ -38,23 +26,25 @@ const styles = theme => ({
 // itemName: 定义 gridItem 模板为哪个 itemName 
 // lists: 数据
 
-class FullWidthGrid extends React.Component {
+export default class EditableFullWidthGrid extends React.Component {
   constructor(props) {
     super(props);
-    // TODO add more
-    this.state = {WebTemplateCard: WebTemplateCard};
   }
 
   render() {
-    const { classes, containerConfig, itemsConfig } = this.props;
-    const { justify, spacing } = containerConfig
-    const { lists, itemName } = itemsConfig
-    const Item = this.state[itemName]
-
+    const { justify, spacing, children } = this.props;
+    // const { justify, spacing } = containerConfig
+    // const { lists, itemName } = itemsConfig
+    // const Item = this.state[itemName]
+    // const props = {
+    //   justify: "center",
+    //   spacing: 8,
+    // }
     return (
-      < div className={classes.root} >
+      < div style={{flexGrow: 1}} >
         <Grid container spacing={spacing} justify={justify}>
-          {
+          {children}
+          {/* {
             lists.map(value => (
               // 必须传入唯一 key
               // Keys should be unique so that components maintain their 
@@ -65,15 +55,13 @@ class FullWidthGrid extends React.Component {
                 <Item data={value.data} />
               
             ))
-          }
+          } */}
         </Grid>
       </div >
     );
   }
 }
 
-FullWidthGrid.propTypes = {
+EditableFullWidthGrid.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-
-export default withStyles(styles)(FullWidthGrid);

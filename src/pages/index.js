@@ -36,6 +36,7 @@ class Index extends Component {
           <Route path="/" exact component={Home} />
           <Route path="/chooseTmp" exact component={ChooseTmp} />
           <Route path="/sites/:id/edit" component={Test} />
+          <Route path="/test" component={Test} />
           <Route path="/sites/edit" component={Edit} />
         </Switch>
       </Router>

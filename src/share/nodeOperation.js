@@ -1,6 +1,7 @@
 import md5 from 'md5';
 
 function randomStr(){
+  // random 两次使碰撞几率/2 TODO 加强
   return `${(Math.random()+Math.random()).toString()}`
 }
 
@@ -15,6 +16,9 @@ function addNode(currentDom, nodeKey, newNode) {
   let nodeChildren = currentDom._relation[nodeKey] || []
 
   let { _relation, _root, ...newNodeData } = newNode
+  console.log('addNode')
+  console.log(_relation)    
+  console.log(_root)    
   // let newNodeRootKey = newNodes._relation._root
   // 新加的节点必须有根节点
   if (_root === null) {
@@ -26,6 +30,7 @@ function addNode(currentDom, nodeKey, newNode) {
 
   // 合并节点内容
   Object.assign(currentDom, newNodeData)
+  console.log(currentDom)   
   return currentDom
 }
 
@@ -68,6 +73,22 @@ function removeNode(currentDom, selfKey, parentKey){
 
 
 
+// 还原, dom tree object 升维
+function heightenDomTree(flattenData, startDom=null){
+  if(startDom===null){
+    startDom = flattenData._root
+  }
+  let domData = flattenData[startDom]
+  let childrenNames = flattenData._relation[startDom]
+  if(Array.isArray(childrenNames) && childrenNames.length > 0){
+    domData.children = []
+    for (let i = 0; i < childrenNames.length; i++) {
+      domData.children.push( heightenDomTree(flattenData, childrenNames[i])) 
+    }
+  }
+
+  return domData
+}
 
 // dom tree object 降维
 function flattenDomTree(nodeData, parentKey = '', flattenData = { _relation: {} }) {
@@ -82,7 +103,9 @@ function flattenDomTree(nodeData, parentKey = '', flattenData = { _relation: {} 
       flattenData[rootKey] = value
       flattenDomTree(children, rootKey, flattenData)
     } else {
+      // 根节点没儿子
       flattenData[rootKey] = nodeData
+      flattenData._relation[rootKey] = []
       return flattenData
     }
   }
@@ -112,7 +135,7 @@ function flattenDomTree(nodeData, parentKey = '', flattenData = { _relation: {} 
 
 
 // 降维数据转化为代码
-function flattenedData2Code(flattenData, selfDomKey = null, parentDomKey = 'root', code = "", isEdit = true) {
+function flattenedData2Code(flattenData, isEdit = true, selfDomKey = null, parentDomKey = 'root', code = "") {
   if (flattenData === null) {
     return code;
   }
@@ -120,7 +143,18 @@ function flattenedData2Code(flattenData, selfDomKey = null, parentDomKey = 'root
     selfDomKey = flattenData._root
   }
   let data = flattenData[selfDomKey]
-  let tagName = data.native ? JSON.stringify(data.nodeName) : `Components.Editable${data.nodeName}`
+  let tagName;
+  if(data.native){
+    tagName = JSON.stringify(data.nodeName)
+  }else{
+    if(isEdit){
+      tagName = `Components.Editable${data.nodeName}`
+    }else{
+      tagName = `Components.Preview${data.nodeName}`
+    }
+  }
+
+  // let tagName = data.native ? JSON.stringify(data.nodeName) : `Components.Editable${data.nodeName}`
 
   let props = data.props
   if (props !== null && typeof props === 'object' && !Array.isArray(props)) {
@@ -137,7 +171,7 @@ function flattenedData2Code(flattenData, selfDomKey = null, parentDomKey = 'root
     childrenCode += `,\n${JSON.stringify(children)}`
   } else if (Array.isArray(childrenNames) && childrenNames.length > 0) {
     for (let i = 0; i < childrenNames.length; i++) {
-      childrenCode += flattenedData2Code(flattenData, childrenNames[i], selfDomKey, ",\n", isEdit)
+      childrenCode += flattenedData2Code(flattenData, isEdit, childrenNames[i], selfDomKey, ",\n")
     }
   }
 
@@ -151,6 +185,7 @@ function flattenedData2Code(flattenData, selfDomKey = null, parentDomKey = 'root
 
 const nodeOperation = {
   flattenDomTree: flattenDomTree,
+  heightenDomTree: heightenDomTree,
   flattenedData2Code: flattenedData2Code,
   addNode: addNode,
   removeNode: removeNode,
