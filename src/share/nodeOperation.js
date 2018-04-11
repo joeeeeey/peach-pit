@@ -1,8 +1,9 @@
 import md5 from 'md5';
 
-function randomStr(){
+function randomStr() {
   // random 两次使碰撞几率/2 TODO 加强
-  return `${(Math.random()+Math.random()).toString()}`
+  // 页面组件数量达到 100000000 时达到 50% 碰撞概率
+  return `${(Math.random() + Math.random()).toString()}`
 }
 
 function incryptKey(key) {
@@ -16,9 +17,6 @@ function addNode(currentDom, nodeKey, newNode) {
   let nodeChildren = currentDom._relation[nodeKey] || []
 
   let { _relation, _root, ...newNodeData } = newNode
-  console.log('addNode')
-  console.log(_relation)    
-  console.log(_root)    
   // let newNodeRootKey = newNodes._relation._root
   // 新加的节点必须有根节点
   if (_root === null) {
@@ -30,14 +28,13 @@ function addNode(currentDom, nodeKey, newNode) {
 
   // 合并节点内容
   Object.assign(currentDom, newNodeData)
-  console.log(currentDom)   
   return currentDom
 }
 
 
 // 去除当前节点
 // 采用自上而下的方式去除，好处是代码简便，坏处是如果中途出现问题，子节点会失去关联滞留在树中(升维后是否消失?)
-function removeNode(currentDom, selfKey, parentKey){
+function removeNode(currentDom, selfKey, parentKey) {
   let _relation = currentDom._relation
   currentDom._relation[parentKey] = currentDom._relation[parentKey].filter(
     childrenKey => childrenKey !== selfKey
@@ -46,7 +43,7 @@ function removeNode(currentDom, selfKey, parentKey){
   delete currentDom[selfKey]
 
   let selfChildrenKeys = _relation[selfKey]
-  if(selfChildrenKeys && Array.isArray(selfChildrenKeys) && selfChildrenKeys.length > 0){
+  if (selfChildrenKeys && Array.isArray(selfChildrenKeys) && selfChildrenKeys.length > 0) {
     for (let i = 0; i < selfChildrenKeys.length; i++) {
       removeNode(currentDom, selfChildrenKeys[i], selfKey)
     }
@@ -74,16 +71,16 @@ function removeNode(currentDom, selfKey, parentKey){
 
 
 // 还原, dom tree object 升维
-function heightenDomTree(flattenData, startDom=null){
-  if(startDom===null){
+function heightenDomTree(flattenData, startDom = null) {
+  if (startDom === null) {
     startDom = flattenData._root
   }
   let domData = flattenData[startDom]
   let childrenNames = flattenData._relation[startDom]
-  if(Array.isArray(childrenNames) && childrenNames.length > 0){
+  if (Array.isArray(childrenNames) && childrenNames.length > 0) {
     domData.children = []
     for (let i = 0; i < childrenNames.length; i++) {
-      domData.children.push( heightenDomTree(flattenData, childrenNames[i])) 
+      domData.children.push(heightenDomTree(flattenData, childrenNames[i]))
     }
   }
 
@@ -134,8 +131,23 @@ function flattenDomTree(nodeData, parentKey = '', flattenData = { _relation: {} 
 }
 
 
+
+function getClassName(action) {
+  switch (action) {
+    case 'edit':
+      return 'Components.Editable'
+    case 'preview':
+      return 'Components.Preview'
+    case 'deploy':
+      return 'Preview'
+    default:
+      return ''
+  }
+}
+
+// TODO Edit Preview deploy action
 // 降维数据转化为代码
-function flattenedData2Code(flattenData, isEdit = true, selfDomKey = null, parentDomKey = 'root', code = "") {
+function flattenedData2Code(flattenData, action, selfDomKey = null, parentDomKey = 'root', code = "") {
   if (flattenData === null) {
     return code;
   }
@@ -144,14 +156,10 @@ function flattenedData2Code(flattenData, isEdit = true, selfDomKey = null, paren
   }
   let data = flattenData[selfDomKey]
   let tagName;
-  if(data.native){
+  if (data.native) {
     tagName = JSON.stringify(data.nodeName)
-  }else{
-    if(isEdit){
-      tagName = `Components.Editable${data.nodeName}`
-    }else{
-      tagName = `Components.Preview${data.nodeName}`
-    }
+  } else {
+    tagName = `${getClassName(action) + data.nodeName}`
   }
 
   // let tagName = data.native ? JSON.stringify(data.nodeName) : `Components.Editable${data.nodeName}`
@@ -171,7 +179,7 @@ function flattenedData2Code(flattenData, isEdit = true, selfDomKey = null, paren
     childrenCode += `,\n${JSON.stringify(children)}`
   } else if (Array.isArray(childrenNames) && childrenNames.length > 0) {
     for (let i = 0; i < childrenNames.length; i++) {
-      childrenCode += flattenedData2Code(flattenData, isEdit, childrenNames[i], selfDomKey, ",\n")
+      childrenCode += flattenedData2Code(flattenData, action, childrenNames[i], selfDomKey, ",\n")
     }
   }
 

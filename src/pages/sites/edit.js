@@ -199,11 +199,11 @@ class Edit extends React.Component {
 
   listener = () => {
     let newState = this.context.store.getState();
-    console.log("编辑页面监听到了 store 的变化")
+    // console.log("编辑页面监听到了 store 的变化")
     if (typeof newState === 'string') {
       return false
     }
-    console.log('开始更新 node 树')
+    // console.log('开始更新 node 树')
     this.setState({ nodeData: newState });
 
   }
@@ -212,8 +212,8 @@ class Edit extends React.Component {
     // console.log(nodeOperation.flattenedData2Code(this.state.nodeData))
     return (
       <div>
-        {this.toF(nodeOperation.flattenedData2Code(this.state.nodeData, false, null, 'root', ''))}
-        {this.toF(nodeOperation.flattenedData2Code(this.state.nodeData))}
+        {this.toF(nodeOperation.flattenedData2Code(this.state.nodeData, 'preview'))}
+        {this.toF(nodeOperation.flattenedData2Code(this.state.nodeData, 'edit'))}
       </div>
     );
   }

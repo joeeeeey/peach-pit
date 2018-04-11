@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { CardMedia } from 'material-ui/Card';
 
-export default class EditableCardMedia extends Component {
+export default class PreviewCardMedia extends Component {
   constructor(props) {
     super(props);
   }

@@ -27,18 +27,72 @@ export default class EditableRoot extends Component {
     this.addNode('TextArea')
   }
 
+  lowerFirstLetter = (s) =>{
+    return s.replace(/^.{1}/g, s[0].toLowerCase());
+  }
+
   preview = ()=>{
-    console.log(nodeOperation.heightenDomTree(this.context.store.getState()))
-    
-    // console.log()
+    alert(JSON.stringify(this.context.store.getState()))
+    // alert(JSON.stringify(nodeOperation.heightenDomTree(this.context.store.getState())))
+    // console.log(nodeOperation.heightenDomTree(this.context.store.getState()))
+  }
+
+  deploy = ()=> {
+    //  TODO 配置在文件中
+    // 引入文件的路劲前缀
+    let pathPrefix = '../components/preview/' 
+
+    let nodeData = this.context.store.getState()
+
+    let importComponents = []
+    for(let i in nodeData){
+      if(nodeData[i].nodeName){
+        importComponents.push(nodeData[i].nodeName)
+      }      
+    }
+
+    importComponents = [...new Set(importComponents)]
+    let importCode = ""
+    for(let i=0; i< importComponents.length; i++){
+      importCode += `import Preview${importComponents[i]} from '${pathPrefix + this.lowerFirstLetter(importComponents[i])}'\n`
+    }
+
+    let nodeCode = nodeOperation.flattenedData2Code(nodeData, 'deploy')
+    let indexJsCode = `
+import React, { Component } from 'react';
+import withRoot from '../withRoot';    
+${importCode}    
+class Index extends Component {
+  render() {
+    return (
+    ${nodeCode}
+   );
+  }
+}
+
+export default withRoot(Index);    
+    `
+    this.download(indexJsCode, 'deploy.txt', 'text/plain')
   }
     
+  // 测试代码生成的功能，应该由后端完成
+  // TODO Do it at Backend 
+  download = (text, name, type) => {
+    var a = document.getElementById("a");
+    var file = new Blob([text], {type: type});
+    a.href = URL.createObjectURL(file);
+    a.download = name;
+  }
+
   render() {
     return (
       <div>
+
         <Button onClick={this.addLetfRightGridNode}>增加一个左右布局</Button>
         <Button onClick={this.addTextAreaNode}>增加一个上下输入框布局</Button>
         <Button variant="raised" color="primary" onClick={this.preview}>预览</Button>
+        <Button id={"QWE"} style={{marginLeft:15}} variant="raised" color="secondary" onClick={this.deploy}>一键部署</Button>
+        <a href="" id="a" style={{marginLeft:15}}>下载代码</a>
         {this.props.children}
       </div>
     );
