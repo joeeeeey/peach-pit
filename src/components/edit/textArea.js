@@ -35,7 +35,8 @@ export default class EditableTextArea extends Component {
     let nestedKey = `${this.props.selfkey},props,content`
     this.context.store.dispatch({
       type: 'update',
-      payload: { nestedKey: nestedKey, value: e.target.value }
+      payload: { nestedKey: nestedKey, value: e.target.value },
+      target: 'node',
     });
   }
 

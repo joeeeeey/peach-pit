@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
     "babel-standalone": "^6.26.0",
     "material-ui": "1.0.0-beta.40",
     "material-ui-icons": "^1.0.0-beta.36",
+    "md5": "^2.2.1",
     "prop-types": "15.6.1",
     "react": "16.3.1",
     "react-contenteditable": "^2.0.7",
@@ -14,13 +16,17 @@
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
     "redux": "^3.7.2",
-    "typeface-roboto": "0.0.54",
-    "md5": "^2.2.1"
+    "typeface-roboto": "0.0.54"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:4000"
+    }
   }
 }

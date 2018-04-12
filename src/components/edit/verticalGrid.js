@@ -31,7 +31,8 @@ export default class EditableVerticalGrid extends Component {
         let {selfkey} = this.props
         this.context.store.dispatch({
           type: 'addNode',
-          payload: {selfKey: selfkey, nodeName: nodeName}
+          payload: {selfKey: selfkey, nodeName: nodeName},
+          target: 'node',
         });
         return 'state'
       default:
@@ -47,7 +48,8 @@ export default class EditableVerticalGrid extends Component {
         let {selfkey, parentkey} = this.props
         this.context.store.dispatch({
           type: 'removeNode',
-          payload: {selfKey: selfkey, parentKey: parentkey, nodeName: nodeName}
+          payload: {selfKey: selfkey, parentKey: parentkey, nodeName: nodeName},
+          target: 'node',
         });
         return 'state'
       default:

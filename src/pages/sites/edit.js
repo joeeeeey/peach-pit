@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import nodeOperation from '../../share/nodeOperation'
+
 // 转义
 // import * as babel from 'babel-standalone';
 // 此处需要引入所有可编辑组件
-import AppBar from '../../components/common/layouts/appBar'
-import FullWidthGrid from '../../components/common/grids/fullWidthGrid'
+// import AppBar from '../../components/common/layouts/appBar'
+// import FullWidthGrid from '../../components/common/grids/fullWidthGrid'
 
 import EditableRoot from '../../components/edit/root'
 import EditableTextArea from '../../components/edit/textArea'
@@ -51,7 +52,7 @@ import PreviewCardMedia from '../../components/preview/cardMedia'
 class Edit extends React.Component {
   constructor(props, context) {
     super(props);
-    this.state = { nodeData: null }
+    this.state = { nodeData: null, isPreview: false }
   }
   // 最适合取到数据的地方
   componentWillMount = () => {
@@ -64,14 +65,14 @@ class Edit extends React.Component {
             children: [
               { native: false, nodeName: 'TextArea', props: { content: '好吃的东西', style: { textAlign: 'center', fontSize: 30, fontWeight: 500, color: "#1c1a1a" }, } },
               { native: false, nodeName: 'TextArea', props: { content: '就是有点辣啊。就是有点辣啊。就是有点辣啊。就是有点辣啊。就是有点辣啊。就是有点辣啊。就是有点辣啊。就是有点辣啊。就是有点辣啊。就是有点辣啊。啊啊 啊啊啊啊啊啊啊啊', style: { textAlign: 'center', fontSize: 20, fontWeight: 400, color: "#1c1a1a", float: "center" } } },
-    
+
               {
                 native: false, nodeName: 'Card', props: { style: { maxWidth: 'auto', marginLeft: 20 } },
                 children: [{ native: false, nodeName: 'CardMedia', props: { style: { height: 280 }, image: "/images/ORG_DSC01034.jpg" } }]
               },
-    
+
             ]
-          },          
+          },
           // {
           //   native: false, nodeName: 'GridList',
           //   props: {
@@ -150,7 +151,8 @@ class Edit extends React.Component {
       this.setState({ nodeData: ftData })
       this.context.store.dispatch({
         type: 'replace',
-        payload: ftData
+        payload: ftData,
+        target: 'node',
       });
     }, 1);
   }
@@ -159,7 +161,7 @@ class Edit extends React.Component {
     const func = new Function("React", "Components", `return ${code}`);
     // TODO ADD ALL components here
     const App = func(React, {
-      AppBar: AppBar,
+      // AppBar: AppBar,
       EditableRoot: EditableRoot,
       EditableTextArea: EditableTextArea,
       EditableVerticalGrid: EditableVerticalGrid,
@@ -168,52 +170,42 @@ class Edit extends React.Component {
       EditableFullWidthGrid: EditableFullWidthGrid,
       EditableLetfRightGrid: EditableLetfRightGrid,
       EditableCard: EditableCard,
-      EditableCardMedia: EditableCardMedia,      
+      EditableCardMedia: EditableCardMedia,
       PreviewRoot: PreviewRoot,
       PreviewTextArea: PreviewTextArea,
       PreviewLetfRightGrid: PreviewLetfRightGrid,
       PreviewCard: PreviewCard,
-      PreviewCardMedia: PreviewCardMedia,      
+      PreviewCardMedia: PreviewCardMedia,
     })
     return App
   }
 
   timer = () => {
-    // this.state.nodeData['(0){div}(1){h2}'].nodeName = this.state.nodeData['(0){div}(1){h2}'].nodeName == 'h1' ? 'h2' : 'h1'
-    // this.context.store.dispatch({
-    //   type: 'set',
-    //   payload: nodeOperation.flattenDomTree({
-    //     native: true, nodeName: 'h1',
-    //     props: { style: { color: "red" } },
-    //     children: "Hello World2"
-    //   })
-    // });
-    // this.setState({ nodeData: this.context.store.getState() })
   }
 
   componentDidMount() {
-    // after render
     this.context.store.subscribe(this.listener)
     // var intervalId = setInterval(this.timer, 5000);
   }
 
   listener = () => {
-    let newState = this.context.store.getState();
-    // console.log("编辑页面监听到了 store 的变化")
-    if (typeof newState === 'string') {
+    // 此处监听 store 的变化，只要发生了 dispatch 就都会被监听到
+    let {node, user} = this.context.store.getState()
+
+    if (typeof node === 'string') {
       return false
     }
     // console.log('开始更新 node 树')
-    this.setState({ nodeData: newState });
+    this.setState({ nodeData: node, isPreview: user.isPreview});
 
   }
   render = () => {
-    // flattenedData2Code(flattenData, selfDomKey = null, parentDomKey = 'root', code = "", isEdit = true)
     // console.log(nodeOperation.flattenedData2Code(this.state.nodeData))
     return (
       <div>
-        {this.toF(nodeOperation.flattenedData2Code(this.state.nodeData, 'preview'))}
         {this.toF(nodeOperation.flattenedData2Code(this.state.nodeData, 'edit'))}
+
+        {this.state.isPreview ? this.toF(nodeOperation.flattenedData2Code(this.state.nodeData, 'preview')) : null}
       </div>
     );
   }

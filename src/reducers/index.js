@@ -1,29 +1,49 @@
 import nodeOperation from '../share/nodeOperation'
 
-export default (state = {}, action) => {
+// 调整 store 的结构
+// { user: {isPreview: false}, node: {} }
+
+// action 结构
+// target 代表操作 store 中的某个节点
+// => {target: 'node', type: 'replace', payload: {}}
+export default (state = {user: {}}, action) => {
   console.log(`store action here ${action.type}`)
-
-  switch (action.type) {
-    case 'replace':
-      state = action.payload
-      return state
-    case 'update':
-      let { value } = action.payload
-      eval(`state${getConnectKeys(action)}=value`)
-      return state
-    // 增加是父元素发出的请求
-    case 'addNode':
-      addNode(state, action)
-      return state
-    // 销毁是子元素发出的请求
-    case 'removeNode':
-      let { selfKey, parentKey } = action.payload
-
-      nodeOperation.removeNode(state, selfKey, parentKey)
-    /* 不加这个注释就会有 warning */
-    default:
-      return state
+  if (action.target == 'node') {
+    switch (action.type) {
+      case 'replace':
+        state.node = action.payload
+        return state
+      case 'update':
+        let { value } = action.payload
+        evalUpdate(state['node'], action, value)
+        return state
+      // 增加是父元素发出的请求
+      case 'addNode':
+        addNode(state.node, action)
+        return state
+      // 销毁是子元素发出的请求
+      case 'removeNode':
+        let { selfKey, parentKey } = action.payload
+        nodeOperation.removeNode(state.node, selfKey, parentKey)   
+      /* 不加这个注释就会有 warning */
+      default:
+        return state
+    }
+  } else if (action.target == 'user') {
+    switch (action.type) {
+      case 'update':
+        let { value } = action.payload
+        
+        evalUpdate(state['user'], action, value)
+      /* 不加这个注释就会有 warning */
+      default:
+        return state
+    }
   }
+}
+
+function evalUpdate(data, action, value){
+  eval(`data${getConnectKeys(action)}=value`)  
 }
 
 function addNode(state, action) {
@@ -37,10 +57,6 @@ function addNode(state, action) {
       selfKey,
       nodeOperation.flattenDomTree(nodeProps)
     )
-
-    console.log('after add')
-    console.log(state)
-
   }
 }
 
