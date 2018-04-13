@@ -6,9 +6,9 @@ import nodeOperation from '../share/nodeOperation'
 // action 结构
 // target 代表操作 store 中的某个节点
 // => {target: 'node', type: 'replace', payload: {}}
-export default (state = {user: {}}, action) => {
+export default (state = { user: {} }, action) => {
   console.log(`store action here ${action.type}`)
-  if (action.target == 'node') {
+  if (action.target === 'node') {
     switch (action.type) {
       case 'replace':
         state.node = action.payload
@@ -24,17 +24,20 @@ export default (state = {user: {}}, action) => {
       // 销毁是子元素发出的请求
       case 'removeNode':
         let { selfKey, parentKey } = action.payload
-        nodeOperation.removeNode(state.node, selfKey, parentKey)   
+        nodeOperation.removeNode(state.node, selfKey, parentKey)
       /* 不加这个注释就会有 warning */
       default:
         return state
     }
-  } else if (action.target == 'user') {
+  } else if (action.target === 'user') {
     switch (action.type) {
       case 'update':
         let { value } = action.payload
-        
+
         evalUpdate(state['user'], action, value)
+      case 'replace':
+        state.user = action.payload
+        return state
       /* 不加这个注释就会有 warning */
       default:
         return state
@@ -42,8 +45,8 @@ export default (state = {user: {}}, action) => {
   }
 }
 
-function evalUpdate(data, action, value){
-  eval(`data${getConnectKeys(action)}=value`)  
+function evalUpdate(data, action, value) {
+  eval(`data${getConnectKeys(action)}=value`)
 }
 
 function addNode(state, action) {

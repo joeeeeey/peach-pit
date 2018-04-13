@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "babel-standalone": "^6.26.0",
+    "js-cookie": "^2.2.0",
     "material-ui": "1.0.0-beta.40",
     "material-ui-icons": "^1.0.0-beta.36",
     "md5": "^2.2.1",

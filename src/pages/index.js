@@ -12,6 +12,7 @@ import { createBrowserHistory } from "history";
 import Home from '../components/pages/index/home'
 
 // 其他路由组件
+import userLogin from './users/login'
 import ChooseTmp from './templates/chooseTmp'
 import Edit from './sites/edit'
 import Test from './test'
@@ -19,25 +20,43 @@ import Test from './test'
 // import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import PPSpace from '../reducers/index'
+import Cookies from 'js-cookie';
+import CheckUserLogin from '../share/checkUserLogin'
+
 export const store = createStore(PPSpace)
+
+
+console.log(store.getState())
+
 export const history = createBrowserHistory();
+// read cookie and set store here?
 
 class Index extends Component {
+  constructor(props){
+    super(props)
+    this.state = {cookie: Cookies.get('csrfToken')}
+    // TODO 在此处获取 cookie 存入 store user 中
+    // store.dispatch({
+    //   type: 'replace',
+    //   payload: {isPreview: false, id: 3},
+    //   target: 'user',
+    // });
+
+  }
   getChildContext() {
     return {store: store};
   }  
   render() {
-    // 此处 props 是通过 withStyles 产生的，className 选择与 styles 常量中的 key
-    // 则会使用对应 css, 被称为 css in js
-    // const { classes } = this.props;
     return (
       <Router history={history}>
         <Switch>
           <Route path="/" exact component={Home} />
+          <Route path="/userLogin" component={userLogin} />
           <Route path="/chooseTmp" exact component={ChooseTmp} />
           <Route path="/sites/:id/edit" component={Test} />
-          <Route path="/test" component={Test} />
+          <CheckUserLogin authed={this.state.cookie} path='/test' component={Test} />
           <Route path="/sites/edit" component={Edit} />
+          
         </Switch>
       </Router>
 
