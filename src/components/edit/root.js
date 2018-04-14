@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
-import nodeOperation from '../../share/nodeOperation'
+import nodeOperation from '../../utils/nodeOperation'
 import Modal from 'material-ui/Modal';
 
 // 侧边栏以及 appbar

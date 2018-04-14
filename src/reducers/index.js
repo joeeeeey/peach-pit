@@ -1,4 +1,4 @@
-import nodeOperation from '../share/nodeOperation'
+import nodeOperation from '../utils/nodeOperation'
 
 // 调整 store 的结构
 // { user: {isPreview: false}, node: {} }

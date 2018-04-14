@@ -21,12 +21,12 @@ import Test from './test'
 import { createStore } from 'redux'
 import PPSpace from '../reducers/index'
 import Cookies from 'js-cookie';
-import CheckUserLogin from '../share/checkUserLogin'
+import CheckUserLogin from '../utils/checkUserLogin'
 
 export const store = createStore(PPSpace)
 
 
-console.log(store.getState())
+// console.log(store.getState())
 
 export const history = createBrowserHistory();
 // read cookie and set store here?
@@ -36,11 +36,11 @@ class Index extends Component {
     super(props)
     this.state = {cookie: Cookies.get('csrfToken')}
     // TODO 在此处获取 cookie 存入 store user 中
-    // store.dispatch({
-    //   type: 'replace',
-    //   payload: {isPreview: false, id: 3},
-    //   target: 'user',
-    // });
+    store.dispatch({
+      type: 'replace',
+      payload: {isPreview: false, isLogin: false, profile: {id: 1}},
+      target: 'user',
+    });
 
   }
   getChildContext() {
@@ -59,7 +59,6 @@ class Index extends Component {
           
         </Switch>
       </Router>
-
     );
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import nodeOperation from '../../share/nodeOperation'
+import nodeOperation from '../../utils/nodeOperation'
 
 // 转义
 // import * as babel from 'babel-standalone';

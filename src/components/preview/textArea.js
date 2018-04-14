@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import Typography from 'material-ui/Typography';
 import ContentEditable from 'react-contenteditable'
 
-import '../../css/customize.css'
+import '../../css/contentEditable.css'
 // 文档: https://material-ui-next.com/customization/default-theme/?expend-path=$.typography
 
 // 可以传入 props
