@@ -35,6 +35,7 @@ export default (state = { user: {} }, action) => {
         let { value } = action.payload
 
         evalUpdate(state['user'], action, value)
+        return state
       case 'replace':
         state.user = action.payload
         return state
@@ -42,6 +43,22 @@ export default (state = { user: {} }, action) => {
       default:
         return state
     }
+  } else if (action.target === 'administrator') {
+    switch (action.type) {
+      case 'update':
+        let { value } = action.payload
+
+        evalUpdate(state['administrator'], action, value)
+        return state
+      case 'replace':
+        state.administrator = action.payload
+        return state
+      /* 不加这个注释就会有 warning */
+      default:
+        return state
+    }
+  } else {
+    return state
   }
 }
 

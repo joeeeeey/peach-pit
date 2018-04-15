@@ -1,14 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import AppBar from 'material-ui/AppBar';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 
 // login form
 import LoginFrom from '../../components/common/forms/login'
-import RegisterFrom from '../../components/common/forms/register'
 
 function TabContainer({ children, dir = "x-reverse" }) {
   return (
@@ -51,7 +49,7 @@ const styles = theme => ({
     fontSize: 18,
   },
 });
-class LoginOrRegister extends React.Component {
+class AdminLogin extends React.Component {
   constructor(props, context){
     super(props)
     this.state = {
@@ -63,16 +61,12 @@ class LoginOrRegister extends React.Component {
     return { store: this.context.store };
   }
 
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
-
   render() {
     const { classes, theme } = this.props;
     const { value } = this.state;
 
     return (
-      <Grid container style={{ flexGrow: 1, marginTop: 30 }}>
+      <Grid container style={{ flexGrow: 1, marginTop: '3.75rem' }}>
         <Grid item xs={12}>
           <Grid
             container
@@ -84,13 +78,11 @@ class LoginOrRegister extends React.Component {
             <Grid item>
               <div className={classes.root}>
                 <Paper style={{ width: 500 }}>
-                  <Tabs value={value} onChange={this.handleChange} fullWidth>
+                  <Tabs value={0}  fullWidth>
                     <Tab label="登录" />
-                    <Tab label="注册" />
                   </Tabs>
                 </Paper>
-                {value === 0 && <TabContainer ><LoginFrom /></TabContainer>}
-                {value === 1 && <TabContainer ><RegisterFrom /></TabContainer>}
+                {value === 0 && <TabContainer ><LoginFrom role='admin'/></TabContainer>}
               </div>
             </Grid>
           </Grid>
@@ -101,15 +93,15 @@ class LoginOrRegister extends React.Component {
 }
 
 
-LoginOrRegister.contextTypes = {
+AdminLogin.contextTypes = {
   store: PropTypes.object
 };
 
-LoginOrRegister.childContextTypes = {
+AdminLogin.childContextTypes = {
   store: PropTypes.object
 };
 
-export default withStyles(styles)(LoginOrRegister);
+export default withStyles(styles)(AdminLogin);
 
 
 

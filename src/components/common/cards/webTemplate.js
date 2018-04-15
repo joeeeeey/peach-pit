@@ -33,7 +33,7 @@ class WebTemplate extends React.Component {
       <Grid item lg={5} md={5} sm={5} xs={11} >
         <Card className={classes.card}>
           <CardMedia
-            component={Link} to={`/sites/${templateId}/edit`}
+            component={Link} to={`/site/${templateId}/edit`}
             className={classes.media}
             image={`/images/${imgUrl}`}
           />
@@ -46,7 +46,7 @@ class WebTemplate extends React.Component {
             <Button size="small" color="primary" >
               查看
             </Button>
-            <Button size="small" color="primary" component={Link} to={`/sites/${templateId}/edit`}>
+            <Button size="small" color="primary" component={Link} to={`/site/${templateId}/edit`}>
               开始编辑
             </Button>
           </CardActions>

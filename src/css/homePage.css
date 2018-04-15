@@ -1,0 +1,14 @@
+#page {
+	background: url(/images/panda.jpg) no-repeat center top;
+	width: 100%;
+  display: table;
+  height: 700px;
+}
+#content {
+	width: 50%;
+	margin: 80px auto 0;
+	background: #fff;
+	border: solid 1px #ccc;
+  padding: 20px;
+  opacity: 0.8
+}

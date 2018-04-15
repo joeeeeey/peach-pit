@@ -189,6 +189,7 @@ class Edit extends React.Component {
   }
 
   listener = () => {
+    console.log('编辑页面间听到了 store  变化')
     // 此处监听 store 的变化，只要发生了 dispatch 就都会被监听到
     let {node, user} = this.context.store.getState()
 

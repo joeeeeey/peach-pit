@@ -12,17 +12,3 @@ class UserService extends BaseService {
 
 
 export default UserService;
-
-
-// deploy = () => {
-//   axios.get('/api/user', {
-//     params: {
-//       ID: 12345
-//     }
-//   })
-//   .then(function (response) {
-//     console.log(response);
-//   })
-//   .catch(function (error) {
-//     console.log(error);
-//   });

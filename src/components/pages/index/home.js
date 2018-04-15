@@ -3,6 +3,7 @@ import AppBar from '../../common/layouts/appBar'
 import GuideInfo from './guideInfo'
 import { withStyles } from 'material-ui/styles';
 import PropTypes from 'prop-types';
+import '../../../css/homePage.css'
 
 const styles = theme => ({
   root: {
@@ -14,7 +15,6 @@ const styles = theme => ({
     height: window.innerHeight,
   },
   imgae: {
-    // height: window.innerHeight,
     width: window.innerWidth,
     zIndex: -10,
   }
@@ -29,12 +29,18 @@ class Home extends Component {
     return (
       <div className={classes.root}>
         <AppBar />
+
+        <div id="page">
+        <div id="content">
         <GuideInfo />
-        <div >
-          <img
+        </div>
+        
+          {/* <img
+
             src={'/images/panda.jpg'}
-            className={classes.imgae} />
-        </div>;
+            className={classes.imgae} /> */}
+        </div>
+
       </div>
     );
   }

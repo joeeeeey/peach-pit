@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css';
-import { Form, Icon, Input, Button, Tooltip } from 'antd';
+import { Form, Icon, Input, Button, Tooltip, message } from 'antd';
 import '../../../css/registerFrom.css'
 import MuButton from 'material-ui/Button';
 // 正则
@@ -33,19 +33,30 @@ class RegistrationForm extends React.Component {
             const { data } = response
             // {"code":0,"msg":"OK","data":{"login":"asq@fd.cca"}}
             if (data.code === 0) {
+              const userProfile = data.data
+              message.success(`注册成功😘~欢迎你 ${userProfile.nickname}`, 8)
+
               this.context.store.dispatch({
-                type: 'replace',
-                payload: { isPreview: false, isLogin: true, profile: data.data },
+                type: 'update',
+                payload: {nestedKey: "isLogin", value: true},
                 target: 'user',
-              });
+              });   
+
+              this.context.store.dispatch({
+                type: 'update',
+                payload: {nestedKey: "profile", value: userProfile},
+                target: 'user',
+              });                 
+
               this.setState({
                 redirectIndex: true
               })
+            }else{
+              message.error(`😥 ${data.msg}`, 1.2)
             }
           })
           .catch(function (error) {
-            console.log(error);
-            // 提示出现异常
+            message.error(`😥 出现异常: ${error.msg}`, 2)
           });
       }
     });

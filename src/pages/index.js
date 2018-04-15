@@ -12,9 +12,10 @@ import { createBrowserHistory } from "history";
 import Home from '../components/pages/index/home'
 
 // 其他路由组件
-import userLogin from './users/login'
-import ChooseTmp from './templates/chooseTmp'
-import Edit from './sites/edit'
+import userLogin from './user/loginPage'
+import adminLogin from './admin/loginPage'
+import ChooseTmp from './template/chooseTmp'
+import Edit from './site/edit'
 import Test from './test'
 
 import { createStore } from 'redux'
@@ -28,9 +29,12 @@ export const history = createBrowserHistory();
 class Index extends Component {
   constructor(props){
     super(props)
-    let userCookie = Cookies.getJSON('taohe_user')
+    let userCookie = Cookies.get('taohe_user')
 
+    // console.log(Cookies.getJSON("eyJsb2dpbiI6IjE1MDYxOTc1NjI3IiwiaWQiOjEsIm5pY2tuYW1lIjoi5pyA6aqa55qEIiwic2VjcmV0X2tleSI6ImI3M2I0NDY1ZTc4MGQzODE4YWNmODQwYjM4ZGRjMGZlZDI1YzQxOGE4Mjg5ODk1NzQ3MjRmNjVmNWYyODkyY2YifQ=="))
+    // new Buffer(str, 'base64')
     if(userCookie){
+      const userData = JSON.parse(new Buffer(userCookie, 'base64'))
       store.dispatch({
         type: 'replace',
         payload: {isLogin: true, profile: userCookie},
@@ -54,11 +58,12 @@ class Index extends Component {
       <Router history={history}>
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/userLogin" component={userLogin} />
+          <Route path="/user/login" component={userLogin} />
+          <Route path="/admin/login" component={adminLogin} />
           <CheckUserLogin store={store} path="/chooseTmp" exact component={ChooseTmp} />
-          <Route path="/sites/:id/edit" component={Test} />
+          <Route path="/site/:id/edit" component={Test} />
           <CheckUserLogin store={store} path='/test' component={Test} />
-          <Route path="/sites/edit" component={Edit} />
+          <Route path="/site/edit" component={Edit} />
         </Switch>
       </Router>
     );

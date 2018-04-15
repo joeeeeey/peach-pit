@@ -8,6 +8,9 @@ import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import { Link } from 'react-router-dom';
+import Menu, { MenuItem } from 'material-ui/Menu';
+import AccountCircle from 'material-ui-icons/AccountCircle';
+import Cookies from 'js-cookie';
 
 const styles = {
   root: {
@@ -25,10 +28,30 @@ const styles = {
 class ButtonAppBar extends React.Component {
   constructor(props, context) {
     super(props)
+    this.state = {
+      anchorEl: null,
+    };
+  }
+  handleMenu = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
+  logOut = () => {
+    this.setState({ anchorEl: null });
+    Cookies.remove('taohe_user', { path: '/' }); 
+    Cookies.remove('taohe_user.sig', { path: '/' }); 
+    window.location.reload();
   }
 
-
   render() {
+    // 控制 bar 上用户图标
+    const { anchorEl } = this.state;
+    const open = Boolean(anchorEl);
+
     const { classes } = this.props;
     return (
       <div className={classes.root}>
@@ -40,8 +63,36 @@ class ButtonAppBar extends React.Component {
             <Typography variant="title" color="inherit" className={classes.flex}>
             </Typography>
             {/* TODO user state */}
-            {this.context.store.getState().user.isLogin ? null :
-              <Button component={Link} to="/userLogin" color="inherit">登录</Button> 
+            {this.context.store.getState().user.isLogin ?
+              <div>
+                <IconButton
+                  aria-owns={open ? 'menu-appbar' : null}
+                  aria-haspopup="true"
+                  onClick={this.handleMenu}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={open}
+                  onClose={this.handleClose}
+                >
+                  <MenuItem onClick={this.handleClose}>我的信息</MenuItem>
+                  <MenuItem onClick={this.logOut}>登出</MenuItem>
+                </Menu>
+              </div>
+              :
+              <Button component={Link} to="/user/login" color="inherit">登录</Button>
             }
 
           </Toolbar>

@@ -50,7 +50,7 @@ class GuideInfo extends Component {
             variant="raised"
             color="secondary"
             onClick={this.chooseTmp}>
-            开始创建
+            开始创建你的网站
           </Button>
         </div>
       </div>
