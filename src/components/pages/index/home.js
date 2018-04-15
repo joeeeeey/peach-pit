@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import AppBar from '../../common/layouts/appBar'
 import GuideInfo from './guideInfo'
 import { withStyles } from 'material-ui/styles';
+import PropTypes from 'prop-types';
 
 const styles = theme => ({
   root: {
@@ -20,6 +21,9 @@ const styles = theme => ({
 });
 
 class Home extends Component {
+  getChildContext() {
+    return { store: this.context.store };
+  }
   render() {
     const { classes } = this.props;
     return (
@@ -35,5 +39,13 @@ class Home extends Component {
     );
   }
 }
+
+Home.contextTypes = {
+  store: PropTypes.object
+};
+
+Home.childContextTypes = {
+  store: PropTypes.object
+};
 
 export default withStyles(styles)(Home);

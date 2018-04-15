@@ -64,7 +64,6 @@ class LoginOrRegister extends React.Component {
   }
 
   handleChange = (event, value) => {
-    console.log(this.context.store)
     this.setState({ value });
   };
 

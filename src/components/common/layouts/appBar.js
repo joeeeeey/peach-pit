@@ -23,25 +23,37 @@ const styles = {
 };
 
 class ButtonAppBar extends React.Component {
+  constructor(props, context) {
+    super(props)
+  }
+
+
   render() {
     const { classes } = this.props;
     return (
-        <div className={classes.root}>
-          <AppBar position="static">
-            <Toolbar>
-              <IconButton component={Link} to="/" className={classes.menuButton} color="inherit" aria-label="Menu">
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="title" color="inherit" className={classes.flex}>
-              </Typography>
-              {/* TODO user state */}
-              <Button color="inherit">Login</Button>
-            </Toolbar>
-          </AppBar>
-        </div>
+      <div className={classes.root}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton component={Link} to="/" className={classes.menuButton} color="inherit" aria-label="Menu">
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="title" color="inherit" className={classes.flex}>
+            </Typography>
+            {/* TODO user state */}
+            {this.context.store.getState().user.isLogin ? null :
+              <Button component={Link} to="/userLogin" color="inherit">登录</Button> 
+            }
+
+          </Toolbar>
+        </AppBar>
+      </div>
     );
   }
 }
+
+ButtonAppBar.contextTypes = {
+  store: PropTypes.object
+};
 
 ButtonAppBar.propTypes = {
   classes: PropTypes.object.isRequired,

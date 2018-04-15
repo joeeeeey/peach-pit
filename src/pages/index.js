@@ -17,7 +17,6 @@ import ChooseTmp from './templates/chooseTmp'
 import Edit from './sites/edit'
 import Test from './test'
 
-// import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import PPSpace from '../reducers/index'
 import Cookies from 'js-cookie';
@@ -25,24 +24,28 @@ import CheckUserLogin from '../utils/checkUserLogin'
 
 export const store = createStore(PPSpace)
 
-
-// console.log(store.getState())
-
 export const history = createBrowserHistory();
-// read cookie and set store here?
-
 class Index extends Component {
   constructor(props){
     super(props)
-    this.state = {cookie: Cookies.get('csrfToken')}
-    // TODO 在此处获取 cookie 存入 store user 中
-    store.dispatch({
-      type: 'replace',
-      payload: {isPreview: false, isLogin: false, profile: {id: 1}},
-      target: 'user',
-    });
+    let userCookie = Cookies.getJSON('taohe_user')
 
+    if(userCookie){
+      store.dispatch({
+        type: 'replace',
+        payload: {isLogin: true, profile: userCookie},
+        target: 'user',
+      });      
+    }else{
+      store.dispatch({
+        type: 'update',
+        payload: {nestedKey: "isLogin", value: false},
+        target: 'user',
+      });    
+    }    
+    // this.state = {isLogin: userCookie ? true :false}
   }
+
   getChildContext() {
     return {store: store};
   }  
@@ -52,11 +55,10 @@ class Index extends Component {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/userLogin" component={userLogin} />
-          <Route path="/chooseTmp" exact component={ChooseTmp} />
+          <CheckUserLogin store={store} path="/chooseTmp" exact component={ChooseTmp} />
           <Route path="/sites/:id/edit" component={Test} />
-          <CheckUserLogin authed={this.state.cookie} path='/test' component={Test} />
+          <CheckUserLogin store={store} path='/test' component={Test} />
           <Route path="/sites/edit" component={Edit} />
-          
         </Switch>
       </Router>
     );

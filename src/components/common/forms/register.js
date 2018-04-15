@@ -16,9 +16,6 @@ const userService = new UserService()
 class RegistrationForm extends React.Component {
   constructor(props, context) {
     super(props)
-    // console.log("======")
-    // console.log(context)
-    // console.log("~~~~")
     this.state = {
       confirmDirty: false,
       redirectIndex: false,
@@ -29,38 +26,27 @@ class RegistrationForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        // 发送 ajax
-        // /api/user/register
-        const result = userService.register(values).then( response => {
-          // 成功 set store 
-          // 提示注册成功，跳转
-
-          const { data } = response
-          console.log(data)
-          if (data.code === 0) {
-            this.context.store.dispatch({
-              type: 'replace',
-              payload: { isPreview: false, isLogin: true, profile: data.data },
-              target: 'user',
-            });
-
-            this.setState({
-              redirectIndex: true
-            })
-            console.log(this.state.redirectIndex)
-          }
-
-          // {"code":0,"msg":"OK","data":{"login":"asq@fd.cca"}}
-          // console.log(response);
-          // return response
-        })
+        const result = userService.register(values)
+          .then(response => {
+            // 成功 set store 
+            // 提示注册成功，跳转
+            const { data } = response
+            // {"code":0,"msg":"OK","data":{"login":"asq@fd.cca"}}
+            if (data.code === 0) {
+              this.context.store.dispatch({
+                type: 'replace',
+                payload: { isPreview: false, isLogin: true, profile: data.data },
+                target: 'user',
+              });
+              this.setState({
+                redirectIndex: true
+              })
+            }
+          })
           .catch(function (error) {
-            // console.log(error);
+            console.log(error);
             // 提示出现异常
-            // return { code: 0, msg: error.msg }
           });
-
-
       }
     });
   }
@@ -88,7 +74,7 @@ class RegistrationForm extends React.Component {
     const { redirectIndex } = this.state;
 
     if (redirectIndex) {
-      return <Redirect to='/'/>;
+      return <Redirect to='/' />;
     }
 
     const { getFieldDecorator } = this.props.form;
