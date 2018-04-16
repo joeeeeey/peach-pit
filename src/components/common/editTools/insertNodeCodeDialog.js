@@ -8,31 +8,16 @@ import Dialog, {
   DialogTitle,
 } from 'material-ui/Dialog';
 import PropTypes from 'prop-types';
-import nodeOperation from '../../../utils/nodeOperation'
 
+import editToolBaseDialog from './editToolBaseDialog'
 
-const buttonStyle = { color: 'white', width: '100%', justifyContent: 'left' }
-export default class InsertNodeCodeDialog extends React.Component {
+export default class InsertNodeCodeDialog extends editToolBaseDialog {
   constructor(props, context) {
     super(props);
   }
   state = {
     open: false,
     code: '{"native":true,"nodeName":"h2","props":{"style":{"color":"green"}},"children":"Hello World2"}'
-  };
-
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    });
   };
 
   insertCode = () => {
@@ -54,7 +39,7 @@ export default class InsertNodeCodeDialog extends React.Component {
   render() {
     return (
       <div>
-        <Button onClick={this.handleClickOpen} style={buttonStyle} color="secondary">插入节点代码</Button>
+        <Button onClick={this.handleClickOpen} style={this.buttonStyle()} color="secondary">插入节点代码</Button>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
@@ -77,7 +62,6 @@ export default class InsertNodeCodeDialog extends React.Component {
               onChange={this.handleChange('code')}
               fullWidth
             />
-
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
@@ -92,7 +76,6 @@ export default class InsertNodeCodeDialog extends React.Component {
     );
   }
 }
-
 
 
 InsertNodeCodeDialog.contextTypes = {

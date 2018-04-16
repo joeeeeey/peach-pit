@@ -97,6 +97,10 @@ function heightenDomTree(flattenData, startDom = null) {
     startDom = flattenData._root
   }
   let domData = flattenData[startDom]
+  if(domData.props){
+    delete domData.props['selfkey']
+    delete domData.props['parentkey']
+  }
   let childrenNames = flattenData._relation[startDom]
   if (Array.isArray(childrenNames) && childrenNames.length > 0) {
     domData.children = []
@@ -117,7 +121,7 @@ function flattenDomTree(nodeData, parentKey = '', flattenData = { _relation: {} 
     // nodeData = [nodeData]
     let { children, ...value } = nodeData;
 
-    if (Array.isArray(children) && children.length > 0) {
+    if (arrayPresent(children)) {
       flattenData[rootKey] = value
       flattenDomTree(children, rootKey, flattenData)
     } else {
@@ -166,7 +170,6 @@ function getClassName(action) {
   }
 }
 
-// TODO Edit Preview deploy action
 // 降维数据转化为代码
 function flattenedData2Code(flattenData, action, selfDomKey = null, parentDomKey = 'root', code = "") {
   if (flattenData === null) {
@@ -184,7 +187,6 @@ function flattenedData2Code(flattenData, action, selfDomKey = null, parentDomKey
   }
 
   // let tagName = data.native ? JSON.stringify(data.nodeName) : `Components.Editable${data.nodeName}`
-
   let props = data.props
   if (props !== null && typeof props === 'object' && !Array.isArray(props)) {
     props.selfkey = selfDomKey
@@ -192,7 +194,9 @@ function flattenedData2Code(flattenData, action, selfDomKey = null, parentDomKey
   } else {
     props = { selfkey: selfDomKey, parentkey: parentDomKey }
   }
+ 
   props = JSON.stringify(props)
+
   let childrenNames = flattenData._relation[selfDomKey]
   let children = data.children
   let childrenCode = ""

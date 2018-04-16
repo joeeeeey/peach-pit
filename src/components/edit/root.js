@@ -13,10 +13,9 @@ import '../../css/editPage.css'
 import 'antd/dist/antd.css'
 
 import InsertNodeCodeDialog from '../common/editTools/insertNodeCodeDialog'
-
+import SaveToNewBlockDialog from '../common/editTools/saveToNewBlockDialog'
 // axios
 import axios from 'axios'
-
 
 const { Content, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -55,9 +54,6 @@ class EditableRoot extends Component {
   insertNodeCodeButton = () => {
     return (
       <Menu.Item key="insertNodeCodeButton">
-        {/* <Button color="secondary" style={buttonStyle}>
-          插入节点代码
-        </Button> */}
         <InsertNodeCodeDialog />           
       </Menu.Item>
     )
@@ -66,9 +62,10 @@ class EditableRoot extends Component {
   saveToNewBlockButton = () => {
     return (
       <Menu.Item key="saveToNewBlockButton">
-        <Button color="secondary" style={buttonStyle}>
+        {/* <Button color="secondary" style={buttonStyle}>
           新增至板块 🎉
-        </Button>
+        </Button> */}
+        <SaveToNewBlockDialog />
       </Menu.Item>
     )
   }
@@ -77,7 +74,7 @@ class EditableRoot extends Component {
     return (
       <Menu.Item key="saveToTemplateButton">
         <Button onClick={this.saveTemplate} color="secondary" style={buttonStyle}>
-          保存到该模板
+          更新该模板
         </Button>
       </Menu.Item>
     )
@@ -87,7 +84,7 @@ class EditableRoot extends Component {
     return (
       <Menu.Item key="saveToLayoutButton">
         <Button color="secondary" style={buttonStyle}>
-          保存到该布局
+         更新该布局
         </Button>
       </Menu.Item>
     )
@@ -291,7 +288,7 @@ export default withRoot(Index);
               { this.state.editInfo.role === 'admin' && this.clearNodeButton() }
             </Menu>
           </Sider>
-          <Layout style={{ marginLeft: 200 }}>
+          <Layout style={{ marginLeft: 200 }}>     
             {this.props.children}
           </Layout>
         </Layout>

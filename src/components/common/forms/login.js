@@ -58,16 +58,21 @@ class NormalLoginForm extends React.Component {
           message.success(`登录成功😘~欢迎你 ${userProfile.nickname}`, 6)
 
           this.context.store.dispatch({
-            type: 'update',
-            payload: { nestedKey: "isLogin", value: true },
+            type: 'replace',
+            payload: { isLogin: true, profile: userProfile },
             target: 'user',
-          });
+          });          
+          // this.context.store.dispatch({
+          //   type: 'update',
+          //   payload: { nestedKey: "isLogin", value: true },
+          //   target: 'user',
+          // });
 
-          this.context.store.dispatch({
-            type: 'update',
-            payload: { nestedKey: "profile", value: userProfile },
-            target: 'user',
-          });
+          // this.context.store.dispatch({
+          //   type: 'update',
+          //   payload: { nestedKey: "profile", value: userProfile },
+          //   target: 'user',
+          // });
 
           this.setState({
             redirectIndex: true

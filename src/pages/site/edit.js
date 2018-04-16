@@ -102,6 +102,7 @@ class Edit extends React.Component {
 
             ]
           },
+        
           // {
           //   native: false, nodeName: 'GridList',
           //   props: {
@@ -239,11 +240,12 @@ class Edit extends React.Component {
 
   }
   render = () => {
+    // console.log(this.state.nodeData)
     // console.log(nodeOperation.flattenedData2Code(this.state.nodeData))
     return (
       <div>
-        {this.toF(nodeOperation.flattenedData2Code(this.state.nodeData, 'edit'))}
-
+        {this.toF(nodeOperation.flattenedData2Code( JSON.parse(JSON.stringify(this.state.nodeData)), 'edit'))}
+       
         {this.state.isPreview ? this.toF(nodeOperation.flattenedData2Code(this.state.nodeData, 'preview')) : null}
       </div>
     );
