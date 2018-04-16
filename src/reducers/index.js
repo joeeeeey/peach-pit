@@ -1,7 +1,7 @@
 import nodeOperation from '../utils/nodeOperation'
 
 // 调整 store 的结构
-// { user: {isPreview: false}, node: {} }
+// { user: {}, node: {}, administrator: {}, editPage:{role: 'admin', source: 'template', id: 5} }
 
 // action 结构
 // target 代表操作 store 中的某个节点
@@ -23,8 +23,10 @@ export default (state = { user: {} }, action) => {
         return state
       // 销毁是子元素发出的请求
       case 'removeNode':
-        let { selfKey, parentKey } = action.payload
-        nodeOperation.removeNode(state.node, selfKey, parentKey)
+        let { targetKey, parentKey } = action.payload
+        console.log(state.node)
+        nodeOperation.removeNode(state.node, targetKey, parentKey)
+        return state
       /* 不加这个注释就会有 warning */
       default:
         return state
@@ -57,7 +59,17 @@ export default (state = { user: {} }, action) => {
       default:
         return state
     }
-  } else {
+  }else if (action.target === 'editInfo'){
+    switch (action.type) {
+      case 'replace':
+        state.editInfo = action.payload
+        return state
+      /* 不加这个注释就会有 warning */
+      default:
+        return state
+    }
+  }
+   else {
     return state
   }
 }
@@ -67,15 +79,15 @@ function evalUpdate(data, action, value) {
 }
 
 function addNode(state, action) {
-  let { nodeName, selfKey } = action.payload
+  let { nodeName, selfKey, nodeData } = action.payload
 
-  let nodeProps = nodeDefaultProps(nodeName)
+  nodeData = nodeData ? nodeData : nodeDefaultProps(nodeName)
 
-  if (nodeProps != null) {
+  if (nodeData != null) {
     nodeOperation.addNode(
       state,
       selfKey,
-      nodeOperation.flattenDomTree(nodeProps)
+      nodeOperation.flattenDomTree(nodeData)
     )
   }
 }

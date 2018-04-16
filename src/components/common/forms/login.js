@@ -96,11 +96,16 @@ class NormalLoginForm extends React.Component {
   }
 
   render() {
-    const { redirectIndex } = this.state;
+    const { redirectIndex, redirectAdminIndex } = this.state;
 
     if (redirectIndex) {
       return <Redirect to='/' />;
     }
+
+    if (redirectAdminIndex) {
+      return <Redirect to='/admin/home' />;
+    }
+    
     const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">

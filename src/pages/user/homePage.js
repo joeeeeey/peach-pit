@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import AppBar from '../../common/layouts/appBar'
-import GuideInfo from './guideInfo'
+import AppBar from '../../components/common/layouts/appBar'
+import GuideInfo from '../../components/pages/index/guideInfo'
 import { withStyles } from 'material-ui/styles';
 import PropTypes from 'prop-types';
-import '../../../css/homePage.css'
+import '../../css/homePage.css'
 
 const styles = theme => ({
   root: {

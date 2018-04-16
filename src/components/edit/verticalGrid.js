@@ -41,14 +41,13 @@ export default class EditableVerticalGrid extends Component {
   }
 
   removeNode = () => {
-    console.log('grid removeNode')
     let nodeName = 'TextArea'
     switch (nodeName) {
       case 'TextArea':
         let {selfkey, parentkey} = this.props
         this.context.store.dispatch({
           type: 'removeNode',
-          payload: {selfKey: selfkey, parentKey: parentkey, nodeName: nodeName},
+          payload: {targetKey: selfkey, parentKey: parentkey, nodeName: nodeName},
           target: 'node',
         });
         return 'state'

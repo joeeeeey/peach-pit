@@ -9,7 +9,7 @@ import blue from 'material-ui/colors/blue';
 // import deepPurple from 'material-ui/colors/deepPurple';
 // import indigo from 'material-ui/colors/indigo';
 // import lightBlue from 'material-ui/colors/lightBlue';
-// import cyan from 'material-ui/colors/cyan';
+import cyan from 'material-ui/colors/cyan';
 // import teal from 'material-ui/colors/teal';
 // import lightGreen from 'material-ui/colors/lightGreen';
 // import lime from 'material-ui/colors/lime';

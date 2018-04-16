@@ -52,8 +52,37 @@ import PreviewCardMedia from '../../components/preview/cardMedia'
 class Edit extends React.Component {
   constructor(props, context) {
     super(props);
-    this.state = { nodeData: null, isPreview: false }
+    this.state = { nodeData: null, isPreview: false, editInfo: {} }
   }
+
+  getSourceFromUrl = () => {
+    try {
+      const urlParams = new URL(window.location.href)
+      const source = urlParams.searchParams.get('source')
+      if (source.toString() !== 'null') {
+        return {source: source, id: urlParams.searchParams.get('id')}
+      } else {
+        return {source: null}
+      }      
+    } catch (error) {
+      alert('出现异常')
+      return {source: null}
+    }
+  }
+
+  getRoleNameFromStore = (store) => {
+    const userState = store.getState().user
+    const adminState = store.getState().administrator
+    if (userState && userState.isLogin) {
+      return 'user'
+    } else if (adminState && adminState.isLogin) {
+      return 'admin'
+    } else {
+      return 'unknown' 
+    }
+  }
+
+
   // 最适合取到数据的地方
   componentWillMount = () => {
     let nodeData = {
@@ -144,10 +173,21 @@ class Edit extends React.Component {
         ]
     }
 
+    // 根据`当前用户角色` 和 `资源` 初始化编辑页信息
+    const source = this.getSourceFromUrl()
+    let role= {role: this.getRoleNameFromStore(this.context.store)}
+
+    const editInfo = Object.assign({}, source, role)
+    this.setState({editInfo: editInfo})
+    this.context.store.dispatch({
+      type: 'replace',
+      payload: editInfo,
+      target: 'editInfo',
+    });    
+
     // 模拟向后端取数据
     setTimeout(() => {
       let ftData = nodeOperation.flattenDomTree(nodeData)
-      // console.log(ftData)
       this.setState({ nodeData: ftData })
       this.context.store.dispatch({
         type: 'replace',
@@ -161,7 +201,6 @@ class Edit extends React.Component {
     const func = new Function("React", "Components", `return ${code}`);
     // TODO ADD ALL components here
     const App = func(React, {
-      // AppBar: AppBar,
       EditableRoot: EditableRoot,
       EditableTextArea: EditableTextArea,
       EditableVerticalGrid: EditableVerticalGrid,
@@ -185,7 +224,6 @@ class Edit extends React.Component {
 
   componentDidMount() {
     this.context.store.subscribe(this.listener)
-    // var intervalId = setInterval(this.timer, 5000);
   }
 
   listener = () => {

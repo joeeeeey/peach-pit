@@ -4,123 +4,131 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
+import { Link } from 'react-router-dom';
 import nodeOperation from '../../utils/nodeOperation'
-import Modal from 'material-ui/Modal';
 
 // 侧边栏以及 appbar
-import { withStyles } from 'material-ui/styles';
-import classNames from 'classnames';
-import Drawer from 'material-ui/Drawer';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
-import Divider from 'material-ui/Divider';
-import IconButton from 'material-ui/IconButton';
-import MenuIcon from 'material-ui-icons/Menu';
-import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
-import ChevronRightIcon from 'material-ui-icons/ChevronRight';
+import { Layout, Menu, Icon, Popover, Divider } from 'antd';
+import '../../css/editPage.css'
+import 'antd/dist/antd.css'
 
-// 侧边栏工具
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
-import Collapse from 'material-ui/transitions/Collapse';
-import ExpandLess from 'material-ui-icons/ExpandLess';
-// icons 
-import ExpandMore from 'material-ui-icons/ExpandMore';
-import InboxIcon from 'material-ui-icons/MoveToInbox';
-import FileDownloadIcon from 'material-ui-icons/FileDownload';
-import PageViewIcon from 'material-ui-icons/Pageview';
-import BuildIcon from 'material-ui-icons/Build';
-import AddIcon from 'material-ui-icons/Add';
+import InsertNodeCodeDialog from '../common/editTools/insertNodeCodeDialog'
 
 // axios
 import axios from 'axios'
 
-const drawerWidth = 180;
 
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    height: 'auto',
-    zIndex: 1,
-    overflow: 'hidden',
-    position: 'relative',
-    display: 'flex',
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginLeft: 12,
-    marginRight: 36,
-  },
-  hide: {
-    display: 'none',
-  },
-  drawerPaper: {
-    position: 'relative',
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerPaperClose: {
-    overflowX: 'hidden',
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    width: theme.spacing.unit * 7,
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing.unit * 9,
-    },
-  },
-  toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-  },
-  content: {
-    // flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-    padding: theme.spacing.unit * 3,
-  },
-  nested: {
-    paddingLeft: theme.spacing.unit * 4,
-  }
-});
+const { Content, Sider } = Layout;
+const SubMenu = Menu.SubMenu;
+
+const content = (
+  <div>
+    <p>TODO 此处应该显示布局缩略图</p>
+  </div>
+);
+
+const menu = (
+  <Menu >
+    <Menu.Item key="11">
+      {/* <Button onClick={onClick}>左右模板</Button> */}
+      <Button color="secondary" >
+        左右布局
+      </Button>
+    </Menu.Item>
+    <Menu.Item key="12">2nd memu item</Menu.Item>
+    <Menu.Item key="13">3rd menu item</Menu.Item>
+  </Menu>
+);
+
+
+const buttonStyle = { color: 'white', width: '100%', justifyContent: 'left' }
 
 class EditableRoot extends Component {
   constructor(props, context) {
     super(props);
     this.state = {
       openPreview: false,
-      openWithdraw: false,
-      showOperations: false, // 侧边栏
+      editInfo: context.store.getState().editInfo,   // {source: "das", id: "32", role: "admin"}
     }
   }
 
-  handleDrawerOpen = () => {
-    this.setState({ openWithdraw: true });
-  };
+  insertNodeCodeButton = () => {
+    return (
+      <Menu.Item key="insertNodeCodeButton">
+        {/* <Button color="secondary" style={buttonStyle}>
+          插入节点代码
+        </Button> */}
+        <InsertNodeCodeDialog />           
+      </Menu.Item>
+    )
+  }
 
-  handleDrawerClose = () => {
-    this.setState({ openWithdraw: false });
-  };
+  saveToNewBlockButton = () => {
+    return (
+      <Menu.Item key="saveToNewBlockButton">
+        <Button color="secondary" style={buttonStyle}>
+          新增至板块 🎉
+        </Button>
+      </Menu.Item>
+    )
+  }
+
+  saveToTemplateButton = () => {
+    return (
+      <Menu.Item key="saveToTemplateButton">
+        <Button onClick={this.saveTemplate} color="secondary" style={buttonStyle}>
+          保存到该模板
+        </Button>
+      </Menu.Item>
+    )
+  }
+
+  saveToLayoutButton = () => {
+    return (
+      <Menu.Item key="saveToLayoutButton">
+        <Button color="secondary" style={buttonStyle}>
+          保存到该布局
+        </Button>
+      </Menu.Item>
+    )
+  }
+
+  clearNodeButton = () => {
+    return (
+      <Menu.Item key="clearNodeButton">
+        <Button color="secondary" onClick={this.clearNode} style={buttonStyle}>
+          清空节点
+        </Button>
+      </Menu.Item>
+    ) 
+  }
+
+  clearNode = () => {
+    const rootKey = this.context.store.getState().node._root
+    // console.log(this.context.store.getState().node)
+    this.context.store.dispatch({
+      type: 'removeNode',
+      payload: { targetKey: rootKey, parentKey: null },
+      target: 'node',
+    });    
+  }
+  saveTemplate = () => {
+    // TODO
+    console.log('saveTemplate')
+  }
+  // 根据用户 和 资源 生成保存按钮
+  saveBlockButton = () => {
+    // const editInfo = this.state.editInfo
+    const { role, source, id } = this.state.editInfo
+    if (role === 'admin') {
+      if (source === 'template') {
+        return this.saveToTemplateButton()
+
+      } else if (source === 'layout') {
+        return this.saveToLayoutButton()
+      }
+    }
+  }
 
   addNode = (nodeName) => {
     let { selfkey } = this.props
@@ -150,12 +158,12 @@ class EditableRoot extends Component {
         ID: 12345
       }
     })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     //  TODO 配置在文件中
     // 引入文件的路劲前缀
     let pathPrefix = '../components/preview/'
@@ -213,128 +221,94 @@ export default withRoot(Index);
     });
   }
 
-  showOperations = () => {
-    this.setState({ showOperations: !this.state.showOperations });
+  getChildContext() {
+    return { store: this.context.store };
   }
 
   render() {
-    // this.setState({children: this.props.children})
-    // console.log(this.props)
     const { classes, theme } = this.props;
     return (
-      <div className={classes.root}>
+      <div >
+        <Layout>            
+          <Sider style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }}>
+            <Menu theme="dark" mode="inline" defaultSelectedKeys={['sub4']}>
+              <Menu.Item key="1">
+                <Button component={Link} to="/" color="secondary" style={buttonStyle}>
+                  返回主页
+                </Button>
+              </Menu.Item>
+              <Menu.Item key="2">
+                <Button color="secondary" onClick={this.preview} style={buttonStyle}>
+                  {this.state.openPreview ? '关闭预览' : '下方预览'}
+                </Button>
+              </Menu.Item>
+              <Menu.Item key="3">
+                <Button onClick={this.deploy} style={buttonStyle}>
+                  部署
+                </Button>
+              </Menu.Item>
+              <Menu.Item key="4">
+                <a href="" id="a" style={{ marginLeft: 15 }}>下载代码</a>
+              </Menu.Item>
 
-        <AppBar
-          position="absolute"
-          className={classNames(classes.appBar, this.state.openWithdraw && classes.appBarShift)}
-        >
-          <Toolbar disableGutters={!this.state.openWithdraw}>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={this.handleDrawerOpen}
-              className={classNames(classes.menuButton, this.state.openWithdraw && classes.hide)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="title" color="inherit" noWrap>
-              编辑
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Drawer
-          variant="permanent"
-          classes={{
-            paper: classNames(classes.drawerPaper, !this.state.openWithdraw && classes.drawerPaperClose),
-          }}
-        >
-          <div className={classes.toolbar}>
-            <IconButton onClick={this.handleDrawerClose}>
-              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-            </IconButton>
-          </div>
-          <Divider />
+              <SubMenu key="sub4" title={<span><Icon type="setting" />增加板块</span>}>
+                <Menu.Item key="9">
+                  <Popover content={content} title="Title" placement="right">
+                    <Button color="secondary" onClick={this.addLetfRightGridNode} style={buttonStyle}>
+                      左右布局
+                  </Button>
+                  </Popover>
+                </Menu.Item>
+                <Menu.Item key="10">
+                  <Button color="secondary" style={buttonStyle}>
+                    上下布局
+                  </Button>
+                </Menu.Item>
+                <Menu.Item key="11">
+                  <Button color="secondary" style={buttonStyle}>
+                    某个布局
+                  </Button>
+                </Menu.Item>
+              </SubMenu>
+              <Menu.Item key="12">
+                <Divider dashed />
+              </Menu.Item>
+              {
+                this.state.editInfo.role === 'user' &&
+                <Menu.Item key="saveSite">
+                  <Button color="secondary" style={buttonStyle}>
+                    保存
+                </Button>
+                </Menu.Item>
+              }
 
-          <List>
-            <ListItem button onClick={this.preview}>
-              <ListItemIcon>
-                <PageViewIcon />
-              </ListItemIcon>
-              <Button style={{ marginLeft: 16, minWidth: 72 }} variant="raised" color="primary" >
-                {this.state.openPreview ? '关闭' : '预览'}
-              </Button>
-            </ListItem>
-            <ListItem button onClick={this.deploy}>
-              <ListItemIcon>
-                <BuildIcon />
-              </ListItemIcon>
-              <Button style={{ marginLeft: 16, minWidth: 72 }} variant="raised" color="secondary" >
-                部署
-              </Button>
-            </ListItem>
-
-            <ListItem button>
-              <ListItemIcon>
-                <FileDownloadIcon />
-              </ListItemIcon>
-              {/* <ListItemText inset primary="download code" /> */}
-              <a href="" id="a" style={{ marginLeft: 15 }}>dCode</a>
-            </ListItem>
-          </List>
-
-          <Divider />
-          <List>
-            <ListItem button onClick={this.showOperations}>
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <Button style={{ marginLeft: 16, minWidth: 72 }} variant="raised" color="secondary" >
-                操作
-              </Button>
-              {this.state.showOperations ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={this.state.showOperations} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
-                <ListItem button className={classes.nested} onClick={this.addLetfRightGridNode}>
-                  <ListItemIcon>
-                    <AddIcon />
-                  </ListItemIcon>
-                  <ListItemText inset primary="Add L1" />
-                </ListItem>
-                <ListItem button className={classes.nested}>
-                  <ListItemIcon>
-                    <AddIcon />
-                  </ListItemIcon>
-                  <ListItemText inset primary="Add L2" />
-                </ListItem>
-              </List>
-            </Collapse>
-          </List>
-        </Drawer>
-
-
-        <main className={classes.content} style={{marginTop: 50}}>
-          {/* <Button style={{ marginTop: 70 }} onClick={this.addLetfRightGridNode}>增加一个左右布局</Button>
-          <Button onClick={this.addTextAreaNode}>增加一个上下输入框布局</Button>
-          <Button variant="raised" color="primary" onClick={this.preview}>
-            {this.state.openPreview ? '关闭预览' : '在下方预览'}
-          </Button>
-          <Button id={"QWE"} style={{ marginLeft: 15 }} variant="raised" color="secondary" onClick={this.deploy}>一键部署</Button>
-          <a href="" id="a" style={{ marginLeft: 15 }}>下载代码</a> */}
-          {this.props.children}
-
-        </main>
-
-
+              { this.state.editInfo.role === 'admin' && this.insertNodeCodeButton() }
+              {
+                this.state.editInfo.role === 'admin' &&
+                this.saveBlockButton()
+              }
+              { this.state.editInfo.role === 'admin' && this.saveToNewBlockButton() }
+              { this.state.editInfo.role === 'admin' && this.clearNodeButton() }
+            </Menu>
+          </Sider>
+          <Layout style={{ marginLeft: 200 }}>
+            {this.props.children}
+          </Layout>
+        </Layout>
       </div>
     );
   }
 }
 
 
+EditableRoot.childContextTypes = {
+  store: PropTypes.object
+};
+
 EditableRoot.contextTypes = {
   store: PropTypes.object,
 };
 
 
-export default withStyles(styles, { withTheme: true })(EditableRoot);
+export default EditableRoot;
+

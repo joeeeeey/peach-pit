@@ -10,6 +10,14 @@ function incryptKey(key) {
   return md5(`${randomStr() + key}`)
 }
 
+function arrayPresent(array){
+  if (array && Array.isArray(array) && array.length > 0) {
+    return true
+  }else{
+    return false
+  }
+}
+
 // 向当前节点增加新节点 (更新降维后的 dom tree data)
 //   根据 parentKey 找到childrenKeys, 将 selfKey 加入
 //   在 _relation 中加入自身的 relation, 并将自身除了 _root, _relation 合并到原 store
@@ -34,20 +42,33 @@ function addNode(currentDom, nodeKey, newNode) {
 
 // 去除当前节点
 // 采用自上而下的方式去除，好处是代码简便，坏处是如果中途出现问题，子节点会失去关联滞留在树中(升维后是否消失?)
-function removeNode(currentDom, selfKey, parentKey) {
+function removeNode(currentDom, targetKey, parentKey) {
   let _relation = currentDom._relation
-  currentDom._relation[parentKey] = currentDom._relation[parentKey].filter(
-    childrenKey => childrenKey !== selfKey
-  )
-  // 去除该节点内容
-  delete currentDom[selfKey]
 
-  let selfChildrenKeys = _relation[selfKey]
-  if (selfChildrenKeys && Array.isArray(selfChildrenKeys) && selfChildrenKeys.length > 0) {
-    for (let i = 0; i < selfChildrenKeys.length; i++) {
-      removeNode(currentDom, selfChildrenKeys[i], selfKey)
+  // 若要删除所有元素，则会保留根节点
+  if(targetKey === currentDom._root){
+    let rootChildrenKeys = _relation[targetKey]
+    if (arrayPresent(rootChildrenKeys)) {
+      for (let i = 0; i < rootChildrenKeys.length; i++) {
+        removeNode(currentDom, rootChildrenKeys[i], targetKey)
+      }
+    }    
+  }else{      
+    currentDom._relation[parentKey] = currentDom._relation[parentKey].filter(
+      childrenKey => childrenKey !== targetKey
+    )
+    // 去除该节点内容
+    delete currentDom[targetKey]
+  
+    let selfChildrenKeys = _relation[targetKey]
+    if (arrayPresent(selfChildrenKeys)) {
+      for (let i = 0; i < selfChildrenKeys.length; i++) {
+        removeNode(currentDom, selfChildrenKeys[i], targetKey)
+      }
     }
   }
+
+
 }
 
 // { _relation: 

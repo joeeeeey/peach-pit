@@ -60,7 +60,6 @@ class ChooseTmp extends Component {
           appBar.className,
           null
         )}
-        {/* < ButtonAppBar /> */}
         < TitleAndSubTitle
           titleContent="选择一个模板"
           subTitleContent="随意选择，模板选择后可随意更换" />
