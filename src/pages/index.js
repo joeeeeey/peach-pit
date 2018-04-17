@@ -12,9 +12,11 @@ import { createBrowserHistory } from "history";
 import Home from '../pages/user/homePage'
 
 // 其他路由组件
-import userLogin from './user/loginPage'
-import adminLogin from './admin/loginPage'
-import adminHome from './admin/homePage'
+import UserLogin from './user/loginPage'
+import AdminLogin from './admin/loginPage'
+import AdminHome from './admin/homePage'
+import AdminTemplateIndex from './admin/templateIndexPage'
+import AdminLayoutIndex from './admin/layoutIndexPage'
 import ChooseTmp from './template/chooseTmp'
 import Edit from './site/edit'
 import Test from './test'
@@ -64,11 +66,13 @@ class Index extends Component {
       <Router history={history}>
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/user/login" component={userLogin} />
-          <Route path="/admin/login" component={adminLogin} />
-          <Route path="/admin/home" component={adminHome} />
+          <Route path="/user/login" component={UserLogin} />
+          <Route path="/admin/login" component={AdminLogin} />
+          <Route path="/admin/home" component={AdminHome} />
+          <Route path="/admin/templateIndex" component={AdminTemplateIndex} />
+          <Route path="/admin/layoutIndex" component={AdminLayoutIndex} />
           <Route path="/admin/editPage" component={Edit} />
-
+        
           <CheckUserLogin store={store} path="/chooseTmp" exact component={ChooseTmp} />
           <Route path="/site/:id/edit" component={Test} />
           <CheckUserLogin store={store} path='/test' component={Test} />

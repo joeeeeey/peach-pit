@@ -40,7 +40,10 @@ class ResponsiveCardGrid extends React.Component {
   }
 
   render() {
-    const { classes, containerConfig } = this.props;
+    const { classes, containerConfig = {
+      justify: "center",
+      spacing: 16,
+    } } = this.props;
     const { justify, spacing } = containerConfig
 
     return (

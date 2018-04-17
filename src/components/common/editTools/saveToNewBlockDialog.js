@@ -24,6 +24,12 @@ export default class SaveToNewBlockDialog extends editToolBaseDialog {
     return { store: this.context.store };
   }
 
+  saveSuccessHandler = () => {
+    this.handleClose()
+    // console.log("saveHandler")
+    // console.log(value)
+  }
+
   render() {
     return (
       <div>
@@ -40,7 +46,7 @@ export default class SaveToNewBlockDialog extends editToolBaseDialog {
               这句话一定要很长这句话一定要很长这句话一定要很长这句话一定要很长，这样就会使得
               整个 Dialog 的 width 变长.
             </DialogContentText>
-            <NewBlockFrom />
+            <NewBlockFrom saveSuccess={this.saveSuccessHandler} />
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">

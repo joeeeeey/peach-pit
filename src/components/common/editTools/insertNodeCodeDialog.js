@@ -17,7 +17,7 @@ export default class InsertNodeCodeDialog extends editToolBaseDialog {
   }
   state = {
     open: false,
-    code: '{"native":true,"nodeName":"h2","props":{"style":{"color":"green"}},"children":"Hello World2"}'
+    code: '{"native":true,"nodeName":"h2","props":{"style":{"color":"green", "margin":"auto"}},"children":"Hello World2"}'
   };
 
   insertCode = () => {

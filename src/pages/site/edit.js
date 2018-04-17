@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import nodeOperation from '../../utils/nodeOperation'
+import BlockService from '../../services/blockService'
 
 // 转义
 // import * as babel from 'babel-standalone';
 // 此处需要引入所有可编辑组件
-// import AppBar from '../../components/common/layouts/appBar'
-// import FullWidthGrid from '../../components/common/grids/fullWidthGrid'
-
 import EditableRoot from '../../components/edit/root'
 import EditableTextArea from '../../components/edit/textArea'
 import EditableLetfRightGrid from '../../components/edit/letfRightGrid'
@@ -26,7 +24,7 @@ import PreviewLetfRightGrid from '../../components/preview/letfRightGrid'
 import PreviewCard from '../../components/preview/card'
 import PreviewCardMedia from '../../components/preview/cardMedia'
 
-
+const blockService = new BlockService()
 // const func = (function (React, Components) {
 //   return function App() {
 //     return (
@@ -48,11 +46,10 @@ import PreviewCardMedia from '../../components/preview/cardMedia'
 //   }
 // })
 
-// flattenedData2Code(flattenData, selfDomKey = null, parentDomKey = 'root', code = "", isEdit = true)
 class Edit extends React.Component {
   constructor(props, context) {
     super(props);
-    this.state = { nodeData: null, isPreview: false, editInfo: {} }
+    this.state = { nodeData: null, isPreview: false }
   }
 
   getSourceFromUrl = () => {
@@ -60,13 +57,13 @@ class Edit extends React.Component {
       const urlParams = new URL(window.location.href)
       const source = urlParams.searchParams.get('source')
       if (source.toString() !== 'null') {
-        return {source: source, id: urlParams.searchParams.get('id')}
+        return { source: source, id: urlParams.searchParams.get('id') }
       } else {
-        return {source: null}
-      }      
+        return { source: null }
+      }
     } catch (error) {
       alert('出现异常')
-      return {source: null}
+      return { source: null }
     }
   }
 
@@ -78,124 +75,83 @@ class Edit extends React.Component {
     } else if (adminState && adminState.isLogin) {
       return 'admin'
     } else {
-      return 'unknown' 
+      return 'unknown'
     }
   }
 
-
   // 最适合取到数据的地方
-  componentWillMount = () => {
-    let nodeData = {
-      native: false, nodeName: 'Root',
-      children:
-        [
-          {
-            native: false, nodeName: 'LetfRightGrid',
-            children: [
-              { native: false, nodeName: 'TextArea', props: { content: '好吃的东西', style: { textAlign: 'center', fontSize: 30, fontWeight: 500, color: "#1c1a1a" }, } },
-              { native: false, nodeName: 'TextArea', props: { content: '就是有点辣啊。就是有点辣啊。就是有点辣啊。就是有点辣啊。就是有点辣啊。就是有点辣啊。就是有点辣啊。就是有点辣啊。就是有点辣啊。就是有点辣啊。啊啊 啊啊啊啊啊啊啊啊', style: { textAlign: 'center', fontSize: 20, fontWeight: 400, color: "#1c1a1a", float: "center" } } },
-
-              {
-                native: false, nodeName: 'Card', props: { style: { maxWidth: 'auto', marginLeft: 20 } },
-                children: [{ native: false, nodeName: 'CardMedia', props: { style: { height: 280 }, image: "/images/ORG_DSC01034.jpg" } }]
-              },
-
-            ]
-          },
-        
-          // {
-          //   native: false, nodeName: 'GridList',
-          //   props: {
-          //     style: {
-          //       root: {
-          //         display: 'flex',
-          //         flexWrap: 'wrap',
-          //         justifyContent: 'space-around',
-          //         overflow: 'hidden',
-          //       },
-          //       gridList: {
-          //         width: 500,
-          //         height: 'auto',
-          //       }
-          //     },
-          //     cellHeight: 200,
-          //     cols: 3
-          //   },
-          //   children: [
-          //     {
-          //       native: false, nodeName: 'GridListTile',
-          //       props: {
-          //         img: '/images/ORG_DSC01101.jpg',
-          //         title: 'Image',
-          //         cols: 1,
-          //         rows: 1
-          //       }
-          //     },           
-          //   ]
-          // },
-
-          // {
-          //   native: true, nodeName: 'h2',
-          //   props: { style: { color: "green" } },
-          //   children: "Hello World2"
-          // },
-          // {
-          //   native: true, nodeName: 'h3',
-          //   props: { style: { color: "black" } },
-          //   children: "Hello World3"
-          // },
-          // { native: false, nodeName: 'AppBar', props: null },
-          // {
-          //   native: false, nodeName: 'TextArea', props:
-          //     {
-          //       content: "发的所发生的", style:
-          //         { fontSize: 30, fontWeight: 500, color: "#1c1a1a", float: "center" }
-          //     }
-          // },
-          // {
-          //   native: false, nodeName: 'VerticalGrid', props: { style: {} },
-          //   children: [
-          //     {
-          //       native: false, nodeName: 'TextArea', props:
-          //         {
-          //           content: "hello1", style:
-          //             { textAlign: 'center', fontSize: 30, fontWeight: 500, color: "#1c1a1a", float: "center" }
-          //         }
-          //     },
-          //     {
-          //       native: false, nodeName: 'TextArea', props:
-          //         {
-          //           content: "hello2", style:
-          //             { fontSize: 30, fontWeight: 500, color: "#1c1a1a", float: "center" }
-          //         }
-          //     }
-          //   ]
-          // }
-        ]
-    }
-
+  componentDidMount = () => {
     // 根据`当前用户角色` 和 `资源` 初始化编辑页信息
     const source = this.getSourceFromUrl()
-    let role= {role: this.getRoleNameFromStore(this.context.store)}
+    let role = { role: this.getRoleNameFromStore(this.context.store) }
 
     const editInfo = Object.assign({}, source, role)
-    this.setState({editInfo: editInfo})
+
     this.context.store.dispatch({
       type: 'replace',
       payload: editInfo,
       target: 'editInfo',
-    });    
+    });
 
-    // 模拟向后端取数据
-    setTimeout(() => {
-      let ftData = nodeOperation.flattenDomTree(nodeData)
-      this.setState({ nodeData: ftData })
-      this.context.store.dispatch({
-        type: 'replace',
-        payload: ftData,
-        target: 'node',
+    if(editInfo.source){
+      blockService.getNodeDataInEditInfo(editInfo)
+      .then(response => {
+        const { data } = response
+        console.log(data)
+        if (data.code === 0) {
+          this.initialNodeData(data.data)
+        } else {
+          console.log(data.msg)
+        }
+      })
+      .catch(function (error) {
+        console.log(error.msg)
       });
-    }, 1);
+    }else{
+      this.initialNodeData()
+    }
+    this.unsubscribe = this.context.store.subscribe(this.listener)
+  }
+
+  listener = () => {
+    console.log('编辑页面间听到了 store  变化')
+    // 此处监听 store 的变化，只要发生了 dispatch 就都会被监听到
+    let { node, user } = this.context.store.getState()
+
+    if (typeof node === 'string') {
+      return false
+    }
+    // console.log('开始更新 node 树')
+    this.setState({ nodeData: node, isPreview: user.isPreview });
+
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  initialNodeData(block){
+    let ftData = nodeOperation.flattenDomTree(this.wrapRoot(block))
+    console.log(ftData)
+    this.setState({ nodeData: ftData })
+    this.context.store.dispatch({
+      type: 'replace',
+      payload: ftData,
+      target: 'node',
+    });
+  }
+
+  wrapRoot = (block=null) => {
+    if (block) {
+      const domString = block.data
+      const domData = JSON.parse(domString)
+      return { native: false, nodeName: 'Root', children: [domData] }
+
+    } else {
+      return { native: false, nodeName: 'Root', children: [] }
+    }
+
+
   }
 
   toF = (code) => {
@@ -223,29 +179,15 @@ class Edit extends React.Component {
   timer = () => {
   }
 
-  componentDidMount() {
-    this.context.store.subscribe(this.listener)
-  }
 
-  listener = () => {
-    console.log('编辑页面间听到了 store  变化')
-    // 此处监听 store 的变化，只要发生了 dispatch 就都会被监听到
-    let {node, user} = this.context.store.getState()
 
-    if (typeof node === 'string') {
-      return false
-    }
-    // console.log('开始更新 node 树')
-    this.setState({ nodeData: node, isPreview: user.isPreview});
-
-  }
   render = () => {
     // console.log(this.state.nodeData)
     // console.log(nodeOperation.flattenedData2Code(this.state.nodeData))
     return (
       <div>
-        {this.toF(nodeOperation.flattenedData2Code( JSON.parse(JSON.stringify(this.state.nodeData)), 'edit'))}
-       
+        {this.toF(nodeOperation.flattenedData2Code(JSON.parse(JSON.stringify(this.state.nodeData)), 'edit'))}
+
         {this.state.isPreview ? this.toF(nodeOperation.flattenedData2Code(this.state.nodeData, 'preview')) : null}
       </div>
     );

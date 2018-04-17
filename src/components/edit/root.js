@@ -230,7 +230,7 @@ export default withRoot(Index);
           <Sider style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }}>
             <Menu theme="dark" mode="inline" defaultSelectedKeys={['sub4']}>
               <Menu.Item key="1">
-                <Button component={Link} to="/" color="secondary" style={buttonStyle}>
+                <Button component={Link} to={this.state.editInfo.role === 'user' ? '/' : '/admin/home/'} color="secondary" style={buttonStyle}>
                   返回主页
                 </Button>
               </Menu.Item>
@@ -288,8 +288,11 @@ export default withRoot(Index);
               { this.state.editInfo.role === 'admin' && this.clearNodeButton() }
             </Menu>
           </Sider>
-          <Layout style={{ marginLeft: 200 }}>     
-            {this.props.children}
+          <Layout style={{ marginLeft: 200 }} className={''}>     
+          <div>
+          {this.props.children}
+          </div>
+           
           </Layout>
         </Layout>
       </div>

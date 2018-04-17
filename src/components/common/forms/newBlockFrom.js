@@ -5,9 +5,9 @@ import { Form, Select, Input, message } from 'antd';
 import MuButton from 'material-ui/Button';
 import nodeOperation from '../../../utils/nodeOperation'
 import TemplateService from '../../../services/templateService'
-
+import LayoutService from '../../../services/layoutService'
 const templateService = new TemplateService()
-
+const layoutService = new LayoutService()
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -22,6 +22,22 @@ class MyFrom extends React.Component {
     super(props);
   }
 
+  addlayout = (values) => {
+    const result = layoutService.addLayout(values)
+      .then(response => {
+        const { data } = response
+        if (data.code === 0) {
+          message.success(`创建成功`, 6)
+          this.props.saveSuccess();
+        } else {
+          message.error(`😥 ${data.msg}`, 1.2)
+        }
+      })
+      .catch(function (error) {
+        message.error(`😥 出现异常: ${error.msg}`, 2)
+      });
+  }
+
 
   addTemplate = (values) => {
     const result = templateService.addTemplate(values)
@@ -30,6 +46,7 @@ class MyFrom extends React.Component {
         console.log(data)
         if (data.code === 0) {
           message.success(`创建成功`, 6)
+          this.props.saveSuccess();
         } else {
           message.error(`😥 ${data.msg}`, 1.2)
         }
@@ -45,12 +62,11 @@ class MyFrom extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        // {blockName: "fd", blockType: "layout"}
         let block = {}
         block.name = values.blockName
         // 深拷贝 是否有更高效的方式?
-        // const nodeData =  JSON.parse(JSON.stringify(this.context.store.getState().node));
-        const nodeData = this.context.store.getState().node  
+        const nodeData =  JSON.parse(JSON.stringify(this.context.store.getState().node));
+        // const nodeData = this.context.store.getState().node  
         block.data = JSON.stringify(nodeOperation.heightenDomTree(nodeData))
         
         if (values.blockType === 'template') {
@@ -61,10 +77,6 @@ class MyFrom extends React.Component {
         
       }
     });
-  }
-
-  addlayout = (params) => {
-
   }
 
   render() {
@@ -99,8 +111,10 @@ class MyFrom extends React.Component {
     );
   }
 }
+
 MyFrom.contextTypes = {
   store: PropTypes.object,
+  saveSuccess: PropTypes.func,
 };
 
 const NewBlockFrom = Form.create()(MyFrom);

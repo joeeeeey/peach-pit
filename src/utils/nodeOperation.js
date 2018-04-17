@@ -10,10 +10,18 @@ function incryptKey(key) {
   return md5(`${randomStr() + key}`)
 }
 
-function arrayPresent(array){
+function arrayPresent(array) {
   if (array && Array.isArray(array) && array.length > 0) {
     return true
-  }else{
+  } else {
+    return false
+  }
+}
+
+function objectPresent(obj) {
+  if (!Array.isArray(obj) && obj !== null && typeof obj === 'object') {
+    return true
+  } else {
     return false
   }
 }
@@ -46,20 +54,20 @@ function removeNode(currentDom, targetKey, parentKey) {
   let _relation = currentDom._relation
 
   // 若要删除所有元素，则会保留根节点
-  if(targetKey === currentDom._root){
+  if (targetKey === currentDom._root) {
     let rootChildrenKeys = _relation[targetKey]
     if (arrayPresent(rootChildrenKeys)) {
       for (let i = 0; i < rootChildrenKeys.length; i++) {
         removeNode(currentDom, rootChildrenKeys[i], targetKey)
       }
-    }    
-  }else{      
+    }
+  } else {
     currentDom._relation[parentKey] = currentDom._relation[parentKey].filter(
       childrenKey => childrenKey !== targetKey
     )
     // 去除该节点内容
     delete currentDom[targetKey]
-  
+
     let selfChildrenKeys = _relation[targetKey]
     if (arrayPresent(selfChildrenKeys)) {
       for (let i = 0; i < selfChildrenKeys.length; i++) {
@@ -91,13 +99,10 @@ function removeNode(currentDom, targetKey, parentKey) {
 
 
 
-// 还原, dom tree object 升维
-function heightenDomTree(flattenData, startDom = null) {
-  if (startDom === null) {
-    startDom = flattenData._root
-  }
+
+function doHeighten(flattenData, startDom = null){
   let domData = flattenData[startDom]
-  if(domData.props){
+  if (domData.props) {
     delete domData.props['selfkey']
     delete domData.props['parentkey']
   }
@@ -105,12 +110,54 @@ function heightenDomTree(flattenData, startDom = null) {
   if (Array.isArray(childrenNames) && childrenNames.length > 0) {
     domData.children = []
     for (let i = 0; i < childrenNames.length; i++) {
-      domData.children.push(heightenDomTree(flattenData, childrenNames[i]))
+      domData.children.push(doHeighten(flattenData, childrenNames[i]))
     }
   }
-
   return domData
 }
+
+
+// 需要去除最外层的 root, 若 root children 只有一个元素, 则保存该元素
+// 否则增加一层 {"native":true,"nodeName":"div"}
+function heightenDomTree(flattenData) {
+  if(objectPresent(flattenData)){
+    const rootKey = flattenData._root
+    if(rootKey){
+      let childrenNames = flattenData._relation[rootKey]
+      if(childrenNames.length===1){
+        return doHeighten(flattenData, childrenNames[0])
+      }else{
+        flattenData[rootKey] = { native: true, nodeName: 'div'}
+        return doHeighten(flattenData, rootKey)
+      }
+    }else{
+      console.log("ERROR, NEED ROOT KEY")
+    }
+  }
+}
+
+// // 还原, dom tree object 升维
+// // 在新建，更新 tmp, layout 使用
+
+// function heightenDomTree(flattenData, startDom = null) {
+//   if (startDom === null) {
+//     startDom = flattenData._root
+//   }
+//   let domData = flattenData[startDom]
+//   if (domData.props) {
+//     delete domData.props['selfkey']
+//     delete domData.props['parentkey']
+//   }
+//   let childrenNames = flattenData._relation[startDom]
+//   if (Array.isArray(childrenNames) && childrenNames.length > 0) {
+//     domData.children = []
+//     for (let i = 0; i < childrenNames.length; i++) {
+//       domData.children.push(heightenDomTree(flattenData, childrenNames[i]))
+//     }
+//   }
+
+//   return domData
+// }
 
 // dom tree object 降维
 function flattenDomTree(nodeData, parentKey = '', flattenData = { _relation: {} }) {
@@ -194,7 +241,7 @@ function flattenedData2Code(flattenData, action, selfDomKey = null, parentDomKey
   } else {
     props = { selfkey: selfDomKey, parentkey: parentDomKey }
   }
- 
+
   props = JSON.stringify(props)
 
   let childrenNames = flattenData._relation[selfDomKey]
