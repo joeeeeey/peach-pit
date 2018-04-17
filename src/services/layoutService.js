@@ -5,6 +5,10 @@ class LayoutService extends BaseService {
     return this.post('/api/admin/add_layout', params)
   }
 
+  updateLayout = (params) => {
+    return this.post('/api/admin/update_layout', params)
+  }
+
   getAllLayouts = (params) => {
     return this.get('/api/admin/get_all_layouts', params)
   }  

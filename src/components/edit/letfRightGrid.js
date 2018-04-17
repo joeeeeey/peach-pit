@@ -6,7 +6,7 @@ export default class EditableLetfRightGrid extends React.Component {
   render() {
     return (
       <div style={{ flexGrow: 1, margin: 20, paddingLeft: 40, paddingRight:40 }}>
-        <Grid container spacing={24} justify={'space-around'}>
+        <Grid container spacing={24} justify={'space-around'} style={{margin:0}}>
           <Grid item xs={12} sm={7} >
             <Grid
               container

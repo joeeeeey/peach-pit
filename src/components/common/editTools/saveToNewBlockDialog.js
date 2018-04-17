@@ -26,8 +26,6 @@ export default class SaveToNewBlockDialog extends editToolBaseDialog {
 
   saveSuccessHandler = () => {
     this.handleClose()
-    // console.log("saveHandler")
-    // console.log(value)
   }
 
   render() {

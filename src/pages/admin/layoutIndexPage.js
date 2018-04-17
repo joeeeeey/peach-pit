@@ -73,7 +73,11 @@ class LayoutIndexPage extends React.Component {
   getAllLayouts = () => {
     this.setState({ loading: true });
     const { pagination } = { ...this.state }
-    const params = { limit: pagination.pageSize, currentPage: pagination.current }
+    const params = {
+      limit: pagination.pageSize,
+      currentPage: pagination.current,
+      column: 'id,name,thumbnail_url,created_at'
+    }
     const result = layoutService.getAllLayouts(params)
       .then(response => {
         this.setState({ loading: false });

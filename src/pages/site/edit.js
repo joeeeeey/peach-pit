@@ -132,7 +132,6 @@ class Edit extends React.Component {
 
   initialNodeData(block){
     let ftData = nodeOperation.flattenDomTree(this.wrapRoot(block))
-    console.log(ftData)
     this.setState({ nodeData: ftData })
     this.context.store.dispatch({
       type: 'replace',
@@ -178,8 +177,6 @@ class Edit extends React.Component {
 
   timer = () => {
   }
-
-
 
   render = () => {
     // console.log(this.state.nodeData)

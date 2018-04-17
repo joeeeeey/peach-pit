@@ -47,11 +47,7 @@ class Home extends Component {
 
   render() {
     const { classes } = this.props;
-    // const containerConfig = {
-    //   justify: "center",
-    //   spacing: 16,
-    // }
-
+    
     return (
       <div className={classes.root}>
         <AppBar />

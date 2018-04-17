@@ -79,9 +79,7 @@ function evalUpdate(data, action, value) {
 }
 
 function addNode(state, action) {
-  let { nodeName, selfKey, nodeData } = action.payload
-
-  nodeData = nodeData ? nodeData : nodeDefaultProps(nodeName)
+  let { selfKey, nodeData } = action.payload
 
   if (nodeData != null) {
     nodeOperation.addNode(
