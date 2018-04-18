@@ -1,14 +1,33 @@
 #page {
-	background: url(/images/panda.jpg) no-repeat center top;
-	width: 100%;
+	background: url(/favicon.ico) no-repeat;
+	/* width: 100%;
   display: table;
-  height: 700px;
+	height: 700px; */
+	min-height: 500px; 
+
+	/* Create the parallax scrolling effect */
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;	
 }
 #content {
-	width: 50%;
-	margin: 80px auto 0;
-	background: #fff;
-	border: solid 1px #ccc;
+	width: 100%;
+	margin: 10px auto 0;
+	background: rgb(53, 47, 47);
+	border: none;
   padding: 20px;
-  opacity: 0.8
+	opacity: 0.8;
 }
+
+/* 
+.parallax {
+	background-image: url("img_parallax.jpg");
+
+	min-height: 500px; 
+
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+} */

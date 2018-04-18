@@ -30,7 +30,7 @@ class GuideInfo extends Component {
   render() {
     const { classes } = this.props;
     const TitleAndSubTitleStyle = {
-      titleStyle: { paddingTop: 20 },
+      titleStyle: { paddingTop: 20, color: 'white' },
       subTitleStyle: { paddingTop: 15 }
     }
 
