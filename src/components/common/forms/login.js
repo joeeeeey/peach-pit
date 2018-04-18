@@ -35,7 +35,7 @@ class NormalLoginForm extends React.Component {
             type: 'replace',
             payload: { isLogin: true, adminProfile: adminProfile },
             target: 'administrator',
-          });
+          })
 
           this.setState({
             redirectAdminIndex: true
@@ -62,18 +62,6 @@ class NormalLoginForm extends React.Component {
             payload: { isLogin: true, profile: userProfile },
             target: 'user',
           });          
-          // this.context.store.dispatch({
-          //   type: 'update',
-          //   payload: { nestedKey: "isLogin", value: true },
-          //   target: 'user',
-          // });
-
-          // this.context.store.dispatch({
-          //   type: 'update',
-          //   payload: { nestedKey: "profile", value: userProfile },
-          //   target: 'user',
-          // });
-
           this.setState({
             redirectIndex: true
           })

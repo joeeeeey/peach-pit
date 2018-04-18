@@ -1,0 +1,7 @@
+.ql-container.ql-snow {
+  border: 0 !important;
+}
+
+.ant-popover-placement-top>.ant-popover-content>.ant-popover-arrow, .ant-popover-placement-topLeft>.ant-popover-content>.ant-popover-arrow, .ant-popover-placement-topRight>.ant-popover-content>.ant-popover-arrow{
+  bottom: 0;
+}

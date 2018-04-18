@@ -219,7 +219,6 @@ export default withRoot(Index);
       .catch(function (error) {
         console.log(`获取样式失败: ${error.msg}`)
       });
-
   }
 
   render() {
@@ -248,7 +247,7 @@ export default withRoot(Index);
                 <a href="" id="a" style={{ marginLeft: 15 }}>下载代码</a>
               </Menu.Item>
 
-              <SubMenu key="sub4" title={<span><Icon type="setting" />增加板块</span>}>
+              <SubMenu key="sub4" title={<span><Icon type="setting" />新增布局</span>}>
                 {
                   this.state.layouts.map(layout =>
                     <Menu.Item key={`${layout.id + 30}`}>
@@ -282,7 +281,7 @@ export default withRoot(Index);
               {this.state.editInfo.role === 'admin' && this.clearNodeButton()}
             </Menu>
           </Sider>
-          <Layout style={{ marginLeft: 200 }} className={''}>
+          <Layout style={{ marginLeft: 200, minHeight: '45.25rem', background: 'none'}} className={''}>
             <div>
               {this.props.children}
             </div>

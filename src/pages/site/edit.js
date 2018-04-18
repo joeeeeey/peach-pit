@@ -24,6 +24,9 @@ import PreviewLetfRightGrid from '../../components/preview/letfRightGrid'
 import PreviewCard from '../../components/preview/card'
 import PreviewCardMedia from '../../components/preview/cardMedia'
 
+// 测试的组件 
+import Test from '../test'
+
 const blockService = new BlockService()
 // const func = (function (React, Components) {
 //   return function App() {
@@ -97,7 +100,7 @@ class Edit extends React.Component {
       blockService.getNodeDataInEditInfo(editInfo)
       .then(response => {
         const { data } = response
-        console.log(data)
+        // console.log(data)
         if (data.code === 0) {
           this.initialNodeData(data.data)
         } else {
@@ -123,7 +126,6 @@ class Edit extends React.Component {
     }
     // console.log('开始更新 node 树')
     this.setState({ nodeData: node, isPreview: user.isPreview });
-
   }
 
   componentWillUnmount() {
@@ -179,12 +181,11 @@ class Edit extends React.Component {
   }
 
   render = () => {
-    // console.log(this.state.nodeData)
     // console.log(nodeOperation.flattenedData2Code(this.state.nodeData))
     return (
       <div>
         {this.toF(nodeOperation.flattenedData2Code(JSON.parse(JSON.stringify(this.state.nodeData)), 'edit'))}
-
+        
         {this.state.isPreview ? this.toF(nodeOperation.flattenedData2Code(this.state.nodeData, 'preview')) : null}
       </div>
     );

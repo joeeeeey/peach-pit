@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill'; // ES6
-import CustomToolbar from '../components/meta/editorToolBar'
+import EditorToolbar from './editorToolBar'
 import 'react-quill/dist/quill.snow.css'; // ES6
-import '../css/quill.css'
+import '../../css/quill.css'
 
 function randomStr() {
   return `${(Math.random() + Math.random()).toString()}`
@@ -10,41 +11,34 @@ function randomStr() {
 
 const id = `Quill${randomStr().replace(/\./i, '')}`
 
+// props
+// deltaDeltaValue: []  数据
+// readOnly boolean 预览传入 true
+// fromats 理应控制 toolbar 的数量 TODO
+
+// 若想要初始化大小, 可以使用这样的方式 [{"insert":"\n","attributes":{"header":1}}]
+
 class Editor extends Component {
-  constructor(props) {
+  constructor(props, context) {
     super(props);
     this.state = {
-      editorHtml: [
-        { insert: 'Gandalf', attributes: { bold: true } },
-        { insert: ' the ' },
-        { insert: 'Grey', attributes: { color: '#cccccc' } }
-      ],
       hoverEditor: false, // 控制样式
       hidden: false,
-      foucsEditor: false,
-      showToolbar: false,
-      hoverToolbar: false
+      foucsEditor: false, // 控制 toolbar 显示
+      showToolbar: false, // 控制 toolbar 显示
+      hoverToolbar: false // 控制 toolbar 显示
     };
 
     this.quillRef = null;      // Quill instance
     this.reactQuillRef = null; // ReactQuill component
 
-    this.deltaDefaultValue = this.props.deltaDefaultValue
-    this.readOnly = this.props.readOnly || false
+    // 用户输入完毕后出发的保存出发计时器
+    this.saveTriggerTimer = undefined
 
-    this.formats = props.fromats ||  ["header", "font", "size", "bold", "italic", "underline", "strike", "blockquote", "list", "bullet", "indent", "link", "image", "color", "align", "script", "direction", "clean"]
-    this.modules = props.modules || {
-      toolbar: {
-        container: `#${id}`,
-      },
-      'history': {          
-        'delay': 3000,
-        'userOnly': true
-      },
-      clipboard: {
-        matchVisual: false,
-      }
-    }
+    this.deltaDeltaValue = this.props.deltaDeltaValue
+    this.readOnly = this.props.readOnly || false
+    this.formats = props.fromats || ["header", "font", "size", "bold", "italic", "underline", "strike", "blockquote", "list", "bullet", "indent", "link", "image", "color", "align", "script", "direction", "clean"]
+    this.quillId = `Quill${randomStr().replace(/\./i, '')}`
   }
 
   componentDidMount() {
@@ -62,8 +56,24 @@ class Editor extends Component {
 
   handleChange = (html) => {
     if (this.quillRef) {
+      // context.store
       // TODO 此处将 this.quillRef.editor.delta 报错
-      console.log(JSON.stringify(this.quillRef.editor.delta.ops))
+      // this.changedDeltaValue
+
+      if (this.saveTriggerTimer != undefined) {
+        clearTimeout(this.saveTriggerTimer)
+      }
+
+      // 延时两秒保存改动
+      this.saveTriggerTimer = setTimeout(() => {
+        this.saveTriggerTimer = undefined;
+        let nestedKey = `${this.props.selfkey},props,deltaDeltaValue`
+        this.context.store.dispatch({
+          type: 'update',
+          payload: { nestedKey: nestedKey, value: this.quillRef.editor.delta.ops },
+          target: 'node',
+        })
+      }, 2000);
     }
   }
 
@@ -106,16 +116,26 @@ class Editor extends Component {
     }
   }
 
+  modules = (quillId) => {
+    return {
+      toolbar: {
+        container: "#" + quillId
+      }
+    }
+  }
+
   render() {
     const overlayStyle = { position: 'absolute', bottom: 5, left: 0, zIndex: 1300 }
 
     return (
-      <div style={{marginTop: 100}}>
-        <div style={{ position: 'relative' }}>
-          <div hidden={!this.state.showToolbar} style={overlayStyle}>
-            <CustomToolbar id={id} hoverToolbar={this.hoverToolbarHandler} />
+      <div>
+        {!this.readOnly &&
+          <div style={{ position: 'relative' }}>
+            <div hidden={!this.state.showToolbar} style={overlayStyle}>
+              <EditorToolbar id={this.quillId} hoverToolbar={this.hoverToolbarHandler} />
+            </div>
           </div>
-        </div>
+        }
 
         <div
           onMouseOver={this.onMouseOver}
@@ -123,15 +143,16 @@ class Editor extends Component {
           style={this.hovorStyle()}>
           <ReactQuill
             onChange={this.handleChange}
-            modules={this.modules}
+            modules={this.modules(this.quillId)}
             formats={this.formats}
             theme={'snow'} // pass false to use minimal theme
             placeholder={"Write something"}
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
             ref={(el) => { this.reactQuillRef = el }}
-            defaultValue={this.deltaDefaultValue}
+            defaultValue={this.deltaDeltaValue}
             readOnly={this.readOnly}
+          // style={this.props.styles}
           />
         </div>
       </div>
@@ -139,5 +160,10 @@ class Editor extends Component {
     );
   }
 }
+
+
+Editor.contextTypes = {
+  store: PropTypes.object
+};
 
 export default Editor;

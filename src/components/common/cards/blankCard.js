@@ -20,7 +20,7 @@ class BlankCard extends Component {
       cardStyle = { minWidth: 230 }
     } = this.props
     return (
-      <Grid item lg={4} md={4} sm={5} xs={11} style={gridStyle}>
+      <Grid item lg={lg} md={md} sm={sm} xs={xs} style={gridStyle}>
         <Card style={cardStyle}>
           {this.props.children}
         </Card>
