@@ -40,7 +40,17 @@ class EditableRoot extends Component {
     this.state = {
       openPreview: false,
       editInfo: context.store.getState().editInfo,   // {source: "das", id: "32", role: "admin"}
-      layouts: []
+      layouts: [], // 可选择加入的样式
+      // sections: context.store.getState().node._relation || [], // 当前存在的版面
+    }
+  }
+
+  getRootChildren = () => {
+    const rootKey = this.context.store.getState().node._root
+    if (rootKey) {
+      return this.context.store.getState().node._relation[rootKey]
+    } else {
+      return []
     }
   }
 
@@ -112,6 +122,15 @@ class EditableRoot extends Component {
     this.context.store.dispatch({
       type: 'removeNode',
       payload: { targetKey: rootKey, parentKey: null },
+      target: 'node',
+    });
+  }
+
+  removeNode = (targetKey) => {
+    const rootKey = this.context.store.getState().node._root
+    this.context.store.dispatch({
+      type: 'removeNode',
+      payload: { targetKey: targetKey, parentKey: rootKey },
       target: 'node',
     });
   }
@@ -247,6 +266,20 @@ export default withRoot(Index);
                 <a href="" id="a" style={{ marginLeft: 15 }}>下载代码</a>
               </Menu.Item>
 
+              <SubMenu key="topLevelSections" title={<span><Icon type="database" />顶层板块</span>}>
+                {
+                  this.getRootChildren().map(section_key =>
+                    <Menu.Item key={section_key}>
+                      {/* <Popover content={this.layoutPreView(`${layout.name}`)} title="Title" placement="right"> */}
+                      <Button onClick={() => {this.removeNode(section_key)}} color="secondary" style={buttonStyle}>
+                        删除{this.context.store.getState().node[section_key].nodeName}
+                      </Button>
+                      {/* </Popover> */}
+                    </Menu.Item>
+                  )
+                }
+              </SubMenu>
+
               <SubMenu key="sub4" title={<span><Icon type="setting" />新增布局</span>}>
                 {
                   this.state.layouts.map(layout =>
@@ -281,7 +314,7 @@ export default withRoot(Index);
               {this.state.editInfo.role === 'admin' && this.clearNodeButton()}
             </Menu>
           </Sider>
-          <Layout style={{ marginLeft: 200, minHeight: '45.25rem', background: 'none'}} className={''}>
+          <Layout style={{ marginLeft: 200, minHeight: '45.25rem', background: 'none' }} className={''}>
             <div id="divInRootAfterLayout">
               {this.props.children}
             </div>

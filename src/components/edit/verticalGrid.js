@@ -54,7 +54,7 @@ export default class EditableVerticalGrid extends Component {
         {/* <Grid container className={{ flexGrow: 1 }}>
           <Grid item xs={12}> */}
         <Grid container style={{ flexGrow: 1 }} direction="row" justify="space-around" alignItems="center">
-          <Grid item xs={12}>
+          <Grid item style={{textAlign: 'center'}}>
             <h1>一行东西</h1>
           </Grid>
 

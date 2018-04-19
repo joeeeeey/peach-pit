@@ -13,6 +13,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
+import ChangeBackgroundButton from '../common/editTools/changeBackgroundButton'
+
+
 
 const defaultChildren = [{
   native: false, nodeName: 'VerticalGrid'
@@ -22,7 +25,7 @@ const defaultChildren = [{
 // Layout 的公共样式， 可以抽离
 // 需要占据主屏幕 80% 位置左右两侧自动 margin
 // TODO  padding top bottom 如果在屏幕变小时自动变小
-const layoutStyle = { margin: '0 auto', width: '80%', flexGrow: 1, padding: '40px 0' }
+const layoutStyle = { margin: '0 auto', width: '80%', flexGrow: 1, padding: '50px 0' }
 
 
 const defalutFlexLayout = [8, 4]
@@ -33,35 +36,22 @@ export default class EditableVerticalLayout extends Component {
   constructor(props, context) {
     super(props);
     this.state = { hovered: false }
-
-    this.flex = props.flex || defalutFlexLayout
-
   }
-  hovorStyle = () => {
-    if (this.state.hovered) {
-      return Object.assign({ border: '0.005rem solid #6d6d6d' }, layoutStyle)
-    } else {
-      return layoutStyle
-    }
-  }
-
-  onMouseOver = () => {
-    this.setState({ hovered: true });
-  }
-
-  onMouseOut = () => {
-    this.setState({ hovered: false });
-  }
+  // hovorStyle = () => {
+  //   if (this.state.hovered) {
+  //     return Object.assign({ border: '0.005rem solid #6d6d6d' }, layoutStyle)
+  //   } else {
+  //     return layoutStyle
+  //   }
+  // }
 
   componentDidMount() {
     if (this.props.children === null || this.props.children === undefined) {
       this.addDefaultChildren()
-    }    
+    }
   }
 
   addDefaultChildren = () => {
-    // this.flex = defalutFlexLayout
-
     for (let i = 0; i < defaultChildren.length; i++) {
       this.context.store.dispatch({
         type: 'addNode',
@@ -79,25 +69,30 @@ export default class EditableVerticalLayout extends Component {
 
   render() {
     // 如果没有 children, 那就用 addNode 方法给自己增加两个 children
-    // const { style } = this.props
-    // const { children } = this.props
+    const {
+      background = '#b1d3db',
+      flex = defalutFlexLayout,
+      direction = 'row' } = this.props
+
+    // spacing 应用默认的 0, 而子元素的间距应在 verticalGrid 中践行调整
+    // direction 可以是 row 或者 row-reverse
 
     return (
-      <div
-        onMouseOver={this.onMouseOver}
-        onMouseOut={this.onMouseOut}
-        style={this.hovorStyle()}>
-        <Grid container direction="row" >
-          {this.props.children &&
-            this.props.children.map((child, index) => {
-              return (
-                <Grid key={child.props.selfkey} item xs={12} sm={this.flex[index]} md={this.flex[index]} lg={this.flex[index]} xl={this.flex[index]}>
-                  {child}
-                </Grid>
-              )
-            })
-          }
-        </Grid>
+      <div id={this.props.selfkey} style={{ background: background, position: 'relative' }}>
+        <ChangeBackgroundButton />
+        <div style={layoutStyle}>
+          <Grid container direction={direction} >
+            {this.props.children &&
+              this.props.children.map((child, index) => {
+                return (
+                  <Grid key={child.props.selfkey} item xs={12} sm={flex[index]} md={flex[index]} lg={flex[index]} xl={flex[index]}>
+                    {child}
+                  </Grid>
+                )
+              })
+            }
+          </Grid>
+        </div>
       </div>
     );
   }
