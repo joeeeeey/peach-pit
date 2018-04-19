@@ -1,5 +1,6 @@
-// 编写一个 editable 布局组件 ，鼠标悬浮时可以出现一个 button，
-// 点击则可以在这个节点 chilren 直接增加一个可编辑 textarea, 编写更新 store 的方法。
+// 垂直布局最外层是水平布局的 Grid
+// 而子 Grid 里才是垂直
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Grid from 'material-ui/Grid';
@@ -8,7 +9,7 @@ import Button from 'material-ui/Button';
 export default class EditableVerticalGrid extends Component {
   constructor(props, context) {
     super(props);
-    this.state = { hovered: false, addNodeName: 'TextArea'}
+    this.state = { hovered: false, addNodeName: 'TextArea' }
   }
   hovorStyle = () => {
     if (this.state.hovered) {
@@ -25,48 +26,46 @@ export default class EditableVerticalGrid extends Component {
   }
 
   addNode = () => {
-    let nodeName = this.state.addNodeName
-    switch (nodeName) {
-      case 'TextArea':
-        let {selfkey} = this.props
-        this.context.store.dispatch({
-          type: 'addNode',
-          payload: {selfKey: selfkey, nodeName: nodeName},
-          target: 'node',
-        });
-        return 'state'
-      default:
-        return false
-    }    
   }
 
   removeNode = () => {
     let nodeName = 'TextArea'
     switch (nodeName) {
       case 'TextArea':
-        let {selfkey, parentkey} = this.props
+        let { selfkey, parentkey } = this.props
         this.context.store.dispatch({
           type: 'removeNode',
-          payload: {targetKey: selfkey, parentKey: parentkey, nodeName: nodeName},
+          payload: { targetKey: selfkey, parentKey: parentkey, nodeName: nodeName },
           target: 'node',
         });
         return 'state'
       default:
         return false
-    }    
+    }
   }
 
   render() {
     const { style } = this.props
     return (
       <div onMouseOver={this.onMouseOver}
-      onMouseOut={this.onMouseOut}
-      style={this.hovorStyle()}>
-        <Grid container direction="column" >
-          {this.props.children}
+        onMouseOut={this.onMouseOut}
+        style={this.hovorStyle()}>
+
+        {/* <Grid container className={{ flexGrow: 1 }}>
+          <Grid item xs={12}> */}
+        <Grid container style={{ flexGrow: 1 }} direction="row" justify="space-around" alignItems="center">
+          <Grid item xs={12}>
+            <h1>一行东西</h1>
+          </Grid>
+
+          <Grid item xs={12}>
+            <h1>二行东西</h1>
+          </Grid>              
+         
+          {/* {this.props.children} */}
+          {/* </Grid>
+          </Grid> */}
         </Grid>
-        <Button onClick={this.addNode}>增加一个竖直布局</Button>
-        <Button onClick={this.removeNode}>把自己删掉</Button>
       </div>
     );
   }

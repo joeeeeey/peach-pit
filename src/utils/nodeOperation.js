@@ -30,7 +30,8 @@ function objectPresent(obj) {
 //   根据 parentKey 找到childrenKeys, 将 selfKey 加入
 //   在 _relation 中加入自身的 relation, 并将自身除了 _root, _relation 合并到原 store
 function addNode(currentDom, nodeKey, newNode) {
-  let nodeChildren = currentDom._relation[nodeKey] || []
+  if(!currentDom._relation[nodeKey]){currentDom._relation[nodeKey] = []}
+  let nodeChildren = currentDom._relation[nodeKey]
 
   let { _relation, _root, ...newNodeData } = newNode
   // let newNodeRootKey = newNodes._relation._root
@@ -40,6 +41,7 @@ function addNode(currentDom, nodeKey, newNode) {
   }
   // 合并 relation 
   nodeChildren.push(_root)
+
   Object.assign(currentDom._relation, _relation)
 
   // 合并节点内容
@@ -167,7 +169,6 @@ function flattenDomTree(nodeData, parentKey = '', flattenData = { _relation: {} 
     flattenData._root = rootKey
     // nodeData = [nodeData]
     let { children, ...value } = nodeData;
-
     if (arrayPresent(children)) {
       flattenData[rootKey] = value
       flattenDomTree(children, rootKey, flattenData)
@@ -219,6 +220,7 @@ function getClassName(action) {
 
 // 降维数据转化为代码
 function flattenedData2Code(flattenData, action, selfDomKey = null, parentDomKey = 'root', code = "") {
+  // console.log('flattenedData2Code')
   if (flattenData === null) {
     return code;
   }

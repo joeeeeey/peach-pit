@@ -16,6 +16,8 @@ import EditableVerticalGrid from '../../components/edit/verticalGrid'
 import EditableGridList from '../../components/edit/gridList'
 import EditableGridListTile from '../../components/edit/gridListTile'
 import EditableFullWidthGrid from '../../components/edit/fullWidthGrid'
+import EditableVerticalLayout from '../../components/edit/verticalLayout'
+
 
 // Preview components in other views
 import PreviewRoot from '../../components/preview/root'
@@ -140,6 +142,8 @@ class Edit extends React.Component {
       payload: ftData,
       target: 'node',
     });
+
+    // TODO setState after dispatch
   }
 
   wrapRoot = (block=null) => {
@@ -168,6 +172,7 @@ class Edit extends React.Component {
       EditableLetfRightGrid: EditableLetfRightGrid,
       EditableCard: EditableCard,
       EditableCardMedia: EditableCardMedia,
+      EditableVerticalLayout: EditableVerticalLayout,
       PreviewRoot: PreviewRoot,
       PreviewTextArea: PreviewTextArea,
       PreviewLetfRightGrid: PreviewLetfRightGrid,
@@ -181,7 +186,7 @@ class Edit extends React.Component {
   }
 
   render = () => {
-    // console.log(nodeOperation.flattenedData2Code(this.state.nodeData))
+    console.log(this.state.nodeData)
     return (
       <div>
         {this.toF(nodeOperation.flattenedData2Code(JSON.parse(JSON.stringify(this.state.nodeData)), 'edit'))}

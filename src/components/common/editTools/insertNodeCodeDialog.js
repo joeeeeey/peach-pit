@@ -27,7 +27,7 @@ export default class InsertNodeCodeDialog extends editToolBaseDialog {
 
       this.context.store.dispatch({
         type: 'addNode',
-        payload: { selfKey: rootKey, nodeData: nodeData },
+        payload: { targetKey: rootKey, nodeData: nodeData },
         target: 'node',
       });
 

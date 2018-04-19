@@ -120,7 +120,7 @@ class EditableRoot extends Component {
     let { selfkey } = this.props
     this.context.store.dispatch({
       type: 'addNode',
-      payload: { selfKey: selfkey, nodeData: JSON.parse(nodeData) },
+      payload: { targetKey: selfkey, nodeData: JSON.parse(nodeData) },
       target: 'node',
     });
   }
@@ -282,7 +282,7 @@ export default withRoot(Index);
             </Menu>
           </Sider>
           <Layout style={{ marginLeft: 200, minHeight: '45.25rem', background: 'none'}} className={''}>
-            <div>
+            <div id="divInRootAfterLayout">
               {this.props.children}
             </div>
           </Layout>
