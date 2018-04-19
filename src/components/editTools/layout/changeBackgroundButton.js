@@ -8,15 +8,15 @@ const buttonStyle = { color: 'grey', width: '100%', justifyContent: 'left' }
 function menu(f) {
   return (
     <Menu>
-    {['white', '#a2c5d6', '#8c7ec9', '#f3f7aa'].map(background => 
-      <Menu.Item key={background}>
-        <Button onClick={() => { f(background) }} color="secondary" style={buttonStyle}>
-          {background}
-        </Button>
-      </Menu.Item>
-    )
-    }
-  </Menu>    
+      {['white', '#a2c5d6', '#8c7ec9', '#f3f7aa'].map(background =>
+        <Menu.Item key={background}>
+          <Button onClick={() => { f(background) }} color="secondary" style={buttonStyle}>
+            {background}
+          </Button>
+        </Menu.Item>
+      )
+      }
+    </Menu>
   )
 }
 
@@ -24,6 +24,11 @@ export default class ChangeBackgroundButton extends React.Component {
   constructor(props, context) {
     super(props);
     this.positionStyle = this.props.positionStyle || { position: 'absolute', right: 20, top: 10, "borderRadius": "10%", "background": "#303233" }
+    this.state = { visible: false }
+  }
+  // 关闭点击自动关闭菜单
+  handleVisibleChange = (flag) => {
+    this.setState({ visible: flag });
   }
 
   updateNodeBackground = (backgroundValue) => {
@@ -38,7 +43,11 @@ export default class ChangeBackgroundButton extends React.Component {
   render() {
     return (
       <div style={this.positionStyle}>
-        <Dropdown overlay={menu(this.updateNodeBackground)} trigger={['click']}>
+        <Dropdown
+          overlay={menu(this.updateNodeBackground)}
+          trigger={['click']}
+          onVisibleChange={this.handleVisibleChange}
+          visible={this.state.visible}>
           <Button style={{ color: '#FFF', fontSize: 8 }}>
             背景
         </Button>

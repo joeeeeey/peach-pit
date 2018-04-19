@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Editor from '../meta/editor'
 
 // {
-//   native: false, nodeName: 'EditableTextArea',
+//   native: false, nodeName: 'TextArea',
 //   props: { deltaDeltaValue: [{"insert":"\n","attributes":{"header":1}}], readOnly: false }
 // }
 
