@@ -13,13 +13,13 @@ import '../../css/editPage.css'
 import 'antd/dist/antd.css'
 
 // 插入节点代码
-import InsertNodeCodeDialog from '../common/editTools/insertNodeCodeDialog'
+import InsertNodeCodeDialog from '../editTools/sidebar/insertNodeCodeDialog'
 // 保存到新的板块
-import SaveToNewBlockDialog from '../common/editTools/saveToNewBlockDialog'
+import SaveToNewBlockDialog from '../editTools/sidebar/saveToNewBlockDialog'
 // 更新模板按钮
-import UpdateTemplateButton from '../common/editTools/updateTemplateButton'
+import UpdateTemplateButton from '../editTools/sidebar/updateTemplateButton'
 // 更新样式按钮
-import UpdateLayoutButton from '../common/editTools/updateLayoutButton'
+import UpdateLayoutButton from '../editTools/sidebar/updateLayoutButton'
 
 import LayoutService from '../../services/layoutService'
 const layoutService = new LayoutService()

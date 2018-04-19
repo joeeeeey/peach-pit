@@ -133,7 +133,7 @@ function heightenDomTree(flattenData) {
         return doHeighten(flattenData, rootKey)
       }
     }else{
-      console.log("ERROR, NEED ROOT KEY")
+      console.warn("ERROR, NEED ROOT KEY")
     }
   }
 }

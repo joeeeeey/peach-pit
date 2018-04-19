@@ -10,7 +10,7 @@ import Dialog, {
 import PropTypes from 'prop-types';
 import editToolBaseDialog from './editToolBaseDialog'
 
-import NewBlockFrom from '../forms/newBlockFrom'
+import NewBlockFrom from '../../common/forms/newBlockFrom'
 
 export default class SaveToNewBlockDialog extends editToolBaseDialog {
   constructor(props, context) {

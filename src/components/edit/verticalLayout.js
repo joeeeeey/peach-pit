@@ -13,15 +13,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
-import ChangeBackgroundButton from '../common/editTools/changeBackgroundButton'
+import ChangeBackgroundButton from '../editTools/layout/changeBackgroundButton'
+import GridArrangementOptionLists from '../editTools/layout/gridArrangementOptionLists'
 import ArrayOper from '../../utils/arrOperation'
-import { relativeTimeRounding } from 'moment';
-
 
 const defaultChildren = {
   native: false, nodeName: 'VerticalGrid'
 }
-
 
 // Layout 的公共样式， 可以抽离
 // 需要占据主屏幕 80% 位置左右两侧自动 margin
@@ -83,12 +81,12 @@ export default class EditableVerticalLayout extends Component {
         // 减少了子元素个数, 默认从最后一个元素开始去除
         const reverseCount = this.flex.length - flex.length
         const reverseChildrenKeys = this.props.children.map(x => x.props.selfkey).reverse()
-        console.log(`reverse childrenKeys is ${reverseChildrenKeys}`)
+
         let removeNodesPayload = []
-        for (let i = 0; i < reverseCount.length; i++) {
+        for (let i = 0; i < reverseCount; i++) {
           removeNodesPayload.push({ targetKey: reverseChildrenKeys[i], parentKey: this.props.selfkey })
         }
-        let updateNodesPayload = [{ value: flex, nestedKey: `${this.props.selfkey},props,flex`}]
+        let updateNodesPayload = [{ value: flex, nestedKey: `${this.props.selfkey},props,flex` }]
 
         const compositePayload = {
           payloadData: {
@@ -96,10 +94,40 @@ export default class EditableVerticalLayout extends Component {
             updateNodes: { payloadData: updateNodesPayload },
           }
         }
-        console.log(`compositePayload is ${compositePayload}`)
+   
+        this.context.store.dispatch({
+          type: 'composite',
+          payload: compositePayload,
+          target: 'node',
+        })
+
+
+      } else {
+        const increment = flex.length - this.flex.length
+        let addNodesPayload = Array.from(Array(increment).keys()).map(
+          x => { return { nodeData: defaultChildren, targetKey: this.props.selfkey } }
+        )
+        let updateNodesPayload = [{ value: flex, nestedKey: `${this.props.selfkey},props,flex` }]
+        const compositePayload = {
+          payloadData: {
+            addNodes: { payloadData: addNodesPayload },
+            updateNodes: { payloadData: updateNodesPayload },
+          }
+        }
+
+        this.context.store.dispatch({
+          type: 'composite',
+          payload: compositePayload,
+          target: 'node',
+        })
+
       }
     }
     // flex => [4,4,4], [4,8], [8,4], [12],[4,4,2,2]
+  }
+
+  handleRearrangeGird = (flex) => {
+    this.rearrangeChildren(flex)
   }
 
   render() {
@@ -116,17 +144,20 @@ export default class EditableVerticalLayout extends Component {
       <div id={this.props.selfkey} style={{ background: background, position: 'relative' }}>
         <ChangeBackgroundButton parentkey={this.props.selfkey} />
         <div style={layoutStyle}>
-          <Grid container direction={direction} >
-            {this.props.children &&
-              this.props.children.map((child, index) => {
-                return (
-                  <Grid key={child.props.selfkey} item xs={12} sm={this.flex[index]} md={this.flex[index]} lg={this.flex[index]} xl={this.flex[index]}>
-                    {child}
-                  </Grid>
-                )
-              })
-            }
-          </Grid>
+          <div style={{ position: 'relative' }}>
+            <GridArrangementOptionLists handleRearrangeGird={this.handleRearrangeGird} />
+            <Grid container direction={direction} >
+              {this.props.children &&
+                this.props.children.map((child, index) => {
+                  return (
+                    <Grid key={child.props.selfkey} item xs={12} sm={this.flex[index]} md={this.flex[index]} lg={this.flex[index]} xl={this.flex[index]}>
+                      {child}
+                    </Grid>
+                  )
+                })
+              }
+            </Grid>
+          </div>
         </div>
       </div>
     );

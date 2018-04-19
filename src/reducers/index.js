@@ -25,7 +25,7 @@ export default (state = { user: {} }, action) => {
         return state
       // 增加单个节点， 父元素发出的请求
       case 'addNode':
-        addNode(state.node, action)
+        addNode(state.node, action.payload)
         return state
       // 批量增加节点
       // { payloadData: [{ nodeData: nodeData, targetKey: targetKey }]
@@ -92,9 +92,8 @@ export default (state = { user: {} }, action) => {
   }
 }
 
-function addNode(node, action) {
-  let { nodeData, targetKey } = action.payload
-
+function addNode(node, payload) {
+  let { nodeData, targetKey } = payload
   if (nodeData != null) {
     nodeOperation.addNode(
       node,
