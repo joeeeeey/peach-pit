@@ -8,25 +8,25 @@
 //   native: false, nodeName: 'VerticalLayout',
 //   props: null,
 // }
-// {"native":false,"nodeName":"VerticalLayout","props":{"asd": "sds"}}
+// {"native":false,"nodeName":"VerticalLayout","props":{}}
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
 import ChangeBackgroundButton from '../common/editTools/changeBackgroundButton'
+import ArrayOper from '../../utils/arrOperation'
+import { relativeTimeRounding } from 'moment';
 
 
-
-const defaultChildren = [{
+const defaultChildren = {
   native: false, nodeName: 'VerticalGrid'
-}, { native: false, nodeName: 'VerticalGrid' }]
+}
 
 
 // Layout 的公共样式， 可以抽离
 // 需要占据主屏幕 80% 位置左右两侧自动 margin
 // TODO  padding top bottom 如果在屏幕变小时自动变小
 const layoutStyle = { margin: '0 auto', width: '80%', flexGrow: 1, padding: '50px 0' }
-
 
 const defalutFlexLayout = [8, 4]
 export default class EditableVerticalLayout extends Component {
@@ -37,25 +37,19 @@ export default class EditableVerticalLayout extends Component {
     super(props);
     this.state = { hovered: false }
   }
-  // hovorStyle = () => {
-  //   if (this.state.hovered) {
-  //     return Object.assign({ border: '0.005rem solid #6d6d6d' }, layoutStyle)
-  //   } else {
-  //     return layoutStyle
-  //   }
-  // }
 
   componentDidMount() {
     if (this.props.children === null || this.props.children === undefined) {
+      this.flex = defalutFlexLayout
       this.addDefaultChildren()
     }
   }
 
   addDefaultChildren = () => {
-    for (let i = 0; i < defaultChildren.length; i++) {
+    for (let i = 0; i < this.flex.length; i++) {
       this.context.store.dispatch({
         type: 'addNode',
-        payload: { targetKey: this.props.selfkey, nodeData: defaultChildren[i] },
+        payload: { targetKey: this.props.selfkey, nodeData: defaultChildren },
         target: 'node',
       });
     }
@@ -67,25 +61,66 @@ export default class EditableVerticalLayout extends Component {
     return { store: this.context.store };
   }
 
+  // composite
+  // payloadData => { addNodes: {payloadData: []}, removeNodes:  {payloadData: []} }
+  // payloadData => [{nestedKey: nestedKey, value: value}] 
+  // { payloadData: [{ nodeData: nodeData, targetKey: targetKey }]
+  // payload 为 {payloadData: [{targetKey: targetKey, parentKey, parentKey}]
+  // case 'composite':
+  rearrangeChildren = (flex) => {
+    if (ArrayOper.compare(flex, this.flex)) {
+      return
+    } else {
+      if (flex.length === this.flex.length) {
+        // 数量一致，只需要更新 flex 信息
+        let nestedKey = `${this.props.selfkey},props,flex`
+        this.context.store.dispatch({
+          type: 'update',
+          payload: { nestedKey: nestedKey, value: flex },
+          target: 'node',
+        })
+      } else if (flex.length < this.flex.length) {
+        // 减少了子元素个数, 默认从最后一个元素开始去除
+        const reverseCount = this.flex.length - flex.length
+        const reverseChildrenKeys = this.props.children.map(x => x.props.selfkey).reverse()
+        console.log(`reverse childrenKeys is ${reverseChildrenKeys}`)
+        let removeNodesPayload = []
+        for (let i = 0; i < reverseCount.length; i++) {
+          removeNodesPayload.push({ targetKey: reverseChildrenKeys[i], parentKey: this.props.selfkey })
+        }
+        let updateNodesPayload = [{ value: flex, nestedKey: `${this.props.selfkey},props,flex`}]
+
+        const compositePayload = {
+          payloadData: {
+            removeNodes: { payloadData: removeNodesPayload },
+            updateNodes: { payloadData: updateNodesPayload },
+          }
+        }
+        console.log(`compositePayload is ${compositePayload}`)
+      }
+    }
+    // flex => [4,4,4], [4,8], [8,4], [12],[4,4,2,2]
+  }
+
   render() {
     // 如果没有 children, 那就用 addNode 方法给自己增加两个 children
     const {
       background = '#b1d3db',
-      flex = defalutFlexLayout,
       direction = 'row' } = this.props
 
+    this.flex = this.props.flex || defalutFlexLayout
     // spacing 应用默认的 0, 而子元素的间距应在 verticalGrid 中践行调整
     // direction 可以是 row 或者 row-reverse
 
     return (
       <div id={this.props.selfkey} style={{ background: background, position: 'relative' }}>
-        <ChangeBackgroundButton />
+        <ChangeBackgroundButton parentkey={this.props.selfkey} />
         <div style={layoutStyle}>
           <Grid container direction={direction} >
             {this.props.children &&
               this.props.children.map((child, index) => {
                 return (
-                  <Grid key={child.props.selfkey} item xs={12} sm={flex[index]} md={flex[index]} lg={flex[index]} xl={flex[index]}>
+                  <Grid key={child.props.selfkey} item xs={12} sm={this.flex[index]} md={this.flex[index]} lg={this.flex[index]} xl={this.flex[index]}>
                     {child}
                   </Grid>
                 )

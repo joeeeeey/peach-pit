@@ -15,17 +15,35 @@ export default (state = { user: {} }, action) => {
         return state
       case 'update':
         let { value } = action.payload
-        evalUpdate(state['node'], action, value)
+        evalUpdate(state['node'], action.payload.nestedKey, value)
         return state
-      // 增加是父元素发出的请求
+
+      // 批量更新
+      // payloadData => [{nestedKey: nestedKey, value: value}]              
+      case 'updateNodes':
+        updateNodes(state.node, action.payload)
+        return state
+      // 增加单个节点， 父元素发出的请求
       case 'addNode':
         addNode(state.node, action)
         return state
-
+      // 批量增加节点
+      // { payloadData: [{ nodeData: nodeData, targetKey: targetKey }]
+      case 'addNodes':
+        addNodes(state.node, action.payload)
+        return state
       // 销毁是子元素发出的请求
       case 'removeNode':
         let { targetKey, parentKey } = action.payload
         nodeOperation.removeNode(state.node, targetKey, parentKey)
+        return state
+      // 批量删除节点
+      // payload 为 {payloadData: [{targetKey: targetKey, parentKey, parentKey}]
+      case 'removeNodes':
+        removeNodes(state.node, action.payload)
+        return state
+      case 'composite':
+        recombinateNodes(state.node, action.payload)
         return state
       /* 不加这个注释就会有 warning */
       default:
@@ -36,7 +54,7 @@ export default (state = { user: {} }, action) => {
       case 'update':
         let { value } = action.payload
 
-        evalUpdate(state['user'], action, value)
+        evalUpdate(state['user'], action.payload.nestedKey, value)
         return state
       case 'replace':
         state.user = action.payload
@@ -50,7 +68,7 @@ export default (state = { user: {} }, action) => {
       case 'update':
         let { value } = action.payload
 
-        evalUpdate(state['administrator'], action, value)
+        evalUpdate(state['administrator'], action.payload.nestedKey, value)
         return state
       case 'replace':
         state.administrator = action.payload
@@ -59,7 +77,7 @@ export default (state = { user: {} }, action) => {
       default:
         return state
     }
-  }else if (action.target === 'editInfo'){
+  } else if (action.target === 'editInfo') {
     switch (action.type) {
       case 'replace':
         state.editInfo = action.payload
@@ -69,29 +87,26 @@ export default (state = { user: {} }, action) => {
         return state
     }
   }
-   else {
+  else {
     return state
   }
 }
 
-function evalUpdate(data, action, value) {
-  eval(`data${getConnectKeys(action)}=value`)
-}
-
-function addNode(state, action) {
+function addNode(node, action) {
   let { nodeData, targetKey } = action.payload
 
   if (nodeData != null) {
     nodeOperation.addNode(
-      state,
+      node,
       targetKey,
       nodeOperation.flattenDomTree(nodeData)
     )
+  } else {
+    console.warn(`增加单个节点: 需要增加的节点数据为空`)
   }
 }
 
-function getConnectKeys(action) {
-  let { nestedKey } = action.payload
+function getConnectKeys(nestedKey) {
   let keys = nestedKey.split(',')
   let connectKeys = ""
   for (let i = 0; i < keys.length; i++) {
@@ -99,3 +114,56 @@ function getConnectKeys(action) {
   }
   return connectKeys
 }
+
+function evalUpdate(data, nestedKey, value) {
+  eval(`data${getConnectKeys(nestedKey)}=value`)
+}
+
+function updateNodes(node, payload) {
+  const { payloadData } = payload
+  // payloadData => [{nestedKey: nestedKey, value: value}]
+  if (payloadData && Array.isArray(payloadData) && payloadData.length > 0) {
+    for (let i = 0; i < payloadData.length; i++) {
+      evalUpdate(node, payloadData[i].nestedKey, payloadData[i].value)
+    }
+  } else { console.warn(`批量更新节点: 需要更新的数据为空`) }
+}
+
+// 批量删除节点
+function removeNodes(node, payload) {
+  // {payloadData: [{targetKey: targetKey, parentKey, parentKey}]
+  const { payloadData } = payload
+  if (payloadData && Array.isArray(payloadData) && payloadData.length > 0) {
+    for (let i = 0; i < payloadData.length; i++) {
+      nodeOperation.removeNode(node, payloadData[i].targetKey, payloadData[i].parentKey)
+    }
+  } else { console.warn(`批量删除节点: 需要删除的数据为空`) }
+}
+
+// 批量增加节点
+function addNodes(node, payload) {
+  // { payloadData: [{ nodeData: nodeData, targetKey: targetKey }]
+  const { payloadData } = payload
+  if (payloadData && Array.isArray(payloadData) && payloadData.length > 0) {
+    for (let i = 0; i < payloadData.length; i++) {
+      addNode(node, payloadData[i])
+    }
+  } else { console.warn(`批量增加节点: 需要增加的节点数据为空`) }
+}
+
+
+// 复合操作节点，重组
+function recombinateNodes(node, payload) {
+  // composite
+  // payloadData => {updateNodes: {payloadData: []}, addNodes: {payloadData: []}, removeNodes:  {payloadData: []} }
+  const { payloadData } = payload
+  if (!Array.isArray(payloadData) && payloadData !== null && typeof payloadData === 'object') {
+    if (payloadData.addNodes) { addNodes(node, payloadData.addNodes) }
+    if (payloadData.removeNodes) { removeNodes(node, payloadData.removeNodes) }
+    if (payloadData.updateNodes) { updateNodes(node, payloadData.updateNodes) }
+  } else {
+    console.warn(`复合操作节点: 复合节点数据为空`)
+  }
+}
+
+

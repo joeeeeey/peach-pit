@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
-
+import Editor from '../meta/editor'
 export default class EditableVerticalGrid extends Component {
   constructor(props, context) {
     super(props);
@@ -54,12 +54,12 @@ export default class EditableVerticalGrid extends Component {
         {/* <Grid container className={{ flexGrow: 1 }}>
           <Grid item xs={12}> */}
         <Grid container style={{ flexGrow: 1 }} direction="row" justify="space-around" alignItems="center">
-          <Grid item style={{textAlign: 'center'}}>
-            <h1>一行东西</h1>
+          <Grid item xs={12} style={{textAlign: 'center'}}>
+          <Editor/>
           </Grid>
 
           <Grid item xs={12}>
-            <h1>二行东西</h1>
+            <Editor/>
           </Grid>              
          
           {/* {this.props.children} */}
