@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import nodeOperation from '../../utils/nodeOperation'
 
 // 侧边栏以及 appbar
-import { Layout, Menu, Icon, Popover, Divider } from 'antd';
+import { Layout, Menu, Icon, Popover, Divider, message } from 'antd';
 import '../../css/editPage.css'
 import 'antd/dist/antd.css'
 
@@ -21,17 +21,14 @@ import UpdateTemplateButton from '../editTools/sidebar/updateTemplateButton'
 // 更新样式按钮
 import UpdateLayoutButton from '../editTools/sidebar/updateLayoutButton'
 
+import TemplateService from '../../services/templateService'
 import LayoutService from '../../services/layoutService'
 const layoutService = new LayoutService()
+const templateService = new TemplateService()
+
 
 const { Content, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
-
-const content = (
-  <div>
-    <p>TODO 此处应该显示布局缩略图</p>
-  </div>
-);
 
 const buttonStyle = { color: 'white', width: '100%', justifyContent: 'left' }
 class EditableRoot extends Component {
@@ -41,14 +38,19 @@ class EditableRoot extends Component {
       openPreview: false,
       editInfo: context.store.getState().editInfo,   // {source: "das", id: "32", role: "admin"}
       layouts: [], // 可选择加入的样式
-      // sections: context.store.getState().node._relation || [], // 当前存在的版面
     }
   }
 
+  // 获得顶层元素，来加载侧边栏 layout
   getRootChildren = () => {
-    const rootKey = this.context.store.getState().node._root
-    if (rootKey) {
-      return this.context.store.getState().node._relation[rootKey]
+    if (this.context.store.getState().node) {
+      const rootKey = this.context.store.getState().node._root
+      if (rootKey) {
+        console.log(`rootKey is ${rootKey}`)
+        return this.context.store.getState().node._relation[rootKey]
+      } else {
+        return []
+      }
     } else {
       return []
     }
@@ -202,21 +204,57 @@ export default withRoot(Index);
   // 测试代码生成的功能，应该由后端完成
   // TODO Do it at Backend 
   download = (text, name, type) => {
-    var a = document.getElementById("a");
-    var file = new Blob([text], { type: type });
+    const a = document.getElementById("a");
+    const file = new Blob([text], { type: type });
     a.href = URL.createObjectURL(file);
     a.download = name;
   }
 
+  // 该方法若是放在子元素中调用
+  // window.open(url, '_blank') 始终返回 null
+  // 只能用 settimeout 和判断 解决，但这样会变成弹窗，容易被浏览器拦截 https://stackoverflow.com/questions/3923321/ie7-window-open-when-focus-return-null
+  // 所有还是将代码放在此处 TODO FIX THIS PROBLEM
   preview = () => {
-    let setPreviewState = !this.state.openPreview
-    this.setState({ openPreview: setPreviewState });
+    if (this.state.editInfo.source) {
+      const { source, id, role } = this.state.editInfo
+      // update node
+      switch (source) {
+        case 'layout':
+          this.service = layoutService
+          break;
+        case 'template':
+          this.service = templateService
+          break;
+        case 'site':
+          // TODO 
+          break;
+        default:
+          break;
+      }
+      let parmas = {
+        id: id,
+      }
+      const nodeData = JSON.parse(JSON.stringify(this.context.store.getState().node));
+      parmas.data = JSON.stringify(nodeOperation.heightenDomTree(nodeData))
 
-    this.context.store.dispatch({
-      type: 'update',
-      payload: { value: setPreviewState, nestedKey: 'isPreview' },
-      target: 'user',
-    });
+      this.service.update(parmas)
+        .then(response => {
+          const { data } = response
+          if (data.code === 0) {
+            const url = `/${role}/previewPage?source=${source}&id=${id}`
+            // 打开新页面
+            const win = window.open(url, '_blank');
+            win.focus();
+          } else {
+            message.error(`😥 ${data.msg}`, 1.2)
+          }
+        })
+        .catch(function (error) {
+          message.error(`😥 出现异常: ${error}`, 2)
+        });
+    } else {
+
+    }
   }
 
   getChildContext() {
@@ -253,8 +291,8 @@ export default withRoot(Index);
                 </Button>
               </Menu.Item>
               <Menu.Item key="2">
-                <Button color="secondary" onClick={this.preview} style={buttonStyle}>
-                  {this.state.openPreview ? '关闭预览' : '下方预览'}
+                <Button color="secondary" onClick={this.preview}  style={buttonStyle}>
+                  预览
                 </Button>
               </Menu.Item>
               <Menu.Item key="3">
@@ -270,11 +308,9 @@ export default withRoot(Index);
                 {
                   this.getRootChildren().map(section_key =>
                     <Menu.Item key={section_key}>
-                      {/* <Popover content={this.layoutPreView(`${layout.name}`)} title="Title" placement="right"> */}
-                      <Button onClick={() => {this.removeNode(section_key)}} color="secondary" style={buttonStyle}>
+                      <Button onClick={() => { this.removeNode(section_key) }} color="secondary" style={buttonStyle}>
                         删除{this.context.store.getState().node[section_key].nodeName}
                       </Button>
-                      {/* </Popover> */}
                     </Menu.Item>
                   )
                 }

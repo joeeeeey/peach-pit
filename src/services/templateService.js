@@ -5,6 +5,10 @@ class TemplateService extends BaseService {
     return this.post('/api/admin/add_template', params)
   }
 
+  update = (params) => {
+    return this.post('/api/admin/update_template', params)
+  }
+
   updateTemplate = (params) => {
     return this.post('/api/admin/update_template', params)
   }

@@ -1,0 +1,122 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import nodeOperation from '../../utils/nodeOperation'
+import BlockService from '../../services/blockService'
+
+// Preview components in other views
+import PreviewRoot from '../../components/preview/root'
+import PreviewTextArea from '../../components/preview/textArea'
+import PreviewLetfRightGrid from '../../components/preview/letfRightGrid'
+import PreviewCard from '../../components/preview/card'
+import PreviewCardMedia from '../../components/preview/cardMedia'
+import PreviewVerticalGrid from '../../components/preview/verticalGrid'
+import PreviewVerticalLayout from '../../components/preview/verticalLayout'
+
+const blockService = new BlockService()
+
+class Preview extends React.Component {
+  constructor(props, context) {
+    super(props);
+    this.state = { nodeData: null }
+  }
+
+  getSourceFromUrl = () => {
+    try {
+      const urlParams = new URL(window.location.href)
+      const source = urlParams.searchParams.get('source')
+      if (source.toString() !== 'null') {
+        return { source: source, id: urlParams.searchParams.get('id') }
+      } else {
+        return { source: null }
+      }
+    } catch (error) {
+      alert('出现异常')
+      return { source: null }
+    }
+  }
+
+  getRoleNameFromStore = (store) => {
+    const userState = store.getState().user
+    const adminState = store.getState().administrator
+    if (userState && userState.isLogin) {
+      return 'user'
+    } else if (adminState && adminState.isLogin) {
+      return 'admin'
+    } else {
+      return 'unknown'
+    }
+  }
+
+  // 最适合取到数据的地方
+  componentDidMount = () => {
+    // 根据`当前用户角色` 和 `资源` 初始化预览页信息
+    const source = this.getSourceFromUrl()
+    let role = { role: this.getRoleNameFromStore(this.context.store) }
+
+    const previewInfo = Object.assign({}, source, role)
+
+    if (previewInfo.source) {
+      blockService.getNodeDataInPreviewInfo(previewInfo)
+        .then(response => {
+          const { data } = response
+          if (data.code === 0) {
+            this.initialNodeData(data.data)
+          } else {
+            console.error(data.msg)
+          }
+        })
+        .catch(function (error) {
+          console.error(error.msg)
+        });
+    } else {
+      alert('source cannot be null')
+    }
+  }
+
+  initialNodeData(block) {
+    let ftData = nodeOperation.flattenDomTree(this.wrapRoot(block))
+    this.setState({ nodeData: ftData })
+  }
+
+  // 数据库中的节点数据是没有 _root 这个 key 的
+  // 在此处加上根节点
+  wrapRoot = (block = null) => {
+    if (block) {
+      const domString = block.data
+      const domData = JSON.parse(domString)
+      return { native: false, nodeName: 'Root', children: [domData] }
+    } else {
+      return { native: false, nodeName: 'Root', children: [] }
+    }
+  }
+
+  toF = (code) => {
+    const func = new Function("React", "Components", `return ${code}`);
+    // TODO ADD ALL components here
+    const App = func(React, {
+      PreviewRoot: PreviewRoot,
+      PreviewTextArea: PreviewTextArea,
+      PreviewLetfRightGrid: PreviewLetfRightGrid,
+      PreviewCard: PreviewCard,
+      PreviewCardMedia: PreviewCardMedia,
+      PreviewVerticalGrid: PreviewVerticalGrid, 
+      PreviewVerticalLayout: PreviewVerticalLayout,       
+    })
+    return App
+  }
+
+  render = () => {
+    console.log(this.state.nodeData)
+    return (
+      <div>
+        {this.toF(nodeOperation.flattenedData2Code(JSON.parse(JSON.stringify(this.state.nodeData)), 'preview'))}
+      </div>
+    );
+  }
+}
+
+Preview.contextTypes = {
+  store: PropTypes.object
+};
+
+export default Preview;

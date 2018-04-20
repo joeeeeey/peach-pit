@@ -41,10 +41,6 @@ export default class AddNodeSpirit extends Component {
     this.state = { hidden: this.props.hidden || true}
   }
 
-  // handleVisibleChange = (flag) => {
-  //   this.setState({ visible: flag });
-  // }
-
   hiddenSelf = () => {
     this.setState({hidden: true})
   }

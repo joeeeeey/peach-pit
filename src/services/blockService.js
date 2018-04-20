@@ -6,9 +6,7 @@ const layoutService = new LayoutService()
 const templatService = new TemplatService()
 
 class BlockService {
-  // {source: "template", id: "2", role: "admin"}
-  // {source: "site", id: "2", role: "user"}
-  getNodeDataInEditInfo = (editInfo) => {
+  getData = (editInfo) => {
     const { source, id } = editInfo
     switch (source) {
       case 'template':
@@ -20,6 +18,15 @@ class BlockService {
       default:
         break;
     }
+  }
+  // {source: "template", id: "2", role: "admin"}
+  // {source: "site", id: "2", role: "user"}
+  getNodeDataInEditInfo = (editInfo) => {
+    return this.getData(editInfo)
+  }
+
+  getNodeDataInPreviewInfo = (editInfo) => {
+    return this.getData(editInfo)
   }
 
 }

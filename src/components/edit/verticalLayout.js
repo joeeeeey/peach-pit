@@ -4,6 +4,11 @@
 // 父节点还未将 store 中的 nodeData 初始化完毕
 // 是否可以更待父节点更新完 nodeData 中才调用 addNode
 
+// 可传入 props
+// children array
+// flex  array
+// background string
+
 // {
 //   native: false, nodeName: 'VerticalLayout',
 //   props: null,
@@ -93,7 +98,7 @@ export default class EditableVerticalLayout extends Component {
             updateNodes: { payloadData: updateNodesPayload },
           }
         }
-   
+
         this.context.store.dispatch({
           type: 'composite',
           payload: compositePayload,
@@ -136,13 +141,6 @@ export default class EditableVerticalLayout extends Component {
       direction = 'row' } = this.props
 
     this.flex = this.props.flex || defalutFlexLayout
-    // spacing 应用默认的 0, 而子元素的间距应在 verticalGrid 中践行调整
-
-    this.children = this.props.children
-    if (!Array.isArray(this.children) && this.children !== null && typeof this.children === 'object') {
-      this.children = [this.children]
-    }
-
 
     return (
       <div id={this.props.selfkey} style={{ background: background, position: 'relative' }}>
@@ -151,8 +149,8 @@ export default class EditableVerticalLayout extends Component {
           <div style={{ position: 'relative' }}>
             <GridArrangementOptionLists handleRearrangeGird={this.handleRearrangeGird} />
             <Grid container direction={direction} >
-              {this.children &&
-                this.children.map((child, index) => {
+              {this.props.children &&
+                React.Children.toArray(this.props.children).map((child, index) => {
                   return (
                     <Grid key={child.props.selfkey} item xs={12} sm={this.flex[index]} md={this.flex[index]} lg={this.flex[index]} xl={this.flex[index]}>
                       {child}

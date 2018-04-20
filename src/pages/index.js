@@ -19,6 +19,7 @@ import AdminTemplateIndex from './admin/templateIndexPage'
 import AdminLayoutIndex from './admin/layoutIndexPage'
 import ChooseTmp from './template/chooseTmp'
 import Edit from './site/edit'
+import Preview from './site/preview'
 import Test from './test'
 
 import { createStore } from 'redux'
@@ -61,6 +62,12 @@ class Index extends Component {
   getChildContext() {
     return {store: store};
   }  
+
+  // 编辑页面 admin => /admin/editPage?source=xx&id=xx
+  //         user => user/editPage?source=site&id=xx
+  // 预览页面 admin => /admin/previewPage?source=xx&id=xx
+  //         user => user/previewPage?source=site&id=xx
+
   render() {
     return (
       <Router history={history}>
@@ -72,6 +79,7 @@ class Index extends Component {
           <Route path="/admin/templateIndex" component={AdminTemplateIndex} />
           <Route path="/admin/layoutIndex" component={AdminLayoutIndex} />
           <Route path="/admin/editPage" component={Edit} />
+          <Route path="/admin/previewPage" component={Preview} />
         
           <CheckUserLogin store={store} path="/chooseTmp" exact component={ChooseTmp} />
           <Route path="/site/:id/edit" component={Test} />
