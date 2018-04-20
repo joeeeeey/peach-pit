@@ -23,7 +23,7 @@ function menu(f) {
 export default class GridArrangementOptionLists extends React.Component {
   constructor(props, context) {
     super(props);
-    this.positionStyle = this.props.positionStyle || { position: 'absolute', left: -20, top: -37, "borderRadius": "10%", "background": "#303233" }
+    this.positionStyle = this.props.positionStyle || { position: 'absolute', left: '-10%', top: -40, "borderRadius": "10%", "background": "#303233" }
     this.state = { visible: false }
   }
 
@@ -41,7 +41,7 @@ export default class GridArrangementOptionLists extends React.Component {
           onVisibleChange={this.handleVisibleChange}
           visible={this.state.visible}
         >
-          <Button style={{ color: '#FFF', fontSize: 8 }}>
+          <Button style={{minWidth:68, color: '#FFF', fontSize: 8 }}>
             布局
         </Button>
         </Dropdown>

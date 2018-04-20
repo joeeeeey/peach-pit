@@ -125,7 +125,8 @@ class Editor extends Component {
   }
 
   render() {
-    const overlayStyle = { position: 'absolute', bottom: 5, left: 0, zIndex: 1300 }
+    // TODO 规定长度，在靠屏幕左边时候左对齐，否则右对齐
+    const overlayStyle = {position: 'absolute', bottom: 5, left: 0, zIndex: 1300 }
 
     return (
       <div>

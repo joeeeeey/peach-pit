@@ -48,7 +48,7 @@ export default class ChangeBackgroundButton extends React.Component {
           trigger={['click']}
           onVisibleChange={this.handleVisibleChange}
           visible={this.state.visible}>
-          <Button style={{ color: '#FFF', fontSize: 8 }}>
+          <Button style={{minWidth:60, color: '#FFF', fontSize: 8 }}>
             背景
         </Button>
         </Dropdown>

@@ -1,10 +1,11 @@
 // 同等级增加元素的工具栏
-// 既不是可编辑的布局，可不适合放在单独抽离
-// 为了增强灵活性
-// 将它设置为 edit 组件
-// 但实际预览是不需要的
-// 增加 onlyEdit 属性在预览时去掉为 true 的节点
+// 不是可编辑的布局
 // 像是精灵一样分布在各处，拥有强大的能力
+
+// 接受 props: permanent boolean 
+//  默认显示行为: 默认不显示，监听鼠标悬浮时显示，离开时消失
+//  permanent 为 true 时则永久显示
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
@@ -33,36 +34,40 @@ function menu(f) {
   )
 }
 
-// {
-//   native: false, nodeName: 'Spirit', onlyEdit: true,
-//   props: { tools: [] }
-// }
 
-export default class EditableSpirit extends Component {
+export default class AddNodeSpirit extends Component {
   constructor(props, context) {
     super(props);
-    this.state = { visible: false }
+    this.state = { hidden: this.props.hidden || true}
   }
 
   // handleVisibleChange = (flag) => {
   //   this.setState({ visible: flag });
   // }
 
-  add = (nodeName) => {
-    // console.log(nodeName)
-    const nodeData = this.getNodeDataByName(nodeName)
-    // console.log(this.props.selfkey)
-    console.log(this.props.parentkey)
-    if(this.props.selfkey){
+  hiddenSelf = () => {
+    this.setState({hidden: true})
+  }
 
-    }else{
+  showSelf = () => {
+    console.log(`showSelf`)
+    this.setState({hidden: false})
+  }
+
+  add = (nodeName) => {
+    const nodeData = this.getNodeDataByName(nodeName)
+    console.log(this.props.childrenkey)
+    if (this.props.childrenkey) {
+      console.log(`TODO 在特定位置加入节点`)
+      // TODO 在特定位置加入节点
+    } else {
       this.context.store.dispatch({
         type: 'addNode',
         payload: { targetKey: this.props.parentkey, nodeData: nodeData },
         target: 'node',
-      });      
+      });
     }
-      
+
     // 若是 selfkey 存在, 若明容器中有子元素，这时候增加子元素时候应该查找
     // _relation 中 selfkey 元素存在的位置，然后在后方 push 该节点
   }
@@ -79,20 +84,21 @@ export default class EditableSpirit extends Component {
     }
   }
 
-
-
   render() {
     const { } = this.props
     return (
       <Dropdown overlay={menu(this.add)} trigger={['click']}
-        >
-        <div style={{ cursor: 'pointer', width: '100%', position: 'relative', textAlign: 'center' }}>
-          <IconButton aria-label="Add an alarm" style={{ blackground: 'black', height: 30 }}>
-            <AddIcon />
-          </IconButton>
-          <div key="toolbar" style={{ top: '48%', left: '5%', width: '90%', backgroundColor: 'black', height: 3, position: 'absolute' }}>
+      >
+        <div style={{cursor: 'pointer', minHeight: 23}} onMouseOut={this.hiddenSelf} onMouseOver={this.showSelf}>
+          <div hidden={!this.props.permanent && this.state.hidden} style={{textAlign:'center', width: '100%', position: 'relative' }}>
+            <IconButton aria-label="Add an alarm" style={{ blackground: 'black', height: 22 }}>
+              <AddIcon />
+            </IconButton>
+            <div key="toolbar" style={{ top: '48%', left: '5%', width: '90%', backgroundColor: 'black', height: 3, position: 'absolute' }}>
+            </div>
           </div>
         </div>
+
       </Dropdown>
 
     );
@@ -101,7 +107,7 @@ export default class EditableSpirit extends Component {
 
 
 
-EditableSpirit.contextTypes = {
+AddNodeSpirit.contextTypes = {
   store: PropTypes.object
 };
 
