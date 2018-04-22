@@ -281,30 +281,8 @@ export default withRoot(Index);
       });
   }
 
-  // initUpyunSerive = () => {
-  //   upyunService.getImgToken()
-  //     .then(response => {
-  //       const { data } = response
-  //       // console.log(`initUpyunSerive: datais ${JSON.stringify(data)}`)
-  //       if (data.code === 0) {
-  //         this.context.store.dispatch({
-  //           type: 'replace',
-  //           payload: data.data,
-  //           target: 'upYun',            
-  //         })
-  //       } else {
-  //         console.warn(`获取又拍云 token 失败: ${data.msg}`)
-  //       }
-  //     })
-  //     .catch(function (error) {
-  //       console.warn(`获取又拍云 token 失败: ${error}`)
-  //     });
-  // }
   componentDidMount() {
-    // 
     this.initSidebarChoosenLayouts()
-    // this.initUpyunSerive()
-
   }
 
   render() {

@@ -33,6 +33,14 @@ const defaultChildren = {
 const layoutStyle = { margin: '0 auto', width: '80%', flexGrow: 1, padding: '50px 0' }
 
 const defalutFlexLayout = [8, 4]
+
+const defaultParallexStyle = {
+  backgroundAttachment: 'fixed',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'noRepeat',
+  backgroundSize: 'cover',
+}
+
 export default class EditableVerticalLayout extends Component {
   // 可接受 props
   // spacing integer 控制子元素间距
@@ -135,27 +143,51 @@ export default class EditableVerticalLayout extends Component {
     this.rearrangeChildren(flex)
   }
 
+  // 填充样式
+  getBackgroundFillTypeStyle = (type, background) => {
+    switch (type) {
+      // 平铺
+      case 'tile':
+        return { background: background }
+      // 拉伸
+      case 'stretch':
+        return { background: background + ' no-repeat', backgroundSize: '100% 100%' }
+      // 填充 将整个图片都放入区域，不改变长宽比例，然后居中。需要手动计算设置长宽?
+      case 'fill':
+        return {}
+      default:
+        break;
+    }
+  }
+  // 视差样式
+  getBackgroundParallexStyle = (enableParallex) => {
+    if (enableParallex) {
+      return defaultParallexStyle;
+    } else { return {} }
+  }
+
   render() {
     // 如果没有 children, 那就用 addNode 方法给自己增加两个 children
     const {
+      fillType = 'stretch',
       background = '#b1d3db',
-      direction = 'row' } = this.props
+      enableParallex = true, // 默认开启视差效果
+      containerDirection = 'row' } = this.props
 
     this.flex = this.props.flex || defalutFlexLayout
-
-    // 平铺
-    // backgroundRepeat: 'noRepeat'
-    // 拉伸
-    const backgroundStyle = { backgroundSize: 'cover', background: background + ' no-repeat', }
+    // 填充样式
+    const backgroundFillTypeStyle = this.getBackgroundFillTypeStyle(fillType, background)
+    // 视差效果
+    const parallexStyle = this.getBackgroundParallexStyle(enableParallex)
+    const backgroundStyle = Object.assign({ position: 'relative' }, backgroundFillTypeStyle, parallexStyle)
 
     return (
-      <div className={"editContainer"} id={this.props.selfkey} style={{ background: (background + ' no-repeat'), position: 'relative' }}>
-        <ChangeBackgroundButton parentkey={this.props.selfkey} />
-        {/* <div style={{"height": '500px', width: '900px', background: background, backgroundRepeat: 'noRepeat'}}>dsads</div> */}
+      <div id={this.props.selfkey} style={backgroundStyle}>
+        <ChangeBackgroundButton parentkey={this.props.selfkey} fillType={fillType} enableParallex={enableParallex}/>
         <div style={layoutStyle}>
           <div style={{ position: 'relative' }}>
             <GridArrangementOptionLists handleRearrangeGird={this.handleRearrangeGird} />
-            <Grid container direction={direction} >
+            <Grid container direction={containerDirection} >
               {this.props.children &&
                 React.Children.toArray(this.props.children).map((child, index) => {
                   return (
