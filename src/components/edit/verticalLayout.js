@@ -22,6 +22,7 @@ import ChangeBackgroundButton from '../editTools/layout/changeBackgroundButton'
 import GridArrangementOptionLists from '../editTools/layout/gridArrangementOptionLists'
 import ArrayOper from '../../utils/arrOperation'
 
+
 const defaultChildren = {
   native: false, nodeName: 'VerticalGrid'
 }
@@ -142,9 +143,15 @@ export default class EditableVerticalLayout extends Component {
 
     this.flex = this.props.flex || defalutFlexLayout
 
+    // 平铺
+    // backgroundRepeat: 'noRepeat'
+    // 拉伸
+    const backgroundStyle = { backgroundSize: 'cover', background: background + ' no-repeat', }
+
     return (
-      <div id={this.props.selfkey} style={{ background: background, position: 'relative' }}>
+      <div className={"editContainer"} id={this.props.selfkey} style={{ background: (background + ' no-repeat'), position: 'relative' }}>
         <ChangeBackgroundButton parentkey={this.props.selfkey} />
+        {/* <div style={{"height": '500px', width: '900px', background: background, backgroundRepeat: 'noRepeat'}}>dsads</div> */}
         <div style={layoutStyle}>
           <div style={{ position: 'relative' }}>
             <GridArrangementOptionLists handleRearrangeGird={this.handleRearrangeGird} />

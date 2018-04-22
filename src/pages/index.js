@@ -73,7 +73,9 @@ class Index extends Component {
           <Route path="/admin/layoutIndex" component={AdminLayoutIndex} />
           <Route path="/admin/editPage" component={Edit} />
           <Route path="/admin/previewPage" component={Preview} />
+          <Route path="/administrator/previewPage" component={Preview} />
         
+
           <CheckUserLogin store={store} path="/chooseTmp" exact component={ChooseTmp} />
           <Route path="/site/:id/edit" component={Test} />
           <CheckUserLogin store={store} path='/test' component={Test} />
