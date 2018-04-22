@@ -23,6 +23,10 @@ import UpdateLayoutButton from '../editTools/sidebar/updateLayoutButton'
 
 import TemplateService from '../../services/templateService'
 import LayoutService from '../../services/layoutService'
+// import UpyunService from '../../services/upyunService'
+import Test from '../../pages/test'
+// const upyunService = new UpyunService()
+
 const layoutService = new LayoutService()
 const templateService = new TemplateService()
 
@@ -39,6 +43,7 @@ class EditableRoot extends Component {
       editInfo: context.store.getState().editInfo,   // {source: "das", id: "32", role: "admin"}
       layouts: [], // 可选择加入的样式
     }
+    console.log(context.store.getState().editInfo)
   }
 
   // 获得顶层元素，来加载侧边栏 layout
@@ -46,7 +51,6 @@ class EditableRoot extends Component {
     if (this.context.store.getState().node) {
       const rootKey = this.context.store.getState().node._root
       if (rootKey) {
-        console.log(`rootKey is ${rootKey}`)
         return this.context.store.getState().node._relation[rootKey]
       } else {
         return []
@@ -100,7 +104,7 @@ class EditableRoot extends Component {
   // 根据用户 和 资源 生成保存按钮
   saveBlockButton = () => {
     const { role, source, id } = this.state.editInfo
-    if (role === 'admin') {
+    if (role === 'administrator') {
       if (source === 'template') {
         return this.updateTemplateButton()
       } else if (source === 'layout') {
@@ -261,21 +265,46 @@ export default withRoot(Index);
     return { store: this.context.store };
   }
 
-  componentDidMount() {
+  initSidebarChoosenLayouts = () => {
     const params = { limit: 10000, currentPage: 1 }
-    const result = layoutService.getAllLayouts(params)
+    layoutService.getAllLayouts(params)
       .then(response => {
         const { data } = response
         if (data.code === 0) {
-          // console.log(data.data.records)
           this.setState({ layouts: data.data.records })
         } else {
-          console.log(`获取样式失败: ${data.msg}`)
+          console.warn(`获取样式失败: ${data.msg}`)
         }
       })
       .catch(function (error) {
-        console.log(`获取样式失败: ${error.msg}`)
+        console.warn(`获取样式失败: ${error}`)
       });
+  }
+
+  // initUpyunSerive = () => {
+  //   upyunService.getImgToken()
+  //     .then(response => {
+  //       const { data } = response
+  //       // console.log(`initUpyunSerive: datais ${JSON.stringify(data)}`)
+  //       if (data.code === 0) {
+  //         this.context.store.dispatch({
+  //           type: 'replace',
+  //           payload: data.data,
+  //           target: 'upYun',            
+  //         })
+  //       } else {
+  //         console.warn(`获取又拍云 token 失败: ${data.msg}`)
+  //       }
+  //     })
+  //     .catch(function (error) {
+  //       console.warn(`获取又拍云 token 失败: ${error}`)
+  //     });
+  // }
+  componentDidMount() {
+    // 
+    this.initSidebarChoosenLayouts()
+    // this.initUpyunSerive()
+
   }
 
   render() {
@@ -291,7 +320,7 @@ export default withRoot(Index);
                 </Button>
               </Menu.Item>
               <Menu.Item key="2">
-                <Button color="secondary" onClick={this.preview}  style={buttonStyle}>
+                <Button color="secondary" onClick={this.preview} style={buttonStyle}>
                   预览
                 </Button>
               </Menu.Item>
@@ -341,17 +370,18 @@ export default withRoot(Index);
                 </Menu.Item>
               }
 
-              {this.state.editInfo.role === 'admin' && this.insertNodeCodeButton()}
+              {this.state.editInfo.role === 'administrator' && this.insertNodeCodeButton()}
               {
-                this.state.editInfo.role === 'admin' &&
+                this.state.editInfo.role === 'administrator' &&
                 this.saveBlockButton()
               }
-              {this.state.editInfo.role === 'admin' && this.saveToNewBlockButton()}
-              {this.state.editInfo.role === 'admin' && this.clearNodeButton()}
+              {this.state.editInfo.role === 'administrator' && this.saveToNewBlockButton()}
+              {this.state.editInfo.role === 'administrator' && this.clearNodeButton()}
             </Menu>
           </Sider>
           <Layout style={{ marginLeft: 200, minHeight: '45.25rem', background: 'none' }} className={''}>
             <div id="divInRootAfterLayout">
+            <Test/>
               {this.props.children}
             </div>
           </Layout>

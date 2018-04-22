@@ -1,0 +1,29 @@
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  top: 40%;
+}
+
+.btn {
+  /* border: 2px solid gray; */
+  color: gray;
+  /* background-color: rgb(241, 238, 238); */
+  padding: 5px 15px;
+  border-radius: 4px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.MuiDialog-paperWidthSm-29 {
+  max-width: 900px !important;
+}
+
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}

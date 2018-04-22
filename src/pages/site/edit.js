@@ -78,7 +78,7 @@ class Edit extends React.Component {
     if (userState && userState.isLogin) {
       return 'user'
     } else if (adminState && adminState.isLogin) {
-      return 'admin'
+      return 'administrator'
     } else {
       return 'unknown'
     }
@@ -186,12 +186,10 @@ class Edit extends React.Component {
   }
 
   render = () => {
-    console.log(this.state.nodeData)
+    // console.log(this.state.nodeData)
     return (
       <div>
         {this.toF(nodeOperation.flattenedData2Code(JSON.parse(JSON.stringify(this.state.nodeData)), 'edit'))}
-        
-        {this.state.isPreview ? this.toF(nodeOperation.flattenedData2Code(this.state.nodeData, 'preview')) : null}
       </div>
     );
   }

@@ -42,13 +42,6 @@ function readCookideSetStore(key, target){
       target: target,
     });      
   }
-  // else{
-  //   store.dispatch({
-  //     type: 'update',
-  //     payload: {nestedKey: "isLogin", value: false},
-  //     target: target,
-  //   });    
-  // }   
 }
 
 class Index extends Component {
