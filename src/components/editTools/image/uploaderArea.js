@@ -99,7 +99,7 @@ export default class UploaderArea extends React.Component {
             const blob = new Blob([ia], { type: 'image/png' })
             this.img = blob
             // this.displayPreview = true
-            console.log(this.img)
+            // console.log(this.img)
             this.uploadImg()
           }
         } else {
@@ -111,23 +111,52 @@ export default class UploaderArea extends React.Component {
       });
   }
 
-  // 更新节点的图片信息，将该节点的背景图片 props 类型设为 image, 并添加图片的基本信息
+  // 更新以 div 为容器的背景信息，
   // 1. background 2. backgroundType 3. imageInfo
+  getDivContainerUpdateInfo = (nestedkeyprefix) => {
+    let updateNodesPayload = [
+      { key: 'background', value: `url(${this.imgUrl})` },
+      { key: 'backgroundType', value: 'image' },
+      { key: 'imageInfo', value: this.imageInfo } // TODO REMOVE?
+    ].map(element => { return { value: element.value, nestedKey: `${nestedkeyprefix},${element.key}` } })
+
+    return {
+      payloadData: {
+        updateNodes: { payloadData: updateNodesPayload },
+      }
+    }
+  }
+  getImageContainerUpdateInfo = (nestedkeyprefix) => {
+    return {
+      payloadData: {
+        updateNodes: {
+          payloadData: [{
+            value: `${this.imgUrl}`,
+            nestedKey: `${nestedkeyprefix},src`
+          }]
+        },
+      }
+    }
+  }
+
+  // 根据承载图片不同的元素来更新不同的 nodeTree props
+  // About  css background VS img tag => http://buildawesomewebsites.com/blog/html-img-tags-vs-css-background-images
   updateNodeTree = () => {
     const { nestedkeyprefix } = this.props
     if (!nestedkeyprefix) {
       message.error(`更新编辑页面失败,缺少需要更新的节点位置`, 1.2)
     } else {
-      let updateNodesPayload = [
-        { key: 'background', value: `url(${this.imgUrl})` },
-        { key: 'backgroundType', value: 'image' },
-        { key: 'imageInfo', value: this.imageInfo }
-      ].map(element => { return { value: element.value, nestedKey: `${nestedkeyprefix},${element.key}` } })
-
-      const compositePayload = {
-        payloadData: {
-          updateNodes: { payloadData: updateNodesPayload },
-        }
+      let compositePayload = null
+      switch (this.props.container) {
+        case 'div':
+          compositePayload = this.getDivContainerUpdateInfo(nestedkeyprefix)
+          break;
+        case 'image':
+          compositePayload = this.getImageContainerUpdateInfo(nestedkeyprefix)
+          break
+        default:
+          return false
+          break;  
       }
       this.context.store.dispatch({
         type: 'composite',
@@ -135,18 +164,6 @@ export default class UploaderArea extends React.Component {
         target: 'node',
       })
     }
-
-    // nestedkeyprefix + 'backgroundType'
-
-    // let updateNodesPayload = [{ value: flex, nestedKey: `${this.props.selfkey},props,flex` }]
-    //   backgroundInfo: {
-    //     background: '#b1d3db',
-    //     backgroundType: 'pureColor',
-    //     imageInfo: {}
-    //     fillType: null
-    //     enableParallex: null
-    //   }
-
   }
 
   uploadImg = () => {
@@ -159,16 +176,7 @@ export default class UploaderArea extends React.Component {
         if (res.data.code === 200) {
           this.props.uploadSuccess()
 
-
           this.updateNodeTree()
-          // nestedKey.split(',')
-          // const value = `url(${this.imgUrl})`
-          // this.context.store.dispatch({
-          //   type: 'update',
-          //   payload: { nestedKey: nestedkey, value: value },
-          //   target: 'node',
-          // })
-
         } else {
           message.error(`上传失败`, 1.2)
         }
@@ -211,7 +219,6 @@ export default class UploaderArea extends React.Component {
           <button style={this.UploaderButtonStyle()} className="btn">上传图片</button>
           <input onChange={this.fileInput} type="file" id="file-input" name="image" accept="image/*" />
         </div>
-
         {/* {this.state.imageUrl && <img style={{ minHeight: 200 }} src={this.state.imageUrl} alt="" />} */}
 
       </div>

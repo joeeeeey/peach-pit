@@ -12,14 +12,15 @@
 // 原始代码段
 // {
 //   native: false, nodeName: 'VerticalLayout',
-//   backgroundInfo: {
-//     background: '#b1d3db',
-//     backgroundType: 'pureColor',
-//     imageInfo: {}
-//     fillType: null
-//     enableParallex: null
-//   }, 
-//   props: null, 
+//     props: {
+//       backgroundInfo: {
+//         background: '#b1d3db',
+//           backgroundType: 'pureColor',
+//             imageInfo: { },
+//         fillType: null,
+//         enableParallex: null
+//       }
+//   }
 // }
 // {"native":false,"nodeName":"VerticalLayout","backgroundInfo":{"background":"#b1d3db","backgroundType":"pureColor"},"props":null}
 import React, { Component } from 'react';
@@ -34,7 +35,7 @@ import ArrayOper from '../../utils/arrOperation'
 // Layout 的公共样式， 可以抽离
 // 需要占据主屏幕 80% 位置左右两侧自动 margin
 // TODO  padding top bottom 如何在屏幕变小时自动变小
-const layoutStyle = { margin: '0 auto', width: '80%', flexGrow: 1, padding: '50px 0' }
+const layoutStyle = { margin: '0 auto', width: '84%', flexGrow: 1, padding: '50px 0' }
 
 const defaultChildren = {
   native: false, nodeName: 'VerticalGrid'
@@ -52,7 +53,6 @@ const defaultParallexStyle = {
 export default class EditableVerticalLayout extends Component {
   // 可接受 props
   // spacing integer 控制子元素间距
-
   constructor(props, context) {
     super(props);
   }

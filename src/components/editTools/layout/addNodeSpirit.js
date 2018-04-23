@@ -22,7 +22,10 @@ const buttonStyle = { color: 'grey', width: '100%', justifyContent: 'left' }
 function menu(f) {
   return (
     <Menu>
-      {[{ nodeName: 'TextArea', name: '文本框' }].map(item =>
+      {[
+        { nodeName: 'TextArea', name: '文本框' },
+        { nodeName: 'ImageArea', name: '图片' },
+      ].map(item =>
         <Menu.Item key={item.nodeName}>
           <Button onClick={() => { f(item.nodeName) }} color="secondary" style={buttonStyle}>
             {item.name}
@@ -38,15 +41,15 @@ function menu(f) {
 export default class AddNodeSpirit extends Component {
   constructor(props, context) {
     super(props);
-    this.state = { hidden: this.props.hidden || true}
+    this.state = { hidden: this.props.hidden || true }
   }
 
   hiddenSelf = () => {
-    this.setState({hidden: true})
+    this.setState({ hidden: true })
   }
 
   showSelf = () => {
-    this.setState({hidden: false})
+    this.setState({ hidden: false })
   }
 
   add = (nodeName) => {
@@ -74,6 +77,8 @@ export default class AddNodeSpirit extends Component {
         return JSON.parse('{"native":false,"nodeName":"TextArea","props":{"deltaDeltaValue":[{"insert":"在此输入标题","attributes":{"font":"serif"}},{"insert":"\\n","attributes":{"align":"center","header":1}}],"readOnly":false}}')
         break;
 
+      case 'ImageArea':
+        return JSON.parse('{"native": false, "nodeName": "ImageArea", "props": { "src": "http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/layout/8/1a4729c10b66ea0d2b5b9f25f2ea7039"}}')
       default:
         break;
     }
@@ -84,8 +89,8 @@ export default class AddNodeSpirit extends Component {
     return (
       <Dropdown overlay={menu(this.add)} trigger={['click']}
       >
-        <div style={{cursor: 'pointer', minHeight: 23}} onMouseOut={this.hiddenSelf} onMouseOver={this.showSelf}>
-          <div hidden={!this.props.permanent && this.state.hidden} style={{textAlign:'center', width: '100%', position: 'relative' }}>
+        <div style={{ cursor: 'pointer', minHeight: 23 }} onMouseOut={this.hiddenSelf} onMouseOver={this.showSelf}>
+          <div hidden={!this.props.permanent && this.state.hidden} style={{ textAlign: 'center', width: '100%', position: 'relative' }}>
             <IconButton aria-label="Add an alarm" style={{ blackground: 'black', height: 22 }}>
               <AddIcon />
             </IconButton>

@@ -10,7 +10,7 @@ import RemoveNodeSpirit from '../editTools/layout/removeNodeSpirit'
 
 
 const AddNodeSpiritContainerStyle = { minHeight: 23, position: 'absolute', top: -15, width: '100%' }
-const RemoveNodeSpiritContainerStyle = { position: 'absolute', right: -15, top: -4 }
+const RemoveNodeSpiritContainerStyle = { position: 'absolute', right: -15, top: -16 }
 export default class EditableVerticalGrid extends Component {
   constructor(props, context) {
     super(props);
@@ -42,7 +42,7 @@ export default class EditableVerticalGrid extends Component {
           {this.props.children &&
             React.Children.toArray(this.props.children).map((child, index) => {
               return (
-                <Grid key={child.props.selfkey} item xs={12} style={{ padding: '22px 0', position: 'relative' }}>
+                <Grid key={child.props.selfkey} item xs={12} style={{ padding: '10px 0', position: 'relative' }}>
                   <div key='addNodeSpritContainer' style={AddNodeSpiritContainerStyle} >
                     <AddNodeSpirit permanent={false} ref={(el) => { this.addNodeSpirit = el }} parentkey={this.props.selfkey} childrenkey={child.props.selfkey} />
                   </div>

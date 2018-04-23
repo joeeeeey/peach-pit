@@ -13,7 +13,7 @@ const Option = Select.Option;
 export default class ChangeBackgroundButton extends React.Component {
   constructor(props, context) {
     super(props);
-    this.positionStyle = this.props.positionStyle || { position: 'absolute', right: 50, top: 10, "borderRadius": "10%", "background": "#303233" }
+    this.positionStyle = this.props.positionStyle || { position: 'absolute', right: '2%', top: 10, "borderRadius": "10%", "background": "#303233" }
     this.state = {
       visible: false,
       backgroundType: this.props.backgroundInfo.backgroundType,
@@ -104,7 +104,7 @@ export default class ChangeBackgroundButton extends React.Component {
     return (
       <Menu >
         <Menu.Item key={'UploaderEntrance'}>
-          <UploaderEntrance uploadSuccess={this.handleUploadSuccess} nestedkeyprefix={`${this.props.parentkey},props,backgroundInfo`} />
+          <UploaderEntrance container={'div'} uploadSuccess={this.handleUploadSuccess} nestedkeyprefix={`${this.props.parentkey},props,backgroundInfo`} />
         </Menu.Item>
         {backgroundType === 'image' &&
           <Menu.Item key={'fillTypeSelection'}>

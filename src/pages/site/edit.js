@@ -17,14 +17,14 @@ import EditableGridList from '../../components/edit/gridList'
 import EditableGridListTile from '../../components/edit/gridListTile'
 import EditableFullWidthGrid from '../../components/edit/fullWidthGrid'
 import EditableVerticalLayout from '../../components/edit/verticalLayout'
-
+import EditableImageArea from '../../components/edit/imageArea'
 
 // Preview components in other views
-import PreviewRoot from '../../components/preview/root'
-import PreviewTextArea from '../../components/preview/textArea'
-import PreviewLetfRightGrid from '../../components/preview/letfRightGrid'
-import PreviewCard from '../../components/preview/card'
-import PreviewCardMedia from '../../components/preview/cardMedia'
+// import PreviewRoot from '../../components/preview/root'
+// import PreviewTextArea from '../../components/preview/textArea'
+// import PreviewLetfRightGrid from '../../components/preview/letfRightGrid'
+// import PreviewCard from '../../components/preview/card'
+// import PreviewCardMedia from '../../components/preview/cardMedia'
 
 // 测试的组件 
 import Test from '../test'
@@ -173,11 +173,13 @@ class Edit extends React.Component {
       EditableCard: EditableCard,
       EditableCardMedia: EditableCardMedia,
       EditableVerticalLayout: EditableVerticalLayout,
-      PreviewRoot: PreviewRoot,
-      PreviewTextArea: PreviewTextArea,
-      PreviewLetfRightGrid: PreviewLetfRightGrid,
-      PreviewCard: PreviewCard,
-      PreviewCardMedia: PreviewCardMedia,
+      EditableImageArea: EditableImageArea,
+      // PreviewRoot: PreviewRoot,
+      // PreviewTextArea: PreviewTextArea,
+      // PreviewLetfRightGrid: PreviewLetfRightGrid,
+      // PreviewCard: PreviewCard,
+      // PreviewCardMedia: PreviewCardMedia,
+      
     })
     return App
   }

@@ -1,5 +1,8 @@
 // 可传入 props
-// updateNodeInfo => {targetKey: 'xx', nestedKey: 'xx,xx'}
+// container  string 'div'
+// uploadSuccess function 成功上传的回调函数
+// nestedkeyprefix string 'xx,props,'
+
 
 // TODO
 // 图片上传的按钮和承载上传区域(包括上传按钮，预览区，图片库等)
@@ -25,7 +28,7 @@ export default class UploaderEntrance extends React.Component {
   };
 
   buttonStyle = () => {
-    return { width: '100%', justifyContent: 'left' }
+    return { width: '100%', justifyContent: 'center' }
   }
 
   handleClickOpen = () => {
@@ -44,12 +47,13 @@ export default class UploaderEntrance extends React.Component {
 
   handleUploadSuccess = () => {
     // uploadSuccess
-    if(this.props.uploadSuccess && typeof(this.props.uploadSuccess) === 'function'){
+    if (this.props.uploadSuccess && typeof (this.props.uploadSuccess) === 'function') {
       this.props.uploadSuccess()
     }
     this.handleClose()
   }
   render() {
+    const { container, nestedkeyprefix } = this.props
     return (
       <div>
         <Button onClick={this.handleClickOpen} style={this.buttonStyle()} color="secondary">上传图片</Button>
@@ -63,7 +67,7 @@ export default class UploaderEntrance extends React.Component {
             minWidth: '650px',
             minHeight: '270px'
           }}>
-            <UploaderArea nestedkeyprefix={this.props.nestedkeyprefix} uploadSuccess={this.handleUploadSuccess}/>
+            <UploaderArea container={container} nestedkeyprefix={nestedkeyprefix} uploadSuccess={this.handleUploadSuccess} />
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
