@@ -11,6 +11,8 @@ import PreviewCard from '../../components/preview/card'
 import PreviewCardMedia from '../../components/preview/cardMedia'
 import PreviewVerticalGrid from '../../components/preview/verticalGrid'
 import PreviewVerticalLayout from '../../components/preview/verticalLayout'
+import PreviewImageArea from '../../components/preview/imageArea'
+
 
 const blockService = new BlockService()
 
@@ -101,6 +103,7 @@ class Preview extends React.Component {
       PreviewCardMedia: PreviewCardMedia,
       PreviewVerticalGrid: PreviewVerticalGrid, 
       PreviewVerticalLayout: PreviewVerticalLayout,       
+      PreviewImageArea: PreviewImageArea,
     })
     return App
   }

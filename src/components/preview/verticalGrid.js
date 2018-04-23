@@ -13,7 +13,7 @@ export default class PreviewVerticalGrid extends Component {
           {this.props.children &&
             React.Children.toArray(this.props.children).map((child, index) => {
               return (
-                <Grid item xs={12} style={{ padding: '22px 0'}}>
+                <Grid key={index} item xs={12} style={{ padding: '22px 0'}}>
                   {child}
                 </Grid>
               )

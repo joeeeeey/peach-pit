@@ -41,7 +41,7 @@ export default class EditableImageArea extends Component {
 
 
   render() {
-    const { src = "url(/images/ORG_DSC01137.jpg)", alt = this.props.selfkey } = this.props
+    const { src, alt} = this.props
 
     return (
       <div
