@@ -6,12 +6,12 @@ import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import { Link } from 'react-router-dom';
 import nodeOperation from '../../utils/nodeOperation'
-
+import DeleteIcon from 'material-ui-icons/Delete';
 // 侧边栏以及 appbar
 import { Layout, Menu, Icon, Popover, Divider, message } from 'antd';
 import '../../css/editPage.css'
 import 'antd/dist/antd.css'
-
+import IconButton from 'material-ui/IconButton';
 // 插入节点代码
 import InsertNodeCodeDialog from '../editTools/sidebar/insertNodeCodeDialog'
 // 保存到新的板块
@@ -43,7 +43,6 @@ class EditableRoot extends Component {
       editInfo: context.store.getState().editInfo,   // {source: "das", id: "32", role: "admin"}
       layouts: [], // 可选择加入的样式
     }
-    console.log(context.store.getState().editInfo)
   }
 
   // 获得顶层元素，来加载侧边栏 layout
@@ -141,13 +140,23 @@ class EditableRoot extends Component {
     });
   }
 
-  addNode = (nodeData) => {
-    let { selfkey } = this.props
+  // 每个存在数据库的 node 都会被 div 包裹
+  // 所以取出其中子元素，这样才能被加入顶层节点
+  addNode = (nodeData, layoutName) => {
+    let addNodesPayload = JSON.parse(nodeData).children.map(
+      x => { return { nodeData: Object.assign(x, { layoutName: layoutName }), targetKey: this.context.store.getState().node._root } }
+    )
+    const compositePayload = {
+      payloadData: {
+        addNodes: { payloadData: addNodesPayload },
+      }
+    }
+
     this.context.store.dispatch({
-      type: 'addNode',
-      payload: { targetKey: selfkey, nodeData: JSON.parse(nodeData) },
+      type: 'composite',
+      payload: compositePayload,
       target: 'node',
-    });
+    })
   }
 
   // 单词首字母小写
@@ -315,9 +324,14 @@ export default withRoot(Index);
                 {
                   this.getRootChildren().map(section_key =>
                     <Menu.Item key={section_key}>
-                      <Button onClick={() => { this.removeNode(section_key) }} color="secondary" style={buttonStyle}>
-                        删除{this.context.store.getState().node[section_key].nodeName}
-                      </Button>
+                      <div>
+                        <Button href={`#${this.context.store.getState().node[section_key].props.id}`} style={{ color: 'white', width: '50%', justifyContent: 'left' }}>
+                          {this.context.store.getState().node[section_key].layoutName}
+                        </Button>
+                        <IconButton style={{ color: 'white', minWidth: 20 }} onClick={() => { this.removeNode(section_key) }} aria-label="Delete">
+                          <DeleteIcon />
+                        </IconButton>
+                      </div>
                     </Menu.Item>
                   )
                 }
@@ -328,7 +342,7 @@ export default withRoot(Index);
                   this.state.layouts.map(layout =>
                     <Menu.Item key={`${layout.id + 30}`}>
                       <Popover content={this.layoutPreView(`${layout.name}`)} title="Title" placement="right">
-                        <Button color="secondary" onClick={() => this.addNode(`${layout.data}`)} style={buttonStyle}>
+                        <Button color="secondary" onClick={() => this.addNode(layout.data, layout.name)} style={buttonStyle}>
                           {layout.name}
                         </Button>
                       </Popover>
@@ -359,7 +373,7 @@ export default withRoot(Index);
           </Sider>
           <Layout style={{ marginLeft: 200, minHeight: '45.25rem', background: 'none' }} className={''}>
             <div id="divInRootAfterLayout">
-            <Test/>
+              <Test />
               {this.props.children}
             </div>
           </Layout>

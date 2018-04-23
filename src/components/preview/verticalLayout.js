@@ -61,18 +61,10 @@ export default class PreviewVerticalLayout extends Component {
 
 
   render() {
-    // 如果没有 children, 那就用 addNode 方法给自己增加两个 children
-    // const {
-    //   background = '#b1d3db',
-    //   direction = 'row' } = this.props
-
-    // this.flex = this.props.flex || defalutFlexLayout
-
     const { containerDirection = 'row' } = this.props
 
     const { backgroundInfo } = this.props
-    // 有背景的 div props 约定
-    // background backgroundType 必传
+
     const {
       background,
       backgroundType,

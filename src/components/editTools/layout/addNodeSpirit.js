@@ -77,8 +77,6 @@ export default class AddNodeSpirit extends Component {
         return JSON.parse('{"native":false,"nodeName":"TextArea","props":{"deltaDeltaValue":[{"insert":"在此输入标题","attributes":{"font":"serif"}},{"insert":"\\n","attributes":{"align":"center","header":1}}],"readOnly":false}}')
         break;
 
-        
-
       case 'ImageArea':
         return JSON.parse('{"native": false, "nodeName": "ImageArea", "props": { "alt": "initial", "src": "/images/IMG_7881.jpg"}}')
       default:

@@ -136,6 +136,9 @@ class Edit extends React.Component {
 
   initialNodeData(block){
     let ftData = nodeOperation.flattenDomTree(this.wrapRoot(block))
+    // console.log(JSON.parse(block.data))
+    // let ftData = nodeOperation.flattenDomTree(ftData)
+    console.log(ftData)
     this.setState({ nodeData: ftData })
     this.context.store.dispatch({
       type: 'replace',
@@ -146,11 +149,12 @@ class Edit extends React.Component {
     // TODO setState after dispatch
   }
 
+  // {nodeName: 'div', children: []}
   wrapRoot = (block=null) => {
     if (block) {
       const domString = block.data
       const domData = JSON.parse(domString)
-      return { native: false, nodeName: 'Root', children: [domData] }
+      return { native: false, nodeName: 'Root', children: domData.children }
 
     } else {
       return { native: false, nodeName: 'Root', children: [] }
@@ -174,12 +178,6 @@ class Edit extends React.Component {
       EditableCardMedia: EditableCardMedia,
       EditableVerticalLayout: EditableVerticalLayout,
       EditableImageArea: EditableImageArea,
-      // PreviewRoot: PreviewRoot,
-      // PreviewTextArea: PreviewTextArea,
-      // PreviewLetfRightGrid: PreviewLetfRightGrid,
-      // PreviewCard: PreviewCard,
-      // PreviewCardMedia: PreviewCardMedia,
-      
     })
     return App
   }

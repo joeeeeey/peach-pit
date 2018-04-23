@@ -22,7 +22,7 @@
 //       }
 //   }
 // }
-// {"native":false,"nodeName":"VerticalLayout","backgroundInfo":{"background":"#b1d3db","backgroundType":"pureColor"},"props":null}
+// {"native":false,"nodeName":"VerticalLayout","props":{"backgroundInfo":{"background":"#b1d3db","backgroundType":"pureColor","imageInfo":{},"fillType":null,"enableParallex":null}}}
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Grid from 'material-ui/Grid';
@@ -62,6 +62,18 @@ export default class EditableVerticalLayout extends Component {
       this.flex = defalutFlexLayout
       this.addDefaultChildren()
     }
+
+    if (this.props.id === undefined || this.props.id === null) {
+      this.initialLayoutId()
+    }    
+  }
+
+  initialLayoutId = () => {
+    this.context.store.dispatch({
+      type: 'update',
+      payload: { nestedKey: `${this.props.selfkey},props,id`, value: this.props.selfkey },
+      target: 'node',
+    });
   }
 
   // 如果没有 children, 那就用 addNode 方法给自己增加两个 children
@@ -170,9 +182,8 @@ export default class EditableVerticalLayout extends Component {
   }
 
   render() {
-    const { containerDirection = 'row' } = this.props
+    const { id = this.props.selfkey, containerDirection = 'row', backgroundInfo } = this.props
 
-    const { backgroundInfo } = this.props
     // 有背景的 div props 约定
     // background backgroundType 必传
     const {
@@ -191,8 +202,9 @@ export default class EditableVerticalLayout extends Component {
     // 视差效果
     const parallexStyle = backgroundType === 'image' ? this.getBackgroundParallexStyle(enableParallex) : {}
     const backgroundStyle = Object.assign({ position: 'relative' }, backgroundFillTypeStyle, parallexStyle)
+
     return (
-      <div id={this.props.selfkey} style={backgroundStyle}>
+      <div id={id} style={backgroundStyle}>
         <ChangeBackgroundButton backgroundInfo={backgroundInfo} parentkey={this.props.selfkey} />
         <div style={layoutStyle}>
           <div style={{ position: 'relative' }}>

@@ -30,7 +30,7 @@ function objectPresent(obj) {
 //   根据 parentKey 找到childrenKeys, 将 selfKey 加入
 //   在 _relation 中加入自身的 relation, 并将自身除了 _root, _relation 合并到原 store
 function addNode(currentDom, nodeKey, newNode) {
-  if(!currentDom._relation[nodeKey]){currentDom._relation[nodeKey] = []}
+  if (!currentDom._relation[nodeKey]) { currentDom._relation[nodeKey] = [] }
   let nodeChildren = currentDom._relation[nodeKey]
 
   let { _relation, _root, ...newNodeData } = newNode
@@ -102,7 +102,7 @@ function removeNode(currentDom, targetKey, parentKey) {
 
 
 
-function doHeighten(flattenData, startDom = null){
+function doHeighten(flattenData, startDom = null) {
   let domData = flattenData[startDom]
   if (domData.props) {
     delete domData.props['selfkey']
@@ -122,17 +122,17 @@ function doHeighten(flattenData, startDom = null){
 // 需要去除最外层的 root, 若 root children 只有一个元素, 则保存该元素
 // 否则增加一层 {"native":true,"nodeName":"div"}
 function heightenDomTree(flattenData) {
-  if(objectPresent(flattenData)){
+  if (objectPresent(flattenData)) {
     const rootKey = flattenData._root
-    if(rootKey){
-      let childrenNames = flattenData._relation[rootKey]
-      if(childrenNames.length===1){
-        return doHeighten(flattenData, childrenNames[0])
-      }else{
-        flattenData[rootKey] = { native: true, nodeName: 'div'}
-        return doHeighten(flattenData, rootKey)
-      }
-    }else{
+    if (rootKey) {
+      // let childrenNames = flattenData._relation[rootKey]
+      // if(childrenNames.length===1){
+      //   return doHeighten(flattenData, childrenNames[0])
+      // }else{
+      flattenData[rootKey] = { native: true, nodeName: 'div' }
+      return doHeighten(flattenData, rootKey)
+      // }
+    } else {
       console.warn("ERROR, NEED ROOT KEY")
     }
   }

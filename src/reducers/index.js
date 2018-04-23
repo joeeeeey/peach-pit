@@ -102,12 +102,12 @@ export default (state = { user: {} }, action) => {
 }
 
 function addNode(node, payload) {
-  let { nodeData, targetKey } = payload
+  let { nodeData, targetKey, level } = payload
   if (nodeData != null) {
     nodeOperation.addNode(
       node,
       targetKey,
-      nodeOperation.flattenDomTree(nodeData)
+      nodeOperation.flattenDomTree(level==='topLevel' ? nodeData.children: nodeData)
     )
   } else {
     console.warn(`增加单个节点: 需要增加的节点数据为空`)
