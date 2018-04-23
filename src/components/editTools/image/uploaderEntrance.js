@@ -43,6 +43,10 @@ export default class UploaderEntrance extends React.Component {
   };
 
   handleUploadSuccess = () => {
+    // uploadSuccess
+    if(this.props.uploadSuccess && typeof(this.props.uploadSuccess) === 'function'){
+      this.props.uploadSuccess()
+    }
     this.handleClose()
   }
   render() {
@@ -59,7 +63,7 @@ export default class UploaderEntrance extends React.Component {
             minWidth: '650px',
             minHeight: '270px'
           }}>
-            <UploaderArea nestedkey={this.props.nestedkey} uploadSuccess={this.handleUploadSuccess}/>
+            <UploaderArea nestedkeyprefix={this.props.nestedkeyprefix} uploadSuccess={this.handleUploadSuccess}/>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">

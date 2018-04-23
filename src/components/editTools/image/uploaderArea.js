@@ -72,8 +72,6 @@ export default class UploaderArea extends React.Component {
       .then(response => {
         const { data } = response
         if (data.code === 0) {
-          console.log(data)
-
           this.policy = data.data.policy
           this.token = data.data.token
           this.saveKey = data.data.saveKey
@@ -85,11 +83,18 @@ export default class UploaderArea extends React.Component {
             // e.target.result 取到 base64 字符串用来本地预览
             // 此处直接上传成功后用 CDN url 预览
             // this.imgPreview = e.target.result
-            let data = e.target.result.split(',')[1]
-            data = window.atob(data)
-            let ia = new Uint8Array(data.length)
-            for (var i = 0; i < data.length; i++) {
-              ia[i] = data.charCodeAt(i)
+
+            let image = new Image();
+            image.src = e.target.result;
+            image.onload = () => {
+              this.imageInfo = { width: image.width, height: image.height }
+            };
+
+            let imgData = e.target.result.split(',')[1]
+            imgData = window.atob(imgData)
+            let ia = new Uint8Array(imgData.length)
+            for (var i = 0; i < imgData.length; i++) {
+              ia[i] = imgData.charCodeAt(i)
             }
             const blob = new Blob([ia], { type: 'image/png' })
             this.img = blob
@@ -106,6 +111,44 @@ export default class UploaderArea extends React.Component {
       });
   }
 
+  // 更新节点的图片信息，将该节点的背景图片 props 类型设为 image, 并添加图片的基本信息
+  // 1. background 2. backgroundType 3. imageInfo
+  updateNodeTree = () => {
+    const { nestedkeyprefix } = this.props
+    if (!nestedkeyprefix) {
+      message.error(`更新编辑页面失败,缺少需要更新的节点位置`, 1.2)
+    } else {
+      let updateNodesPayload = [
+        { key: 'background', value: `url(${this.imgUrl})` },
+        { key: 'backgroundType', value: 'image' },
+        { key: 'imageInfo', value: this.imageInfo }
+      ].map(element => { return { value: element.value, nestedKey: `${nestedkeyprefix},${element.key}` } })
+
+      const compositePayload = {
+        payloadData: {
+          updateNodes: { payloadData: updateNodesPayload },
+        }
+      }
+      this.context.store.dispatch({
+        type: 'composite',
+        payload: compositePayload,
+        target: 'node',
+      })
+    }
+
+    // nestedkeyprefix + 'backgroundType'
+
+    // let updateNodesPayload = [{ value: flex, nestedKey: `${this.props.selfkey},props,flex` }]
+    //   backgroundInfo: {
+    //     background: '#b1d3db',
+    //     backgroundType: 'pureColor',
+    //     imageInfo: {}
+    //     fillType: null
+    //     enableParallex: null
+    //   }
+
+  }
+
   uploadImg = () => {
     let fd = new FormData()
     fd.append('file', this.img)
@@ -114,24 +157,17 @@ export default class UploaderArea extends React.Component {
     axios.post(this.imgUploadUrl, fd)
       .then((res) => {
         if (res.data.code === 200) {
-
           this.props.uploadSuccess()
 
-          // updateNodeInfo {targetKey: 'xx', propNestedKey: 'xx,xx'}
-          // "url(/images/bg/bg4.jpg)
-          // const {targetKey, propNestedKey} = this.props.updateNodeInfo
-          // const nestedKey = `${targetKey},props,${propNestedKey}`
 
-          const {nestedkey} = this.props
-          if(!nestedkey){
-            message.error(`更新编辑页面失败,缺少需要更新的节点位置`, 1.2)
-          }
-          const value = `url(${this.imgUrl})`
-          this.context.store.dispatch({
-            type: 'update',
-            payload: { nestedKey: nestedkey, value: value},
-            target: 'node',
-          })
+          this.updateNodeTree()
+          // nestedKey.split(',')
+          // const value = `url(${this.imgUrl})`
+          // this.context.store.dispatch({
+          //   type: 'update',
+          //   payload: { nestedKey: nestedkey, value: value },
+          //   target: 'node',
+          // })
 
         } else {
           message.error(`上传失败`, 1.2)

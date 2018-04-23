@@ -9,11 +9,19 @@
 // flex  array
 // background string
 
+// 原始代码段
 // {
 //   native: false, nodeName: 'VerticalLayout',
-//   props: null,
+//   backgroundInfo: {
+//     background: '#b1d3db',
+//     backgroundType: 'pureColor',
+//     imageInfo: {}
+//     fillType: null
+//     enableParallex: null
+//   }, 
+//   props: null, 
 // }
-// {"native":false,"nodeName":"VerticalLayout","props":{}}
+// {"native":false,"nodeName":"VerticalLayout","backgroundInfo":{"background":"#b1d3db","backgroundType":"pureColor"},"props":null}
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Grid from 'material-ui/Grid';
@@ -23,14 +31,14 @@ import GridArrangementOptionLists from '../editTools/layout/gridArrangementOptio
 import ArrayOper from '../../utils/arrOperation'
 
 
-const defaultChildren = {
-  native: false, nodeName: 'VerticalGrid'
-}
-
 // Layout 的公共样式， 可以抽离
 // 需要占据主屏幕 80% 位置左右两侧自动 margin
 // TODO  padding top bottom 如何在屏幕变小时自动变小
 const layoutStyle = { margin: '0 auto', width: '80%', flexGrow: 1, padding: '50px 0' }
+
+const defaultChildren = {
+  native: false, nodeName: 'VerticalGrid'
+}
 
 const defalutFlexLayout = [8, 4]
 
@@ -56,6 +64,8 @@ export default class EditableVerticalLayout extends Component {
     }
   }
 
+  // 如果没有 children, 那就用 addNode 方法给自己增加两个 children
+  // TODO 使用批量增加
   addDefaultChildren = () => {
     for (let i = 0; i < this.flex.length; i++) {
       this.context.store.dispatch({
@@ -66,18 +76,11 @@ export default class EditableVerticalLayout extends Component {
     }
   }
 
-  removeNode = () => {
-  }
   getChildContext() {
     return { store: this.context.store };
   }
 
-  // composite
-  // payloadData => { addNodes: {payloadData: []}, removeNodes:  {payloadData: []} }
-  // payloadData => [{nestedKey: nestedKey, value: value}] 
-  // { payloadData: [{ nodeData: nodeData, targetKey: targetKey }]
-  // payload 为 {payloadData: [{targetKey: targetKey, parentKey, parentKey}]
-  // case 'composite':
+  // 重新布局，改变排列
   rearrangeChildren = (flex) => {
     if (ArrayOper.compare(flex, this.flex)) {
       return
@@ -154,9 +157,9 @@ export default class EditableVerticalLayout extends Component {
         return { background: background + ' no-repeat', backgroundSize: '100% 100%' }
       // 填充 将整个图片都放入区域，不改变长宽比例，然后居中。需要手动计算设置长宽?
       case 'fill':
-        return {}
+        return { background: background }
       default:
-        break;
+        return { background: background }
     }
   }
   // 视差样式
@@ -167,23 +170,30 @@ export default class EditableVerticalLayout extends Component {
   }
 
   render() {
-    // 如果没有 children, 那就用 addNode 方法给自己增加两个 children
+    const { containerDirection = 'row' } = this.props
+
+    const { backgroundInfo } = this.props
+    // 有背景的 div props 约定
+    // background backgroundType 必传
     const {
-      fillType = 'stretch',
-      background = '#b1d3db',
-      enableParallex = true, // 默认开启视差效果
-      containerDirection = 'row' } = this.props
+      background,
+      backgroundType,
+      // 背景是图片的时才需要的属性
+      imageInfo,
+      fillType,
+      enableParallex,
+    } = backgroundInfo
+
 
     this.flex = this.props.flex || defalutFlexLayout
     // 填充样式
     const backgroundFillTypeStyle = this.getBackgroundFillTypeStyle(fillType, background)
     // 视差效果
-    const parallexStyle = this.getBackgroundParallexStyle(enableParallex)
+    const parallexStyle = backgroundType === 'image' ? this.getBackgroundParallexStyle(enableParallex) : {}
     const backgroundStyle = Object.assign({ position: 'relative' }, backgroundFillTypeStyle, parallexStyle)
-
     return (
       <div id={this.props.selfkey} style={backgroundStyle}>
-        <ChangeBackgroundButton parentkey={this.props.selfkey} fillType={fillType} enableParallex={enableParallex}/>
+        <ChangeBackgroundButton backgroundInfo={backgroundInfo} parentkey={this.props.selfkey} />
         <div style={layoutStyle}>
           <div style={{ position: 'relative' }}>
             <GridArrangementOptionLists handleRearrangeGird={this.handleRearrangeGird} />
