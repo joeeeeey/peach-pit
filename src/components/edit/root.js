@@ -217,12 +217,12 @@ export default withRoot(Index);
         if (data.code === 0) {
           const containerPreviewFileRelativePath = data.data.containerPreviewFileRelativePath
           const indexFileCode = this.getCodeInIndex(containerPreviewFileRelativePath)
-          let user_id = null
+          let userId = null
           const { user } = this.context.store.getState()
           // TODO 是 admin 操作的情况
-          user_id = user&&user.profile ? user.profile.id : 1
+          userId = user&&user.profile ? user.profile.id : 1
           let params = {
-            user_id: user_id,
+            userId: userId,
             indexFileCode: indexFileCode
           }
           

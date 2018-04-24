@@ -128,7 +128,7 @@ export default class ChangeBackgroundButton extends React.Component {
         <Menu.Item key={'updataBackgroundColorButtons'}>
           <div style={{ maxWidth: 150 }}>
             <Grid container spacing={8}>
-              {['#a2c5d6', 'white', '#8c7ec9', "#EF9A9A", "#FF5252", "#F48FB1", "#FF4081", "#CE93D8", "#E040FB", "#B39DDB", "#7C4DFF", "#9FA8DA", "#536DFE", "#90CAF9", "#448AFF", "#81D4FA", "#40C4FF", "#80DEEA", "#18FFFF", "#80CBC4", "#64FFDA", "#A5D6A7", "#69F0AE", "#C5E1A5", "#B2FF59", "#E6EE9C", "#EEFF41", "#FFF59D", "#FFFF00", "#FFE082", "#FFD740", "#FFCC80", "#FFAB40", "#FFAB91", "#FF6E40", "#BCAAA4", "#EEEEEE", "#B0BEC5"].map(background =>
+              {['#a2c5d6', 'white', '#8c7ec9', "#EF9A9A", "#FF5252", "#F48FB1", "#FF4081", "#CE93D8", "#E040FB", "#B39DDB", "#7C4DFF", "#9FA8DA", "#536DFE", "#90CAF9", "#448AFF", "#81D4FA", "#40C4FF", "#80DEEA", "#18FFFF", "#80CBC4", "#64FFDA", "#A5D6A7", "#69F0AE", "#C5E1A5", "#B2FF59", "#E6EE9C", "#EEFF41", "#FFF59D", "#FFFF00", "#FFE082", "#FFD740", "#FFCC80", "#FFAB40", "#FFAB91", "#FF6E40", "#BCAAA4", "#EEEEEE", "#B0BEC5", "#020A0D"].map(background =>
                 <Grid key={background} item xs={4}>
                   <div onClick={() => { f([{type: 'backgroundType', value: 'pureColor' },{value: background, type: 'background'}]) }} style={{ cursor: 'pointer', minHeight: 20, background: background }}></div>
                 </Grid>)

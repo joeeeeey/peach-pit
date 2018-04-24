@@ -4,7 +4,7 @@
 ### 关于顶层样式(布局 layout)
 1. 只有在代码中声明的样式，才能被加入到顶层样式 (指 root 节点下的子节点)
 2. 顶层样式应在 addNode 时就初始化自身 id, 以便于锚点
-3. 一个垂直布局可以衍生与许多子布局，但要注意这些布局不含 id
+3. 一个垂直布局可以衍生与许多子布局，但要注意这些布局不含 id，这回导致 admin 目前无法直接看 layout #TODO 
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).

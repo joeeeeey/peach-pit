@@ -19,13 +19,6 @@ import EditableFullWidthGrid from '../../components/edit/fullWidthGrid'
 import EditableVerticalLayout from '../../components/edit/verticalLayout'
 import EditableImageArea from '../../components/edit/imageArea'
 
-// Preview components in other views
-// import PreviewRoot from '../../components/preview/root'
-// import PreviewTextArea from '../../components/preview/textArea'
-// import PreviewLetfRightGrid from '../../components/preview/letfRightGrid'
-// import PreviewCard from '../../components/preview/card'
-// import PreviewCardMedia from '../../components/preview/cardMedia'
-
 // 测试的组件 
 import Test from '../test'
 
@@ -106,11 +99,11 @@ class Edit extends React.Component {
         if (data.code === 0) {
           this.initialNodeData(data.data)
         } else {
-          console.log(data.msg)
+          console.warn(data.msg)
         }
       })
       .catch(function (error) {
-        console.log(error.msg)
+        console.warn(error)
       });
     }else{
       this.initialNodeData()

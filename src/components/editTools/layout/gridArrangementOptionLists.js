@@ -8,7 +8,7 @@ const buttonStyle = { color: 'grey', width: '100%', justifyContent: 'left' }
 function menu(f) {
   return (
     <Menu>
-      {[[6, 6], [4, 8], [8, 4], [4, 4, 4], [12], [4, 4, 2, 2], [6, 3, 3], [2, 2, 2, 2, 2, 2]].map(item =>
+      {[[6, 6], [4, 8], [7, 5],[3, 6, 3], [8, 4], [4, 4, 4], [12], [4, 4, 2, 2], [6, 3, 3], [2, 2, 2, 2, 2, 2]].map(item =>
         <Menu.Item key={JSON.stringify(item)}>
           <Button onClick={() => { f(item) }} color="secondary" style={buttonStyle}>
             {`${item.join(',')}`}

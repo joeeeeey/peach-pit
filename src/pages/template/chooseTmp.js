@@ -5,6 +5,15 @@ import { withStyles } from 'material-ui/styles';
 import TitleAndSubTitle from '../../components/common/titleAndSubTitle'
 import ButtonAppBar from '../../components/common/layouts/appBar'
 
+import TemplateService from '../../services/templateService'
+
+import { Radio } from 'antd';
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
+
+const templateService = new TemplateService()
+
+
 const styles = theme => ({
   root: {
     textAlign: 'center',
@@ -14,15 +23,55 @@ const styles = theme => ({
 class ChooseTmp extends Component {
   constructor(props) {
     super(props);
-    this.state = { currentCount: 10, lists: [] };
+    this.state = { templateCategroies: [], lists: [] };
   }
 
-  timer = () => {
-    // setState method is used to update the state
-    this.setState({ currentCount: this.state.currentCount +1 });
+  // 初始化模板的种类
+  initTmpCategroies = () => {
+    let params = { groupKey: 'category' }
+    templateService.getGroupedTemplate(params)
+      .then(response => {
+        const { data } = response
+        if (data.code === 0) {
+          this.setState({ templateCategroies: data.data.map(x => x.category) })
+        } else {
+          console.error(`${data.msg}`)
+        }
+      })
+  }
+
+  getTmpQueryParams = () => {
+    let whereClause = {} // category
+    return {
+      limit: 60,
+      whereClause: whereClause,
+      currentPage: 1,
+      columns: ['id', 'name', 'thumbnail_url', 'category'],
+    }
+  }
+
+  initTmpCards = () => {
+    let params = this.getTmpQueryParams()
+
+    templateService.getActiveTemplates(params)
+      .then(response => {
+        const { data } = response
+        if (data.code === 0) {
+          // message.success(`创建成功`, 6)
+        } else {
+          console.error(`${data.msg}`)
+        }
+      })
+      .catch(function (error) {
+        console.error(error)
+      });
   }
 
   componentDidMount() {
+    // 默认 60 个
+    this.initTmpCategroies()
+    this.initTmpCards()
+
     // var intervalId = setInterval(this.timer, 1000);
     this.setState({
       lists: [
@@ -40,6 +89,12 @@ class ChooseTmp extends Component {
     })
   }
 
+
+  selectTmpCategory = (e) => {
+    console.log(`radio checked:${e.target.value}`);
+  }
+
+
   render() {
     const { classes } = this.props;
     let containerConfig = {
@@ -48,7 +103,7 @@ class ChooseTmp extends Component {
     }
 
     let itemsConfig = {
-      lists: this.state.lists.slice(0, this.state.currentCount),
+      lists: this.state.lists,
       itemName: 'WebTemplateCard'
     }
 
@@ -56,13 +111,25 @@ class ChooseTmp extends Component {
 
     return (
       <div className={classes.root}>
-        {React.createElement(
-          appBar.className,
-          null
-        )}
+        <ButtonAppBar />
+
         < TitleAndSubTitle
           titleContent="选择一个模板"
           subTitleContent="随意选择，模板选择后可随意更换" />
+
+        <div>
+          <RadioGroup onChange={this.selectTmpCategory}>
+
+            {this.state.templateCategroies.map(x =>
+              <RadioButton value={x}>{x}</RadioButton>
+            )}
+            {/* <RadioButton value="a">默认</RadioButton>
+            <RadioButton value="b">Shanghai</RadioButton>
+            <RadioButton value="c">Beijing</RadioButton>
+            <RadioButton value="d">Chengdu</RadioButton> */}
+          </RadioGroup>
+        </div>
+
         <FullWidthGrid
           containerConfig={containerConfig}
           itemsConfig={itemsConfig} />
@@ -72,3 +139,4 @@ class ChooseTmp extends Component {
 }
 
 export default withStyles(styles)(ChooseTmp);
+

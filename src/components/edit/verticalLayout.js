@@ -196,7 +196,6 @@ export default class EditableVerticalLayout extends Component {
       enableParallex,
     } = backgroundInfo
 
-
     this.flex = this.props.flex || defalutFlexLayout
     // 填充样式
     const backgroundFillTypeStyle = this.getBackgroundFillTypeStyle(fillType, background)

@@ -20,7 +20,7 @@ import AdminLayoutIndex from './admin/layoutIndexPage'
 import ChooseTmp from './template/chooseTmp'
 import Edit from './site/edit'
 import Preview from './site/preview'
-import Test from './test'
+// import Test from './test'
 
 import { createStore } from 'redux'
 import PPSpace from '../reducers/index'
@@ -31,21 +31,21 @@ export const store = createStore(PPSpace)
 
 export const history = createBrowserHistory();
 
-function readCookideSetStore(key, target){
+function readCookideSetStore(key, target) {
   const cookieString = Cookies.get(key)
 
-  if(cookieString){
+  if (cookieString) {
     const cookieData = JSON.parse(new Buffer(cookieString, 'base64'))
     store.dispatch({
       type: 'replace',
-      payload: {isLogin: true, profile: cookieData},
+      payload: { isLogin: true, profile: cookieData },
       target: target,
-    });      
+    });
   }
 }
 
 class Index extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     readCookideSetStore('taohe_user', 'user')
 
@@ -53,8 +53,8 @@ class Index extends Component {
   }
 
   getChildContext() {
-    return {store: store};
-  }  
+    return { store: store };
+  }
 
   // 编辑页面 admin => /admin/editPage?source=xx&id=xx
   //         user => user/editPage?source=site&id=xx
@@ -66,7 +66,7 @@ class Index extends Component {
       <Router history={history}>
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/user/login" component={UserLogin} />
+
           <Route path="/admin/login" component={AdminLogin} />
           <Route path="/admin/home" component={AdminHome} />
           <Route path="/admin/templateIndex" component={AdminTemplateIndex} />
@@ -74,11 +74,10 @@ class Index extends Component {
           <Route path="/admin/editPage" component={Edit} />
           <Route path="/admin/previewPage" component={Preview} />
           <Route path="/administrator/previewPage" component={Preview} />
-        
-
-          <CheckUserLogin store={store} path="/chooseTmp" exact component={ChooseTmp} />
-          <Route path="/site/:id/edit" component={Test} />
-          <CheckUserLogin store={store} path='/test' component={Test} />
+          <CheckUserLogin store={store} shouldBe={true} path="/chooseTmp" exact component={ChooseTmp} />
+          <CheckUserLogin store={store} shouldBe={false} path="/user/login" component={UserLogin} />
+          {/* <Route path="/site/:id/edit" component={Test} />
+          <CheckUserLogin store={store} path='/test' component={Test} /> */}
           <Route path="/site/edit" component={Edit} />
         </Switch>
       </Router>
