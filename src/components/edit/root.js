@@ -23,13 +23,15 @@ import UpdateLayoutButton from '../editTools/sidebar/updateLayoutButton'
 
 import TemplateService from '../../services/templateService'
 import LayoutService from '../../services/layoutService'
+import DeployService from '../../services/deployService'
+
 // import UpyunService from '../../services/upyunService'
-import Test from '../../pages/test'
+// import Test from '../../pages/test'
 // const upyunService = new UpyunService()
 
 const layoutService = new LayoutService()
 const templateService = new TemplateService()
-
+const deployService = new DeployService()
 
 const { Content, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -164,23 +166,7 @@ class EditableRoot extends Component {
     return s.replace(/^.{1}/g, s[0].toLowerCase());
   }
 
-
-  deploy = () => {
-    // axios.get('/api/user', {
-    //   params: {
-    //     ID: 12345
-    //   }
-    // })
-    //   .then(function (response) {
-    //     console.log(response);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
-    //  TODO 配置在文件中
-    // 引入文件的路径前缀
-    let pathPrefix = '../components/preview/'
-
+  getCodeInIndex = (containerPreviewFileRelativePath) => {
     let nodeData = this.context.store.getState().node
 
     let importComponents = []
@@ -193,10 +179,16 @@ class EditableRoot extends Component {
     importComponents = [...new Set(importComponents)]
     let importCode = ""
     for (let i = 0; i < importComponents.length; i++) {
-      importCode += `import Preview${importComponents[i]} from '${pathPrefix + this.lowerFirstLetter(importComponents[i])}'\n`
+      importCode += `import Preview${importComponents[i]} from '${containerPreviewFileRelativePath + this.lowerFirstLetter(importComponents[i])}'\n`
     }
 
     let nodeCode = nodeOperation.flattenedData2Code(nodeData, 'deploy')
+
+    const re = /"\n"/gi;
+    // var str = '"\n"dadas';
+    nodeCode = nodeCode.replace(re, '"\\n"');
+    // console.log(newstr);     
+
     let indexJsCode = `
 import React, { Component } from 'react';
 import withRoot from '../withRoot';    
@@ -211,7 +203,45 @@ class Index extends Component {
 
 export default withRoot(Index);    
     `
-    this.download(indexJsCode, 'deploy.txt', 'text/plain')
+    return indexJsCode
+  }
+
+
+
+  
+  deploy = () => {
+    // TODO 部署之前先要更新这个 site
+    deployService.getContainerPreviewFileRelativePath()
+      .then((response) => {
+        const { data } = response
+        if (data.code === 0) {
+          const containerPreviewFileRelativePath = data.data.containerPreviewFileRelativePath
+          const indexFileCode = this.getCodeInIndex(containerPreviewFileRelativePath)
+          let user_id = null
+          const { user } = this.context.store.getState()
+          // TODO 是 admin 操作的情况
+          user_id = user&&user.profile ? user.profile.id : 1
+          let params = {
+            user_id: user_id,
+            indexFileCode: indexFileCode
+          }
+          
+          deployService.deploy(params)
+            .then(res => {
+              const { data } = res
+              if (data.code === 0) {
+                message.success('部署成功')
+              } else {
+                message.error(`😥 ${data.msg}`, 2)
+              }
+            })
+
+        } else {
+          message.error(`😥 ${data.msg}`, 2)
+        }
+      })
+
+    // this.download(indexJsCode, 'deploy.txt', 'text/plain')
   }
 
   // 测试代码生成的功能，应该由后端完成
@@ -259,7 +289,7 @@ export default withRoot(Index);
             const win = window.open(url, '_blank');
             win.focus();
           } else {
-            message.error(`😥 ${data.msg}`, 1.2)
+            message.error(`😥 ${data.msg}, 请设置浏览器允许该网站弹窗哦`, 2)
           }
         })
         .catch(function (error) {
@@ -373,7 +403,6 @@ export default withRoot(Index);
           </Sider>
           <Layout style={{ marginLeft: 200, minHeight: '45.25rem', background: 'none' }} className={''}>
             <div id="divInRootAfterLayout">
-              <Test />
               {this.props.children}
             </div>
           </Layout>

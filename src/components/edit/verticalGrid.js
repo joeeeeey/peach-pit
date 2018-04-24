@@ -8,7 +8,6 @@ import Grid from 'material-ui/Grid';
 import AddNodeSpirit from '../editTools/layout/addNodeSpirit'
 import RemoveNodeSpirit from '../editTools/layout/removeNodeSpirit'
 
-
 const AddNodeSpiritContainerStyle = { minHeight: 23, position: 'absolute', top: -15, width: '100%' }
 const RemoveNodeSpiritContainerStyle = { position: 'absolute', right: -15, top: -16 }
 export default class EditableVerticalGrid extends Component {
