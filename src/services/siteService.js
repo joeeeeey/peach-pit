@@ -9,6 +9,10 @@ class SiteService extends BaseService {
     return this.get('/api/get_site_by_id', params)
   }
 
+  update = (params) => {
+    return this.post('/api/update_site', params)
+  }
+
 }
 
 export default SiteService;

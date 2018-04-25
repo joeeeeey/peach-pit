@@ -65,14 +65,14 @@ class ChooseTemplateCard extends React.Component {
     const { redirectToEdit, siteId} = this.state;
 
     if (redirectToEdit && siteId) {
-      return <Redirect to={`/site/edit?id=${siteId}&source=site`} />;
+      return <Redirect to={`/user/editPage?id=${siteId}&source=site`} />;
     }
 
     return (
       <Grid item lg={5} md={5} sm={5} xs={11} >
         <Card className={classes.card}>
           <CardMedia
-            component={Link} to={`/site/edit?source=template&id=${id}/`}
+            component={Link} to={`/user/editPage?source=template&id=${id}/`}
             className={classes.media}
             image={thumbnail_url}
           />

@@ -21,10 +21,11 @@ class ChooseTmp extends Component {
     super(props);
     this.state = {
       templateCategroies: [],
-      lists: [],
       templates: [],
     };
   }
+
+
 
   // 初始化模板的种类
   initTmpCategroies = () => {
@@ -40,8 +41,8 @@ class ChooseTmp extends Component {
       })
   }
 
-  getTmpQueryParams = () => {
-    let whereClause = {} // category
+  getTmpQueryParams = (whereClause = {}) => {
+    // let whereClause = {} // category
     return {
       limit: 60,
       whereClause: whereClause,
@@ -50,9 +51,15 @@ class ChooseTmp extends Component {
     }
   }
 
-  initTmpCards = () => {
-    let params = this.getTmpQueryParams()
+  selectTmpCategory = (e) => {
+    // TODO send ajax to show category tmps
 
+    // console.log(`radio checked:${e.target.value}`);
+    let params = this.getTmpQueryParams({category: e.target.value})
+    this.initTmpCards(params)
+  }
+
+  initTmpCards = (params) => {
     templateService.getActiveTemplates(params)
       .then(response => {
         const { data } = response
@@ -71,13 +78,11 @@ class ChooseTmp extends Component {
   componentDidMount() {
     // 默认 60 个
     this.initTmpCategroies()
-    this.initTmpCards()
+    let params = this.getTmpQueryParams()
+    this.initTmpCards(params)
   }
 
-  selectTmpCategory = (e) => {
-    // TODO send ajax to show categroy tmps
-    console.log(`radio checked:${e.target.value}`);
-  }
+
 
   render() {
     return (

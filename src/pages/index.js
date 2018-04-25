@@ -76,9 +76,8 @@ class Index extends Component {
           <Route path="/administrator/previewPage" component={Preview} />
           <CheckUserLogin store={store} shouldBe={true} path="/chooseTmp" exact component={ChooseTmp} />
           <CheckUserLogin store={store} shouldBe={false} path="/user/login" component={UserLogin} />
-          {/* <Route path="/site/:id/edit" component={Test} />
-          <CheckUserLogin store={store} path='/test' component={Test} /> */}
-          <Route path="/site/edit" component={Edit} />
+          <CheckUserLogin store={store} shouldBe={true} path="/user/previewPage" component={Preview} />
+          <CheckUserLogin store={store} shouldBe={true} path="/user/editPage" component={Edit} />
         </Switch>
       </Router>
     );

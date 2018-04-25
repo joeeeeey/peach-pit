@@ -17,7 +17,7 @@ class LayoutService extends BaseService {
     // TODO admin 能获取的应是 active 为 true 并且开放给 admin 的
     // User 能获取的应是 active 为 true 并且除了标记开放给 admin 的
     if (editInfo.role === 'user') {
-      return this.get('/api/get_all_layouts', params)
+      return this.post('/api/get_all_layouts', params)
     } else if (editInfo.role === 'administrator') {
       return this.get('/api/admin/get_all_layouts', params)
     }

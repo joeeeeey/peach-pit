@@ -20,10 +20,16 @@ import SaveToNewBlockDialog from '../editTools/sidebar/saveToNewBlockDialog'
 import UpdateTemplateButton from '../editTools/sidebar/updateTemplateButton'
 // 更新样式按钮
 import UpdateLayoutButton from '../editTools/sidebar/updateLayoutButton'
+// 更新网站按钮
+import UpdateSiteButton from '../editTools/sidebar/updateSiteButton'
+// 部署网站按钮
+import DeploySiteButton from '../editTools/sidebar/deploySiteButton'
 
 import TemplateService from '../../services/templateService'
 import LayoutService from '../../services/layoutService'
+import SiteService from '../../services/siteService'
 import DeployService from '../../services/deployService'
+
 
 // import UpyunService from '../../services/upyunService'
 // import Test from '../../pages/test'
@@ -32,7 +38,7 @@ import DeployService from '../../services/deployService'
 const layoutService = new LayoutService()
 const templateService = new TemplateService()
 const deployService = new DeployService()
-
+const siteService = new SiteService()
 const { Content, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
@@ -86,6 +92,16 @@ class EditableRoot extends Component {
     )
   }
 
+  // 部署按钮
+  deploySiteButton = () => {
+    return (
+      <Menu.Item key="deploySiteButton">
+        <DeploySiteButton style={buttonStyle}/>
+      </Menu.Item>
+    )
+  }
+  
+
   updateTemplateButton = () => {
     return (
       <Menu.Item key="updateTemplateButton">
@@ -98,6 +114,14 @@ class EditableRoot extends Component {
     return (
       <Menu.Item key="updateLayoutButton">
         <UpdateLayoutButton style={buttonStyle} />
+      </Menu.Item>
+    )
+  }
+
+  updateSiteButton = () => {
+    return (
+      <Menu.Item key="updateSiteButton">
+        <UpdateSiteButton style={buttonStyle} />
       </Menu.Item>
     )
   }
@@ -269,6 +293,8 @@ export default withRoot(Index);
           this.service = templateService
           break;
         case 'site':
+          this.service = siteService
+          break;        
           // TODO 
           break;
         default:
@@ -330,7 +356,7 @@ export default withRoot(Index);
     return (
       <div >
         <Layout>
-          <Sider style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }}>
+          <Sider style={{zIndex:2, overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }}>
             <Menu theme="dark" mode="inline" defaultSelectedKeys={['sub4']}>
               <Menu.Item key="1">
                 <Button component={Link} to={this.state.editInfo.role === 'user' ? '/' : '/admin/home/'} color="secondary" style={buttonStyle}>
@@ -342,11 +368,12 @@ export default withRoot(Index);
                   预览
                 </Button>
               </Menu.Item>
-              <Menu.Item key="3">
+              { this.state.editInfo.role === 'user' && this.deploySiteButton() }
+              {/* <Menu.Item key="3">
                 <Button onClick={this.deploy} style={buttonStyle}>
                   部署
                 </Button>
-              </Menu.Item>
+              </Menu.Item> */}
               <Menu.Item key="4">
                 <a href="" id="a" style={{ marginLeft: 15 }}>下载代码</a>
               </Menu.Item>
@@ -384,14 +411,7 @@ export default withRoot(Index);
               <Menu.Item key="12">
                 <Divider dashed />
               </Menu.Item>
-              {
-                this.state.editInfo.role === 'user' &&
-                <Menu.Item key="saveSite">
-                  <Button color="secondary" style={buttonStyle}>
-                    保存
-                </Button>
-                </Menu.Item>
-              }
+              { this.state.editInfo.role === 'user' && this.updateSiteButton() }
 
               {this.state.editInfo.role === 'administrator' && this.insertNodeCodeButton()}
               {

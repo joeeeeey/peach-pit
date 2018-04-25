@@ -56,7 +56,7 @@ class Preview extends React.Component {
     let role = { role: this.getRoleNameFromStore(this.context.store) }
 
     const previewInfo = Object.assign({}, source, role)
-
+    // console.log(previewInfo)
     if (previewInfo.source) {
       blockService.getNodeDataInPreviewInfo(previewInfo)
         .then(response => {
