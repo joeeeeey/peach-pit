@@ -10,6 +10,7 @@ import nodeOperation from '../../../utils/nodeOperation'
 import { CircularProgress } from 'material-ui/Progress';
 import { Modal } from 'antd';
 
+import Typography from 'material-ui/Typography';
 import Dialog, {
   DialogActions,
   DialogContent,
@@ -27,7 +28,7 @@ export default class DeploySiteButton extends React.Component {
     super(props);
     this.state = {
       isDeploying: false,
-      openDeployFinishedDialog: true,
+      openDeployFinishedDialog: false,
       siteUrl: null,
     }
     // this.showDeploySuccessModel()
@@ -188,17 +189,28 @@ export default withRoot(Index);
           <DialogTitle id="alert-dialog-title">部署完成</DialogTitle>
           <DialogContent style={{ minWidth: 400 }}>
             <DialogContentText id="alert-dialog-description">
-              <div style={{ textAlign: 'center' }}>
-                <p>你现在可以点击以下域名</p>
-                <a href={this.state.siteUrl} target='_blank'>{this.state.siteUrl}</a>
-                <p>来查看你的网页啦</p>
-              </div>
+              {this.state.siteUrl &&
+                <div style={{ textAlign: 'center' }}>
+
+                  <Typography variant="subheading" gutterBottom>
+                    你现在可以点击以下域名
+                  </Typography>
+                  <a href={this.state.siteUrl} target='_blank'>{this.state.siteUrl}</a>
+
+                  <Typography variant="subheading" gutterBottom>
+                    来查看你的网页啦
+                  </Typography>
+                </div>
+              }
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button component={Link} to={this.state.siteUrl} target='_blank' color="primary">
-              点我也行
-            </Button>
+            {
+              this.state.siteUrl &&
+              <Button component={Link} to={this.state.siteUrl} target='_blank' color="primary">
+                点我也行
+              </Button>
+            }
             <Button onClick={this.handleDeployFinishedDialogClose} color="primary" autoFocus>
               继续编辑
             </Button>
