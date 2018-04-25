@@ -7,7 +7,7 @@ class DeployService extends BaseService {
   }
 
   deploy = (params) => {
-    return this.post('/api/site/deploy', params)
+    return this.post('/api/deploy_site', params)
   }
 }
 

@@ -306,7 +306,8 @@ export default withRoot(Index);
 
   initSidebarChoosenLayouts = () => {
     const params = { limit: 10000, currentPage: 1 }
-    layoutService.getAllLayouts(params)
+    
+    layoutService.getAllLayouts(params, this.context.store.getState().editInfo)
       .then(response => {
         const { data } = response
         if (data.code === 0) {

@@ -1,9 +1,11 @@
 // import BaseService from './baseService'
 import LayoutService from './layoutService'
 import TemplatService from './templateService'
+import SiteService from './siteService'
 
 const layoutService = new LayoutService()
 const templatService = new TemplatService()
+const siteService = new SiteService()
 
 class BlockService {
   getData = (editInfo) => {
@@ -14,7 +16,7 @@ class BlockService {
       case 'layout':
         return layoutService.getLayoutById({ id: id })
       case 'site':
-        break;
+        return siteService.getSiteById({ id: id })
       default:
         break;
     }

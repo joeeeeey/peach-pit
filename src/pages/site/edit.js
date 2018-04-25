@@ -15,7 +15,7 @@ import EditableCardMedia from '../../components/edit/cardMedia'
 import EditableVerticalGrid from '../../components/edit/verticalGrid'
 import EditableGridList from '../../components/edit/gridList'
 import EditableGridListTile from '../../components/edit/gridListTile'
-import EditableFullWidthGrid from '../../components/edit/fullWidthGrid'
+// import EditableFullWidthGrid from '../../components/edit/fullWidthGrid'
 import EditableVerticalLayout from '../../components/edit/verticalLayout'
 import EditableImageArea from '../../components/edit/imageArea'
 
@@ -165,7 +165,7 @@ class Edit extends React.Component {
       EditableVerticalGrid: EditableVerticalGrid,
       EditableGridList: EditableGridList,
       EditableGridListTile: EditableGridListTile,
-      EditableFullWidthGrid: EditableFullWidthGrid,
+      // EditableFullWidthGrid: EditableFullWidthGrid,
       EditableLetfRightGrid: EditableLetfRightGrid,
       EditableCard: EditableCard,
       EditableCardMedia: EditableCardMedia,
