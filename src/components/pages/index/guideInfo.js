@@ -35,7 +35,7 @@ class GuideInfo extends Component {
     }
 
     if (this.state.redirectChooseTmp) {
-      return <Redirect push to="/chooseTmp" />;
+      return <Redirect push to="/user/chooseTemplate" />;
     }
 
     return (

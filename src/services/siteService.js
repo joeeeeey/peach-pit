@@ -13,6 +13,13 @@ class SiteService extends BaseService {
     return this.post('/api/update_site', params)
   }
 
+  getUserSitesInfo = () => {
+    return this.get('/api/get_user_sites_info')
+  }
+
+  deleteSite = (params) => {
+    return this.post('/api/delete_site', params)
+  }
 }
 
 export default SiteService;

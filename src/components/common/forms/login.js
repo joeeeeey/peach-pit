@@ -45,7 +45,7 @@ class NormalLoginForm extends React.Component {
         }
       })
       .catch(function (error) {
-        message.error(`😥 出现异常: ${error.msg}`, 2)
+        message.error(`😥 出现异常: ${error}`, 2)
       });
   }
 
@@ -70,7 +70,7 @@ class NormalLoginForm extends React.Component {
         }
       })
       .catch(function (error) {
-        message.error(`😥 出现异常: ${error.msg}`, 2)
+        message.error(`😥 出现异常: ${error}`, 2)
       });
   }
 

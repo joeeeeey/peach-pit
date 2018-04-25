@@ -13,11 +13,14 @@ import Home from '../pages/user/homePage'
 
 // 其他路由组件
 import UserLogin from './user/loginPage'
+import UserSite from './user/sitePage'
+
 import AdminLogin from './admin/loginPage'
 import AdminHome from './admin/homePage'
 import AdminTemplateIndex from './admin/templateIndexPage'
 import AdminLayoutIndex from './admin/layoutIndexPage'
 import ChooseTmp from './template/chooseTmp'
+
 import Edit from './site/edit'
 import Preview from './site/preview'
 // import Test from './test'
@@ -74,7 +77,8 @@ class Index extends Component {
           <Route path="/admin/editPage" component={Edit} />
           <Route path="/admin/previewPage" component={Preview} />
           <Route path="/administrator/previewPage" component={Preview} />
-          <CheckUserLogin store={store} shouldBe={true} path="/chooseTmp" exact component={ChooseTmp} />
+          <CheckUserLogin store={store} shouldBe={true} path="/user/sites" exact component={UserSite} />
+          <CheckUserLogin store={store} shouldBe={true} path="/user/chooseTemplate" exact component={ChooseTmp} />
           <CheckUserLogin store={store} shouldBe={false} path="/user/login" component={UserLogin} />
           <CheckUserLogin store={store} shouldBe={true} path="/user/previewPage" component={Preview} />
           <CheckUserLogin store={store} shouldBe={true} path="/user/editPage" component={Edit} />

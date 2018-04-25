@@ -47,7 +47,7 @@ class Home extends Component {
         
 
           <div style={{ position: 'absolute', left: 0, top: '42%', width: '100%', textAlign: 'center' }}>
-            <Button component={Link} to={`/chooseTmp`} size="large" style={{width: '33%', color: '#fff', letterSpacing: 5, fontSize: 25 }}>HERE WE GO!</Button>
+            <Button component={Link} to={`/user/chooseTemplate`} size="large" style={{width: '33%', color: '#fff', letterSpacing: 5, fontSize: 25 }}>HERE WE GO!</Button>
           </div>
         </div>
         <div style={{ color: '#777', backgroundColor: 'white', textAlign: 'center', padding: '50px 80px', textAlign: 'justify' }}>

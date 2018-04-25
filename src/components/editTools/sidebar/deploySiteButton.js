@@ -31,7 +31,6 @@ export default class DeploySiteButton extends React.Component {
       openDeployFinishedDialog: false,
       siteUrl: null,
     }
-    // this.showDeploySuccessModel()
   }
 
   getSiteData = () => {
@@ -144,25 +143,6 @@ export default withRoot(Index);
     `
     return indexJsCode
   }
-
-  showDeploySuccessModel = (url) => {
-    Modal.info({
-      title: '部署完成',
-      content: `你现在可以在域名 ${url} 中查看你的网页啦`,
-      okText: '确认',
-      cancelText: '取消',
-      visible: !this.state.isDeploying,
-      onOk(e) {
-        // console.log(e)
-        console.log(url)
-      },
-      onCancel: this.setState({ isDeploying: true })
-    });
-  }
-
-  // handleClickOpen = () => {
-  //   this.setState({ openDeployFinishedDialog: true });
-  // };
 
   handleDeployFinishedDialogClose = () => {
     this.setState({ openDeployFinishedDialog: false });

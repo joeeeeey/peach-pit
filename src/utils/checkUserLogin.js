@@ -4,7 +4,7 @@ import { Redirect, Route } from 'react-router-dom'
 function CheckUserLogin({ component: Component, store, role = 'user', shouldBe, ...rest }) {
   let pathname = null
   if (role === 'user') {
-    pathname = shouldBe ? '/user/login' : '/chooseTmp'
+    pathname = shouldBe ? '/user/login' : '/user/chooseTemplate'
   } else if (role === 'admin') {
     role = 'administrator'
     pathname = shouldBe ? '/admin/login' : '/admin/home'

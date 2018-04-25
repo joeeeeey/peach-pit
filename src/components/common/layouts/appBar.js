@@ -57,7 +57,7 @@ class ButtonAppBar extends React.Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton component={Link} to="/" className={classes.menuButton} color="inherit" aria-label="Menu">
+            <IconButton component={Link} to="/user/sites" className={classes.menuButton} color="inherit" aria-label="Menu">
               <MenuIcon />
             </IconButton>
             <Typography variant="title" color="inherit" className={classes.flex}>
