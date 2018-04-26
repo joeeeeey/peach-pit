@@ -18,6 +18,8 @@ import EditableGridListTile from '../../components/edit/gridListTile'
 // import EditableFullWidthGrid from '../../components/edit/fullWidthGrid'
 import EditableVerticalLayout from '../../components/edit/verticalLayout'
 import EditableImageArea from '../../components/edit/imageArea'
+import EditableNavBar from '../../components/edit/navbar'
+
 
 // 测试的组件 
 import Test from '../test'
@@ -91,21 +93,21 @@ class Edit extends React.Component {
       target: 'editInfo',
     });
 
-    if(editInfo.source){
+    if (editInfo.source) {
       blockService.getNodeDataInEditInfo(editInfo)
-      .then(response => {
-        const { data } = response
-        // console.log(data)
-        if (data.code === 0) {
-          this.initialNodeData(data.data)
-        } else {
-          console.warn(data.msg)
-        }
-      })
-      .catch(function (error) {
-        console.warn(error)
-      });
-    }else{
+        .then(response => {
+          const { data } = response
+          // console.log(data)
+          if (data.code === 0) {
+            this.initialNodeData(data.data)
+          } else {
+            console.warn(data.msg)
+          }
+        })
+        .catch(function (error) {
+          console.warn(error)
+        });
+    } else {
       this.initialNodeData()
     }
     this.unsubscribe = this.context.store.subscribe(this.listener)
@@ -127,7 +129,7 @@ class Edit extends React.Component {
     this.unsubscribe();
   }
 
-  initialNodeData(block){
+  initialNodeData(block) {
     let ftData = nodeOperation.flattenDomTree(this.wrapRoot(block))
     // console.log(JSON.parse(block.data))
     // let ftData = nodeOperation.flattenDomTree(ftData)
@@ -143,14 +145,13 @@ class Edit extends React.Component {
   }
 
   // {nodeName: 'div', children: []}
-  wrapRoot = (block=null) => {
+  wrapRoot = (block = null) => {
     if (block) {
       const domString = block.data
       const domData = JSON.parse(domString)
-      return { native: false, nodeName: 'Root', children: domData.children }
-
+      return { native: false, nodeName: 'Root', children: domData.children, props: domData.props || { style: {} } }
     } else {
-      return { native: false, nodeName: 'Root', children: [] }
+      return { native: false, nodeName: 'Root', children: [], props: { style: {} } }
     }
 
 
@@ -171,6 +172,7 @@ class Edit extends React.Component {
       EditableCardMedia: EditableCardMedia,
       EditableVerticalLayout: EditableVerticalLayout,
       EditableImageArea: EditableImageArea,
+      EditableNavBar: EditableNavBar,
     })
     return App
   }

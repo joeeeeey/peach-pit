@@ -204,8 +204,8 @@ export default class EditableVerticalLayout extends Component {
     const backgroundStyle = Object.assign({ position: 'relative' }, backgroundFillTypeStyle, parallexStyle)
 
     return (
-      <ScrollableAnchor id={id}>
-        <div style={backgroundStyle}>
+      // <ScrollableAnchor id={id}>
+        <div style={backgroundStyle}  id={id}>
           <ChangeBackgroundButton backgroundInfo={backgroundInfo} parentkey={this.props.selfkey} />
           <div style={layoutStyle}>
             <div style={{ position: 'relative' }}>
@@ -224,7 +224,7 @@ export default class EditableVerticalLayout extends Component {
             </div>
           </div>
         </div>
-      </ScrollableAnchor>
+      // </ScrollableAnchor>
     );
   }
 }

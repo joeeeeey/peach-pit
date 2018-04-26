@@ -41,7 +41,7 @@ export default class EditableImageArea extends Component {
 
 
   render() {
-    const { src, alt} = this.props
+    const { src, alt, imageStyle = defaultImageStyle} = this.props
 
     return (
       <div
@@ -56,7 +56,7 @@ export default class EditableImageArea extends Component {
           </Button>
           <EditImageDialog ref={(el) => { this.editImageDialog = el }} targetkey={this.props.selfkey} />
         </div>
-        <img src={src} style={defaultImageStyle}></img>
+        <img src={src} style={imageStyle}></img>
       </div>
     );
   }

@@ -5,10 +5,11 @@ import { Table, Input, Button, Icon, message } from 'antd';
 import { Link } from 'react-router-dom';
 import MuButton from 'material-ui/Button';
 import LayoutService from '../../services/layoutService'
+
 const layoutService = new LayoutService()
 
 class LayoutIndexPage extends React.Component {
-  constructor(props) {
+  constructor(props, context) {
     super(props)
     this.state = {
       filterDropdownVisible: false,
@@ -78,7 +79,7 @@ class LayoutIndexPage extends React.Component {
       currentPage: pagination.current,
       column: 'id,name,thumbnail_url,created_at'
     }
-    const result = layoutService.getAllLayouts(params)
+    const result = layoutService.getAllLayouts(params, {role: 'administrator'})
       .then(response => {
         this.setState({ loading: false });
         const { data } = response
@@ -160,3 +161,7 @@ class LayoutIndexPage extends React.Component {
 }
 
 export default LayoutIndexPage
+
+LayoutIndexPage.contextTypes = {
+  store: PropTypes.object
+};

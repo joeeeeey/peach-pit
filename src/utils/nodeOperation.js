@@ -125,11 +125,9 @@ function heightenDomTree(flattenData) {
   if (objectPresent(flattenData)) {
     const rootKey = flattenData._root
     if (rootKey) {
-      // let childrenNames = flattenData._relation[rootKey]
-      // if(childrenNames.length===1){
-      //   return doHeighten(flattenData, childrenNames[0])
-      // }else{
-      flattenData[rootKey] = { native: true, nodeName: 'div' }
+      // root 也是有样式的
+      const rootProps = flattenData[rootKey].props
+      flattenData[rootKey] = { native: true, nodeName: 'div', props: rootProps }
       return doHeighten(flattenData, rootKey)
       // }
     } else {

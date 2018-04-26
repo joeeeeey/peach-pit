@@ -56,7 +56,6 @@ class Editor extends Component {
 
   handleChange = (html) => {
     if (this.quillRef) {
-      // context.store
       // TODO 此处将 this.quillRef.editor.delta 报错
       // this.changedDeltaValue
 
@@ -126,18 +125,21 @@ class Editor extends Component {
 
   render() {
     // TODO 规定长度，在靠屏幕左边时候左对齐，否则右对齐
-    const overlayStyle = {position: 'absolute', bottom: 5, left: 0, zIndex: 1300 }
+    // const overlayStyle = {position: 'absolute', bottom: 5, left: 0, zIndex: 1300 }
+    const { toolbarOverlayStyle = { bottom: 5, left: 0 },
+      toolbarAbove = true,
+      toolbarStyle
+    } = this.props
 
     return (
       <div>
-        {!this.readOnly &&
+        {!this.readOnly && toolbarAbove &&
           <div style={{ position: 'relative' }}>
-            <div hidden={!this.state.showToolbar} style={overlayStyle}>
-              <EditorToolbar id={this.quillId} hoverToolbar={this.hoverToolbarHandler} />
+            <div hidden={!this.state.showToolbar} style={Object.assign({ position: 'absolute', zIndex: 300 }, toolbarOverlayStyle)}>
+              <EditorToolbar formats={this.formats} toolbarStyle={this.props.toolbarStyle} id={this.quillId} hoverToolbar={this.hoverToolbarHandler} />
             </div>
           </div>
         }
-
         <div
           onMouseOver={this.onMouseOver}
           onMouseOut={this.onMouseOut}
@@ -153,9 +155,16 @@ class Editor extends Component {
             ref={(el) => { this.reactQuillRef = el }}
             defaultValue={this.deltaDeltaValue}
             readOnly={this.readOnly}
-          // style={this.props.styles}
           />
         </div>
+        {!this.readOnly && !toolbarAbove &&
+          <div style={{ position: 'relative' }}>
+            <div hidden={!this.state.showToolbar} style={Object.assign({ position: 'absolute', zIndex: 300 }, toolbarOverlayStyle)}>
+              <EditorToolbar toolbarStyle={toolbarStyle} id={this.quillId} hoverToolbar={this.hoverToolbarHandler} />
+            </div>
+          </div>
+        }
+
       </div>
 
     );

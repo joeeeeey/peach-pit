@@ -30,10 +30,12 @@ import LayoutService from '../../services/layoutService'
 import SiteService from '../../services/siteService'
 import DeployService from '../../services/deployService'
 
+import Test from '../../pages/test'
 
-// import UpyunService from '../../services/upyunService'
-// import Test from '../../pages/test'
-// const upyunService = new UpyunService()
+import { Anchor } from 'antd';
+const AnLink = Anchor.Link;
+
+
 
 const layoutService = new LayoutService()
 const templateService = new TemplateService()
@@ -53,8 +55,8 @@ class EditableRoot extends Component {
     }
   }
 
-  // 获得顶层元素，来加载侧边栏 layout
-  getRootChildren = () => {
+  // 获得顶层元素 key，来加载侧边栏 layout
+  getRootChildrenKey = () => {
     if (this.context.store.getState().node) {
       const rootKey = this.context.store.getState().node._root
       if (rootKey) {
@@ -62,6 +64,20 @@ class EditableRoot extends Component {
       } else {
         return []
       }
+    } else {
+      return []
+    }
+  }
+  // 获得顶层元素 
+  getRootChildren = () => {
+    const keys = this.getRootChildrenKey()
+    if (keys.length > 0) {
+      return keys.map(key => {
+        return {
+          id: this.context.store.getState().node[key].props.id,
+          name: this.context.store.getState().node[key].layoutName
+        }
+      })
     } else {
       return []
     }
@@ -96,11 +112,11 @@ class EditableRoot extends Component {
   deploySiteButton = () => {
     return (
       <Menu.Item key="deploySiteButton">
-        <DeploySiteButton style={buttonStyle}/>
+        <DeploySiteButton style={buttonStyle} />
       </Menu.Item>
     )
   }
-  
+
 
   updateTemplateButton = () => {
     return (
@@ -158,24 +174,86 @@ class EditableRoot extends Component {
   }
 
   removeNode = (targetKey) => {
-    const rootKey = this.context.store.getState().node._root
+    // const rootKey = this.context.store.getState().node._root
+    // this.context.store.dispatch({
+    //   type: 'removeNode',
+    //   payload: { targetKey: targetKey, parentKey: rootKey },
+    //   target: 'node',
+    // });
+
+    let compositePayload = {
+      payloadData: {
+        removeNodes: { payloadData: [{ targetKey: targetKey, parentKey: this.props.selfkey }] },
+      }
+    }
+    const updateNodesPayload = this.updateRootStyle('removeNode', this.context.store.getState().node[targetKey])
+
+    if (updateNodesPayload) {
+      compositePayload.payloadData.updateNodes = updateNodesPayload
+    }
+    console.log(compositePayload)
+
     this.context.store.dispatch({
-      type: 'removeNode',
-      payload: { targetKey: targetKey, parentKey: rootKey },
+      type: 'composite',
+      payload: compositePayload,
       target: 'node',
-    });
+    })
+
+
+  }
+
+  // 如果是导航栏或者其他会影响整个页面 padding margin 的 node 有变化(增删)，需要更新 root 的样式
+  updateRootStyle = (operation, node) => {
+    if (operation === 'addNode') {
+      if (node.nodeName === 'NavBar') {
+        const affectRoot = node.affectRoot
+        let updateNodesPayload = []
+        for (let a in affectRoot) {
+          updateNodesPayload.push({
+            value: affectRoot[a],
+            nestedKey: `${this.props.selfkey},props,style,${a}`
+          })
+        }
+        return { payloadData: updateNodesPayload }
+        //  {affectRoot :{'paddingTop': 64}}
+      } else {
+        return null
+      }
+    } else if (operation === 'removeNode') {
+      if (node.nodeName === 'NavBar') {
+        const affectRoot = node.affectRoot
+        let updateNodesPayload = []
+        for (let a in affectRoot) {
+          updateNodesPayload.push({
+            value: 0, // TODO 最好的方式是判断是字符串还是数字, 数字就减，字符变为 null
+            nestedKey: `${this.props.selfkey},props,style,${a}`
+          })
+        }
+        return { payloadData: updateNodesPayload }
+      } else {
+        return null
+      }
+    }
   }
 
   // 每个存在数据库的 node 都会被 div 包裹
   // 所以取出其中子元素，这样才能被加入顶层节点
+  // 其实 div 下只会有一个节点
   addNode = (nodeData, layoutName) => {
-    let addNodesPayload = JSON.parse(nodeData).children.map(
+    let chilrenData = JSON.parse(nodeData).children
+    let addNodesPayload = chilrenData.map(
       x => { return { nodeData: Object.assign(x, { layoutName: layoutName }), targetKey: this.context.store.getState().node._root } }
     )
-    const compositePayload = {
+
+    let compositePayload = {
       payloadData: {
         addNodes: { payloadData: addNodesPayload },
       }
+    }
+
+    const updateNodesPayload = this.updateRootStyle('addNode', chilrenData[0])
+    if (updateNodesPayload) {
+      compositePayload.payloadData.updateNodes = updateNodesPayload
     }
 
     this.context.store.dispatch({
@@ -232,7 +310,7 @@ export default withRoot(Index);
 
 
 
-  
+
   deploy = () => {
     // TODO 部署之前先要更新这个 site
     deployService.getContainerPreviewFileRelativePath()
@@ -244,12 +322,12 @@ export default withRoot(Index);
           let userId = null
           const { user } = this.context.store.getState()
           // TODO 是 admin 操作的情况
-          userId = user&&user.profile ? user.profile.id : 1
+          userId = user && user.profile ? user.profile.id : 1
           let params = {
             userId: userId,
             indexFileCode: indexFileCode
           }
-          
+
           deployService.deploy(params)
             .then(res => {
               const { data } = res
@@ -294,7 +372,7 @@ export default withRoot(Index);
           break;
         case 'site':
           this.service = siteService
-          break;        
+          break;
           // TODO 
           break;
         default:
@@ -332,7 +410,7 @@ export default withRoot(Index);
 
   initSidebarChoosenLayouts = () => {
     const params = { limit: 10000, currentPage: 1 }
-    
+
     layoutService.getAllLayouts(params, this.context.store.getState().editInfo)
       .then(response => {
         const { data } = response
@@ -349,14 +427,16 @@ export default withRoot(Index);
 
   componentDidMount() {
     this.initSidebarChoosenLayouts()
+
   }
 
   render() {
-    const { classes, theme } = this.props;
+
+    const rootDivStyle = this.props.style
     return (
       <div >
         <Layout>
-          <Sider style={{zIndex:2, overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }}>
+          <Sider style={{ zIndex: 2, overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }}>
             <Menu theme="dark" mode="inline" defaultSelectedKeys={['sub4']}>
               <Menu.Item key="1">
                 <Button component={Link} to={this.state.editInfo.role === 'user' ? '/user/sites' : '/admin/home/'} color="secondary" style={buttonStyle}>
@@ -368,25 +448,29 @@ export default withRoot(Index);
                   预览
                 </Button>
               </Menu.Item>
-              { this.state.editInfo.role === 'user' && this.deploySiteButton() }
-              {/* <Menu.Item key="3">
-                <Button onClick={this.deploy} style={buttonStyle}>
-                  部署
-                </Button>
-              </Menu.Item> */}
+              {this.state.editInfo.role === 'user' && this.deploySiteButton()}
+
               <Menu.Item key="4">
                 <a href="" id="a" style={{ marginLeft: 15 }}>下载代码</a>
               </Menu.Item>
 
+
               <SubMenu key="topLevelSections" title={<span><Icon type="database" />顶层板块</span>}>
                 {
-                  this.getRootChildren().map(section_key =>
-                    <Menu.Item key={section_key}>
-                      <div>
-                        <Button href={`#${this.context.store.getState().node[section_key].props.id}`} style={{ color: 'white', width: '50%', justifyContent: 'left' }}>
+                  this.getRootChildrenKey().map(section_key =>
+                    <Menu.Item style={{ whiteSpace: 'nowrap', overflowX: 'auto' }} key={section_key}>
+                      <div id="anchor" style={{ backgroundColor: 'black', display: 'inline-block' }}>
+                        <Anchor style={{ backgroundColor: 'black' }}>
+                          <AnLink title={this.context.store.getState().node[section_key].layoutName} href={`#${this.context.store.getState().node[section_key].props.id}`} style={{ color: 'white' }}>
+                          </AnLink>
+                          {/* <Button href={`#${this.context.store.getState().node[section_key].props.id}`} style={{ color: 'white', width: '50%', justifyContent: 'left' }}>
                           {this.context.store.getState().node[section_key].layoutName}
-                        </Button>
-                        <IconButton style={{ color: 'white', minWidth: 20 }} onClick={() => { this.removeNode(section_key) }} aria-label="Delete">
+                        </Button> */}
+                        </Anchor>
+                      </div>
+
+                      <div id="inco12" style={{ display: 'inline-block' }}>
+                        <IconButton style={{ color: '#CBD1CB', marginBottom: 18 }} onClick={() => { this.removeNode(section_key) }} aria-label="Delete">
                           <DeleteIcon />
                         </IconButton>
                       </div>
@@ -411,7 +495,7 @@ export default withRoot(Index);
               <Menu.Item key="12">
                 <Divider dashed />
               </Menu.Item>
-              { this.state.editInfo.role === 'user' && this.updateSiteButton() }
+              {this.state.editInfo.role === 'user' && this.updateSiteButton()}
 
               {this.state.editInfo.role === 'administrator' && this.insertNodeCodeButton()}
               {
@@ -423,7 +507,8 @@ export default withRoot(Index);
             </Menu>
           </Sider>
           <Layout style={{ marginLeft: 200, minHeight: '45.25rem', background: 'none' }} className={''}>
-            <div id="divInRootAfterLayout">
+            <div id="divInRootAfterLayout" style={rootDivStyle}>
+              {/* <Test store={this.context.store} rootChildren={this.getRootChildren()}/> */}
               {this.props.children}
             </div>
           </Layout>

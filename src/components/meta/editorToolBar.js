@@ -15,33 +15,47 @@ export default class CustomToolbar extends Component {
   }
 
   render() {
+    const { toolbarStyle = {}, formats } = this.props
+    
     return (
-      <div 
-        style={{background: 'white'}}
-        id={`${this.id}`} 
+      <div
+        style={Object.assign({ background: 'white' }, toolbarStyle)}
+        id={`${this.id}`}
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}>
+
         <select className="ql-header" defaultValue={""} onChange={e => e.persist()}>
-          {/* <option value="1"></option>
-          <option value="2"></option> */}
-          {/* <option selected></option> */}
         </select>
+
         <select className="ql-font"></select>
         <button className="ql-bold" />
         <button className="ql-italic" />
         <button className="ql-underline" />
-        <button className="ql-image" />
+
+        {/* {formats && formats.includes('image') &&
+          <button className="ql-image" />
+        } */}
+
         <select className="ql-align"></select>
 
         <select className="ql-color"></select>
+        {formats && formats.includes('list') &&
+          <button className="ql-list" value="ordered"></button>
+        }
 
-        <button className="ql-list" value="ordered"></button>
-        <button className="ql-list" value="bullet"></button>
+        {formats && formats.includes('list') &&
+          <button className="ql-list" value="bullet"></button>
+        }
 
         <button className="ql-script" value="sub"></button>
         <button className="ql-script" value="super"></button>
-        <button className="ql-indent" value="-1"></button>
-        <button className="ql-indent" value="+1"></button>
+        {formats && formats.includes('indent') &&
+          <button className="ql-indent" value="-1"></button>
+        }
+        {formats && formats.includes('indent') &&
+          <button className="ql-indent" value="+1"></button>
+        }
+
 
         <select className="ql-size" >
         </select>

@@ -1,4 +1,9 @@
-
+.ant-anchor-link-title{
+  color: grey !important;
+}
+.ant-anchor-link-active > .ant-anchor-link-title{
+  color: white !important;
+}
 
 /* .editContainer {
   background-repeat: no-repeat ;
