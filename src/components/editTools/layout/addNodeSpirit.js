@@ -54,7 +54,6 @@ export default class AddNodeSpirit extends Component {
 
   add = (nodeName) => {
     const nodeData = this.getNodeDataByName(nodeName)
-    // console.log(this.props.childrenkey)
     if (this.props.childrenkey) {
       console.log(`TODO 在特定位置加入节点`)
       // TODO 在特定位置加入节点

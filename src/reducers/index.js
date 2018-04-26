@@ -7,7 +7,7 @@ import nodeOperation from '../utils/nodeOperation'
 // target 代表操作 store 中的某个节点
 // => {target: 'node', type: 'replace', payload: {}}
 export default (state = { user: {}, administrator: {} }, action) => {
-  console.log(`store action here ${action.type}`)
+  // console.log(`store action here ${action.type}`)
   if (action.target === 'node') {
     switch (action.type) {
       case 'replace':

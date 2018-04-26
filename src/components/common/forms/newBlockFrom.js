@@ -65,7 +65,7 @@ class MyFrom extends React.Component {
         let block = {}
         block.name = values.blockName
         // 深拷贝 是否有更高效的方式?
-        const nodeData =  JSON.parse(JSON.stringify(this.context.store.getState().node));
+        let nodeData =  JSON.parse(JSON.stringify(this.context.store.getState().node));
         // const nodeData = this.context.store.getState().node  
         block.data = JSON.stringify(nodeOperation.heightenDomTree(nodeData))
         

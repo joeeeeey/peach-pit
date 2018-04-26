@@ -114,14 +114,14 @@ class Edit extends React.Component {
   }
 
   listener = () => {
-    console.log('编辑页面间听到了 store  变化')
+    // console.log('编辑页面监听到了 store  变化')
     // 此处监听 store 的变化，只要发生了 dispatch 就都会被监听到
     let { node, user } = this.context.store.getState()
 
     if (typeof node === 'string') {
       return false
     }
-    // console.log('开始更新 node 树')
+
     this.setState({ nodeData: node, isPreview: user.isPreview });
   }
 

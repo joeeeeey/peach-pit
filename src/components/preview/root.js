@@ -8,8 +8,9 @@ export default class PreviewRoot extends Component {
   }
 
   render() {
+    const rootDivStyle = this.props.style
     return (
-      <div>
+      <div style={rootDivStyle}>
         {this.props.children}
       </div>
     );

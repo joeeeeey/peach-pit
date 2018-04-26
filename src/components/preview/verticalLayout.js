@@ -63,8 +63,8 @@ export default class PreviewVerticalLayout extends Component {
   render() {
     const { containerDirection = 'row' } = this.props
 
-    const { backgroundInfo } = this.props
-
+    const { backgroundInfo, id } = this.props
+    
     const {
       background,
       backgroundType,
@@ -83,7 +83,7 @@ export default class PreviewVerticalLayout extends Component {
     const backgroundStyle = Object.assign({ position: 'relative' }, backgroundFillTypeStyle, parallexStyle)
 
     return (
-      <div style={backgroundStyle}>
+      <div style={backgroundStyle} id={id}>
         <div style={layoutStyle}>
           <Grid container direction={containerDirection} >
             {this.props.children &&

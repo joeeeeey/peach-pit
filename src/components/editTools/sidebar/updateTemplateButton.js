@@ -18,7 +18,7 @@ export default class UpdateTemplateButton extends React.Component {
       id: this.context.store.getState().editInfo.id,
     }
 
-    const nodeData = JSON.parse(JSON.stringify(this.context.store.getState().node));
+    let nodeData = JSON.parse(JSON.stringify(this.context.store.getState().node));
     parmas.data = JSON.stringify(nodeOperation.heightenDomTree(nodeData))
 
     templateService.updateTemplate(parmas)

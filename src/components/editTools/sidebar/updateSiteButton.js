@@ -18,7 +18,7 @@ export default class UpdateSiteButton extends React.Component {
       id: parseInt(this.context.store.getState().editInfo.id),
     }
 
-    const nodeData = JSON.parse(JSON.stringify(this.context.store.getState().node));
+    let nodeData = JSON.parse(JSON.stringify(this.context.store.getState().node));
     parmas.data = JSON.stringify(nodeOperation.heightenDomTree(nodeData))
 
     siteService.update(parmas)

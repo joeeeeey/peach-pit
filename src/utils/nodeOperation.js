@@ -119,6 +119,40 @@ function doHeighten(flattenData, startDom = null) {
 }
 
 
+// 为 navbar 更新的方案, navbar 的 props.rootChildren 中需要存储当前顶层节点的内容
+// navbar 必须知道总共的节点
+function satisfyNavBar(flattenData, topLeaveKeys) {
+  let hasNavBar = false
+  let navBarsKeys = [] // 支持有多个 navbar 共存
+
+  // 遍历 root 下 key 找出 navBar 的 key
+  for (let i = 0; i < topLeaveKeys.length; i++) {
+    if (flattenData[topLeaveKeys[i]].nodeName === 'NavBar') {
+      hasNavBar = true
+      navBarsKeys.push(topLeaveKeys[i])
+    }
+  }
+  // 存在则将剩余的 children 整理信息存入 navbar 的 props 中
+  if (hasNavBar) {
+    let rootChildrenKeys = topLeaveKeys.filter((i) => { return navBarsKeys.indexOf(i) < 0; });
+    let rootChildren = rootChildrenKeys.map(k => {
+      const {layoutName, nodeName} = flattenData[k]
+      return {
+        id: flattenData[k].props.id,
+        name: layoutName,
+        nodeName: nodeName,
+      }
+    })
+    for (let i = 0; i < navBarsKeys.length; i++) {
+      flattenData[navBarsKeys[i]].props.rootChildren = rootChildren
+    }
+    return flattenData
+  } else {
+    return flattenData
+  }
+}
+
+
 // 需要去除最外层的 root, 若 root children 只有一个元素, 则保存该元素
 // 否则增加一层 {"native":true,"nodeName":"div"}
 function heightenDomTree(flattenData) {
@@ -126,10 +160,11 @@ function heightenDomTree(flattenData) {
     const rootKey = flattenData._root
     if (rootKey) {
       // root 也是有样式的
+      flattenData = satisfyNavBar(flattenData, flattenData._relation[rootKey])
       const rootProps = flattenData[rootKey].props
       flattenData[rootKey] = { native: true, nodeName: 'div', props: rootProps }
       return doHeighten(flattenData, rootKey)
-      // }
+
     } else {
       console.warn("ERROR, NEED ROOT KEY")
     }

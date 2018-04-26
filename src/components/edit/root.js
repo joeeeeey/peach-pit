@@ -53,6 +53,7 @@ class EditableRoot extends Component {
       editInfo: context.store.getState().editInfo,   // {source: "das", id: "32", role: "admin"}
       layouts: [], // 可选择加入的样式
     }
+    this.navbar = []
   }
 
   // 获得顶层元素 key，来加载侧边栏 layout
@@ -174,13 +175,6 @@ class EditableRoot extends Component {
   }
 
   removeNode = (targetKey) => {
-    // const rootKey = this.context.store.getState().node._root
-    // this.context.store.dispatch({
-    //   type: 'removeNode',
-    //   payload: { targetKey: targetKey, parentKey: rootKey },
-    //   target: 'node',
-    // });
-
     let compositePayload = {
       payloadData: {
         removeNodes: { payloadData: [{ targetKey: targetKey, parentKey: this.props.selfkey }] },
@@ -191,15 +185,12 @@ class EditableRoot extends Component {
     if (updateNodesPayload) {
       compositePayload.payloadData.updateNodes = updateNodesPayload
     }
-    console.log(compositePayload)
 
     this.context.store.dispatch({
       type: 'composite',
       payload: compositePayload,
       target: 'node',
     })
-
-
   }
 
   // 如果是导航栏或者其他会影响整个页面 padding margin 的 node 有变化(增删)，需要更新 root 的样式
@@ -287,9 +278,7 @@ class EditableRoot extends Component {
     let nodeCode = nodeOperation.flattenedData2Code(nodeData, 'deploy')
 
     const re = /"\n"/gi;
-    // var str = '"\n"dadas';
-    nodeCode = nodeCode.replace(re, '"\\n"');
-    // console.log(newstr);     
+    nodeCode = nodeCode.replace(re, '"\\n"'); 
 
     let indexJsCode = `
 import React, { Component } from 'react';
@@ -381,7 +370,7 @@ export default withRoot(Index);
       let parmas = {
         id: id,
       }
-      const nodeData = JSON.parse(JSON.stringify(this.context.store.getState().node));
+      let nodeData = JSON.parse(JSON.stringify(this.context.store.getState().node));
       parmas.data = JSON.stringify(nodeOperation.heightenDomTree(nodeData))
 
       this.service.update(parmas)
@@ -427,12 +416,11 @@ export default withRoot(Index);
 
   componentDidMount() {
     this.initSidebarChoosenLayouts()
-
   }
 
   render() {
-
     const rootDivStyle = this.props.style
+
     return (
       <div >
         <Layout>
