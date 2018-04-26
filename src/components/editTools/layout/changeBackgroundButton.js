@@ -5,6 +5,8 @@ import { Menu, Dropdown, Select } from 'antd';
 import UploaderEntrance from '../image/uploaderEntrance'
 import Grid from 'material-ui/Grid';
 
+import { TwitterPicker, SketchPicker } from 'react-color'
+
 const buttonStyle = { color: 'grey', width: '100%', justifyContent: 'left' }
 
 const Option = Select.Option;
@@ -19,6 +21,8 @@ export default class ChangeBackgroundButton extends React.Component {
       backgroundType: this.props.backgroundInfo.backgroundType,
       enableParallex: this.props.backgroundInfo.enableParallex,
       fillType: this.props.backgroundInfo.fillType,
+      colorPicker: 'twitter',
+      background: '#ffffff',
     }
   }
 
@@ -45,7 +49,7 @@ export default class ChangeBackgroundButton extends React.Component {
   }
 
   // updateInfo => [{value: '', type: ''}]
-  updateNodeBackground = (updateInfo=[]) => {
+  updateNodeBackground = (updateInfo = []) => {
     let updateNodesPayload = updateInfo.map(e => {
       return { value: e.value, nestedKey: `${this.props.parentkey},props,backgroundInfo,${e.type}` }
     })
@@ -95,12 +99,28 @@ export default class ChangeBackgroundButton extends React.Component {
 
 
   // 得到子组件图片上传成功的回调
-  handleUploadSuccess = () => {
+  handleUploadSuccess = (color) => {
     this.setBackgroundImageDefaultStyle()
   }
 
+  handleChangeColorPicker = (color, event) => {
+    this.setState({ background: color.hex })
+    this.updateNodeBackground(
+      [{ type: 'backgroundType', value: 'pureColor' },
+      { value: color.hex, type: 'background' }]
+    )
+  }
+
+  changeColorPicker = () => {
+    if (this.state.colorPicker === 'twitter') {
+      this.setState({ colorPicker: 'sketch' })
+    } else {
+      this.setState({ colorPicker: 'twitter' })
+    }
+  }
+
   menu = (f) => {
-    const {backgroundType, fillType} = this.props.backgroundInfo
+    const { backgroundType, fillType } = this.props.backgroundInfo
     return (
       <Menu >
         <Menu.Item key={'UploaderEntrance'}>
@@ -126,14 +146,25 @@ export default class ChangeBackgroundButton extends React.Component {
         }
 
         <Menu.Item key={'updataBackgroundColorButtons'}>
-          <div style={{ maxWidth: 150 }}>
-            <Grid container spacing={8}>
-              {['#a2c5d6', 'white', '#8c7ec9', "#EF9A9A", "#FF5252", "#F48FB1", "#FF4081", "#CE93D8", "#E040FB", "#B39DDB", "#7C4DFF", "#9FA8DA", "#536DFE", "#90CAF9", "#448AFF", "#81D4FA", "#40C4FF", "#80DEEA", "#18FFFF", "#80CBC4", "#64FFDA", "#A5D6A7", "#69F0AE", "#C5E1A5", "#B2FF59", "#E6EE9C", "#EEFF41", "#FFF59D", "#FFFF00", "#FFE082", "#FFD740", "#FFCC80", "#FFAB40", "#FFAB91", "#FF6E40", "#BCAAA4", "#EEEEEE", "#B0BEC5", "#020A0D"].map(background =>
-                <Grid key={background} item xs={4}>
-                  <div onClick={() => { f([{type: 'backgroundType', value: 'pureColor' },{value: background, type: 'background'}]) }} style={{ cursor: 'pointer', minHeight: 20, background: background }}></div>
-                </Grid>)
-              }
-            </Grid>
+          <div style={{ maxWidth: 150, textAlign: 'center' }}>
+            <Button style={{ marginBottom: 5, }} onClick={this.changeColorPicker}> 切换画板</Button>
+            {this.state.colorPicker === 'twitter' &&
+              <TwitterPicker
+                triangle={'hidden'}
+                width={140}
+                onChangeComplete={this.handleChangeColorPicker}
+                color={this.state.background}
+                colors={['#ABB8C3', 'white', "#448AFF", "#81D4FA", "#40C4FF", "#80DEEA", "#18FFFF", "#80CBC4",
+                  "#64FFDA", "#A5D6A7", "#69F0AE", "#C5E1A5", "#B2FF59", "#E6EE9C", "#EEFF41"]}
+              />
+            }
+
+            {this.state.colorPicker === 'sketch' &&
+              <SketchPicker
+                width={140}
+                color={this.state.background}
+                onChangeComplete={this.handleChangeColorPicker} />
+            }
           </div>
         </Menu.Item>
       </Menu>
