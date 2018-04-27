@@ -30,7 +30,6 @@ import LayoutService from '../../services/layoutService'
 import SiteService from '../../services/siteService'
 import DeployService from '../../services/deployService'
 
-import Test from '../../pages/test'
 
 import { Anchor } from 'antd';
 const AnLink = Anchor.Link;
@@ -496,7 +495,6 @@ export default withRoot(Index);
           </Sider>
           <Layout style={{ marginLeft: 200, minHeight: '45.25rem', background: 'none' }} className={''}>
             <div id="divInRootAfterLayout" style={rootDivStyle}>
-              {/* <Test store={this.context.store} rootChildren={this.getRootChildren()}/> */}
               {this.props.children}
             </div>
           </Layout>

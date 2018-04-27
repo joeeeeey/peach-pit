@@ -19,7 +19,7 @@ import EditableGridListTile from '../../components/edit/gridListTile'
 import EditableVerticalLayout from '../../components/edit/verticalLayout'
 import EditableImageArea from '../../components/edit/imageArea'
 import EditableNavBar from '../../components/edit/navbar'
-
+import EditablePhotoGallery from '../../components/edit/photoGallery'
 
 // 测试的组件 
 import Test from '../test'
@@ -173,6 +173,7 @@ class Edit extends React.Component {
       EditableVerticalLayout: EditableVerticalLayout,
       EditableImageArea: EditableImageArea,
       EditableNavBar: EditableNavBar,
+      EditablePhotoGallery: EditablePhotoGallery,
     })
     return App
   }

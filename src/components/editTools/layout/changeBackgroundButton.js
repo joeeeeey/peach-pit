@@ -150,7 +150,7 @@ export default class ChangeBackgroundButton extends React.Component {
             <Button style={{ marginBottom: 5, }} onClick={this.changeColorPicker}> 切换画板</Button>
             {this.state.colorPicker === 'twitter' &&
               <TwitterPicker
-                triangle={'hidden'}
+                triangle={'hide'}
                 width={140}
                 onChangeComplete={this.handleChangeColorPicker}
                 color={this.state.background}
@@ -161,7 +161,7 @@ export default class ChangeBackgroundButton extends React.Component {
 
             {this.state.colorPicker === 'sketch' &&
               <SketchPicker
-                width={140}
+                width={120}
                 color={this.state.background}
                 onChangeComplete={this.handleChangeColorPicker} />
             }

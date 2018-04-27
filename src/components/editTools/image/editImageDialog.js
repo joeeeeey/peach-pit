@@ -1,3 +1,8 @@
+// 编辑图片界面
+// 后期可以做得更加人性操作，不适用 dialog
+// 会根据图片不同的属性来展示编辑内容
+// 如画廊中的图片就可以调整比例等
+
 import React from 'react';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
@@ -54,17 +59,6 @@ export default class EditImageDialog extends React.Component {
           <DialogTitle id="form-dialog-title">编辑图片</DialogTitle>
           <DialogContent style={{ width: 500 }}>
             <UploaderEntrance container={'image'} uploadSuccess={this.handleUploadSuccess} nestedkeyprefix={`${this.props.targetkey},props`} />
-            {/* <TextField
-              autoFocus
-              id="textarea"
-              margin="dense"
-              label="link"
-              placeholder="链接地址"
-              value={this.state.linkUrl}
-              onChange={this.handleChange('code')}
-              fullWidth
-            /> */}
-
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">

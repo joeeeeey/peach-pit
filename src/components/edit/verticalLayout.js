@@ -30,8 +30,7 @@ import Button from 'material-ui/Button';
 import ChangeBackgroundButton from '../editTools/layout/changeBackgroundButton'
 import GridArrangementOptionLists from '../editTools/layout/gridArrangementOptionLists'
 import ArrayOper from '../../utils/arrOperation'
-import ScrollableAnchor from 'react-scrollable-anchor'
-
+import ScrollableAnchor from 'react-scrollable-anchor' // TODO Change TO react scroll
 
 // Layout 的公共样式， 可以抽离
 // 需要占据主屏幕 80% 位置左右两侧自动 margin
@@ -204,27 +203,25 @@ export default class EditableVerticalLayout extends Component {
     const backgroundStyle = Object.assign({ position: 'relative' }, backgroundFillTypeStyle, parallexStyle)
 
     return (
-      // <ScrollableAnchor id={id}>
-        <div style={backgroundStyle}  id={id}>
-          <ChangeBackgroundButton backgroundInfo={backgroundInfo} parentkey={this.props.selfkey} />
-          <div style={layoutStyle}>
-            <div style={{ position: 'relative' }}>
-              <GridArrangementOptionLists handleRearrangeGird={this.handleRearrangeGird} />
-              <Grid container direction={containerDirection} >
-                {this.props.children &&
-                  React.Children.toArray(this.props.children).map((child, index) => {
-                    return (
-                      <Grid key={child.props.selfkey} item xs={12} sm={this.flex[index]} md={this.flex[index]} lg={this.flex[index]} xl={this.flex[index]}>
-                        {child}
-                      </Grid>
-                    )
-                  })
-                }
-              </Grid>
-            </div>
+      <div style={backgroundStyle} id={id}>
+        <ChangeBackgroundButton backgroundInfo={backgroundInfo} parentkey={this.props.selfkey} />
+        <div style={layoutStyle}>
+          <div style={{ position: 'relative' }}>
+            <GridArrangementOptionLists handleRearrangeGird={this.handleRearrangeGird} />
+            <Grid container direction={containerDirection} >
+              {this.props.children &&
+                React.Children.toArray(this.props.children).map((child, index) => {
+                  return (
+                    <Grid key={child.props.selfkey} item xs={12} sm={this.flex[index]} md={this.flex[index]} lg={this.flex[index]} xl={this.flex[index]}>
+                      {child}
+                    </Grid>
+                  )
+                })
+              }
+            </Grid>
           </div>
         </div>
-      // </ScrollableAnchor>
+      </div>
     );
   }
 }
