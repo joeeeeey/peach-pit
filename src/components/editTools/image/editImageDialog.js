@@ -48,6 +48,15 @@ export default class EditImageDialog extends React.Component {
     this.handleClose()
   }
 
+  removeImage = () => {
+    let { targetkey, parentkey } = this.props
+    this.context.store.dispatch({
+      type: 'removeNode',
+      payload: { targetKey: targetkey, parentKey: parentkey },
+      target: 'node',
+    });
+  }
+
   render() {
     return (
       <div>
@@ -59,11 +68,20 @@ export default class EditImageDialog extends React.Component {
           <DialogTitle id="form-dialog-title">编辑图片</DialogTitle>
           <DialogContent style={{ width: 500 }}>
             <UploaderEntrance container={'image'} uploadSuccess={this.handleUploadSuccess} nestedkeyprefix={`${this.props.targetkey},props`} />
+            <div style={{ textAlign: 'center', marginTop: 12 }}>
+              <Button onClick={this.removeImage} color="secondary" style={{color: 'grey'}}>
+                删除该图片
+              </Button>
+            </div>
+
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
               取消操作
             </Button>
+            <Button onClick={this.handleClose} color="primary">
+              取消操作
+            </Button>            
           </DialogActions>
         </Dialog>
       </div>

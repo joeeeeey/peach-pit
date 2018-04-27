@@ -53,10 +53,13 @@ export default class UploaderEntrance extends React.Component {
     this.handleClose()
   }
   render() {
-    const { container, nestedkeyprefix } = this.props
+    const { container, nestedkeyprefix, 
+      uploaderEntranceContainerStyle = {},
+      uploadButtonStyle = {}
+     } = this.props
     return (
-      <div>
-        <Button onClick={this.handleClickOpen} style={this.buttonStyle()} color="secondary">上传图片</Button>
+      <div name="UploaderEntranceContainer" style={uploaderEntranceContainerStyle}>
+        <Button onClick={this.handleClickOpen} style={Object.assign(this.buttonStyle(), uploadButtonStyle)  } color="secondary">上传图片</Button>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}

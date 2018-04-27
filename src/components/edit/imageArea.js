@@ -9,11 +9,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
-import EditImageDialog from '../editTools/image/editImageDialog'
+// 有编辑功能在加上
+// import EditImageDialog from '../editTools/image/editImageDialog'
+
+import UploaderEntrance from '../editTools/image/uploaderEntrance'
 
 const defaultImageStyle = { maxWidth: '100%', maxHeight: '100%' }
 const defaultOverlayStyle = { textAlign: 'center', "position": "absolute", "width": "100%", "height": "100%", "top": "0", "left": "0", "right": "0", "bottom": "0", "backgroundColor": "rgba(0,0,0,0.5)", "zIndex": "2", "cursor": "pointer" }
-const buttonStyle = { width: '100%', height: '100%', color: 'white', justifyContent: 'center' }
+const buttonStyle = { width: '100%', height: '86%', color: 'white', justifyContent: 'center' }
 
 
 export default class EditableImageArea extends Component {
@@ -39,12 +42,20 @@ export default class EditableImageArea extends Component {
     return { store: this.context.store };
   }
 
+  removeImageArea = () => {
+    let { selfkey, parentkey } = this.props
+    this.context.store.dispatch({
+      type: 'removeNode',
+      payload: { targetKey: selfkey, parentKey: parentkey },
+      target: 'node',
+    });
+  }
 
   render() {
     // galleryStyle 中存储画廊类型以及画廊需要存储的特征, 如: { type: 'verticalGallery', width: 1, height: 1 }
     // 会影响编辑页面的显示
 
-    const { src, alt, imageStyle = defaultImageStyle, imageContainer = { margin: '1px 15px' }, galleryStyle} = this.props
+    const { src, alt, imageStyle = defaultImageStyle, imageContainer = { margin: '1px 15px' }, galleryStyle } = this.props
 
     return (
       <div name="imageContainer"
@@ -54,10 +65,19 @@ export default class EditableImageArea extends Component {
           onMouseLeave={this.mouseLeaveImage}
           style={Object.assign({}, defaultOverlayStyle, this.state.overlayDisplay)}>
 
-          <Button color="secondary" onClick={this.showEditTool} style={buttonStyle}>
-            编辑
+          <div style={buttonStyle}>
+            <UploaderEntrance
+              uploaderEntranceContainerStyle={{ height: '100%' }}
+              uploadButtonStyle={{ height: '100%' }}
+              container={'image'}
+              nestedkeyprefix={`${this.props.selfkey},props`}
+            />
+          </div>
+          <Button color="secondary" onClick={this.removeImageArea} style={{ width: '100%', height: '14%', color: 'white', justifyContent: 'center' }}>
+            删除
           </Button>
-          <EditImageDialog ref={(el) => { this.editImageDialog = el }} targetkey={this.props.selfkey} />
+
+          {/* <EditImageDialog ref={(el) => { this.editImageDialog = el }} parentkey={this.props.parentkey} targetkey={this.props.selfkey} /> */}
         </div>
         <img src={src} style={imageStyle}></img>
       </div>

@@ -1,10 +1,3 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-// import Gallery from 'react-photo-gallery';
-import Measure from 'react-measure';
-import computeImage from '../../utils/computeImage'
-import EditableImageArea from '../edit/imageArea'
-
 // {
 //   native: false, nodeName: 'PhotoGallery',
 //     props: { imgContainerMargin: 2, intensity: 'normal', galleryWidth: '100%' },
@@ -64,11 +57,19 @@ import EditableImageArea from '../edit/imageArea'
 //   { src: 'https://source.unsplash.com/I1ASdgphUH4/800x599', width: 4, height: 3 }
 // ];
 
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Measure from 'react-measure';
+import computeImage from '../../utils/computeImage'
+import EditableImageArea from '../edit/imageArea'
+import AdjustGalleryStyleButton from '../editTools/photoGallery/adjustGalleryStyleButton'
+import AddGalleryElementButton from '../editTools/photoGallery/addGalleryElementButton'
+
 const imgContainerStyle = {
   "overflow": "hidden",
-  "float": "left", "position": "relative",
+  "float": "left",
+  "position": "relative",
 }
-
 
 export default class EditablePhotoGallery extends Component {
   constructor(props, context) {
@@ -80,15 +81,6 @@ export default class EditablePhotoGallery extends Component {
     return { store: this.context.store };
   }
 
-  getPhotosSize = (width, photos, columns, margin = 3) => {
-    const results = (0, computeImage.computeSizes)({
-      width: width, // 屏幕的宽度
-      columns: columns,  // 外层能放几列
-      margin: 5,
-      photos: photos
-    })
-    return results
-  }
   // { src: 'https://source.unsplash.com/I1ASdgphUH4/800x599', width: 4, height: 3 }
   getChildrenPhotoInfo = (width, childrens, columns, margin = 2) => {
     const photos = childrens.map(
@@ -108,8 +100,8 @@ export default class EditablePhotoGallery extends Component {
       margin: margin,
       photos: photos
     })
-    return results
 
+    return results
   }
 
   componentDidMount() {
@@ -129,17 +121,7 @@ export default class EditablePhotoGallery extends Component {
 
   // 根据密集程度获得列数
   getColumnsByIntensity = (intensity) => {
-    switch (intensity) {
-      case 'sparse':
-        return [2, 4, 5]
-      case 'normal':
-        return [3, 6, 9]
-      case 'intensive':
-        return [4, 8, 12]
-      default:
-        break;
-    }
-
+    return [intensity, intensity + 2, intensity + 4]
   }
 
   render() {
@@ -147,6 +129,7 @@ export default class EditablePhotoGallery extends Component {
       imgContainerMargin, // 图片间距
       intensity, // 密集度，默认在不同屏幕尺寸下排列的元素 
       galleryWidth, // 画廊所占宽度 全幅，中幅，小幅 'fullWidth' 
+      id,
     } = this.props
 
     const width = this.state.width
@@ -171,30 +154,36 @@ export default class EditablePhotoGallery extends Component {
               columns = columnArrange[2];
             }
 
-            return <div id={this.props.selfkey} style={{ width: galleryWidth, margin: 'auto' }} ref={measureRef} name="gallery">
+            return (
+              <div id={id} style={{ position: 'relative' }}>
+                <AdjustGalleryStyleButton {...this.props} />
+                <div style={{ width: `${galleryWidth}%`, margin: 'auto' }} ref={measureRef} name="gallery">
 
-              {
-                this.getChildrenPhotoInfo(
-                  width,
-                  React.Children.toArray(this.props.children),
-                  columns,
-                  imgContainerMargin
-                ).map(childPhotoInfo =>
-                  <div key={childPhotoInfo.props.selfkey} name="imgContainer" style={Object.assign({ margin: imgContainerMargin }, imgContainerStyle)}>
-                    <div>
-                      <EditableImageArea
-                        src={childPhotoInfo.src}
-                        imageContainer={{}}
-                        imageStyle={{ width: childPhotoInfo.width, height: childPhotoInfo.height }}
-                        {...childPhotoInfo.props}
-                      />
-                    </div>
-                  </div>
-                )
-              }
+                  {
+                    this.getChildrenPhotoInfo(
+                      width,
+                      React.Children.toArray(this.props.children),
+                      columns,
+                      imgContainerMargin
+                    ).map(childPhotoInfo =>
+                      <div key={childPhotoInfo.props.selfkey} name="imgContainer" style={Object.assign({ margin: imgContainerMargin }, imgContainerStyle)}>
+                        <div>
+                          <EditableImageArea
+                            src={childPhotoInfo.src}
+                            imageContainer={{}}
+                            imageStyle={{width: childPhotoInfo.width, height: childPhotoInfo.height }}
+                            {...childPhotoInfo.props}
+                          />
+                        </div>
+                      </div>
+                    )
+                  }
 
-              <div style={{ display: 'table', clear: 'both' }}></div>
-            </div>
+                  <div name="buzhidaoganshadediv" style={{ display: 'table', clear: 'both' }}></div>
+                  <AddGalleryElementButton {...this.props}/>
+                </div>
+              </div >
+            )
           }
         }
       </Measure>
