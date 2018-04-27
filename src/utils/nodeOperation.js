@@ -29,9 +29,10 @@ function objectPresent(obj) {
 // 向当前节点增加新节点 (更新降维后的 dom tree data)
 //   根据 parentKey 找到childrenKeys, 将 selfKey 加入
 //   在 _relation 中加入自身的 relation, 并将自身除了 _root, _relation 合并到原 store
-function addNode(currentDom, nodeKey, newNode) {
-  if (!currentDom._relation[nodeKey]) { currentDom._relation[nodeKey] = [] }
-  let nodeChildren = currentDom._relation[nodeKey]
+//   若 childKey 存在，则需要找到 parentkey 中的 childKey 位置在后方插入
+function addNode(currentDom, parentKey, newNode, childKey = null) {
+  if (!currentDom._relation[parentKey]) { currentDom._relation[parentKey] = [] }
+  let nodeChildren = currentDom._relation[parentKey]
 
   let { _relation, _root, ...newNodeData } = newNode
   // let newNodeRootKey = newNodes._relation._root
@@ -39,8 +40,13 @@ function addNode(currentDom, nodeKey, newNode) {
   if (_root === null) {
     return
   }
-  // 合并 relation 
-  nodeChildren.push(_root)
+
+  // 合并 relation key
+  if (childKey) {
+    nodeChildren.splice((nodeChildren.indexOf(childKey)), 0, _root)
+  } else {
+    nodeChildren.push(_root)
+  }
 
   Object.assign(currentDom._relation, _relation)
 
@@ -136,7 +142,7 @@ function satisfyNavBar(flattenData, topLeaveKeys) {
   if (hasNavBar) {
     let rootChildrenKeys = topLeaveKeys.filter((i) => { return navBarsKeys.indexOf(i) < 0; });
     let rootChildren = rootChildrenKeys.map(k => {
-      const {layoutName, nodeName} = flattenData[k]
+      const { layoutName, nodeName } = flattenData[k]
       return {
         id: flattenData[k].props.id,
         name: layoutName,

@@ -147,7 +147,7 @@ export default class EditablePhotoGallery extends Component {
             if (width >= 480) {
               columns = columnArrange[0];
             }
-            if (width >= 1024) {
+            if (width >= 1200) {
               columns = columnArrange[1];
             }
             if (width >= 1824) {

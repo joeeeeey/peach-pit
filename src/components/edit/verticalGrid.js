@@ -23,7 +23,7 @@ export default class EditableVerticalGrid extends Component {
             React.Children.toArray(this.props.children).map((child, index) => {
               return (
                 <Grid key={child.props.selfkey} item xs={12} style={{ padding: '10px 0', position: 'relative' }}>
-                  <div key='addNodeSpritContainer' style={AddNodeSpiritContainerStyle} >
+                  <div key='addNodeSpritContainer' id={child.props.selfkey} style={AddNodeSpiritContainerStyle} >
                     <AddNodeSpirit permanent={false} ref={(el) => { this.addNodeSpirit = el }} parentkey={this.props.selfkey} childrenkey={child.props.selfkey} />
                   </div>
                   <div key='RemoveNodeSpritContainer' style={RemoveNodeSpiritContainerStyle}>

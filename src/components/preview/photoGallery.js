@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import Measure from 'react-measure';
 import computeImage from '../../utils/computeImage'
-// import EditableImageArea from '../edit/imageArea'
 import PreviewImageArea from '../preview/imageArea'
-// import AdjustGalleryStyleButton from '../editTools/photoGallery/adjustGalleryStyleButton'
-// import AddGalleryElementButton from '../editTools/photoGallery/addGalleryElementButton'
-
 const imgContainerStyle = {
   "overflow": "hidden",
   "float": "left",
@@ -69,7 +65,7 @@ export default class PreviewPhotoGallery extends Component {
             if (width >= 480) {
               columns = columnArrange[0];
             }
-            if (width >= 1024) {
+            if (width >= 1200) {
               columns = columnArrange[1];
             }
             if (width >= 1824) {

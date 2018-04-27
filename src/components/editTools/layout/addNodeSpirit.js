@@ -55,6 +55,12 @@ export default class AddNodeSpirit extends Component {
   add = (nodeName) => {
     const nodeData = this.getNodeDataByName(nodeName)
     if (this.props.childrenkey) {
+      // childKey
+      this.context.store.dispatch({
+        type: 'addNode',
+        payload: { childKey: this.props.childrenkey, targetKey: this.props.parentkey, nodeData: nodeData },
+        target: 'node',
+      });
       console.log(`TODO 在特定位置加入节点`)
       // TODO 在特定位置加入节点
     } else {
@@ -65,8 +71,8 @@ export default class AddNodeSpirit extends Component {
       });
     }
 
-    // 若是 selfkey 存在, 若明容器中有子元素，这时候增加子元素时候应该查找
-    // _relation 中 selfkey 元素存在的位置，然后在后方 push 该节点
+    // 若是 childrenkey 存在, 若明容器中有子元素，这时候增加子元素时候应该查找
+    // _relation 中 parentkey 元素存在的位置，然后在 childrenkey 后方 push 该节点
   }
 
   getNodeDataByName = (nodeName) => {
