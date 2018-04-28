@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Measure from 'react-measure';
 import computeImage from '../../utils/computeImage'
 import PreviewImageArea from '../preview/imageArea'
+import backgroundSetting from '../../layoutSettings/backgroundSetting'
+
 const imgContainerStyle = {
   "overflow": "hidden",
   "float": "left",
@@ -48,7 +50,10 @@ export default class PreviewPhotoGallery extends Component {
       intensity, // 密集度，默认在不同屏幕尺寸下排列的元素 
       galleryWidth, // 画廊所占宽度 全幅，中幅，小幅 'fullWidth' 
       id,
+      backgroundInfo,
     } = this.props
+    // 背景样式
+    const backgroundStyle = Object.assign({ position: 'relative' }, backgroundSetting.getBackgroundStyle(backgroundInfo))
 
     const width = this.state.width
 
@@ -73,7 +78,7 @@ export default class PreviewPhotoGallery extends Component {
             }
 
             return (
-              <div id={id} style={{ position: 'relative' }}>
+              <div id={id} style={backgroundStyle}>
                 <div style={{ width: `${galleryWidth}%`, margin: 'auto' }} ref={measureRef} name="gallery">
                   {
                     this.getChildrenPhotoInfo(
@@ -86,7 +91,7 @@ export default class PreviewPhotoGallery extends Component {
                         <div>
                           <PreviewImageArea
                             src={childPhotoInfo.src}
-                            imageContainer={{}}
+                            imageContainerStyle={{}}
                             imageStyle={{ width: childPhotoInfo.width, height: childPhotoInfo.height }}
                             {...childPhotoInfo.props}
                           />

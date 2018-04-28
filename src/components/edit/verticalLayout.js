@@ -30,7 +30,8 @@ import Button from 'material-ui/Button';
 import ChangeBackgroundButton from '../editTools/layout/changeBackgroundButton'
 import GridArrangementOptionLists from '../editTools/layout/gridArrangementOptionLists'
 import ArrayOper from '../../utils/arrOperation'
-import ScrollableAnchor from 'react-scrollable-anchor' // TODO Change TO react scroll
+// import ScrollableAnchor from 'react-scrollable-anchor' // TODO Change TO react scroll
+import backgroundSetting from '../../layoutSettings/backgroundSetting'
 
 // Layout 的公共样式， 可以抽离
 // 需要占据主屏幕 80% 位置左右两侧自动 margin
@@ -43,12 +44,12 @@ const defaultChildren = {
 
 const defalutFlexLayout = [8, 4]
 
-const defaultParallexStyle = {
-  backgroundAttachment: 'fixed',
-  backgroundPosition: 'center',
-  backgroundRepeat: 'noRepeat',
-  backgroundSize: 'cover',
-}
+// const defaultParallexStyle = {
+//   backgroundAttachment: 'fixed',
+//   backgroundPosition: 'center',
+//   backgroundRepeat: 'noRepeat',
+//   backgroundSize: 'cover',
+// }
 
 export default class EditableVerticalLayout extends Component {
   // 可接受 props
@@ -158,29 +159,6 @@ export default class EditableVerticalLayout extends Component {
     this.rearrangeChildren(flex)
   }
 
-  // 填充样式
-  getBackgroundFillTypeStyle = (type, background) => {
-    switch (type) {
-      // 平铺
-      case 'tile':
-        return { background: background }
-      // 拉伸
-      case 'stretch':
-        return { background: background + ' no-repeat', backgroundSize: '100% 100%' }
-      // 填充 将整个图片都放入区域，不改变长宽比例，然后居中。需要手动计算设置长宽?
-      case 'fill':
-        return { background: background }
-      default:
-        return { background: background }
-    }
-  }
-  // 视差样式
-  getBackgroundParallexStyle = (enableParallex) => {
-    if (enableParallex) {
-      return defaultParallexStyle;
-    } else { return {} }
-  }
-
   render() {
     const { id = this.props.selfkey, containerDirection = 'row', backgroundInfo } = this.props
 
@@ -197,16 +175,13 @@ export default class EditableVerticalLayout extends Component {
 
     this.flex = this.props.flex || defalutFlexLayout
     // 填充样式
-    const backgroundFillTypeStyle = this.getBackgroundFillTypeStyle(fillType, background)
-    // 视差效果
-    const parallexStyle = backgroundType === 'image' ? this.getBackgroundParallexStyle(enableParallex) : {}
-    const backgroundStyle = Object.assign({ position: 'relative' }, backgroundFillTypeStyle, parallexStyle)
+    const backgroundStyle = Object.assign({ position: 'relative' }, backgroundSetting.getBackgroundStyle(backgroundInfo))
 
     return (
       <div style={backgroundStyle} id={id}>
         <ChangeBackgroundButton backgroundInfo={backgroundInfo} parentkey={this.props.selfkey} />
         <div style={layoutStyle}>
-          <div style={{ position: 'relative' }}>
+          <div name="layoutDiv" style={{ position: 'relative' }}>
             <GridArrangementOptionLists handleRearrangeGird={this.handleRearrangeGird} />
             <Grid container direction={containerDirection} >
               {this.props.children &&

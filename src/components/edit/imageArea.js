@@ -55,11 +55,11 @@ export default class EditableImageArea extends Component {
     // galleryStyle 中存储画廊类型以及画廊需要存储的特征, 如: { type: 'verticalGallery', width: 1, height: 1 }
     // 会影响编辑页面的显示
 
-    const { src, alt, imageStyle = defaultImageStyle, imageContainer = { margin: '1px 15px' }, galleryStyle } = this.props
+    const { src, alt, imageStyle = defaultImageStyle, imageContainerStyle = { margin: '1px 15px' }, galleryStyle } = this.props
 
     return (
       <div name="imageContainer"
-        style={Object.assign({ position: 'relative', textAlign: 'center' }, imageContainer)}
+        style={Object.assign({ position: 'relative', textAlign: 'center' }, imageContainerStyle)}
         onMouseOver={this.hoverImg} >
         <div
           onMouseLeave={this.mouseLeaveImage}

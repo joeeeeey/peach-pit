@@ -29,7 +29,7 @@ import TemplateService from '../../services/templateService'
 import LayoutService from '../../services/layoutService'
 import SiteService from '../../services/siteService'
 import DeployService from '../../services/deployService'
-
+// import Test from '../../pages/test'
 
 import { Anchor } from 'antd';
 const AnLink = Anchor.Link;

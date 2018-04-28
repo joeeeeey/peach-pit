@@ -18,11 +18,11 @@ export default class PreviewImageArea extends Component {
 
 
   render() {
-    const { src, alt, imageStyle = defaultImageStyle, imageContainer = { margin: '1px 15px' } } = this.props
+    const { src, alt, imageStyle = defaultImageStyle, imageContainerStyle = { margin: '1px 15px' } } = this.props
 
     return (
       <div
-        style={Object.assign({ position: 'relative', textAlign: 'center' }, imageContainer)}>
+        style={Object.assign({ position: 'relative', textAlign: 'center' }, imageContainerStyle)}>
         <img src={src} style={imageStyle}></img>
       </div>
     );

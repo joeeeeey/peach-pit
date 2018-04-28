@@ -18,6 +18,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Grid from 'material-ui/Grid';
+import backgroundSetting from '../../layoutSettings/backgroundSetting'
+
 
 // Layout 的公共样式， 可以抽离
 // 需要占据主屏幕 80% 位置左右两侧自动 margin
@@ -26,40 +28,8 @@ const layoutStyle = { margin: '0 auto', width: '84%', flexGrow: 1, padding: '50p
 
 const defalutFlexLayout = [8, 4]
 
-const defaultParallexStyle = {
-  backgroundAttachment: 'fixed',
-  backgroundPosition: 'center',
-  backgroundRepeat: 'noRepeat',
-  backgroundSize: 'cover',
-}
 
 export default class PreviewVerticalLayout extends Component {
-
-
-  // 填充样式
-  getBackgroundFillTypeStyle = (type, background) => {
-    switch (type) {
-      // 平铺
-      case 'tile':
-        return { background: background }
-      // 拉伸
-      case 'stretch':
-        return { background: background + ' no-repeat', backgroundSize: '100% 100%' }
-      // 填充 将整个图片都放入区域，不改变长宽比例，然后居中。需要手动计算设置长宽?
-      case 'fill':
-        return { background: background }
-      default:
-        return { background: background }
-    }
-  }
-  // 视差样式
-  getBackgroundParallexStyle = (enableParallex) => {
-    if (enableParallex) {
-      return defaultParallexStyle;
-    } else { return {} }
-  }
-
-
   render() {
     const { containerDirection = 'row' } = this.props
 
@@ -74,14 +44,9 @@ export default class PreviewVerticalLayout extends Component {
       enableParallex,
     } = backgroundInfo
 
-
     this.flex = this.props.flex || defalutFlexLayout
-    // 填充样式
-    const backgroundFillTypeStyle = this.getBackgroundFillTypeStyle(fillType, background)
-    // 视差效果
-    const parallexStyle = backgroundType === 'image' ? this.getBackgroundParallexStyle(enableParallex) : {}
-    const backgroundStyle = Object.assign({ position: 'relative' }, backgroundFillTypeStyle, parallexStyle)
-
+    
+    const backgroundStyle = Object.assign({ position: 'relative' }, backgroundSetting.getBackgroundStyle(backgroundInfo))
     return (
       <div style={backgroundStyle} id={id}>
         <div style={layoutStyle}>

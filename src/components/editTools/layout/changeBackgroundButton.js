@@ -154,8 +154,7 @@ export default class ChangeBackgroundButton extends React.Component {
                 width={140}
                 onChangeComplete={this.handleChangeColorPicker}
                 color={this.state.background}
-                colors={['#ABB8C3', 'white', "#448AFF", "#81D4FA", "#40C4FF", "#80DEEA", "#18FFFF", "#80CBC4",
-                  "#64FFDA", "#A5D6A7", "#69F0AE", "#C5E1A5", "#B2FF59", "#E6EE9C", "#EEFF41"]}
+                colors={["#FFCDD2", "#F8BBD0", "#E1BEE7", "#D1C4E9", "#C5CAE9", "#BBDEFB", "#B3E5FC", "#B2EBF2", "#B2DFDB", "#C8E6C9", "#DCEDC8", "#F0F4C3", "#FFF9C4", "#FFECB3", "#FFE0B2", "#FFCCBC", "#D7CCC8", "#F5F5F5", "#CFD8DC"]}
               />
             }
 

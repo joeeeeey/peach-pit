@@ -1,103 +1,229 @@
-// http://v0.api.upyun.com/blog-src
-// curl -X GET \
-// http://v0.api.upyun.com/<bucket>/<path> \
-// -H "Authorization: UPYUN <Operator>:<Signature>" \
-// -H "Date: <Wed, 29 Oct 2014 11:26:58 GMT>"\
-// -H "Content-MD5: <Content-MD5>"\
-// # 其他可选参数...  
-
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios'
-import Button from 'material-ui/Button';
-import EditableTextArea from '../components/edit/textArea'
+import { withStyles } from 'material-ui/styles';
+import Grid from 'material-ui/Grid';
+import { FormControl, FormLabel, FormControlLabel } from 'material-ui/Form';
+import Radio, { RadioGroup } from 'material-ui/Radio';
+import Paper from 'material-ui/Paper';
+// import ResponsiveCardGrid from '../components/common/grids/responsiveCardGrid'
 import EditableImageArea from '../components/edit/imageArea'
-// import '../css/NavBar.css'
-const sideBarWidth = 200
-const container1Style={ "position": "absolute", "left": "0px", "zIndex": "201", "width": "100%", "boxSizing": "border-box", "background": "rgba(0, 0, 0, 0)", "padding": "20px"}
-const container2Style={ 'display': 'block', "position": "fixed", "top": "0px", "zIndex": "210", "left": sideBarWidth, "width": `calc(100% - ${sideBarWidth}px)`, "background": "rgb(255, 255, 255)", "transition": "all 0.25s", "boxShadow": "rgba(0, 0, 0, 0.25) 0px 1px 1px", "paddingTop": "10px", "paddingBottom": "10px"}
-const container3Style={ "maxWidth": "100%", "display": "flex", "WebkitBoxAlign": "center", "alignItems": "center", "margin": "auto"}
 
-export default class EditableNavBar extends React.Component {
+export default class HorizontalLayout extends React.Component {
   constructor(props, context) {
     super(props)
-    this.state = { imageUrl: null, UploaderIsHover: false }
   }
 
-  // 获得顶层元素 key，来加载侧边栏 layout
-  getRootChildrenKey = () => {
-    if (this.context.store.getState().node) {
-      const rootKey = this.context.store.getState().node._root
-      if (rootKey) {
-        return this.context.store.getState().node._relation[rootKey]
-      } else {
-        return []
-      }
-    } else {
-      return []
-    }
-  }
-  // 获得顶层元素 
-  getRootChildren = () => {
-    const keys = this.getRootChildrenKey()
-    if (keys.length > 0) {
-      return keys.map(key => {
-        return {
-          id: this.context.store.getState().node[key].props.id,
-          name: this.context.store.getState().node[key].layoutName
-        }
-      })
-    } else {
-      return []
-    }
+
+  getChildContext() {
+    return { store: this.context.store };
   }
 
-  // '{"native": false, "nodeName": "ImageArea", "props": {"imageStyle":{"maxWidth": 130},  "alt": "initial", "src": "//nzr2ybsda.qnssl.com/images/80926/Fh49ddpmrttTdjPr5_bU8BGsD2Og.png?imageMogr2/strip/thumbnail/300x300&gt;/quality/90!/format/png"}}'
-  // '{"native":false,"nodeName":"TextArea","props":{"formats":["header","font","size","bold","italic","underline","strike","blockquote","bullet","link","color","align","script","direction","clean"],"toolbarAbove":false,"toolbarOverlayStyle":{"bottom":-105},"toolbarStyle":{"width":300},"deltaDeltaValue":[{"insert":"\\n","attributes":{"header":2,"bold":true}}]},"readOnly":false}'
   render() {
 
+    const { classes, containerConfig = {
+      justify: "center",
+      spacing: 16,
+    } } = this.props;
+    const { justify, spacing } = containerConfig
+
+    const horizontalGridStyle = {
+      "border": "1px solid black",
+      marginTop: 20,
+      // height: '100%'
+    }
+
+    const horizontalGridChildStyle={
+      "border": "1px solid blue"
+    }
+
     return (
-      <div name="NavBar" style={{ borderColor: 'cdced0' }}>
-        <div name="container1" style={container1Style}>
-          <div name="container2" style={container2Style}>
-            <div name="container3" style={container3Style}>
+      <div style={{ background: 'white', marginTop: 20, }}>
+        <Grid name="垂直" container direction={'column'} spacing={spacing} justify={justify}>
+          <Grid item >
+            <Grid name="水平" style={horizontalGridStyle} container direction={'row'} spacing={16} justify={'center'}>
+              <Grid item xs={12} sm={4} md={4} lg={4} style={horizontalGridChildStyle}>
+                <Paper style={{minHeight: 100}}>xs=12 sm=6</Paper>
+                <Paper >xs=12 sm=6</Paper>
+              </Grid>
 
-              <div name="logo" style={{ "maxWidth": "200px" }}>
-                <div style={{ paddingLeft: 10 }}>
-                 {/* TODO 图片编辑区 */}
-                  {/* <img style={{ maxWidth: 130 }} src="//nzr2ybsda.qnssl.com/images/80926/Fh49ddpmrttTdjPr5_bU8BGsD2Og.png?imageMogr2/strip/thumbnail/300x300&gt;/quality/90!/format/png" alt="" title="" data-description="" /> */}
-                  <EditableImageArea 
-                    imageStyle={{maxWidth: 130}}
-                    src="//nzr2ybsda.qnssl.com/images/80926/Fh49ddpmrttTdjPr5_bU8BGsD2Og.png?imageMogr2/strip/thumbnail/300x300&gt;/quality/90!/format/png"
-                  />
-                </div>
-              </div>
+              <Grid item xs={12} sm={4} md={4} lg={4} style={horizontalGridChildStyle}>
+                <Paper style={{height: '20%'}}>xs=12 sm=6</Paper>
+              </Grid>
 
-              <div name="title" style={{ "fontSize": "120%", "marginLeft": "10px", "marginRight": "10px", "display": "inline-block", "minWidth": "70px" }}>
-                <EditableTextArea 
-                formats={["header", "font", "size", "bold", "italic", "underline", "strike", "blockquote", "bullet", "link", "color", "align", "script", "direction", "clean"]}
-                toolbarAbove={false} 
-                toolbarOverlayStyle={{bottom: -105}} 
-                toolbarStyle={{width: 300}}
-                deltaDeltaValue={[{"insert":"\n","attributes":{"header":2,"bold":true}}]}
-                />
-             </div>
+              <Grid item xs={12} sm={4} md={4} lg={4} style={horizontalGridChildStyle}>
+                <EditableImageArea 
+                imageStyle={{minHeight: 200, height: '100%', width: '100%'}} 
+                imageContainerStyle={{height: '100%'}}
+                src={'http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/d2376afa10f903913950b7bbfe624415'}/>
+                {/* <Paper >xs=12 sm=6</Paper> */}
+              </Grid>
 
-              {/* TODO SCROLL ADN ACTIVE */}
-              <div name="nav-item" style={{ "WebkitBoxFlex": "1", "flexGrow": "1", "textAlign": "right" }}>
-                {this.getRootChildren().map(child =>
-                  <a key={child.id} href={`#${child.id}`} style={{ "padding": "5px 10px", "display": "inline-block" }}>{child.name}</a>
-                )}
-              </div>
+              <Grid item xs={12} sm={4} md={4} lg={4} style={horizontalGridChildStyle}>
+                <Paper style={{height: '20%'}}>adasdasd</Paper>
+              </Grid>
+              <Grid item xs={12} sm={4} md={4} lg={4} style={horizontalGridChildStyle}>
+                <Paper style={{height: '20%'}}>asdadsda</Paper>
+              </Grid>
+              <Grid item xs={12} sm={4} md={4} lg={4} style={horizontalGridChildStyle}>
+                <Paper style={{height: '20%'}}>adadss</Paper>
+              </Grid>
 
-            </div>
-          </div>
-        </div>
+            </Grid>
+
+            <Grid name="水平" style={horizontalGridStyle} container direction={'row'}>
+              <Paper >xs=12 sm=6</Paper>
+            </Grid>
+
+            <Grid item xs={12} sm={12} md={6} lg={6}>
+              <Paper >xs=12 sm=6</Paper>
+            </Grid>
+          </Grid>
+        </Grid>
       </div>
     );
   }
 }
 
-EditableNavBar.contextTypes = {
+HorizontalLayout.contextTypes = {
   store: PropTypes.object
 };
+
+HorizontalLayout.childContextTypes = {
+  store: PropTypes.object
+};
+
+
+
+// const styles = theme => ({
+//   root: {
+//     flexGrow: 1,
+//   },
+//   demo: {
+//     height: 240,
+//   },
+//   paper: {
+//     padding: theme.spacing.unit * 2,
+//     height: '100%',
+//   },
+//   control: {
+//     padding: theme.spacing.unit * 2,
+//   },
+// });
+
+// class InteractiveGrid extends React.Component {
+//   state = {
+//     direction: 'row',
+//     justify: 'center',
+//     alignItems: 'center',
+//   };
+
+//   handleChange = key => (event, value) => {
+//     this.setState({
+//       [key]: value,
+//     });
+//   };
+
+//   render() {
+//     const { classes } = this.props;
+//     const { alignItems, direction, justify } = this.state;
+//     return (
+//       <Grid container className={classes.root}>
+//         <Grid item xs={12}>
+//           <Grid
+//             container
+//             spacing={16}
+//             className={classes.demo}
+//             alignItems={alignItems}
+//             direction={direction}
+//             justify={justify}
+//           >
+//             {[0, 1, 2,3,4,5,6,7].map(value => (
+//               <Grid key={value} item>
+//                 <Paper
+//                   
+//                   style={{ paddingTop: (value + 1) * 10, paddingBottom: (value + 1) * 10 }}
+//                 >
+//                   {`Cell ${value + 1}`}
+//                 </Paper>
+//               </Grid>
+//             ))}
+//           </Grid>
+//         </Grid>
+//         <Grid item xs={12}>
+//           <Paper className={classes.control}>
+//             <Grid container>
+//               <Grid item xs={6} sm={4}>
+//                 <FormControl component="fieldset">
+//                   <FormLabel>direction</FormLabel>
+//                   <RadioGroup
+//                     name="direction"
+//                     aria-label="direction"
+//                     value={direction}
+//                     onChange={this.handleChange('direction')}
+//                   >
+//                     <FormControlLabel value="row" control={<Radio />} label="row" />
+//                     <FormControlLabel value="row-reverse" control={<Radio />} label="row-reverse" />
+//                     <FormControlLabel value="column" control={<Radio />} label="column" />
+//                     <FormControlLabel
+//                       value="column-reverse"
+//                       control={<Radio />}
+//                       label="column-reverse"
+//                     />
+//                   </RadioGroup>
+//                 </FormControl>
+//               </Grid>
+//               <Grid item xs={6} sm={4}>
+//                 <FormControl component="fieldset">
+//                   <FormLabel>justify</FormLabel>
+//                   <RadioGroup
+//                     name="justify"
+//                     aria-label="justify"
+//                     value={justify}
+//                     onChange={this.handleChange('justify')}
+//                   >
+//                     <FormControlLabel value="flex-start" control={<Radio />} label="flex-start" />
+//                     <FormControlLabel value="center" control={<Radio />} label="center" />
+//                     <FormControlLabel value="flex-end" control={<Radio />} label="flex-end" />
+//                     <FormControlLabel
+//                       value="space-between"
+//                       control={<Radio />}
+//                       label="space-between"
+//                     />
+//                     <FormControlLabel
+//                       value="space-around"
+//                       control={<Radio />}
+//                       label="space-around"
+//                     />
+//                   </RadioGroup>
+//                 </FormControl>
+//               </Grid>
+//               <Grid item xs={6} sm={4}>
+//                 <FormControl component="fieldset">
+//                   <FormLabel>alignItems</FormLabel>
+//                   <RadioGroup
+//                     name="alignItems"
+//                     aria-label="alignItems"
+//                     value={alignItems}
+//                     onChange={this.handleChange('alignItems')}
+//                   >
+//                     <FormControlLabel value="flex-start" control={<Radio />} label="flex-start" />
+//                     <FormControlLabel value="center" control={<Radio />} label="center" />
+//                     <FormControlLabel value="flex-end" control={<Radio />} label="flex-end" />
+//                     <FormControlLabel value="stretch" control={<Radio />} label="stretch" />
+//                     <FormControlLabel value="baseline" control={<Radio />} label="baseline" />
+//                   </RadioGroup>
+//                 </FormControl>
+//               </Grid>
+//             </Grid>
+//           </Paper>
+//         </Grid>
+//       </Grid>
+//     );
+//   }
+// }
+
+// InteractiveGrid.propTypes = {
+//   classes: PropTypes.object.isRequired,
+// };
+
+// export default withStyles(styles)(InteractiveGrid);
