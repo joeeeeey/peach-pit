@@ -1,14 +1,3 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Grid from 'material-ui/Grid';
-
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-  },
-});
-
 // 可接受参数
 // <FullWidthGrid 
     // containerConfig={spacing: 20, justify: 'space-around'}
@@ -33,6 +22,18 @@ const styles = theme => ({
 //     为适应 meterial-ui 定义的 breakpoints, 设置 md={5} sm={5} xs={11} 比较好
 // itemName: 定义 gridItem 模板为哪个 itemName 
 // lists: 数据
+
+
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
+import Grid from 'material-ui/Grid';
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+  },
+});
 
 class ResponsiveCardGrid extends React.Component {
   constructor(props) {

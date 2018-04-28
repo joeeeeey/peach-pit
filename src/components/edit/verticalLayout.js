@@ -30,26 +30,18 @@ import Button from 'material-ui/Button';
 import ChangeBackgroundButton from '../editTools/layout/changeBackgroundButton'
 import GridArrangementOptionLists from '../editTools/layout/gridArrangementOptionLists'
 import ArrayOper from '../../utils/arrOperation'
-// import ScrollableAnchor from 'react-scrollable-anchor' // TODO Change TO react scroll
 import backgroundSetting from '../../layoutSettings/backgroundSetting'
 
 // Layout 的公共样式， 可以抽离
 // 需要占据主屏幕 80% 位置左右两侧自动 margin
 // TODO  padding top bottom 如何在屏幕变小时自动变小
-const layoutStyle = { margin: '0 auto', width: '84%', flexGrow: 1, padding: '50px 0' }
+const layoutStyle = { margin: '0 auto', width: '84%', flexGrow: 1, padding: '22px 0' }
 
 const defaultChildren = {
   native: false, nodeName: 'VerticalGrid'
 }
 
 const defalutFlexLayout = [8, 4]
-
-// const defaultParallexStyle = {
-//   backgroundAttachment: 'fixed',
-//   backgroundPosition: 'center',
-//   backgroundRepeat: 'noRepeat',
-//   backgroundSize: 'cover',
-// }
 
 export default class EditableVerticalLayout extends Component {
   // 可接受 props

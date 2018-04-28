@@ -13,7 +13,7 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 
 const formItemLayout = {
-  maxWidth: 260, margin: 'auto' 
+  maxWidth: 260, margin: 'auto'
 }
 
 
@@ -65,16 +65,22 @@ class MyFrom extends React.Component {
         let block = {}
         block.name = values.blockName
         // 深拷贝 是否有更高效的方式?
-        let nodeData =  JSON.parse(JSON.stringify(this.context.store.getState().node));
-        // const nodeData = this.context.store.getState().node  
+        let nodeData = JSON.parse(JSON.stringify(this.context.store.getState().node));
+        // 如果是 layout, 根据 children 判断是不是符合类型
+        if (values.blockType === 'layout') {
+          const { _root } = nodeData
+          // 根节点不止一个元素则是复合型
+          if (nodeData._relation[_root].length > 1) {
+            nodeData[_root].composite = true
+          }
+        }
+
         block.data = JSON.stringify(nodeOperation.heightenDomTree(nodeData))
-        
         if (values.blockType === 'template') {
           this.addTemplate(block)
         } else if (values.blockType=== 'layout') {
           this.addlayout(block)
         }        
-        
       }
     });
   }
@@ -82,7 +88,7 @@ class MyFrom extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Form onSubmit={this.handleSubmit} style={{marginTop: '1.5rem'}}>
+      <Form onSubmit={this.handleSubmit} style={{ marginTop: '1.5rem' }}>
         <FormItem style={formItemLayout}>
           {getFieldDecorator('blockName', {
             rules: [{ required: true, message: '输入板块名称!' }],
@@ -96,7 +102,7 @@ class MyFrom extends React.Component {
             rules: [{ required: true, message: '选择板块类型' }],
           })(
             <Select placeholder="选择板块类型">
-              <Option value="layout">样式</Option>              
+              <Option value="layout">样式</Option>
               <Option value="template">网页模板</Option>
             </Select>
           )}

@@ -24,7 +24,7 @@ import backgroundSetting from '../../layoutSettings/backgroundSetting'
 // Layout 的公共样式， 可以抽离
 // 需要占据主屏幕 80% 位置左右两侧自动 margin
 // TODO  padding top bottom 如何在屏幕变小时自动变小
-const layoutStyle = { margin: '0 auto', width: '84%', flexGrow: 1, padding: '50px 0' }
+const layoutStyle = { margin: '0 auto', width: '84%', flexGrow: 1, padding: '22px 0' }
 
 const defalutFlexLayout = [8, 4]
 

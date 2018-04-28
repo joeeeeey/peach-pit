@@ -9,6 +9,7 @@ import DoneIcon from 'material-ui-icons/Done';
 import IconButton from 'material-ui/IconButton';
 import Scroll from 'react-scroll';
 import { Input } from 'antd';
+// 悬浮
 
 const ScLink = Scroll.Link
 
@@ -95,15 +96,17 @@ export default class TopLevelMenuItem extends React.Component {
             <IconButton
               style={{ color: '#A3D9A5' }}
               onClick={this.done}
-              aria-label="Edit">
+              aria-label="Done">
               <DoneIcon />
             </IconButton>
+
+
           </div>
         }
         {this.state.isEditing === false &&
-          <div id="editDiv" style={{ display: 'inline-block', position: 'absolute', left: '2%' }}>
+          <div id="editDiv" style={{ display: 'inline-block', position: 'absolute', left: '3%' }}>
             <IconButton
-              style={{ color: '#F0F4C3' }}
+              style={{ color: '#CBD1CB' }}
               onClick={this.beginEditing}
               aria-label="Edit">
               <EditIcon />

@@ -92,7 +92,7 @@ class NormalLoginForm extends React.Component {
     const { redirectIndex, redirectAdminIndex } = this.state;
 
     if (redirectIndex) {
-      return <Redirect to='/' />;
+      return <Redirect to='/user/sites' />;
     }
 
     if (redirectAdminIndex) {

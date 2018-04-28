@@ -61,7 +61,7 @@ export default class EditableImageArea extends Component {
       <div name="imageContainer"
         style={Object.assign({ position: 'relative', textAlign: 'center' }, imageContainerStyle)}
         onMouseOver={this.hoverImg} >
-        <div
+        <div name="imageOverlay"
           onMouseLeave={this.mouseLeaveImage}
           style={Object.assign({}, defaultOverlayStyle, this.state.overlayDisplay)}>
 

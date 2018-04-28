@@ -23,7 +23,7 @@ function menu(f) {
 export default class GridArrangementOptionLists extends React.Component {
   constructor(props, context) {
     super(props);
-    this.positionStyle = this.props.positionStyle || { position: 'absolute', left: '-8%', top: -40, "borderRadius": "10%", "background": "#303233" }
+    this.positionStyle = this.props.positionStyle || { position: 'absolute', left: '-8%', top: -20, "borderRadius": "10%", "background": "#303233" }
     this.state = { visible: false }
   }
 

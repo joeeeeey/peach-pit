@@ -46,7 +46,15 @@ export default class NavBarAnchor extends React.Component {
 
 
     return (
-      <Link onSetInactive={this.handleSetInactive} offset={this.getOffset()} onSetActive={this.handleSetActive} activeClass="active" to={`${child.id}`} spy={true} smooth={true} duration={500}  >
+      <Link
+        onSetInactive={this.handleSetInactive}
+        onSetActive={this.handleSetActive}
+        offset={this.getOffset()}
+        activeClass="active"
+        to={`${child.id}`}
+        spy={true}
+        smooth={true}
+        duration={500}  >
         <span style={Object.assign(defaultLinkStyle, this.getLinkStyle(), linkFontStyle)}>
           {child.name}
         </span>

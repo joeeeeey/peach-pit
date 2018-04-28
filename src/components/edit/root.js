@@ -26,7 +26,8 @@ import UpdateSiteButton from '../editTools/sidebar/updateSiteButton'
 import DeploySiteButton from '../editTools/sidebar/deploySiteButton'
 // 顶层样式操作模板
 import TopLevelMenuItem from '../editTools/sidebar/topLevelMenuItme'
-
+// 布局列表气泡卡片
+import LayoutsListPopover from '../editTools/sidebar/layoutsListPreviewPopover'
 
 import TemplateService from '../../services/templateService'
 import LayoutService from '../../services/layoutService'
@@ -89,11 +90,14 @@ class EditableRoot extends Component {
 
   layoutPreView = (thumbnailUrl) => {
     return (
-      <div>
-        <p>TODO 此处应该显示布局缩略图 {thumbnailUrl}</p>
+      <div style={{ width: 300, overflow: 'auto' }}>
+        <img
+          style={{ maxWidth: '100%' }}
+          src={"http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/ee6abd28bece31864a13b934fdbda223"}
+        />
+        {/* <p>TODO 此处应该显示布局缩略图 {thumbnailUrl}</p> */}
       </div>
     )
-
   }
 
   insertNodeCodeButton = () => {
@@ -236,29 +240,54 @@ class EditableRoot extends Component {
 
   // 每个存在数据库的 node 都会被 div 包裹
   // 所以取出其中子元素，这样才能被加入顶层节点
-  // 其实 div 下只会有一个节点
+  // 其实 div 下只会有一个节点，这么说是不对的，忽略了复合样式的情况
+  // TODO 复合样式的逻辑
   addNode = (nodeData, layoutName) => {
-    let chilrenData = JSON.parse(nodeData).children
-    let addNodesPayload = chilrenData.map(
-      x => { return { nodeData: Object.assign(x, { layoutName: layoutName }), targetKey: this.context.store.getState().node._root } }
-    )
+    nodeData = JSON.parse(nodeData)
+    console.log(`addNode heere`)
+    console.log(nodeData.composite)
+    if (nodeData.composite) {
+      console.log(`复合样式 ${layoutName}`)
+      let compositelayoutId = Math.random().toString().slice(2, 10)
+      nodeData.props.id = compositelayoutId
+      nodeData.layoutName = layoutName
+      let addNodesPayload = [
+        { nodeData: nodeData, targetKey: this.props.selfkey }
+      ]
 
-    let compositePayload = {
-      payloadData: {
-        addNodes: { payloadData: addNodesPayload },
+      let compositePayload = {
+        payloadData: {
+          addNodes: { payloadData: addNodesPayload },
+        }
       }
-    }
+      this.context.store.dispatch({
+        type: 'composite',
+        payload: compositePayload,
+        target: 'node',
+      })
+    } else {
+      let chilrenData = nodeData.children
+      let addNodesPayload = chilrenData.map(
+        x => { return { nodeData: Object.assign(x, { layoutName: layoutName }), targetKey: this.context.store.getState().node._root } }
+      )
 
-    const updateNodesPayload = this.updateRootStyle('addNode', chilrenData[0])
-    if (updateNodesPayload) {
-      compositePayload.payloadData.updateNodes = updateNodesPayload
-    }
+      let compositePayload = {
+        payloadData: {
+          addNodes: { payloadData: addNodesPayload },
+        }
+      }
+      // 根据是否有 navbar 来更新 root 样式 TODO 优化适应更多情况
+      const updateNodesPayload = this.updateRootStyle('addNode', chilrenData[0])
+      if (updateNodesPayload) {
+        compositePayload.payloadData.updateNodes = updateNodesPayload
+      }
 
-    this.context.store.dispatch({
-      type: 'composite',
-      payload: compositePayload,
-      target: 'node',
-    })
+      this.context.store.dispatch({
+        type: 'composite',
+        payload: compositePayload,
+        target: 'node',
+      })
+    }
   }
 
   // 单词首字母小写
@@ -433,39 +462,44 @@ export default withRoot(Index);
         <Layout>
           <Sider style={{ zIndex: 2, overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }}>
             <Menu theme="dark" mode="inline" defaultSelectedKeys={['sub4']}>
-              <Menu.Item key="1">
+              <Menu.Item key="goBackHomeButton">
                 <Button component={Link} to={this.state.editInfo.role === 'user' ? '/user/sites' : '/admin/home/'} color="secondary" style={buttonStyle}>
                   返回主页
                 </Button>
               </Menu.Item>
-              <Menu.Item key="2">
+              <Menu.Item key="previewButton">
                 <Button color="secondary" onClick={this.preview} style={buttonStyle}>
                   预览
                 </Button>
               </Menu.Item>
               {this.state.editInfo.role === 'user' && this.deploySiteButton()}
 
-              <Menu.Item key="4">
-                <a href="" id="a" style={{ marginLeft: 15 }}>下载代码</a>
-                {/* <input type={'text'} value={'dadas'}/> */}
-              </Menu.Item>
-
 
               <SubMenu key="topLevelSections" title={<span><Icon type="database" />顶层板块</span>}>
                 {
                   this.getRootChildren().map(child =>
-                    <Menu.Item style={{ whiteSpace: 'nowrap', overflowX: 'auto' }} key={child.id}>
+                    <Menu.Item style={{ whiteSpace: 'nowrap', overflowX: 'auto' }} key={child.sectionKey}>
                       <TopLevelMenuItem child={child} removeNode={this.removeNode} />
                     </Menu.Item>
                   )
                 }
               </SubMenu>
 
-              <SubMenu key="sub4" title={<span><Icon type="setting" />新增布局</span>}>
+              <Menu.Item key="LayoutsListPopover">
+                {/* <Icon type="setting" /> */}
+                <LayoutsListPopover
+                  layouts={this.state.layouts}
+                  buttonStyle={buttonStyle}
+                  addNode={this.addNode}
+                />
+              </Menu.Item>
+
+
+              <SubMenu key="addNewLayout" title={<span><Icon type="setting" />新增布局2</span>}>
                 {
                   this.state.layouts.map(layout =>
                     <Menu.Item key={`${layout.id + 30}`}>
-                      <Popover content={this.layoutPreView(`${layout.name}`)} title="Title" placement="right">
+                      <Popover content={this.layoutPreView(`${layout.name}`)} placement="right">
                         <Button color="secondary" onClick={() => this.addNode(layout.data, layout.name)} style={buttonStyle}>
                           {layout.name}
                         </Button>
@@ -474,7 +508,7 @@ export default withRoot(Index);
                   )
                 }
               </SubMenu>
-              <Menu.Item key="12">
+              <Menu.Item key="Divider1">
                 <Divider dashed />
               </Menu.Item>
               {this.state.editInfo.role === 'user' && this.updateSiteButton()}

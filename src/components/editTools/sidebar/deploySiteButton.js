@@ -74,22 +74,25 @@ export default class DeploySiteButton extends React.Component {
                 }
                 deployService.deploy(params)
                   .then(res => {
+                    removeMsgLoading()
                     const { data } = res
                     this.setState({ isDeploying: false })
                     if (data.code === 0) {
-                      removeMsgLoading()
                       message.success('部署成功')
                       this.setState({ siteUrl: data.data.siteUrl, openDeployFinishedDialog: true })
                     } else {
+                      this.setState({ isDeploying: false })
                       message.error(`😥 ${data.msg}`, 2)
                     }
                   })
               } else {
+                removeMsgLoading()
                 this.setState({ isDeploying: false })
                 message.error(`😥 部署失败 ${data.msg}`, 2)
               }
             })
         } else {
+          removeMsgLoading()
           this.setState({ isDeploying: false })
           message.error(`😥 部署失败 ${data.msg}`, 2)
         }
