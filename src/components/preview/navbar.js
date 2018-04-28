@@ -78,7 +78,7 @@ export default class PreviewNavBar extends React.Component {
 
             <div name="nav-item" style={{ "WebkitBoxFlex": "1", "flexGrow": "1", "textAlign": "right" }}>
               {this.props.rootChildren.map(child =>
-                <NavBarAnchor child={child} key={child.id || Math.random().toString().slice(3, 10)} />
+                <NavBarAnchor affectRoot={this.props.affectRoot} child={child} key={child.id || Math.random().toString().slice(3, 10)} />
               )}
             </div>
           </div>

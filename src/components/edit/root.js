@@ -24,6 +24,9 @@ import UpdateLayoutButton from '../editTools/sidebar/updateLayoutButton'
 import UpdateSiteButton from '../editTools/sidebar/updateSiteButton'
 // 部署网站按钮
 import DeploySiteButton from '../editTools/sidebar/deploySiteButton'
+// 顶层样式操作模板
+import TopLevelMenuItem from '../editTools/sidebar/topLevelMenuItme'
+
 
 import TemplateService from '../../services/templateService'
 import LayoutService from '../../services/layoutService'
@@ -31,8 +34,6 @@ import SiteService from '../../services/siteService'
 import DeployService from '../../services/deployService'
 // import Test from '../../pages/test'
 
-import { Anchor } from 'antd';
-const AnLink = Anchor.Link;
 
 
 
@@ -73,9 +74,12 @@ class EditableRoot extends Component {
     const keys = this.getRootChildrenKey()
     if (keys.length > 0) {
       return keys.map(key => {
+        const { layoutName, nodeName, props } = this.context.store.getState().node[key]
         return {
-          id: this.context.store.getState().node[key].props.id,
-          name: this.context.store.getState().node[key].layoutName
+          id: props.id,
+          name: layoutName,
+          layoutName: layoutName,
+          sectionKey: key,
         }
       })
     } else {
@@ -193,25 +197,29 @@ class EditableRoot extends Component {
   }
 
   // 如果是导航栏或者其他会影响整个页面 padding margin 的 node 有变化(增删)，需要更新 root 的样式
+  // example:  {affectRoot :{'paddingTop': 64}}
   updateRootStyle = (operation, node) => {
     if (operation === 'addNode') {
       if (node.nodeName === 'NavBar') {
-        const affectRoot = node.affectRoot
-        let updateNodesPayload = []
-        for (let a in affectRoot) {
-          updateNodesPayload.push({
-            value: affectRoot[a],
-            nestedKey: `${this.props.selfkey},props,style,${a}`
-          })
+        const affectRoot = node.props.affectRoot
+        if (affectRoot) {
+          let updateNodesPayload = []
+          for (let a in affectRoot) {
+            updateNodesPayload.push({
+              value: affectRoot[a],
+              nestedKey: `${this.props.selfkey},props,style,${a}`
+            })
+          }
+          return { payloadData: updateNodesPayload }
+        } else {
+          return null
         }
-        return { payloadData: updateNodesPayload }
-        //  {affectRoot :{'paddingTop': 64}}
       } else {
         return null
       }
     } else if (operation === 'removeNode') {
       if (node.nodeName === 'NavBar') {
-        const affectRoot = node.affectRoot
+        const affectRoot = node.props.affectRoot
         let updateNodesPayload = []
         for (let a in affectRoot) {
           updateNodesPayload.push({
@@ -277,7 +285,7 @@ class EditableRoot extends Component {
     let nodeCode = nodeOperation.flattenedData2Code(nodeData, 'deploy')
 
     const re = /"\n"/gi;
-    nodeCode = nodeCode.replace(re, '"\\n"'); 
+    nodeCode = nodeCode.replace(re, '"\\n"');
 
     let indexJsCode = `
 import React, { Component } from 'react';
@@ -439,28 +447,15 @@ export default withRoot(Index);
 
               <Menu.Item key="4">
                 <a href="" id="a" style={{ marginLeft: 15 }}>下载代码</a>
+                {/* <input type={'text'} value={'dadas'}/> */}
               </Menu.Item>
 
 
               <SubMenu key="topLevelSections" title={<span><Icon type="database" />顶层板块</span>}>
                 {
-                  this.getRootChildrenKey().map(section_key =>
-                    <Menu.Item style={{ whiteSpace: 'nowrap', overflowX: 'auto' }} key={section_key}>
-                      <div id="anchor" style={{ backgroundColor: 'black', display: 'inline-block' }}>
-                        <Anchor style={{ backgroundColor: 'black' }}>
-                          <AnLink title={this.context.store.getState().node[section_key].layoutName} href={`#${this.context.store.getState().node[section_key].props.id}`} style={{ color: 'white' }}>
-                          </AnLink>
-                          {/* <Button href={`#${this.context.store.getState().node[section_key].props.id}`} style={{ color: 'white', width: '50%', justifyContent: 'left' }}>
-                          {this.context.store.getState().node[section_key].layoutName}
-                        </Button> */}
-                        </Anchor>
-                      </div>
-
-                      <div id="inco12" style={{ display: 'inline-block' }}>
-                        <IconButton style={{ color: '#CBD1CB', marginBottom: 18 }} onClick={() => { this.removeNode(section_key) }} aria-label="Delete">
-                          <DeleteIcon />
-                        </IconButton>
-                      </div>
+                  this.getRootChildren().map(child =>
+                    <Menu.Item style={{ whiteSpace: 'nowrap', overflowX: 'auto' }} key={child.id}>
+                      <TopLevelMenuItem child={child} removeNode={this.removeNode} />
                     </Menu.Item>
                   )
                 }
@@ -493,7 +488,7 @@ export default withRoot(Index);
               {this.state.editInfo.role === 'administrator' && this.clearNodeButton()}
             </Menu>
           </Sider>
-          <Layout style={{ marginLeft: 200, minHeight: '45.25rem', background: 'none' }} className={''}>
+          <Layout style={{ marginLeft: 200, minHeight: '45.25rem', background: 'none', }} className={''}>
             <div id="divInRootAfterLayout" style={rootDivStyle}>
               {this.props.children}
             </div>

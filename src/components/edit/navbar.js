@@ -1,6 +1,6 @@
 // {
-//   native: false, nodeName: 'NavBar', layoutName: '导航栏', affectRoot: {'paddingTop': 64}
-//   props: {},
+//   native: false, nodeName: 'NavBar', layoutName: '导航栏'
+//   props: {affectRoot: {'paddingTop': 64}},
 //   children: [
 //     {
 //       native: false,
@@ -39,7 +39,7 @@
 //   ]
 // }
 
-// {"native":true,"nodeName":"div","props":{"style":{}},"children":[{"native":false,"affectRoot":{"paddingTop":64},"nodeName":"NavBar","props":{},"layoutName":"导航栏","children":[{"native":false,"nodeName":"ImageArea","props":{"imageStyle":{"maxWidth":130,"maxHeight":40.6},"alt":"initial","src":"//nzr2ybsda.qnssl.com/images/80926/Fh49ddpmrttTdjPr5_bU8BGsD2Og.png?imageMogr2/strip/thumbnail/300x300&gt;/quality/90!/format/png"}},{"native":false,"nodeName":"TextArea","props":{"formats":["header","font","size","bold","italic","underline","strike","blockquote","bullet","link","color","align","script","direction","clean"],"toolbarAbove":false,"toolbarOverlayStyle":{"bottom":-75},"toolbarStyle":{"width":300},"deltaDeltaValue":[{"insert":"在此输入主题","attributes":{"font":"serif"}},{"insert":"\n","attributes":{"header":2,"bold":true}}]},"readOnly":false}]}]}
+// {"native":true,"nodeName":"div","props":{"style":{}, affectRoot: {'paddingTop': 64}},"children":[{"native":false,"affectRoot":{"paddingTop":64},"nodeName":"NavBar","props":{},"layoutName":"导航栏","children":[{"native":false,"nodeName":"ImageArea","props":{"imageStyle":{"maxWidth":130,"maxHeight":40.6},"alt":"initial","src":"//nzr2ybsda.qnssl.com/images/80926/Fh49ddpmrttTdjPr5_bU8BGsD2Og.png?imageMogr2/strip/thumbnail/300x300&gt;/quality/90!/format/png"}},{"native":false,"nodeName":"TextArea","props":{"formats":["header","font","size","bold","italic","underline","strike","blockquote","bullet","link","color","align","script","direction","clean"],"toolbarAbove":false,"toolbarOverlayStyle":{"bottom":-75},"toolbarStyle":{"width":300},"deltaDeltaValue":[{"insert":"在此输入主题","attributes":{"font":"serif"}},{"insert":"\n","attributes":{"header":2,"bold":true}}]},"readOnly":false}]}]}
 
 // 规划
 // 先在 edit 中 以 /navbar.js 方式存在，后期放入 /edit/navbars/   
@@ -123,7 +123,7 @@ export default class EditableNavBar extends React.Component {
 
             <div name="nav-item" style={{ "WebkitBoxFlex": "1", "flexGrow": "1", "textAlign": "right" }}>
               {this.getRootChildren().map(child =>
-                <NavBarAnchor child={child} key={child.id || Math.random().toString().slice(3, 10)} />
+                <NavBarAnchor affectRoot={this.props.affectRoot} child={child} key={child.id || Math.random().toString().slice(3, 10)} />
               )}
             </div>
           </div>
