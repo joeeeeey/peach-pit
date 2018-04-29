@@ -63,9 +63,15 @@ export default class UserSite extends Component {
       <div>
         <AppBar />
         <div style={{ marginTop: 30, width: '70%', marginLeft: 'auto', marginRight: 'auto' }}>
-          <Button variant="raised" component={Link} to={`/user/chooseTemplate`} color='secondary' >新建网站</Button>
+          <Button
+            style={{ width: 200, height: 40 }}
+            variant="raised"
+            component={Link} to={`/user/chooseTemplate`}
+            color='secondary' >新建网站</Button>
           <Divider />
           <List
+            size={'small'}
+            pagination={true}
             itemLayout="vertical"
             size="large"
             dataSource={this.state.sites}
@@ -85,8 +91,7 @@ export default class UserSite extends Component {
                       </IconButton>
                     </Popconfirm>
                   ]}
-                extra={
-                  <img width={260} alt="logo" src="/panda.png" />}
+
               >
                 <List.Item.Meta
                   title={<div><span>{nickname}的网站</span>

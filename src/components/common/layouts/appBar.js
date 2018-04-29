@@ -42,8 +42,8 @@ class ButtonAppBar extends React.Component {
 
   logOut = () => {
     this.setState({ anchorEl: null });
-    Cookies.remove('taohe_user', { path: '/' }); 
-    Cookies.remove('taohe_user.sig', { path: '/' }); 
+    Cookies.remove('taohe_user', { path: '/' });
+    Cookies.remove('taohe_user.sig', { path: '/' });
     window.location.reload();
   }
 
@@ -52,14 +52,33 @@ class ButtonAppBar extends React.Component {
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
-    const { classes } = this.props;
+    const { classes, beforeLogin } = this.props;
     return (
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton component={Link} to="/user/sites" className={classes.menuButton} color="inherit" aria-label="Menu">
-              <MenuIcon />
-            </IconButton>
+            {beforeLogin &&
+              <Button
+                style={{ color: 'white' }}
+                component={Link} to="/"
+              >主页
+              </Button>
+            }
+            {!beforeLogin &&
+              <Button
+                style={{ color: 'white' }}
+                component={Link} to="/user/sites"
+              >我的网站
+              </Button>
+            }
+            {!beforeLogin &&
+              <Button
+                style={{ color: 'white' }}
+              component={Link} to="/about"
+              >关于本站
+              </Button>
+            }
+
             <Typography variant="title" color="inherit" className={classes.flex}>
             </Typography>
             {/* TODO user state */}

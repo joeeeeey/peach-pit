@@ -87,7 +87,11 @@ export default class TopLevelMenuItem extends React.Component {
             </ScLink>
           }
           {this.state.isEditing &&
-            <Input placeholder="输入板块名称" defaultValue={this.props.child.layoutName} onChange={this.changeLayoutName} />
+            <Input placeholder="输入板块名称" 
+            defaultValue={this.props.child.layoutName} 
+            onChange={this.changeLayoutName}
+            onPressEnter={this.done}
+            />
           }
         </div>
 

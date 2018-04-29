@@ -14,6 +14,7 @@ import Home from '../pages/user/homePage'
 // 其他路由组件
 import UserLogin from './user/loginPage'
 import UserSite from './user/sitePage'
+import AboutPage from './user/aboutPage'
 
 import AdminLogin from './admin/loginPage'
 import AdminHome from './admin/homePage'
@@ -69,7 +70,7 @@ class Index extends Component {
       <Router history={history}>
         <Switch>
           <Route path="/" exact component={Home} />
-
+          <CheckUserLogin store={store} shouldBe={true} path="/about" exact component={AboutPage} />
           <Route path="/admin/login" component={AdminLogin} />
           <Route path="/admin/home" component={AdminHome} />
           <Route path="/admin/templateIndex" component={AdminTemplateIndex} />
@@ -77,6 +78,7 @@ class Index extends Component {
           <Route path="/admin/editPage" component={Edit} />
           <Route path="/admin/previewPage" component={Preview} />
           <Route path="/administrator/previewPage" component={Preview} />
+
           <CheckUserLogin store={store} shouldBe={true} path="/user/sites" exact component={UserSite} />
           <CheckUserLogin store={store} shouldBe={true} path="/user/chooseTemplate" exact component={ChooseTmp} />
           <CheckUserLogin store={store} shouldBe={false} path="/user/login" component={UserLogin} />

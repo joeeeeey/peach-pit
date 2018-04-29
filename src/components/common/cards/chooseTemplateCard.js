@@ -82,11 +82,11 @@ class ChooseTemplateCard extends React.Component {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small" color="primary" >
+            {/* <Button size="small" color="primary" >
               查看
-            </Button>
+            </Button> */}
             <Button onClick={this.beginEdit} size="small" color="primary" >
-              开始编辑
+              使用该模板
             </Button>
           </CardActions>
         </Card>

@@ -60,7 +60,7 @@ class EditableRoot extends Component {
   // 获得顶层元素 key，来加载侧边栏 layout
   getRootChildrenKey = () => {
     if (this.context.store.getState().node) {
-      const rootKey = this.context.store.getState().node._root
+      const rootKey = this.props.selfkey
       if (rootKey) {
         return this.context.store.getState().node._relation[rootKey]
       } else {
@@ -173,7 +173,7 @@ class EditableRoot extends Component {
   }
 
   clearNode = () => {
-    const rootKey = this.context.store.getState().node._root
+    const rootKey = this.props.selfkey
     this.context.store.dispatch({
       type: 'removeNode',
       payload: { targetKey: rootKey, parentKey: null },
@@ -241,13 +241,11 @@ class EditableRoot extends Component {
   // 每个存在数据库的 node 都会被 div 包裹
   // 所以取出其中子元素，这样才能被加入顶层节点
   // 其实 div 下只会有一个节点，这么说是不对的，忽略了复合样式的情况
-  // TODO 复合样式的逻辑
   addNode = (nodeData, layoutName) => {
     nodeData = JSON.parse(nodeData)
-    console.log(`addNode heere`)
-    console.log(nodeData.composite)
+    let compositePayload = null
+    // 复合样式的情况
     if (nodeData.composite) {
-      console.log(`复合样式 ${layoutName}`)
       let compositelayoutId = Math.random().toString().slice(2, 10)
       nodeData.props.id = compositelayoutId
       nodeData.layoutName = layoutName
@@ -255,23 +253,19 @@ class EditableRoot extends Component {
         { nodeData: nodeData, targetKey: this.props.selfkey }
       ]
 
-      let compositePayload = {
+      compositePayload = {
         payloadData: {
           addNodes: { payloadData: addNodesPayload },
         }
       }
-      this.context.store.dispatch({
-        type: 'composite',
-        payload: compositePayload,
-        target: 'node',
-      })
+
     } else {
       let chilrenData = nodeData.children
       let addNodesPayload = chilrenData.map(
-        x => { return { nodeData: Object.assign(x, { layoutName: layoutName }), targetKey: this.context.store.getState().node._root } }
+        x => { return { nodeData: Object.assign(x, { layoutName: layoutName }), targetKey: this.props.selfkey } }
       )
 
-      let compositePayload = {
+      compositePayload = {
         payloadData: {
           addNodes: { payloadData: addNodesPayload },
         }
@@ -281,13 +275,13 @@ class EditableRoot extends Component {
       if (updateNodesPayload) {
         compositePayload.payloadData.updateNodes = updateNodesPayload
       }
-
-      this.context.store.dispatch({
-        type: 'composite',
-        payload: compositePayload,
-        target: 'node',
-      })
     }
+
+    this.context.store.dispatch({
+      type: 'composite',
+      payload: compositePayload,
+      target: 'node',
+    })
   }
 
   // 单词首字母小写

@@ -72,7 +72,7 @@ class LoginOrRegister extends React.Component {
 
     return (
       <div>
-    <AppBar/>        
+    <AppBar beforeLogin={true}/>        
     <Grid container style={{ flexGrow: 1, marginTop: '3.75rem' }}>
         <Grid item xs={12}>
           <Grid
