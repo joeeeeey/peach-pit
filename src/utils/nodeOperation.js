@@ -167,7 +167,6 @@ function heightenDomTree(flattenData) {
     if (rootKey) {
       // root 也是有样式的
       flattenData = satisfyNavBar(flattenData, flattenData._relation[rootKey])
-      const rootProps = flattenData[rootKey].props
 
       let { native, nodeName, ...remained } = flattenData[rootKey];
 

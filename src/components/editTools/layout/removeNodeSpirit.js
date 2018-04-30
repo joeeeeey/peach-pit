@@ -8,31 +8,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
-import AddIcon from 'material-ui-icons/Add';
 import IconButton from 'material-ui/IconButton';
 import DeleteIcon from 'material-ui-icons/Delete';
-import Icon from 'material-ui/Icon';
-import { Menu, Dropdown, Popover } from 'antd';
 
-const buttonStyle = { color: 'grey', width: '100%', justifyContent: 'left' }
+import { Popover } from 'antd';
 
 // TextArea is Meta 组件， 应当封装为 h1, h2?
 // 需要建表存储 meta
-
-// function menu(f) {
-//   return (
-//     <Menu>
-//       {[{ nodeName: 'TextArea', name: '文本框' }].map(item =>
-//         <Menu.Item key={item.nodeName}>
-//           <Button onClick={() => { f(item.nodeName) }} color="secondary" style={buttonStyle}>
-//             {item.name}
-//           </Button>
-//         </Menu.Item>
-//       )
-//       }
-//     </Menu>
-//   )
-// }
 
 function popoverContent(f) {
   return (
@@ -42,20 +24,13 @@ function popoverContent(f) {
   )
 }
 
-// {
-//   native: false, nodeName: 'Spirit', onlyEdit: true,
-//   props: { tools: [] }
-// }
-
 export default class RemoveNodeSpirit extends Component {
   constructor(props, context) {
     super(props);
   }
 
 
-  confirmDeleteNode = () =>{
-    console.log(`confirmDeleteNode`)
-    console.log(this.props)
+  confirmDeleteNode = () => {
     this.context.store.dispatch({
       type: 'removeNode',
       payload: { targetKey: this.props.childrenkey, parentKey: this.props.parentkey },
@@ -80,30 +55,3 @@ export default class RemoveNodeSpirit extends Component {
 RemoveNodeSpirit.contextTypes = {
   store: PropTypes.object
 };
-
-
-
-
-// import { Popover, Button } from 'antd';
-
-// const content = (
-//   <div>
-//     <p>Content</p>
-//     <p>Content</p>
-//   </div>
-// );
-
-// ReactDOM.render(
-//   <div>
-//     <Popover content={content} title="Title" trigger="hover">
-//       <Button>Hover me</Button>
-//     </Popover>
-//     <Popover content={content} title="Title" trigger="focus">
-//       <Button>Focus me</Button>
-//     </Popover>
-//     <Popover content={content} title="Title" trigger="click">
-//       <Button>Click me</Button>
-//     </Popover>
-//   </div>
-// , mountNode);
-

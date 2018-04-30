@@ -13,7 +13,7 @@ import grey from 'material-ui/colors/grey';
 // import Tooltip from 'material-ui/Tooltip';
 
 import { Link } from 'react-router-dom';
-import { List, Avatar, Icon, Divider, Badge, Popconfirm, message } from 'antd';
+import { List,  Divider,  Popconfirm, message } from 'antd';
 
 
 import SiteService from '../../services/siteService'
@@ -70,7 +70,6 @@ export default class UserSite extends Component {
             color='secondary' >新建网站</Button>
           <Divider />
           <List
-            size={'small'}
             pagination={true}
             itemLayout="vertical"
             size="large"

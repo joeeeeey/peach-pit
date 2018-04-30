@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import AppBar from '../../components/common/layouts/adminAppBar'
-import PropTypes from 'prop-types';
 import { Table, Input, Button, Icon, message } from 'antd';
 import { Link } from 'react-router-dom';
 import MuButton from 'material-ui/Button';
@@ -72,7 +71,7 @@ class TemplateIndexPage extends React.Component {
     return (
       <div>
         <MuButton color="secondary" component={Link} to={`/admin/editPage?source=template&id=${record.key}`}> 编辑 </MuButton>
-        <UpdateBlockThumbButton source={'template'} id={record.key}/>
+        <UpdateBlockThumbButton source={'template'} id={record.key} />
       </div>
 
     )
@@ -83,7 +82,7 @@ class TemplateIndexPage extends React.Component {
     this.setState({ loading: true });
     const { pagination } = { ...this.state }
     const params = { limit: pagination.pageSize, currentPage: pagination.current }
-    const result = templateService.getAllTemplates(params)
+    templateService.getAllTemplates(params)
       .then(response => {
         this.setState({ loading: false });
         const { data } = response

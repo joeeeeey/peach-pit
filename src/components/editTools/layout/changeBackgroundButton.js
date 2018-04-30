@@ -1,11 +1,30 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import { Menu, Dropdown, Select } from 'antd';
 import UploaderEntrance from '../image/uploaderEntrance'
-import Grid from 'material-ui/Grid';
 
 import { TwitterPicker, SketchPicker } from 'react-color'
+import red from 'material-ui/colors/red'
+import pink from 'material-ui/colors/pink'
+import purple from 'material-ui/colors/purple'
+import deepPurple from 'material-ui/colors/deepPurple'
+import indigo from 'material-ui/colors/indigo'
+import blue from 'material-ui/colors/blue'
+import lightBlue from 'material-ui/colors/lightBlue'
+import cyan from 'material-ui/colors/cyan'
+import teal from 'material-ui/colors/teal'
+import green from 'material-ui/colors/green'
+import lightGreen from 'material-ui/colors/lightGreen'
+import lime from 'material-ui/colors/lime'
+import yellow from 'material-ui/colors/yellow'
+import amber from 'material-ui/colors/amber'
+import orange from 'material-ui/colors/orange'
+import deepOrange from 'material-ui/colors/deepOrange'
+import brown from 'material-ui/colors/brown'
+import grey from 'material-ui/colors/grey'
+import blueGrey from 'material-ui/colors/blueGrey'
+
 
 const buttonStyle = { color: 'grey', width: '100%', justifyContent: 'left' }
 
@@ -16,13 +35,17 @@ export default class ChangeBackgroundButton extends React.Component {
   constructor(props, context) {
     super(props);
     this.positionStyle = this.props.positionStyle || { position: 'absolute', right: '2%', top: 4, "borderRadius": "10%", "background": "#303233" }
+    const {backgroundInfo} = this.props 
+    const {backgroundType, enableParallex, fillType, background} = backgroundInfo
+
     this.state = {
       visible: false,
-      backgroundType: this.props.backgroundInfo.backgroundType,
-      enableParallex: this.props.backgroundInfo.enableParallex,
-      fillType: this.props.backgroundInfo.fillType,
-      colorPicker: 'twitter',
-      background: '#ffffff',
+      backgroundType: backgroundType,
+      enableParallex: enableParallex,
+      fillType: fillType,
+      colorPicker: 'twitter', // 默认选择的画板
+      background: backgroundType === "pureColor" ? background : '#ffffff', // 默认颜色
+      colorPickerHue: 100, // 默认色调为淡色 dark
     }
   }
 
@@ -43,7 +66,6 @@ export default class ChangeBackgroundButton extends React.Component {
       case 'fill':
         return '填充'
       default:
-        return ''
         break;
     }
   }
@@ -122,12 +144,30 @@ export default class ChangeBackgroundButton extends React.Component {
   getPositionStyle = () => {
     if (this.props.positionStyle) { return this.props.positionStyle }
     if (this.props.fullWithChilren) {
-      return {zIndex:50, position: 'absolute', right: '2%', top: 4, "borderRadius": "10%", "background": "#303233" }
+      return { zIndex: 50, position: 'absolute', right: '2%', top: 4, "borderRadius": "10%", "background": "#303233" }
     } else {
-      
-      return {zIndex:50, position: 'absolute', right: '2%', top: 4, "borderRadius": "10%", "background": "#303233" }
+
+      return { zIndex: 50, position: 'absolute', right: '2%', top: 4, "borderRadius": "10%", "background": "#303233" }
     }
   }
+
+  // 使用 meterial-ui 颜色阶梯
+  getColorSetting = () => {
+    // https://material-ui-next.com/style/color/
+    const cph = this.state.colorPickerHue
+    return ['ffffff', red[cph], pink[cph], purple[cph], deepPurple[cph], indigo[cph], blue[cph], lightBlue[cph], cyan[cph], teal[cph], green[cph], lightGreen[cph], lime[cph], yellow[cph], amber[cph], orange[cph], deepOrange[cph], brown[cph], grey[cph], blueGrey[cph]]
+  }
+
+  // 改变色调 // TODO 双向变化
+  changeColorPickerHue = () => {
+    const cph = this.state.colorPickerHue
+    if (cph === 900) {
+      this.setState({ colorPickerHue: 100 })
+    } else {
+      this.setState({ colorPickerHue: (cph + 100) })
+    }
+  }
+
 
   menu = (f) => {
     const { backgroundType, fillType } = this.props.backgroundInfo
@@ -156,15 +196,26 @@ export default class ChangeBackgroundButton extends React.Component {
         }
 
         <Menu.Item key={'updataBackgroundColorButtons'}>
-          <div style={{ maxWidth: 150, textAlign: 'center' }}>
-            <Button style={{ marginBottom: 5, }} onClick={this.changeColorPicker}> 切换画板</Button>
+          <div style={{ maxWidth: 180, textAlign: 'center' }}>
+            <div style={{ width: '100%' }}>
+              <div style={{ float: 'left', width: '50%' }}>
+                <Button size='small' style={{ marginBottom: 5 }} onClick={this.changeColorPicker}>
+                  切换画板</Button>
+              </div>
+
+              <div style={{ width: '50%' }}>
+                <Button size='small' style={{ marginBottom: 5 }} onClick={this.changeColorPickerHue}>
+                  色调深浅</Button>
+              </div>
+            </div>
+
             {this.state.colorPicker === 'twitter' &&
               <TwitterPicker
                 triangle={'hide'}
                 width={140}
                 onChangeComplete={this.handleChangeColorPicker}
                 color={this.state.background}
-                colors={["#FFCDD2", "#F8BBD0", "#E1BEE7", "#D1C4E9", "#C5CAE9", "#BBDEFB", "#B3E5FC", "#B2EBF2", "#B2DFDB", "#C8E6C9", "#DCEDC8", "#F0F4C3", "#FFF9C4", "#FFECB3", "#FFE0B2", "#FFCCBC", "#D7CCC8", "#F5F5F5", "#CFD8DC"]}
+                colors={this.getColorSetting()}
               />
             }
 
@@ -172,6 +223,7 @@ export default class ChangeBackgroundButton extends React.Component {
               <SketchPicker
                 width={120}
                 color={this.state.background}
+                presetColors={this.getColorSetting()}
                 onChangeComplete={this.handleChangeColorPicker} />
             }
           </div>

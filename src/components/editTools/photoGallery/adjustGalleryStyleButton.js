@@ -1,9 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import { Menu, Dropdown, Slider } from 'antd';
-
-const buttonStyle = { color: 'grey', width: '100%', justifyContent: 'left' }
 
 export default class AdjustGalleryStyleButton extends React.Component {
   constructor(props, context) {
@@ -53,7 +51,6 @@ export default class AdjustGalleryStyleButton extends React.Component {
   }
 
   menu = (f) => {
-    const { } = this.props
     return (
       <Menu >
         <Menu.Item key={'imgContainerMargin'}>

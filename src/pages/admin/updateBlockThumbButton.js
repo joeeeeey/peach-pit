@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 import axios from 'axios'
 import Cookies from 'js-cookie';
 import Button from 'material-ui/Button';
-import '../../css/imageUploader.css'
 import UpyunService from '../../services/upyunService'
 import TemplateService from '../../services/templateService';
 import LayoutService from '../../services/layoutService'

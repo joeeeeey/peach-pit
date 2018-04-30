@@ -14,12 +14,12 @@ export default class UserSite extends Component {
     return (
       <div>
         <AppBar />
-        <div style={{ color: '#777',  textAlign: 'center', padding: '30px 80px', textAlign: 'justify' }}>
+        <div style={{ color: '#777',  textAlign: 'center', padding: '30px 80px' }}>
           <h3 style={{ textAlign: 'center' }}>简介</h3>
           <p style={{ fontSize: 16, marginTop: 20, textAlign: 'center' }}>桃核空间是一个帮你建站并且直接发布的站点。发布时你的网站将会被分配本站的一个二级域名， 整个过程都是免费的。</p>
         </div>
 
-        <div style={{ color: '#777',  textAlign: 'center', padding: '30px 80px', textAlign: 'justify' }}>
+        <div style={{ color: '#777',  textAlign: 'center', padding: '30px 80px' }}>
           <h3 style={{ textAlign: 'center' }}>告知</h3>
           <div style={{ width: '70%', margin: 'auto', marginTop: 20, }}>
             <p>1. 前 1000 个发布的站点会拥有 'vip' 的前缀~</p>
@@ -28,14 +28,14 @@ export default class UserSite extends Component {
           </div>
         </div>
 
-        <div style={{ color: '#777',  textAlign: 'center', padding: '30px 80px', textAlign: 'justify' }}>
+        <div style={{ color: '#777',  textAlign: 'center', padding: '30px 80px' }}>
           <h3 style={{ textAlign: 'center' }}>联系作者</h3>
 
           <p style={{ fontSize: 16, textAlign: 'center', marginTop: 20, }}>邮箱: joey9303@outlook.com</p>
           <p style={{ fontSize: 16, textAlign: 'center', marginTop: 20, }}>随时欢迎向我提出对该站点的建议，需求。</p>
         </div>
 
-        <div style={{ color: '#777',  textAlign: 'center', padding: '30px 80px', textAlign: 'justify' }}>
+        <div style={{ color: '#777',  textAlign: 'center', padding: '30px 80px' }}>
           <h3 style={{ textAlign: 'center' }}>请我喝咖啡?</h3>
           <div style={{ width: '70%', margin: 'auto', marginTop: 20, textAlign: 'center'}}>
             <div style={{ width: '50%', margin: 'auto', float: 'left' }}>

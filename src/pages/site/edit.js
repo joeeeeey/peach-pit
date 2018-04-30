@@ -8,21 +8,15 @@ import BlockService from '../../services/blockService'
 // 此处需要引入所有可编辑组件
 import EditableRoot from '../../components/edit/root'
 import EditableTextArea from '../../components/edit/textArea'
-import EditableLetfRightGrid from '../../components/edit/letfRightGrid'
-import EditableCard from '../../components/edit/card'
-import EditableCardMedia from '../../components/edit/cardMedia'
-
-import EditableVerticalGrid from '../../components/edit/verticalGrid'
-import EditableGridList from '../../components/edit/gridList'
-import EditableGridListTile from '../../components/edit/gridListTile'
-// import EditableFullWidthGrid from '../../components/edit/fullWidthGrid'
 import EditableVerticalLayout from '../../components/edit/verticalLayout'
+import EditableVerticalGrid from '../../components/edit/verticalGrid'
 import EditableImageArea from '../../components/edit/imageArea'
 import EditableNavBar from '../../components/edit/navbar'
 import EditablePhotoGallery from '../../components/edit/photoGallery'
 
+
 // 测试的组件 
-import Test from '../test'
+// import Test from '../test'
 
 const blockService = new BlockService()
 // const func = (function (React, Components) {
@@ -164,12 +158,6 @@ class Edit extends React.Component {
       EditableRoot: EditableRoot,
       EditableTextArea: EditableTextArea,
       EditableVerticalGrid: EditableVerticalGrid,
-      EditableGridList: EditableGridList,
-      EditableGridListTile: EditableGridListTile,
-      // EditableFullWidthGrid: EditableFullWidthGrid,
-      EditableLetfRightGrid: EditableLetfRightGrid,
-      EditableCard: EditableCard,
-      EditableCardMedia: EditableCardMedia,
       EditableVerticalLayout: EditableVerticalLayout,
       EditableImageArea: EditableImageArea,
       EditableNavBar: EditableNavBar,

@@ -6,12 +6,9 @@ import React, { Component } from 'react';
 import { message } from 'antd';
 import PropTypes from 'prop-types';
 import axios from 'axios'
-// import Button from 'material-ui/Button';
-// import UploaderEntrance from '../components/editTools/image/uploaderEntrance'
 import UpyunService from '../../../services/upyunService'
 import Cookies from 'js-cookie';
 
-import '../../../css/imageUploader.css'
 const upyunService = new UpyunService()
 
 const containerStyle = {

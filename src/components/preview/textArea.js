@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill'; // ES6
-import 'react-quill/dist/quill.snow.css'; // ES6
-import '../../css/quill.css'
+
 
 class PreviewTextArea extends Component {
   constructor(props) {

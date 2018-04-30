@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import AppBar from '../../components/common/layouts/adminAppBar'
 import PropTypes from 'prop-types';
 import { Table, Input, Button, Icon, message } from 'antd';
@@ -86,7 +86,7 @@ class LayoutIndexPage extends React.Component {
       currentPage: pagination.current,
       column: 'id,name,thumbnail_url,created_at'
     }
-    const result = layoutService.getAllLayouts(params, { role: 'administrator' })
+    layoutService.getAllLayouts(params, { role: 'administrator' })
       .then(response => {
         this.setState({ loading: false });
         const { data } = response

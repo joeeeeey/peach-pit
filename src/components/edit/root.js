@@ -9,8 +9,7 @@ import nodeOperation from '../../utils/nodeOperation'
 import DeleteIcon from 'material-ui-icons/Delete';
 // 侧边栏以及 appbar
 import { Layout, Menu, Icon, Popover, Divider, message } from 'antd';
-import '../../css/editPage.css'
-import 'antd/dist/antd.css'
+
 import IconButton from 'material-ui/IconButton';
 // 插入节点代码
 import InsertNodeCodeDialog from '../editTools/sidebar/insertNodeCodeDialog'

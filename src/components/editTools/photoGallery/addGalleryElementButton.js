@@ -1,9 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
-import { Menu, Dropdown, Slider } from 'antd';
 
-const buttonStyle = {fontSize:15, color: '#40C4FF', width: '100%', justifyContent: 'left' }
 
 export default class AddGalleryElementButton extends React.Component {
   constructor(props, context) {

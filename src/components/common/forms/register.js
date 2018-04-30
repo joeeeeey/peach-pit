@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css';
 import { Form, Icon, Input, Button, Tooltip, message } from 'antd';
-import '../../../css/registerFrom.css'
 import MuButton from 'material-ui/Button';
 // 正则
 import regPattern from '../../../utils/regPattern'

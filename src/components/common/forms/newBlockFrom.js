@@ -23,7 +23,7 @@ class MyFrom extends React.Component {
   }
 
   addlayout = (values) => {
-    const result = layoutService.addLayout(values)
+    layoutService.addLayout(values)
       .then(response => {
         const { data } = response
         if (data.code === 0) {
@@ -40,7 +40,7 @@ class MyFrom extends React.Component {
 
 
   addTemplate = (values) => {
-    const result = templateService.addTemplate(values)
+    templateService.addTemplate(values)
       .then(response => {
         const { data } = response
         console.log(data)
@@ -78,9 +78,9 @@ class MyFrom extends React.Component {
         block.data = JSON.stringify(nodeOperation.heightenDomTree(nodeData))
         if (values.blockType === 'template') {
           this.addTemplate(block)
-        } else if (values.blockType=== 'layout') {
+        } else if (values.blockType === 'layout') {
           this.addlayout(block)
-        }        
+        }
       }
     });
   }

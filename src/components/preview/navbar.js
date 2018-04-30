@@ -1,12 +1,8 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-
+import React from 'react';
 import Scroll from 'react-scroll';
 import NavBarAnchor from '../common/anchors/anchor'
 
-const { Link, Events, scrollSpy } = Scroll
-
-const scroll = Scroll.animateScrol
+const { Events, scrollSpy } = Scroll
 
 const sideBarWidth = 0 // preview 0
 const container2Style = { 'display': 'block', "position": "fixed", "top": "0px", "zIndex": "210", "left": sideBarWidth, "width": `calc(100% - ${sideBarWidth}px)`, "background": "rgb(255, 255, 255)", "transition": "all 0.25s", "boxShadow": "rgba(0, 0, 0, 0.25) 0px 1px 1px", "paddingTop": "10px", "paddingBottom": "10px" }

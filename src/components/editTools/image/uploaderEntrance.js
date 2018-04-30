@@ -12,12 +12,10 @@ import Button from 'material-ui/Button';
 import Dialog, {
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
 } from 'material-ui/Dialog';
 import PropTypes from 'prop-types';
 import UploaderArea from './uploaderArea'
-import '../../../css/imageUploader.css'
 
 export default class UploaderEntrance extends React.Component {
   constructor(props, context) {

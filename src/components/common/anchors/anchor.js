@@ -1,6 +1,4 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-
+import React  from 'react';
 import Scroll from 'react-scroll';
 const { Link } = Scroll
 const linkFontStyle = { fontSize: 12, fontWeight: 500, "fontFamily": "\"source sans pro\", helvetica, 'PingFang SC',\"Microsoft YaHei\",\"微软雅黑\",STXihei,\"华文细黑\", sans-serif" }

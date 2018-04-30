@@ -52,11 +52,11 @@ class HomePageStepper extends React.Component {
   getStepContent = (step) => {
     switch (step) {
       case 0:
-        return { src: "http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/d2376afa10f903913950b7bbfe624415" };
+        return { src: "http://blog-src.b0.upaiyun.com/taohe/dev/basic/template/9025623440c633292c88aca1d40ec9cb" };
       case 1:
-        return { src: "http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/d2376afa10f903913950b7bbfe624415" };;
+        return { src: "http://blog-src.b0.upaiyun.com/taohe/dev/basic/template/983093c2c677c9937663bc0905546956" };;
       case 2:
-        return { src: "http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/d2376afa10f903913950b7bbfe624415" };;
+        return { src: "http://blog-src.b0.upaiyun.com/taohe/dev/basic/template/65fce98c9db41edd3db1f8e3ccb5c19c" };;
       default:
         return { src: "http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/d2376afa10f903913950b7bbfe624415" };;
     }

@@ -3,7 +3,6 @@ import AppBar from '../../common/layouts/appBar'
 import GuideInfo from './guideInfo'
 import { withStyles } from 'material-ui/styles';
 import PropTypes from 'prop-types';
-import '../../../css/homePage.css'
 
 const styles = theme => ({
   root: {

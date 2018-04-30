@@ -4,20 +4,6 @@ import purple from 'material-ui/colors/purple';
 import blue from 'material-ui/colors/blue';
 // import green from 'material-ui/colors/green';
 // 需要时引入以下色板
-// import red from 'material-ui/colors/red';
-// import pink from 'material-ui/colors/pink';
-// import deepPurple from 'material-ui/colors/deepPurple';
-// import indigo from 'material-ui/colors/indigo';
-// import lightBlue from 'material-ui/colors/lightBlue';
-import cyan from 'material-ui/colors/cyan';
-// import teal from 'material-ui/colors/teal';
-// import lightGreen from 'material-ui/colors/lightGreen';
-// import lime from 'material-ui/colors/lime';
-// import yellow from 'material-ui/colors/yellow';
-// import amber from 'material-ui/colors/amber';
-// import orange from 'material-ui/colors/orange';
-// import deepOrange from 'material-ui/colors/deepOrange';
-
 import CssBaseline from 'material-ui/CssBaseline'; // 类似于 normalize.css, 用于规范 css
 
 // A theme with custom primary and secondary color.

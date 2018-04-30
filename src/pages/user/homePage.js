@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-import AppBar from '../../components/common/layouts/appBar'
-import GuideInfo from '../../components/pages/index/guideInfo'
 import { withStyles } from 'material-ui/styles';
 import PropTypes from 'prop-types';
-import '../../css/homePage.css'
 import Button from 'material-ui/Button';
 import { Link } from 'react-router-dom';
 import HomePageStepper from '../../components/common/steppers/homePageStepper'
-import { Divider } from 'antd';
 
 const styles = theme => ({
   root: {

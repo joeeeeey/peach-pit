@@ -8,7 +8,7 @@ import nodeOperation from '../../../utils/nodeOperation'
 
 const siteService = new SiteService()
 
-export default class UpdateSiteButton extends React.Component {
+export default class UpdateSiteButton extends Component {
   constructor(props, context) {
     super(props);
   }
@@ -33,8 +33,6 @@ export default class UpdateSiteButton extends React.Component {
       .catch(function (error) {
         message.error(`😥 出现异常: ${error}`, 2)
       });
-
-    console.log('saveSite')
   }
   render() {
     return (

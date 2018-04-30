@@ -2,14 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill'; // ES6
 import EditorToolbar from './editorToolBar'
-import 'react-quill/dist/quill.snow.css'; // ES6
-import '../../css/quill.css'
 
 function randomStr() {
   return `${(Math.random() + Math.random()).toString()}`
 }
 
-const id = `Quill${randomStr().replace(/\./i, '')}`
 
 // props
 // deltaDeltaValue: []  数据
@@ -59,7 +56,7 @@ class Editor extends Component {
       // TODO 此处将 this.quillRef.editor.delta 报错
       // this.changedDeltaValue
 
-      if (this.saveTriggerTimer != undefined) {
+      if (this.saveTriggerTimer !== undefined) {
         clearTimeout(this.saveTriggerTimer)
       }
 

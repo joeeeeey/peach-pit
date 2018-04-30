@@ -7,7 +7,21 @@
 // 可传入 props
 // children array
 // flex  array
-// background string
+// backgroundInfo string
+
+// backgroundInfo 内容
+// const {
+//   background,
+//   backgroundType,
+//   // 背景是图片的时才需要的属性
+//   imageInfo,
+//   fillType,
+//   enableParallex,
+//   fullWithChilren, // 是否占满
+// } = backgroundInfo
+
+// 有背景的 div props 约定
+// background backgroundType 必传
 
 // 原始代码段
 // {
@@ -26,18 +40,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Grid from 'material-ui/Grid';
-import Button from 'material-ui/Button';
 import ChangeBackgroundButton from '../editTools/layout/changeBackgroundButton'
 import GridArrangementOptionLists from '../editTools/layout/gridArrangementOptionLists'
 import ArrayOper from '../../utils/arrOperation'
 import backgroundSetting from '../../layoutSettings/backgroundSetting'
 
 
-
 // Layout 的公共样式， 可以抽离
 // 需要占据主屏幕 80% 位置左右两侧自动 margin
 // TODO  padding top bottom 如何在屏幕变小时自动变小
-const layoutStyle = { margin: '0 auto', width: '84%', flexGrow: 1, padding: '22px 0' }
+// const layoutStyle = { margin: '0 auto', width: '84%', flexGrow: 1, padding: '22px 0' }
 
 const defaultChildren = {
   native: false, nodeName: 'VerticalGrid'
@@ -179,18 +191,6 @@ export default class EditableVerticalLayout extends Component {
   render() {
     const { id = this.props.selfkey, containerDirection = 'row', backgroundInfo } = this.props
 
-    // 有背景的 div props 约定
-    // background backgroundType 必传
-    const {
-      background,
-      backgroundType,
-      // 背景是图片的时才需要的属性
-      imageInfo,
-      fillType,
-      enableParallex,
-      fullWithChilren,
-    } = backgroundInfo
-
     this.flex = this.props.flex || defalutFlexLayout
     // 填充样式
     const backgroundStyle = Object.assign({ position: 'relative' }, backgroundSetting.getBackgroundStyle(backgroundInfo))
@@ -212,7 +212,7 @@ export default class EditableVerticalLayout extends Component {
               {this.props.children &&
                 React.Children.toArray(this.props.children).map((child, index) => {
                   return (
-                    <Grid style={{padding: '0px 0px'}} key={child.props.selfkey} item xs={12} sm={this.flex[index]} md={this.flex[index]} lg={this.flex[index]} xl={this.flex[index]}>
+                    <Grid style={{ padding: '0px 0px' }} key={child.props.selfkey} item xs={12} sm={this.flex[index]} md={this.flex[index]} lg={this.flex[index]} xl={this.flex[index]}>
                       {child}
                     </Grid>
                   )
