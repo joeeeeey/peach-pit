@@ -8,7 +8,7 @@
 
 ### 模板预览 图片比例饿
 
-700 / 480 = 1.46
+700 / 376= 1.86
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).

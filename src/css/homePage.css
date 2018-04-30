@@ -2,3 +2,26 @@
 div[class*=" MuiGrid-grid-xs-12-"] {
 	padding: 0px 0px !important;
 }
+
+
+div[class*="jss2 "] {
+	padding: 0px 0px !important;
+}
+
+div[class*=" jss38"] {
+	padding: 0px 0px !important;
+}
+
+
+div[class^="jss38"], div[class*=" jss38"] {
+	padding: 0px 0px !important;
+}
+
+
+div[class^="jss"], div[class*=" jss"] {
+	padding: 0px 0px !important;
+}
+
+div[class*=" jss"] {
+	padding: 0px 0px !important;
+}

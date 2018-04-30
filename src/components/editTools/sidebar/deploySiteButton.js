@@ -26,7 +26,7 @@ export default class DeploySiteButton extends React.Component {
     super(props);
     this.state = {
       isDeploying: false,
-      openDeployFinishedDialog: false,
+      openDeployFinishedDialog: true,
       siteUrl: null,
     }
   }
@@ -167,8 +167,8 @@ export default withRoot(Index);
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">部署完成</DialogTitle>
-          <DialogContent style={{ minWidth: 400 }}>
+          <DialogTitle id="alert-dialog-title" style={{textAlign: 'center'}}>部署完成</DialogTitle>
+          <DialogContent style={{ minWidth: 500 }}>
             <DialogContentText id="alert-dialog-description">
               {this.state.siteUrl &&
                 <div style={{ textAlign: 'center' }}>
