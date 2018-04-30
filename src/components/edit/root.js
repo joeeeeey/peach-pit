@@ -73,7 +73,7 @@ class EditableRoot extends Component {
   // 获得顶层元素 
   getRootChildren = () => {
     const keys = this.getRootChildrenKey()
-    if (keys.length > 0) {
+    if (keys && keys.length > 0) {
       return keys.map(key => {
         const { layoutName, nodeName, props } = this.context.store.getState().node[key]
         return {
@@ -93,9 +93,8 @@ class EditableRoot extends Component {
       <div style={{ width: 300, overflow: 'auto' }}>
         <img
           style={{ maxWidth: '100%' }}
-          src={"http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/ee6abd28bece31864a13b934fdbda223"}
+          src={thumbnailUrl || "http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/ee6abd28bece31864a13b934fdbda223"}
         />
-        {/* <p>TODO 此处应该显示布局缩略图 {thumbnailUrl}</p> */}
       </div>
     )
   }
@@ -480,20 +479,19 @@ export default withRoot(Index);
               </SubMenu>
 
               <Menu.Item key="LayoutsListPopover">
-                {/* <Icon type="setting" /> */}
                 <LayoutsListPopover
-                  layouts={this.state.layouts}
+                  layouts={this.state.layouts.filter(x=> x.category === '常用')}
                   buttonStyle={buttonStyle}
                   addNode={this.addNode}
                 />
               </Menu.Item>
 
 
-              <SubMenu key="addNewLayout" title={<span><Icon type="setting" />新增布局2</span>}>
+              <SubMenu key="addNewLayout" title={<span><Icon type="setting" />新增布局(所有)</span>}>
                 {
                   this.state.layouts.map(layout =>
                     <Menu.Item key={`${layout.id + 30}`}>
-                      <Popover content={this.layoutPreView(`${layout.name}`)} placement="right">
+                      <Popover content={this.layoutPreView(`${layout.thumbnail_url}`)} placement="right">
                         <Button color="secondary" onClick={() => this.addNode(layout.data, layout.name)} style={buttonStyle}>
                           {layout.name}
                         </Button>

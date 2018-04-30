@@ -49,7 +49,7 @@ export default class LayoutsListPopoverImageArea extends React.Component {
           </div>
           <img
             style={{ maxWidth: '100%' }}
-            src={"http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/ee6abd28bece31864a13b934fdbda223"}
+            src={layout.thumbnail_url || "http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/ee6abd28bece31864a13b934fdbda223"}
           // src={"//nzr2ybsda.qnssl.com/images/322612/FoSaqAGPdKumNAE4UBW01Bv4sjl6.jpg?imageMogr2/strip/thumbnail/720x1440>/interlace/1/format/jpg"}
           />
         </div>

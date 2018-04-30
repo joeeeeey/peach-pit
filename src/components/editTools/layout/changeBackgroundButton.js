@@ -119,6 +119,16 @@ export default class ChangeBackgroundButton extends React.Component {
     }
   }
 
+  getPositionStyle = () => {
+    if (this.props.positionStyle) { return this.props.positionStyle }
+    if (this.props.fullWithChilren) {
+      return {zIndex:50, position: 'absolute', right: '2%', top: 4, "borderRadius": "10%", "background": "#303233" }
+    } else {
+      
+      return {zIndex:50, position: 'absolute', right: '2%', top: 4, "borderRadius": "10%", "background": "#303233" }
+    }
+  }
+
   menu = (f) => {
     const { backgroundType, fillType } = this.props.backgroundInfo
     return (
@@ -172,7 +182,7 @@ export default class ChangeBackgroundButton extends React.Component {
 
   render() {
     return (
-      <div style={this.positionStyle}>
+      <div style={this.getPositionStyle()}>
         <Dropdown
           overlay={this.menu(this.updateNodeBackground, 'background')}
           trigger={['click']}

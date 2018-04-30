@@ -8,8 +8,9 @@ import Grid from 'material-ui/Grid';
 import AddNodeSpirit from '../editTools/layout/addNodeSpirit'
 import RemoveNodeSpirit from '../editTools/layout/removeNodeSpirit'
 
-const AddNodeSpiritContainerStyle = { minHeight: 23, position: 'absolute', top: -15, width: '100%' }
-const RemoveNodeSpiritContainerStyle = { position: 'absolute', right: -15, top: -16 }
+const AddNodeSpiritContainerStyle = {zIndex: 45, minHeight: 23, position: 'absolute', top: -5, width: '100%' }
+const RemoveNodeSpiritContainerStyle = {zIndex: 46, position: 'absolute', right: -15}
+const ChildAddNodeSpiritContainerStyle = {zIndex: 45, minHeight: 23, position: 'absolute', top: -10, width: '100%' }
 export default class EditableVerticalGrid extends Component {
   constructor(props, context) {
     super(props);
@@ -23,7 +24,7 @@ export default class EditableVerticalGrid extends Component {
             React.Children.toArray(this.props.children).map((child, index) => {
               return (
                 <Grid key={child.props.selfkey} item xs={12} style={{ padding: '10px 0', position: 'relative' }}>
-                  <div key='addNodeSpritContainer' id={child.props.selfkey} style={AddNodeSpiritContainerStyle} >
+                  <div key='addNodeSpritContainer' id={child.props.selfkey} style={ChildAddNodeSpiritContainerStyle} >
                     <AddNodeSpirit permanent={false} ref={(el) => { this.addNodeSpirit = el }} parentkey={this.props.selfkey} childrenkey={child.props.selfkey} />
                   </div>
                   <div key='RemoveNodeSpritContainer' style={RemoveNodeSpiritContainerStyle}>

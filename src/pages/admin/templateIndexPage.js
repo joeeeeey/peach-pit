@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import { Table, Input, Button, Icon, message } from 'antd';
 import { Link } from 'react-router-dom';
 import MuButton from 'material-ui/Button';
+
+import UpdateBlockThumbButton from './updateBlockThumbButton'
+
 import TemplateService from '../../services/templateService'
 const templateService = new TemplateService()
 
@@ -66,7 +69,13 @@ class TemplateIndexPage extends React.Component {
   }
 
   editButton = (record) => {
-    return (<MuButton color="secondary" component={Link} to={`/admin/editPage?source=template&id=${record.key}`}> 编辑 </MuButton>)
+    return (
+      <div>
+        <MuButton color="secondary" component={Link} to={`/admin/editPage?source=template&id=${record.key}`}> 编辑 </MuButton>
+        <UpdateBlockThumbButton source={'template'} id={record.key}/>
+      </div>
+
+    )
   }
 
 

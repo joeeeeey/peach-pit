@@ -14,7 +14,14 @@ import Cookies from 'js-cookie';
 import '../../../css/imageUploader.css'
 const upyunService = new UpyunService()
 
-
+const containerStyle = {
+  textAlign: 'center',
+  "border": "4px dashed #e2e4e7",
+  "bottom": "40px", "left": "30px",
+  "position": "absolute",
+  "right": "30px", "top": "55px",
+  "width": "auto", "height": "auto",
+}
 export default class UploaderArea extends React.Component {
   constructor(props, context) {
     super(props)
@@ -58,8 +65,8 @@ export default class UploaderArea extends React.Component {
         role: role,
         // TODO roleId 在 state 中取不到直接在 cookie 中取?
         roleId: this.context.store.getState()[role].profile.id,
-        source: source || 'temporary',
-        sourceId: id || 'layout',
+        source: source || 'layout',
+        sourceId: id || 'tmp',
         fileName: file.name,
         page: 'editPage',
       }
@@ -205,22 +212,12 @@ export default class UploaderArea extends React.Component {
   }
 
   render() {
-    const containerStyle = {
-      textAlign: 'center',
-      "border": "4px dashed #e2e4e7",
-      "bottom": "40px", "left": "30px",
-      "position": "absolute",
-      "right": "30px", "top": "55px",
-      "width": "auto", "height": "auto",
-    }
     return (
       <div style={containerStyle} >
         <div className="upload-btn-wrapper" onMouseLeave={this.handlerUploaderMouseLeave} onMouseOver={this.handlerUploaderHover}>
           <button style={this.UploaderButtonStyle()} className="btn">上传图片</button>
           <input onChange={this.fileInput} type="file" id="file-input" name="image" accept="image/*" />
         </div>
-        {/* {this.state.imageUrl && <img style={{ minHeight: 200 }} src={this.state.imageUrl} alt="" />} */}
-
       </div>
     );
   }

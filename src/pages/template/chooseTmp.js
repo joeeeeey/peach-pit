@@ -101,7 +101,7 @@ class ChooseTmp extends Component {
             </RadioGroup>
           </div>
 
-          <Grid container spacing={8} justify={'center'}>
+          <Grid container spacing={24} justify={'center'} style={{width: '80%', margin: 'auto'}}>
             {
               this.state.templates.map(record => (
                 <ChooseTemplateCard

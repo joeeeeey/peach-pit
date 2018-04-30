@@ -30,11 +30,19 @@ const defalutFlexLayout = [8, 4]
 
 
 export default class PreviewVerticalLayout extends Component {
+  getLayoutDivStyle = () => {
+    if (this.props.fullWithChilren) {
+      return { margin: '0 0', width: '100%', flexGrow: 1, padding: '0 0' }
+    } else {
+      return { margin: '0 auto', width: '84%', flexGrow: 1, padding: '22px 0' }
+    }
+  }
+
   render() {
     const { containerDirection = 'row' } = this.props
 
     const { backgroundInfo, id } = this.props
-    
+
     const {
       background,
       backgroundType,
@@ -45,11 +53,11 @@ export default class PreviewVerticalLayout extends Component {
     } = backgroundInfo
 
     this.flex = this.props.flex || defalutFlexLayout
-    
+
     const backgroundStyle = Object.assign({ position: 'relative' }, backgroundSetting.getBackgroundStyle(backgroundInfo))
     return (
       <div style={backgroundStyle} id={id}>
-        <div style={layoutStyle}>
+        <div style={this.getLayoutDivStyle()}>
           <Grid container direction={containerDirection} >
             {this.props.children &&
               React.Children.toArray(this.props.children).map((child, index) => {

@@ -22,10 +22,12 @@ const styles = theme => ({
     padding: theme.spacing.unit * 1,
     textAlign: 'center',
     margin: 20,
-    // maxWidth: 345,
+    maxWidth: 483.6,
   },
   media: {
     height: 260,
+    backgroundSize: '100% 100%'
+
   },
 });
 
@@ -40,7 +42,6 @@ class ChooseTemplateCard extends React.Component {
   // 2. 创建完毕后进入编辑该 site 的页面
   beginEdit = () => {
     const params = { userId: this.props.userId, templateId: this.props.record.id }
-    console.log(params)
     siteService.addSiteByTemplate(params)
       .then(response => {
         const { data } = response
@@ -62,6 +63,9 @@ class ChooseTemplateCard extends React.Component {
   render() {
     const { classes, record } = this.props;
     const { name, thumbnail_url, id, category } = record
+    console.log(record.name)
+    console.log(record.thumbnail_url)
+
     const { redirectToEdit, siteId} = this.state;
 
     if (redirectToEdit && siteId) {
@@ -69,12 +73,12 @@ class ChooseTemplateCard extends React.Component {
     }
 
     return (
-      <Grid item lg={5} md={5} sm={5} xs={11} >
+      <Grid item xl={4} lg={6} md={6} sm={6} xs={12} >
         <Card className={classes.card}>
           <CardMedia
-            component={Link} to={`/user/editPage?source=template&id=${id}/`}
+            onClick={this.beginEdit} 
             className={classes.media}
-            image={thumbnail_url}
+            image={thumbnail_url || "http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/ee6abd28bece31864a13b934fdbda223"}
           />
           <CardContent>
             <Typography gutterBottom variant="headline" component="h2">

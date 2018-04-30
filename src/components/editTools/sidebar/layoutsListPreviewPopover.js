@@ -28,6 +28,7 @@ export default class LayoutsListPopover extends React.Component {
 
 
   getPopverContent = () => {
+
     return (
       <div style={{ height: 800, width: 180, overflow: 'auto' }}>
         {
@@ -46,7 +47,7 @@ export default class LayoutsListPopover extends React.Component {
     return (
       <Popover content={this.getPopverContent()} placement="right" trigger="click">
         <Button color="secondary" style={this.props.buttonStyle}>
-          新增布局
+          新增常用布局
         </Button>
       </Popover>
     );

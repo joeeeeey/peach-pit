@@ -25,6 +25,7 @@ function menu(f) {
       {[
         { nodeName: 'TextArea', name: '文本框' },
         { nodeName: 'ImageArea', name: '图片' },
+        { nodeName: 'VerticalLayout', name: '自定义垂直布局' },
       ].map(item =>
         <Menu.Item key={item.nodeName}>
           <Button onClick={() => { f(item.nodeName) }} color="secondary" style={buttonStyle}>
@@ -80,10 +81,10 @@ export default class AddNodeSpirit extends Component {
     switch (nodeName) {
       case 'TextArea':
         return JSON.parse('{"native":false,"nodeName":"TextArea","props":{"deltaDeltaValue":[{"insert":"在此输入标题","attributes":{"font":"serif"}},{"insert":"\\n","attributes":{"align":"center","header":1}}],"readOnly":false}}')
-        break;
-
       case 'ImageArea':
-        return JSON.parse('{"native": false, "nodeName": "ImageArea", "props": { "alt": "initial", "src": "/images/IMG_7881.jpg"}}')
+        return JSON.parse('{"native": false, "nodeName": "ImageArea", "props": { "alt": "initial", "src": "http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/layout/tmp/2f7ddd3dc6d11f62c204a2fd2adf0f47"}}')
+      case 'VerticalLayout':
+        return JSON.parse('{"native":true,"nodeName":"div","props":{"style":{"paddingTop":0}},"children":[{"native":false,"nodeName":"VerticalLayout","props":{"backgroundInfo":{"background":"white","backgroundType":"pureColor","imageInfo":{},"fillType":null,"enableParallex":null},"flex":[4,8]},"layoutName":"自定义纵向布局","children":[{"native":false,"nodeName":"VerticalGrid"},{"native":false,"nodeName":"VerticalGrid"}]}]}')
       default:
         break;
     }

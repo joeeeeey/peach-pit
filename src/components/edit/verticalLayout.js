@@ -32,6 +32,8 @@ import GridArrangementOptionLists from '../editTools/layout/gridArrangementOptio
 import ArrayOper from '../../utils/arrOperation'
 import backgroundSetting from '../../layoutSettings/backgroundSetting'
 
+
+
 // Layout 的公共样式， 可以抽离
 // 需要占据主屏幕 80% 位置左右两侧自动 margin
 // TODO  padding top bottom 如何在屏幕变小时自动变小
@@ -151,6 +153,29 @@ export default class EditableVerticalLayout extends Component {
     this.rearrangeChildren(flex)
   }
 
+  // 改变 fillWithChidlren 
+  changeFullWithChilrenButton = (value) => {
+    let updateNodesPayload = [{ value: value, nestedKey: `${this.props.selfkey},props,fullWithChilren` }]
+    const compositePayload = {
+      payloadData: {
+        updateNodes: { payloadData: updateNodesPayload },
+      }
+    }
+    this.context.store.dispatch({
+      type: 'composite',
+      payload: compositePayload,
+      target: 'node',
+    })
+  }
+
+  getLayoutDivStyle = () => {
+    if (this.props.fullWithChilren) {
+      return { margin: '0 0', width: '100%', flexGrow: 1, padding: '0 0' }
+    } else {
+      return { margin: '0 auto', width: '84%', flexGrow: 1, padding: '22px 0' }
+    }
+  }
+
   render() {
     const { id = this.props.selfkey, containerDirection = 'row', backgroundInfo } = this.props
 
@@ -163,23 +188,31 @@ export default class EditableVerticalLayout extends Component {
       imageInfo,
       fillType,
       enableParallex,
+      fullWithChilren,
     } = backgroundInfo
 
     this.flex = this.props.flex || defalutFlexLayout
     // 填充样式
     const backgroundStyle = Object.assign({ position: 'relative' }, backgroundSetting.getBackgroundStyle(backgroundInfo))
 
+    // TODO 可改变的两个属性
+    // 无空白填充 noPadding // 子元素满宽度 fullWidth
+    // 子元素沾满 fullWithChilren = true
+
     return (
       <div style={backgroundStyle} id={id}>
-        <ChangeBackgroundButton backgroundInfo={backgroundInfo} parentkey={this.props.selfkey} />
-        <div style={layoutStyle}>
+        <ChangeBackgroundButton fullWithChilren={this.props.fullWithChilren} backgroundInfo={backgroundInfo} parentkey={this.props.selfkey} />
+        <div style={this.getLayoutDivStyle()}>
           <div name="layoutDiv" style={{ position: 'relative' }}>
-            <GridArrangementOptionLists handleRearrangeGird={this.handleRearrangeGird} />
-            <Grid container direction={containerDirection} >
+            <GridArrangementOptionLists {...this.props}
+              handleRearrangeGird={this.handleRearrangeGird}
+              changeFullWithChilrenButton={this.changeFullWithChilrenButton}
+            />
+            <Grid name={'chilrenContanier'} container direction={containerDirection} >
               {this.props.children &&
                 React.Children.toArray(this.props.children).map((child, index) => {
                   return (
-                    <Grid key={child.props.selfkey} item xs={12} sm={this.flex[index]} md={this.flex[index]} lg={this.flex[index]} xl={this.flex[index]}>
+                    <Grid style={{padding: '0px 0px'}} key={child.props.selfkey} item xs={12} sm={this.flex[index]} md={this.flex[index]} lg={this.flex[index]} xl={this.flex[index]}>
                       {child}
                     </Grid>
                   )

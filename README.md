@@ -6,6 +6,10 @@
 2. 顶层样式应在 addNode 时就初始化自身 id, 以便于锚点
 3. 一个垂直布局可以衍生与许多子布局，但要注意这些布局不含 id，这回导致 admin 目前无法直接看 layout #TODO 
 
+### 模板预览 图片比例饿
+
+700 / 480 = 1.46
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 

@@ -10,7 +10,6 @@ const siteService = new SiteService()
 class BlockService {
   getData = (editInfo) => {
     const { source, id } = editInfo
-    console.log(`block service ${JSON.stringify(editInfo)}`)
     switch (source) {
       case 'template':
         return templatService.getTemplateById({ id: id })

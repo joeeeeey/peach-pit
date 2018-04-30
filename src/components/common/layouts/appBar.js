@@ -74,7 +74,7 @@ class ButtonAppBar extends React.Component {
             {!beforeLogin &&
               <Button
                 style={{ color: 'white' }}
-              component={Link} to="/about"
+                component={Link} to="/about"
               >关于本站
               </Button>
             }

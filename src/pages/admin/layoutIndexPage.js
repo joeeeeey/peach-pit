@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { Table, Input, Button, Icon, message } from 'antd';
 import { Link } from 'react-router-dom';
 import MuButton from 'material-ui/Button';
+import UpdateBlockThumbButton from './updateBlockThumbButton'
+
 import LayoutService from '../../services/layoutService'
 
 const layoutService = new LayoutService()
@@ -67,7 +69,12 @@ class LayoutIndexPage extends React.Component {
   }
 
   editButton = (record) => {
-    return (<MuButton color="secondary" component={Link} to={`/admin/editPage?source=layout&id=${record.key}`}> 编辑 </MuButton>)
+    return (
+      <div>
+        <MuButton color="secondary" component={Link} to={`/admin/editPage?source=layout&id=${record.key}`}> 编辑 </MuButton>
+        <UpdateBlockThumbButton source={'layout'} id={record.id} />
+      </div>
+    )
   }
 
 
@@ -79,7 +86,7 @@ class LayoutIndexPage extends React.Component {
       currentPage: pagination.current,
       column: 'id,name,thumbnail_url,created_at'
     }
-    const result = layoutService.getAllLayouts(params, {role: 'administrator'})
+    const result = layoutService.getAllLayouts(params, { role: 'administrator' })
       .then(response => {
         this.setState({ loading: false });
         const { data } = response

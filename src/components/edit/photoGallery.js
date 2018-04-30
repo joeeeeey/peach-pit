@@ -150,7 +150,7 @@ export default class EditablePhotoGallery extends Component {
               return <div ref={measureRef}></div>;
             }
             let columns = 1;
-            if (width >= 480) {
+            if (width >= 280) {
               columns = columnArrange[0];
             }
             if (width >= 1200) {

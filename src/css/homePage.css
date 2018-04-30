@@ -1,33 +1,4 @@
-#page {
-	background: url(/favicon.ico) no-repeat;
-	/* width: 100%;
-  display: table;
-	height: 700px; */
-	min-height: 500px; 
 
-	/* Create the parallax scrolling effect */
-	background-attachment: fixed;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;	
+div[class*=" MuiGrid-grid-xs-12-"] {
+	padding: 0px 0px !important;
 }
-#content {
-	width: 100%;
-	margin: 10px auto 0;
-	background: rgb(53, 47, 47);
-	border: none;
-  padding: 20px;
-	opacity: 0.8;
-}
-
-/* 
-.parallax {
-	background-image: url("img_parallax.jpg");
-
-	min-height: 500px; 
-
-	background-attachment: fixed;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-} */
