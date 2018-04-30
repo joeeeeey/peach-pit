@@ -98,28 +98,31 @@ class NormalLoginForm extends React.Component {
 
     const { getFieldDecorator } = this.props.form;
     return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
-        <FormItem style={{ maxWidth: 260, margin: 'auto' }}>
-          {getFieldDecorator('login', {
-            rules: [{ required: true, message: '请填入用户名' }],
-          })(
-            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="手机号或邮箱" />
-          )}
-        </FormItem>
-        <FormItem style={{ maxWidth: 260, margin: 'auto' }}>
-          {getFieldDecorator('password', {
-            rules: [{ required: true, message: '请填入登录密码' }],
-          })(
-            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="密码" />
-          )}
+      <div style={{paddingTop: 16, paddingBottom: 16}}>
+        <Form onSubmit={this.handleSubmit} className="login-form">
+          <FormItem style={{ maxWidth: 260, margin: 'auto' }}>
+            {getFieldDecorator('login', {
+              rules: [{ required: true, message: '请填入用户名' }],
+            })(
+              <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="手机号或邮箱" />
+            )}
+          </FormItem>
+          <FormItem style={{ maxWidth: 260, margin: 'auto' }}>
+            {getFieldDecorator('password', {
+              rules: [{ required: true, message: '请填入登录密码' }],
+            })(
+              <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="密码" />
+            )}
 
-        </FormItem>
-        <FormItem style={{ textAlign: 'center' }}>
-          <MuButton variant="raised" color="secondary" style={{ marginTop: 10, width: 260 }} type="submit">
-            Let Me In
+          </FormItem>
+          <FormItem style={{ textAlign: 'center' }}>
+            <MuButton variant="raised" color="secondary" style={{ marginTop: 10, width: 260 }} type="submit">
+              Let Me In
           </MuButton>
-        </FormItem>
-      </Form>
+          </FormItem>
+        </Form>
+      </div>
+
     );
   }
 }

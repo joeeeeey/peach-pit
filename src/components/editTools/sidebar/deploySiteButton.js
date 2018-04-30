@@ -26,7 +26,7 @@ export default class DeploySiteButton extends React.Component {
     super(props);
     this.state = {
       isDeploying: false,
-      openDeployFinishedDialog: true,
+      openDeployFinishedDialog: false,
       siteUrl: null,
     }
   }
@@ -167,11 +167,12 @@ export default withRoot(Index);
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title" style={{textAlign: 'center'}}>部署完成</DialogTitle>
+          {/* <DialogTitle id="alert-dialog-title" style={{ textAlign: 'center' }}>部署完成</DialogTitle> */}
           <DialogContent style={{ minWidth: 500 }}>
             <DialogContentText id="alert-dialog-description">
               {this.state.siteUrl &&
                 <div style={{ textAlign: 'center' }}>
+                  <h1 style={{ marginBottom: 30, marginTop: 30 }}>部署完成</h1>
 
                   <Typography variant="subheading" gutterBottom>
                     你现在可以点击以下域名

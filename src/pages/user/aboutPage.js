@@ -23,7 +23,7 @@ export default class UserSite extends Component {
           <h3 style={{ textAlign: 'center' }}>告知</h3>
           <div style={{ width: '70%', margin: 'auto', marginTop: 20, }}>
             <p>1. 前 1000 个发布的站点会拥有 'vip' 的前缀~</p>
-            <p>2. 更多好用的组件，动画等正在制作中。</p>
+            <p>2. 更多好用的模板，组件，动画等正在制作中。</p>
             <p>3. 项目基于  React， 对于开发者，本站即将推出 '建站完后可下载打包后的网站资源' 功能，你可以将文件部署到自己的机器。</p>
           </div>
         </div>
@@ -36,7 +36,7 @@ export default class UserSite extends Component {
         </div>
 
         <div style={{ color: '#777', textAlign: 'center', padding: '30px 80px' }}>
-          <h3 style={{ textAlign: 'center' }}>请我喝咖啡?</h3>
+          <h3 style={{ textAlign: 'center' }}>请我喝杯咖啡?</h3>
           <div style={{ width: '70%', margin: 'auto', marginTop: 20, textAlign: 'center' }}>
             <div style={{ width: '50%', margin: 'auto', float: 'left' }}>
               <div style={{ width: '80%', padding: '20px 20px', margin: 'auto', }}>

@@ -51,23 +51,27 @@ export default class UploaderEntrance extends React.Component {
     this.handleClose()
   }
   render() {
-    const { container, nestedkeyprefix, 
+    const { container, nestedkeyprefix,
       uploaderEntranceContainerStyle = {},
       uploadButtonStyle = {}
-     } = this.props
+    } = this.props
     return (
       <div name="UploaderEntranceContainer" style={uploaderEntranceContainerStyle}>
-        <Button onClick={this.handleClickOpen} style={Object.assign(this.buttonStyle(), uploadButtonStyle)  } color="secondary">上传图片</Button>
+        <Button onClick={this.handleClickOpen} style={Object.assign(this.buttonStyle(), uploadButtonStyle)} color="secondary">上传图片</Button>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">图片上传</DialogTitle>
+          {/* <DialogTitle id="form-dialog-title">图片上传</DialogTitle> */}
           <DialogContent style={{
             minWidth: '650px',
             minHeight: '270px'
           }}>
+            <div style={{ textAlign: 'center' }}>
+              <h1 style={{ marginBottom: 30, marginTop: 30 }}>图片上传</h1>
+            </div>
+
             <UploaderArea container={container} nestedkeyprefix={nestedkeyprefix} uploadSuccess={this.handleUploadSuccess} />
           </DialogContent>
           <DialogActions>

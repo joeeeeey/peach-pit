@@ -101,77 +101,79 @@ class RegistrationForm extends React.Component {
     };
 
     return (
-      <Form onSubmit={this.handleSubmitRegister}>
-        <FormItem
-          {...formItemLayout}
-          style={{ maxWidth: 350, margin: 'auto', textAlign: 'center' }}
-          label="账号"
-        >
-          {getFieldDecorator('login', {
-            rules: [{
-              required: true, message: '请填入邮箱或手机号',
-            },
-            { message: '请填入正确邮箱或手机号', pattern: regPattern.emailAndCnPhoneReg() }
-            ],
-          })(
-            <Input placeholder="手机号或邮箱" />
-          )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          style={{ maxWidth: 350, margin: 'auto' }}
-          label="密码"
-        >
-          {getFieldDecorator('password', {
-            rules: [{
-              required: true, message: '请填入密码!',
-            }, {
-              validator: this.validateToNextPassword,
-            }],
-          })(
-            <Input type="password" />
-          )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          style={{ maxWidth: 350, margin: 'auto' }}
-          label="确认密码"
-        >
-          {getFieldDecorator('confirm', {
-            rules: [{
-              required: true, message: '请确认密码!',
-            }, {
-              validator: this.compareToFirstPassword,
-            }],
-          })(
-            <Input type="password" onBlur={this.handleConfirmBlur} />
-          )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          style={{ maxWidth: 350, margin: 'auto' }}
-          label={(
-            <span>
-              昵称&nbsp;
+      <div style={{ paddingTop: 16, paddingBottom: 16 }}>
+        <Form onSubmit={this.handleSubmitRegister}>
+          <FormItem
+            {...formItemLayout}
+            style={{ maxWidth: 350, margin: 'auto', textAlign: 'center' }}
+            label="账号"
+          >
+            {getFieldDecorator('login', {
+              rules: [{
+                required: true, message: '请填入邮箱或手机号',
+              },
+              { message: '请填入正确邮箱或手机号', pattern: regPattern.emailAndCnPhoneReg() }
+              ],
+            })(
+              <Input placeholder="手机号或邮箱" />
+            )}
+          </FormItem>
+          <FormItem
+            {...formItemLayout}
+            style={{ maxWidth: 350, margin: 'auto' }}
+            label="密码"
+          >
+            {getFieldDecorator('password', {
+              rules: [{
+                required: true, message: '请填入密码!',
+              }, {
+                validator: this.validateToNextPassword,
+              }],
+            })(
+              <Input type="password" />
+            )}
+          </FormItem>
+          <FormItem
+            {...formItemLayout}
+            style={{ maxWidth: 350, margin: 'auto' }}
+            label="确认密码"
+          >
+            {getFieldDecorator('confirm', {
+              rules: [{
+                required: true, message: '请确认密码!',
+              }, {
+                validator: this.compareToFirstPassword,
+              }],
+            })(
+              <Input type="password" onBlur={this.handleConfirmBlur} />
+            )}
+          </FormItem>
+          <FormItem
+            {...formItemLayout}
+            style={{ maxWidth: 350, margin: 'auto' }}
+            label={(
+              <span>
+                昵称&nbsp;
               <Tooltip title="希望我们怎么称呼您?">
-                <Icon type="question-circle-o" />
-              </Tooltip>
-            </span>
-          )}
-        >
-          {getFieldDecorator('nickname', {
-            rules: [{ required: false, whitespace: true }],
-          })(
-            <Input />
-          )}
-        </FormItem>
+                  <Icon type="question-circle-o" />
+                </Tooltip>
+              </span>
+            )}
+          >
+            {getFieldDecorator('nickname', {
+              rules: [{ required: false, whitespace: true }],
+            })(
+              <Input />
+            )}
+          </FormItem>
 
-        <FormItem style={{ textAlign: 'center' }}>
-          <MuButton variant="raised" color="secondary" style={{ marginLeft: 50, marginTop: 10, width: 228 }} type="submit">
-            注册
+          <FormItem style={{ textAlign: 'center' }}>
+            <MuButton variant="raised" color="secondary" style={{ marginLeft: 50, marginTop: 10, width: 228 }} type="submit">
+              注册
           </MuButton>
-        </FormItem>
-      </Form>
+          </FormItem>
+        </Form>
+      </div>
     );
   }
 }
