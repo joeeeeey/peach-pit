@@ -39,7 +39,6 @@ export default class RemoveNodeSpirit extends Component {
   }
 
   render() {
-    const { } = this.props
     return (
       <Popover content={popoverContent(this.confirmDeleteNode)} trigger="click">
         <IconButton style={{ blackground: 'black', height: 30 }}>

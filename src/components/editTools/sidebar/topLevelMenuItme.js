@@ -1,6 +1,6 @@
 // 顶层样式的编辑面板子元素
 // 具有锚点，删除自身，编辑版块名称等功能
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import DeleteIcon from 'material-ui-icons/Delete';

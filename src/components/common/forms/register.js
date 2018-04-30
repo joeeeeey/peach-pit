@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css';
-import { Form, Icon, Input, Button, Tooltip, message } from 'antd';
+import { Form, Icon, Input, Tooltip, message } from 'antd';
 import MuButton from 'material-ui/Button';
 // 正则
 import regPattern from '../../../utils/regPattern'
@@ -25,7 +25,7 @@ class RegistrationForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const result = userService.register(values)
+        userService.register(values)
           .then(response => {
             // 成功 set store 
             // 提示注册成功，跳转
@@ -37,20 +37,20 @@ class RegistrationForm extends React.Component {
 
               this.context.store.dispatch({
                 type: 'update',
-                payload: {nestedKey: "isLogin", value: true},
+                payload: { nestedKey: "isLogin", value: true },
                 target: 'user',
-              });   
+              });
 
               this.context.store.dispatch({
                 type: 'update',
-                payload: {nestedKey: "profile", value: userProfile},
+                payload: { nestedKey: "profile", value: userProfile },
                 target: 'user',
-              });                 
+              });
 
               this.setState({
                 redirectIndex: true
               })
-            }else{
+            } else {
               message.error(`😥 ${data.msg}`, 1.2)
             }
           })
@@ -97,18 +97,6 @@ class RegistrationForm extends React.Component {
       wrapperCol: {
         xs: { span: 24 },
         sm: { span: 16 },
-      },
-    };
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 0,
-        },
-        sm: {
-          span: 16,
-          offset: 8,
-        },
       },
     };
 

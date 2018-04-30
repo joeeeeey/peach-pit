@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
 import Dialog, {
   DialogActions,
   DialogContent,
@@ -31,7 +30,7 @@ export default class SaveToNewBlockDialog extends editToolBaseDialog {
   render() {
     return (
       <div>
-        <Button onClick={this.handleClickOpen} style={this.buttonStyle()} color="secondary">新增至板块 🎉</Button>
+        <Button onClick={this.handleClickOpen} style={this.buttonStyle()} color="secondary">新增至板块 </Button>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}

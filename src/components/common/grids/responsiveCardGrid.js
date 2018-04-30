@@ -36,10 +36,6 @@ const styles = theme => ({
 });
 
 class ResponsiveCardGrid extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { classes, containerConfig = {
       justify: "center",

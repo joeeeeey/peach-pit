@@ -37,7 +37,6 @@ function getBackgroundStyle(backgroundInfo) {
   const {
     background,
     backgroundType,
-    imageInfo,
     fillType,
     enableParallex,
   } = backgroundInfo

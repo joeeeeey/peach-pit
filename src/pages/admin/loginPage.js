@@ -62,7 +62,7 @@ class AdminLogin extends React.Component {
   }
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes } = this.props;
     const { value } = this.state;
 
     return (
@@ -82,7 +82,7 @@ class AdminLogin extends React.Component {
                     <Tab label="登录" />
                   </Tabs>
                 </Paper>
-                {value === 0 && <TabContainer ><LoginFrom role='admin'/></TabContainer>}
+                {value === 0 && <TabContainer ><LoginFrom role={'admin'}/></TabContainer>}
               </div>
             </Grid>
           </Grid>

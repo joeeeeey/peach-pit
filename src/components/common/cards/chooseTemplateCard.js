@@ -3,8 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Redirect } from 'react-router-dom'
-import { Link } from 'react-router-dom';
-
 import { withStyles } from 'material-ui/styles';
 import Card, { CardActions, CardContent, CardMedia } from 'material-ui/Card';
 import Button from 'material-ui/Button';
@@ -62,9 +60,7 @@ class ChooseTemplateCard extends React.Component {
   }
   render() {
     const { classes, record } = this.props;
-    const { name, thumbnail_url, id, category } = record
-    console.log(record.name)
-    console.log(record.thumbnail_url)
+    const { name, thumbnail_url } = record
 
     const { redirectToEdit, siteId} = this.state;
 

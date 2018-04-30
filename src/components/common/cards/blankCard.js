@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import Card from 'material-ui/Card';
 import Grid from 'material-ui/Grid';
-
 
 class BlankCard extends Component {
   render() {

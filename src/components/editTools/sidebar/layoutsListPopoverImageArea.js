@@ -1,7 +1,6 @@
 // 布局列表气泡卡片 item
 // props: 1. layout 2. addNode function
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import Button from 'material-ui/Button';
 import { Divider } from 'antd';
 const defaultOverlayStyle = { textAlign: 'center', "position": "absolute", "width": "100%", "height": "100%", "top": "0", "left": "0", "right": "0", "bottom": "0", "backgroundColor": "rgba(0,0,0,0.5)", "zIndex": "2", "cursor": "pointer" }
@@ -50,7 +49,7 @@ export default class LayoutsListPopoverImageArea extends React.Component {
           <img
             style={{ maxWidth: '100%' }}
             src={layout.thumbnail_url || "http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/ee6abd28bece31864a13b934fdbda223"}
-          // src={"//nzr2ybsda.qnssl.com/images/322612/FoSaqAGPdKumNAE4UBW01Bv4sjl6.jpg?imageMogr2/strip/thumbnail/720x1440>/interlace/1/format/jpg"}
+            alt="layout_thumb"
           />
         </div>
         <Divider dashed />

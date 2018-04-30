@@ -67,7 +67,6 @@ class LoginOrRegister extends React.Component {
   };
 
   render() {
-    const { classes, theme } = this.props;
     const { value } = this.state;
 
     return (
@@ -90,7 +89,7 @@ class LoginOrRegister extends React.Component {
                     <Tab label="注册" />
                   </Tabs>
                 </Paper>
-                {value === 0 && <TabContainer ><LoginFrom role='user'/></TabContainer>}
+                {value === 0 && <TabContainer ><LoginFrom role={'user'}/></TabContainer>}
                 {value === 1 && <TabContainer ><RegisterFrom /></TabContainer>}
               </div>
             </Grid>

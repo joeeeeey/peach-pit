@@ -4,7 +4,6 @@ import { withStyles } from 'material-ui/styles';
 import Stepper, { Step, StepLabel, StepContent } from 'material-ui/Stepper';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
-import Typography from 'material-ui/Typography';
 
 const styles = theme => ({
   root: {
@@ -110,6 +109,7 @@ class HomePageStepper extends React.Component {
                       <img
                         style={{ maxWidth: '100%', maxHeight: '100%', margin: "0 auto" }}
                         src={this.getStepContent(index).src}
+                        alt={label}
                       />
                     </div>
                   </div>

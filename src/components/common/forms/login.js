@@ -3,15 +3,12 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom'
 // Ant
 import 'antd/dist/antd.css'
-import { Form, Icon, Input, Button, message } from 'antd';
+import { Form, Icon, Input, message } from 'antd';
 import UserService from '../../../services/userService'
 import AdminService from '../../../services/adminService'
 
-// 正则
-import regPattern from '../../../utils/regPattern'
 
 // Mu
-import Paper from 'material-ui/Paper';
 import MuButton from 'material-ui/Button';
 
 const FormItem = Form.Item;
@@ -24,7 +21,7 @@ class NormalLoginForm extends React.Component {
   }
 
   adminLogin = (values) => {
-    const result = adminService.login(values)
+    adminService.login(values)
       .then(response => {
         const { data } = response
         if (data.code === 0) {
@@ -50,7 +47,7 @@ class NormalLoginForm extends React.Component {
   }
 
   userLogin = (values) => {
-    const result = userService.login(values)
+    userService.login(values)
       .then(response => {
         const { data } = response
         if (data.code === 0) {
@@ -61,7 +58,7 @@ class NormalLoginForm extends React.Component {
             type: 'replace',
             payload: { isLogin: true, profile: userProfile },
             target: 'user',
-          });          
+          });
           this.setState({
             redirectIndex: true
           })
@@ -98,7 +95,7 @@ class NormalLoginForm extends React.Component {
     if (redirectAdminIndex) {
       return <Redirect to='/admin/home' />;
     }
-    
+
     const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">

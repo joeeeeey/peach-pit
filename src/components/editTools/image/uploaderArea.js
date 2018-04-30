@@ -2,12 +2,11 @@
 // updateNodeInfo => {targetKey: 'xx', nestedKey: 'xx,xx'}
 
 
-import React, { Component } from 'react';
+import React from 'react';
 import { message } from 'antd';
 import PropTypes from 'prop-types';
 import axios from 'axios'
 import UpyunService from '../../../services/upyunService'
-import Cookies from 'js-cookie';
 
 const upyunService = new UpyunService()
 
@@ -160,7 +159,6 @@ export default class UploaderArea extends React.Component {
           break
         default:
           return false
-          break;  
       }
       this.context.store.dispatch({
         type: 'composite',

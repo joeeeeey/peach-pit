@@ -44,14 +44,12 @@
 // 规划
 // 先在 edit 中 以 /navbar.js 方式存在，后期放入 /edit/navbars/   
 // 外层只有一个 navbar.js, navbar.js 中 import /navbars 里面的其他 navbar 并做样式转换。 Preview 同理
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Scroll from 'react-scroll';
 import NavBarAnchor from '../common/anchors/anchor'
 
-const { Link, Events, scrollSpy } = Scroll
-
-const scroll = Scroll.animateScrol
+const { Events, scrollSpy } = Scroll
 
 const sideBarWidth = 200 // preview 去除
 const container2Style = { 'display': 'block', "position": "fixed", "top": "0px", "zIndex": "210", "left": sideBarWidth, "width": `calc(100% - ${sideBarWidth}px)`, "background": "rgb(255, 255, 255)", "transition": "all 0.25s", "boxShadow": "rgba(0, 0, 0, 0.25) 0px 1px 1px", "paddingTop": "10px", "paddingBottom": "10px" }

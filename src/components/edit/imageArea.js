@@ -55,7 +55,7 @@ export default class EditableImageArea extends Component {
     // galleryStyle 中存储画廊类型以及画廊需要存储的特征, 如: { type: 'verticalGallery', width: 1, height: 1 }
     // 会影响编辑页面的显示
 
-    const { src, alt, imageStyle = defaultImageStyle, imageContainerStyle = { margin: '1px 15px' }, galleryStyle } = this.props
+    const { src, alt, imageStyle = defaultImageStyle, imageContainerStyle = { margin: '1px 15px' } } = this.props
 
     return (
       <div name="imageContainer"
@@ -79,7 +79,7 @@ export default class EditableImageArea extends Component {
 
           {/* <EditImageDialog ref={(el) => { this.editImageDialog = el }} parentkey={this.props.parentkey} targetkey={this.props.selfkey} /> */}
         </div>
-        <img src={src} style={imageStyle}></img>
+        <img src={src} style={imageStyle} alt={alt || 'default_alt'}></img>
       </div>
     );
   }

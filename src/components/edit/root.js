@@ -6,11 +6,9 @@ import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import { Link } from 'react-router-dom';
 import nodeOperation from '../../utils/nodeOperation'
-import DeleteIcon from 'material-ui-icons/Delete';
 // 侧边栏以及 appbar
 import { Layout, Menu, Icon, Popover, Divider, message } from 'antd';
 
-import IconButton from 'material-ui/IconButton';
 // 插入节点代码
 import InsertNodeCodeDialog from '../editTools/sidebar/insertNodeCodeDialog'
 // 保存到新的板块
@@ -41,7 +39,7 @@ const layoutService = new LayoutService()
 const templateService = new TemplateService()
 const deployService = new DeployService()
 const siteService = new SiteService()
-const { Content, Sider } = Layout;
+const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
 const buttonStyle = { color: 'white', width: '100%', justifyContent: 'left' }
@@ -74,7 +72,7 @@ class EditableRoot extends Component {
     const keys = this.getRootChildrenKey()
     if (keys && keys.length > 0) {
       return keys.map(key => {
-        const { layoutName, nodeName, props } = this.context.store.getState().node[key]
+        const { layoutName, props } = this.context.store.getState().node[key]
         return {
           id: props.id,
           name: layoutName,
@@ -93,6 +91,7 @@ class EditableRoot extends Component {
         <img
           style={{ maxWidth: '100%' }}
           src={thumbnailUrl || "http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/ee6abd28bece31864a13b934fdbda223"}
+          alt={'layout_thumb'}
         />
       </div>
     )
@@ -389,8 +388,6 @@ export default withRoot(Index);
           break;
         case 'site':
           this.service = siteService
-          break;
-          // TODO 
           break;
         default:
           break;

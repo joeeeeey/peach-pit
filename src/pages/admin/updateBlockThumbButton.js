@@ -2,11 +2,10 @@
 // source, id
 
 
-import React, { Component } from 'react';
+import React from 'react';
 import { message } from 'antd';
 import PropTypes from 'prop-types';
 import axios from 'axios'
-import Cookies from 'js-cookie';
 import Button from 'material-ui/Button';
 import UpyunService from '../../services/upyunService'
 import TemplateService from '../../services/templateService';

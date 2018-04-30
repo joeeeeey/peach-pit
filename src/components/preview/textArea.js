@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill'; // ES6
-
 
 class PreviewTextArea extends Component {
   constructor(props) {

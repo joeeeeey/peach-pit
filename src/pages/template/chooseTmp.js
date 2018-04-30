@@ -52,10 +52,11 @@ class ChooseTmp extends Component {
   }
 
   selectTmpCategory = (e) => {
-    // TODO send ajax to show category tmps
-
-    // console.log(`radio checked:${e.target.value}`);
-    let params = this.getTmpQueryParams({category: e.target.value})
+    let params = {}
+    if (e.target.value !== "all") {
+      params = this.getTmpQueryParams({ category: e.target.value })
+    }
+    // let params = this.getTmpQueryParams({ category: e.target.value })
     this.initTmpCards(params)
   }
 
@@ -64,7 +65,6 @@ class ChooseTmp extends Component {
       .then(response => {
         const { data } = response
         if (data.code === 0) {
-          console.log(data.data.records)
           this.setState({ templates: data.data.records })
         } else {
           console.error(`${data.msg}`)
@@ -95,13 +95,14 @@ class ChooseTmp extends Component {
 
           <div>
             <RadioGroup onChange={this.selectTmpCategory}>
+              <RadioButton key={'all'} value={'all'}>所有</RadioButton>
               {this.state.templateCategroies.map(x =>
                 <RadioButton key={x} value={x}>{x}</RadioButton>
               )}
             </RadioGroup>
           </div>
 
-          <Grid container spacing={24} justify={'center'} style={{width: '80%', margin: 'auto'}}>
+          <Grid container spacing={24} justify={'center'} style={{ width: '80%', margin: 'auto' }}>
             {
               this.state.templates.map(record => (
                 <ChooseTemplateCard
