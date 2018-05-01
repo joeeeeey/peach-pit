@@ -67,7 +67,7 @@ class ChooseTemplateCard extends React.Component {
     if (redirectToEdit && siteId) {
       return <Redirect to={`/user/editPage?id=${siteId}&source=site`} />;
     }
-
+    // TODO 使用其他组件库重写
     return (
       <Grid item xl={4} lg={6} md={6} sm={6} xs={12} >
         <Card className={classes.card}>
@@ -77,6 +77,9 @@ class ChooseTemplateCard extends React.Component {
             image={thumbnail_url || "http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/ee6abd28bece31864a13b934fdbda223"}
           />
           <CardContent>
+            <div style={{marginTop: 20, marginBottom: 13}}>
+
+            </div>
             <Typography gutterBottom variant="headline" component="h2">
               {name}
             </Typography>

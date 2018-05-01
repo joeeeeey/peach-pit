@@ -55,7 +55,7 @@ class Home extends Component {
             </h2>
           </div>
         </div>
-        <div style={{ marginTop: 30, backgroundColor: 'white', width: '100%' }}>
+        <div style={{ paddingButtom: 60, paddingTop: 60, backgroundColor: 'white', width: '100%' }}>
           <div style={{ backgroundColor: 'white', width: '80%', marginLeft: '15%', textAlign: 'center' }}>
             <HomePageStepper />
           </div>
