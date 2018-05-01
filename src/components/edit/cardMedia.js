@@ -1,5 +1,4 @@
 // 传入 props
-// style: { height: 280 }, image: "/images/ORG_DSC01034.jpg", title: ''
 import React, { Component } from 'react';
 import { CardMedia } from 'material-ui/Card';
 

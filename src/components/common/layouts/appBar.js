@@ -58,18 +58,25 @@ class ButtonAppBar extends React.Component {
           <Toolbar>
             {beforeLogin &&
               <Button
-                style={{ color: 'white' }}
+                style={{ color: 'white', marginLeft: 15 }}
                 component={Link} to="/"
               >主页
               </Button>
             }
             {!beforeLogin &&
               <Button
-                style={{ color: 'white' }}
+                style={{ color: 'white', marginLeft: 15 }}
                 component={Link} to="/user/sites"
               >我的网站
               </Button>
             }
+            {!beforeLogin &&
+              <Button
+                style={{ color: 'white' }}
+                component={Link} to="/user/chooseTemplate"
+              > 模板选择
+              </Button>
+            }            
             {!beforeLogin &&
               <Button
                 style={{ color: 'white' }}

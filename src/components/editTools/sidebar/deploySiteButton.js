@@ -32,12 +32,7 @@ export default class DeploySiteButton extends React.Component {
   }
 
   getSiteData = () => {
-    if (this.siteData) {
-      return this.siteData
-    } else {
-      this.siteData = JSON.parse(JSON.stringify(this.context.store.getState().node))
-      return this.siteData
-    }
+    return JSON.parse(JSON.stringify(this.context.store.getState().node))
   }
 
   getUpdateSiteParmas = () => {

@@ -9,22 +9,6 @@ export default class EditableGridListTile extends React.Component {
   }
 
   render() {
-    // const tileData = [
-    //   {
-    //     img: `/images/IMG_7881.jpg`,
-    //     title: 'Image',
-    //     author: 'author',
-    //     cols: 3,
-    //     rows: 1,
-    //   },
-      // {
-      //   img: '/images/ORG_DSC01101.jpg',
-      //   title: 'Image',
-      //   cols: 3,
-      //   rows: 3
-      // },
-    // ];
-
     const {cols, rows, img, title, src, alt} = this.props
     return (
       <div>

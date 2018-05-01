@@ -84,7 +84,7 @@ class RegistrationForm extends React.Component {
     const { redirectIndex } = this.state;
 
     if (redirectIndex) {
-      return <Redirect to='/user/sites' />;
+      return <Redirect to='/user/chooseTemplate' />;
     }
 
     const { getFieldDecorator } = this.props.form;
