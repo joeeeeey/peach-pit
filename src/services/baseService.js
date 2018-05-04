@@ -1,15 +1,25 @@
 import axios from 'axios'
 
 class BaseService {
-  get = (url, params={}) => {
-    return axios.get(url, {
-      params: params
+  get = (url, params={}, timeout = 50000) => {
+    this.instance = this.instance || axios.create();
+
+    this.instance.defaults.timeout = timeout;
+
+    return this.instance.get(url, {
+      params: params,
+      timeout: timeout
     })
   }
 
-  post = (url, params={}) => {
-    return axios.post(url, {
-      params: params
+  post = (url, params={}, timeout = 50000) => {
+    this.instance = this.instance || axios.create();
+
+    this.instance.defaults.timeout = timeout;
+
+    return this.instance.post(url, {
+      params: params,
+      timeout: timeout
     })
   }
 }
