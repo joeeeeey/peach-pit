@@ -1,9 +1,18 @@
 .ql-container.ql-snow {
   border: 0 !important;
 }
-.ql-editor {
-  padding: 2px 5px !important;
-}
+
 .ant-popover-placement-top>.ant-popover-content>.ant-popover-arrow, .ant-popover-placement-topLeft>.ant-popover-content>.ant-popover-arrow, .ant-popover-placement-topRight>.ant-popover-content>.ant-popover-arrow{
   bottom: 0;
+}
+
+/* .ql-editor {
+  padding: 2px 5px !important;
+} */
+
+/* 自适应屏幕大小,试行 */
+/* 将原有的 font-size: em 大小转为 vw */
+
+.ql-editor {
+    font-size: 1vw !important;
 }

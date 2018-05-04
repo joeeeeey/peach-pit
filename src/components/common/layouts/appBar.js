@@ -65,9 +65,9 @@ class ButtonAppBar extends React.Component {
             }
             {!beforeLogin &&
               <Button
-                style={{ color: 'white', marginLeft: 15 }}
-                component={Link} to="/user/sites"
-              >我的网站
+                style={{ color: 'white' }}
+                component={Link} to="/about"
+              >关于本站
               </Button>
             }
             {!beforeLogin &&
@@ -76,12 +76,12 @@ class ButtonAppBar extends React.Component {
                 component={Link} to="/user/chooseTemplate"
               > 模板选择
               </Button>
-            }            
+            }
             {!beforeLogin &&
               <Button
-                style={{ color: 'white' }}
-                component={Link} to="/about"
-              >关于本站
+                style={{ color: 'white', marginLeft: 15 }}
+                component={Link} to="/user/sites"
+              >我的网站
               </Button>
             }
 

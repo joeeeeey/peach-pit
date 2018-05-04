@@ -10,6 +10,15 @@
 
 700 / 376= 1.86
 
+### 更新远端 
+
+rsync: 
+
+-z 上传中压缩
+-p 看到过程
+
+    rsync  -azP -e 'ssh -p 21538' build/* root@172.247.38.148:/code/static_files
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 

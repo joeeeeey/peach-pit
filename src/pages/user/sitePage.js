@@ -10,15 +10,17 @@ import Typography from 'material-ui/Typography';
 import green from 'material-ui/colors/green';
 import grey from 'material-ui/colors/grey';
 
-// import Tooltip from 'material-ui/Tooltip';
+
 
 import { Link } from 'react-router-dom';
-import { List,  Divider,  Popconfirm, message } from 'antd';
+import { List, Divider, Popconfirm, message, Tooltip } from 'antd';
 
 
 import SiteService from '../../services/siteService'
 
 const siteService = new SiteService()
+
+const h3Style = { "color": "rgba(0, 0, 0, 0.87)", "fontSize": "1rem", "fontWeight": "400", "fontFamily": "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif", "lineHeight": "1.5em" }
 
 export default class UserSite extends Component {
   constructor(props, context) {
@@ -94,23 +96,43 @@ export default class UserSite extends Component {
               >
                 <List.Item.Meta
                   title={<div><span>{nickname}的网站</span>
-                    <button style={{
-                      marginLeft: 5,
-                      backgroundColor: item.deployment_id ? green[500] : grey[500],
-                      color: 'white',
-                      borderRadius: 6,
-                      fontSize: 12,
-                      height: 25,
-                      border: 'none'
-                    }}>{item.deployment_id ? '已上线' : '未上线'}</button></div>}
-                />
+                    {item.deployment_id && item.deploymentUrl &&
+                      <Tooltip title={`点击前往: ${item.deploymentUrl}`}>
+                        <Button
+                          size={'small'}
+                          component={Link} to={item.deploymentUrl && item.deploymentUrl}
+                          target={'_blank'}
+                          style={{
+                            marginLeft: 5,
+                            backgroundColor: green[500],
+                            color: 'white',
+                            borderRadius: 6,
+                            fontSize: 10,
+                            border: 'none'
+                          }}>已上线
+                      </Button>
+                      </Tooltip>
+                    }
 
-                <Typography variant="subheading" gutterBottom>
-                  模板: {item.name}
-                </Typography>
-                <Typography variant="subheading" gutterBottom>
-                  新建于: {item.created_at}
-                </Typography>
+                    {!item.deployment_id && !item.deploymentUrl &&
+                      <Button
+                        size={'small'}
+                        disabled
+                        style={{
+                          marginLeft: 5,
+                          backgroundColor: grey[500],
+                          color: 'white',
+                          borderRadius: 6,
+                          fontSize: 10,
+                          border: 'none'
+                        }}>未上线
+                      </Button>
+                    }
+
+                  </div>}
+                />
+                <h3 style={{ h3Style }}> 模板: {item.name}</h3>
+                <h3 style={{ h3Style }}> 新建于: {item.created_at}{item.name}</h3>
               </List.Item>
             )}
           />

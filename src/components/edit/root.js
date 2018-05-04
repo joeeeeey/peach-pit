@@ -407,11 +407,11 @@ export default withRoot(Index);
             const win = window.open(url, '_blank');
             win.focus();
           } else {
-            message.error(`😥 ${data.msg}, 请设置浏览器允许该网站弹窗哦`, 2)
+            message.error(`😥 ${data.msg}, 更新出现异常`, 2)
           }
         })
         .catch(function (error) {
-          message.error(`😥 出现异常: ${error}`, 2)
+          message.error(`😥 出现异常:, 请设置浏览器允许该网站弹窗哦`, 2)
         });
     } else {
 

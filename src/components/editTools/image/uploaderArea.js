@@ -7,6 +7,9 @@ import { message } from 'antd';
 import PropTypes from 'prop-types';
 import axios from 'axios'
 import UpyunService from '../../../services/upyunService'
+import { Spin, Alert } from 'antd';
+
+
 
 const upyunService = new UpyunService()
 
@@ -15,13 +18,14 @@ const containerStyle = {
   "border": "4px dashed #e2e4e7",
   "bottom": "40px", "left": "30px",
   "position": "absolute",
-  "right": "30px", "top": "55px",
+  "right": "30px", "top": "0px",
   "width": "auto", "height": "auto",
+  minHeight: 140,
 }
 export default class UploaderArea extends React.Component {
   constructor(props, context) {
     super(props)
-    this.state = { imageUrl: null, UploaderIsHover: false }
+    this.state = { imageUrl: null, UploaderIsHover: false, loading: false }
 
     // this.imgUploadUrl = "http://v0.api.upyun.com/blog-src/taohe/development"
   }
@@ -70,6 +74,8 @@ export default class UploaderArea extends React.Component {
   }
 
   buildFileReader = (file) => {
+    // TODO 增加 loading 
+    this.setState({ loading: true })
     // upyunService
     this.getFilePath(file)
       .then(response => {
@@ -106,10 +112,12 @@ export default class UploaderArea extends React.Component {
             this.uploadImg()
           }
         } else {
+          this.setState({ loading: false })
           console.warn(`获取要保存的远端图片路径失败: ${data.msg}`)
         }
       })
       .catch(function (error) {
+        this.setState({ loading: false })
         console.warn(`获取要保存的远端图片路径失败: ${error}`)
       });
   }
@@ -175,7 +183,9 @@ export default class UploaderArea extends React.Component {
     fd.append('signature', this.token)
     axios.post(this.imgUploadUrl, fd)
       .then((res) => {
+        this.setState({ loading: false })
         if (res.data.code === 200) {
+          message.success(`上传成功`, 2)
           this.props.uploadSuccess()
 
           this.updateNodeTree()
@@ -208,12 +218,19 @@ export default class UploaderArea extends React.Component {
 
   render() {
     return (
-      <div style={containerStyle} >
-        <div className="upload-btn-wrapper" onMouseLeave={this.handlerUploaderMouseLeave} onMouseOver={this.handlerUploaderHover}>
-          <button style={this.UploaderButtonStyle()} className="btn">上传图片</button>
-          <input onChange={this.fileInput} type="file" id="file-input" name="image" accept="image/*" />
+      <Spin tip="正在努力上传中，请稍等.." spinning={this.state.loading}>
+        <div style={containerStyle} >
+
+
+          <div className="upload-btn-wrapper" onMouseLeave={this.handlerUploaderMouseLeave} onMouseOver={this.handlerUploaderHover}>
+            <button style={this.UploaderButtonStyle()} className="btn">上传图片</button>
+            <input onChange={this.fileInput} type="file" id="file-input" name="image" accept="image/*" />
+          </div>
+
+
         </div>
-      </div>
+      </Spin>
+
     );
   }
 }

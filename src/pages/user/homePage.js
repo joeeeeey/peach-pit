@@ -33,7 +33,7 @@ class Home extends Component {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <div style={Object.assign({ background: "url(/images/bg/bg4.jpg)", minHeight: 500, position: 'relative' }, parallexStyle)}>
+        <div style={Object.assign({ background: "url(http://blog-src.b0.upaiyun.com/taohe/dev/basic/template/5a53c855596a8748dd5ed4e80ad309a8)", minHeight: 500, position: 'relative' }, parallexStyle)}>
           <div style={{ position: 'absolute', left: 0, top: '26%', width: '100%', textAlign: 'center' }}>
             <h1 style={{
               fontSize: 45,
@@ -61,7 +61,7 @@ class Home extends Component {
           </div>
         </div>
 
-        <div style={Object.assign({ position: 'relative', background: "url(/images/bg/bg3.jpg)", minHeight: 500 }, parallexStyle)}>
+        <div style={Object.assign({ position: 'relative', background: "url(http://blog-src.b0.upaiyun.com/taohe/dev/basic/template/08a4696af75ec0bd75b778f1aeb44e44", minHeight: 500 }, parallexStyle)}>
           <div style={{ position: 'absolute', left: '10%', top: '10%' }}>
             <span style={{ fontSize: 25, color: '#fff', letterSpacing: 5 }}>点燃创意</span>
           </div>
