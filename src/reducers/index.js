@@ -103,11 +103,13 @@ export default (state = { user: {}, administrator: {} }, action) => {
 
 function addNode(node, payload) {
   let { nodeData, targetKey, level, childKey } = payload
+
   if (nodeData != null) {
     nodeOperation.addNode(
       node,
       targetKey,
-      nodeOperation.flattenDomTree(level==='topLevel' ? nodeData.children: nodeData),
+      // TODO remove topLevel judge ?
+      nodeOperation.flattenDomTree(level === 'topLevel' ? nodeData.children : nodeData),
       childKey,
     )
   } else {

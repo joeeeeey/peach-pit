@@ -235,9 +235,14 @@ class EditableRoot extends Component {
     }
   }
 
-  // 每个存在数据库的 node 都会被 div 包裹
-  // 所以取出其中子元素，这样才能被加入顶层节点
-  // 其实 div 下只会有一个节点，这么说是不对的，忽略了复合样式的情况
+  // 顶层版面的新增节点方法
+  // 新增内容为 layout 对象
+  //    新增时, 需要给这个 layout 对象的 props 增加一个新的 uniq id 
+  //    若为非复合样式(指有代码文件映射这个 layout)， 每个存在数据
+  //    库的 node 都会被一个仅为替代 _root 的 div 包裹, 而 div 
+  //    下肯定只会有一个子元素
+  // 
+  // 复合样式则直接将整个 div 当成是应该加入的 layout 对象
   addNode = (nodeData, layoutName) => {
     nodeData = JSON.parse(nodeData)
     let compositePayload = null
@@ -257,9 +262,16 @@ class EditableRoot extends Component {
       }
 
     } else {
+      // number of nodeData children should be 1
       let chilrenData = nodeData.children
       let addNodesPayload = chilrenData.map(
-        x => { return { nodeData: Object.assign(x, { layoutName: layoutName }), targetKey: this.props.selfkey } }
+        x => {
+          x.props.id = nodeOperation.incryptKey(layoutName)
+          x.layoutName = layoutName
+          return {
+            nodeData: x, targetKey: this.props.selfkey
+          }
+        }
       )
 
       compositePayload = {
@@ -476,7 +488,7 @@ export default withRoot(Index);
 
               <Menu.Item key="LayoutsListPopover">
                 <LayoutsListPopover
-                  layouts={this.state.layouts.filter(x=> x.category === '常用')}
+                  layouts={this.state.layouts.filter(x => x.category === '常用')}
                   buttonStyle={buttonStyle}
                   addNode={this.addNode}
                 />

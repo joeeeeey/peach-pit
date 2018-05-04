@@ -1,3 +1,15 @@
+开发环境:
+
+System: Macos
+
+Tools: 
+
+Git, Mysql, Node, Nginx
+
+
+
+
+
 # This project was bootstrapped with meterial-ui example
 <!-- TODO change dependencies to specfic version -->
 
@@ -18,6 +30,17 @@ rsync:
 -p 看到过程
 
     rsync  -azP -e 'ssh -p 21538' build/* root@172.247.38.148:/code/static_files
+
+
+### 源于顶层 layout 的 id 生成过程
+1. 从 edit 界面增加时，数据库中的原始 node 数据是都不存储 id 的，直接
+调用 store 的 addNode 方法， 编辑页面监听到重新渲染，此时
+ * 若非复合节点，如 verticalLayout 自己在的 componentDidMount 中会检查 props 的 id，没有的话就更新一次，这样其实不太好，相当于又渲染了一次页面.TODO 统一在 root 页面增加时加上这个 id, 这个 id 是可以与 key 不同的.
+ * 复合节点因为不存在代码的映射，所以在 root 节点直接加了，其他也应如此
+
+
+
+
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).

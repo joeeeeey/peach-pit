@@ -125,7 +125,7 @@ function doHeighten(flattenData, startDom = null) {
 }
 
 
-// 为 navbar 更新的方案, navbar 的 props.rootChildren 中需要存储当前顶层节点的内容
+// navbar 更新的方案, navbar 的 props.rootChildren 中需要存储当前顶层节点的内容
 // navbar 必须知道总共的节点
 function satisfyNavBar(flattenData, topLeaveKeys) {
   let hasNavBar = false
@@ -312,5 +312,6 @@ const nodeOperation = {
   flattenedData2Code: flattenedData2Code,
   addNode: addNode,
   removeNode: removeNode,
+  incryptKey: incryptKey
 }
 export default nodeOperation;

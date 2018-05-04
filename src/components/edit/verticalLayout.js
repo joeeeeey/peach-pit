@@ -69,10 +69,6 @@ export default class EditableVerticalLayout extends Component {
       this.flex = defalutFlexLayout
       this.addDefaultChildren()
     }
-
-    if (this.props.id === undefined || this.props.id === null) {
-      this.initialLayoutId()
-    }
   }
 
   initialLayoutId = () => {
@@ -182,9 +178,9 @@ export default class EditableVerticalLayout extends Component {
 
   getLayoutDivStyle = () => {
     if (this.props.fullWithChilren) {
-      return { margin: '0 0', width: '100%', flexGrow: 1, padding: '0 0' }
+      return 'verticalLayoutContainerFullWithChilren'
     } else {
-      return { margin: '0 auto', width: '84%', flexGrow: 1, padding: '22px 0' }
+      return 'verticalLayoutContainerDefault'
     }
   }
 
@@ -202,8 +198,8 @@ export default class EditableVerticalLayout extends Component {
     return (
       <div style={backgroundStyle} id={id}>
         <ChangeBackgroundButton fullWithChilren={this.props.fullWithChilren} backgroundInfo={backgroundInfo} parentkey={this.props.selfkey} />
-        <div style={this.getLayoutDivStyle()}>
-          <div name="layoutDiv" style={{ position: 'relative' }}>
+        {/* <div className={this.getLayoutDivStyle()} > */}
+          <div className={this.getLayoutDivStyle()}  name="layoutDiv" style={{ position: 'relative' }}>
             <GridArrangementOptionLists {...this.props}
               handleRearrangeGird={this.handleRearrangeGird}
               changeFullWithChilrenButton={this.changeFullWithChilrenButton}
@@ -221,7 +217,7 @@ export default class EditableVerticalLayout extends Component {
             </Grid>
           </div>
         </div>
-      </div>
+      // </div>
     );
   }
 }

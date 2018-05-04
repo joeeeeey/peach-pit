@@ -106,12 +106,6 @@ export default class EditablePhotoGallery extends Component {
     return results
   }
 
-  componentDidMount() {
-    // TODO 统一在 root 加顶层元素时加上 id
-    if (this.props.id === undefined || this.props.id === null) {
-      this.initialLayoutId()
-    }
-  }
 
   initialLayoutId = () => {
     this.context.store.dispatch({

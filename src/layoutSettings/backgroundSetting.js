@@ -3,6 +3,21 @@
 // 在此处统一进行配置
 // 如: 垂直布局，画廊 的背景
 // 包括可编辑组件和预览组件
+
+
+// 有背景图的视差样式:
+// background-repeat: no-repeat;
+// background-size: cover;
+// background-attachment: fixed;
+// min-height: 100vh;
+// background-position: 50% 50%;
+
+// 有背景图的无视差样式，只用内容撑开:
+// background-repeat: no-repeat;
+//     background-size: cover;
+//     background-position: 50% 50%;
+//     background-image: url(http://o0m4okv24.qnssl.com/static/backgrounds/nature/170.jpg);
+
 const defaultParallexStyle = {
   backgroundAttachment: 'fixed',
   backgroundPosition: 'center',
