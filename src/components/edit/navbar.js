@@ -47,7 +47,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Scroll from 'react-scroll';
-import NavBarAnchor from '../common/anchors/anchor'
+import NavBarAnchor from '../preview/anchors/anchor'
 
 const { Events, scrollSpy } = Scroll
 

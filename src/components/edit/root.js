@@ -266,7 +266,7 @@ class EditableRoot extends Component {
       let chilrenData = nodeData.children
       let addNodesPayload = chilrenData.map(
         x => {
-          x.props.id = nodeOperation.incryptKey(layoutName)
+          x.props.id = x.props.id ? x.props.id : nodeOperation.incryptKey(layoutName)
           x.layoutName = layoutName
           return {
             nodeData: x, targetKey: this.props.selfkey

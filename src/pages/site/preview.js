@@ -12,7 +12,7 @@ import PreviewCardMedia from '../../components/preview/cardMedia'
 import PreviewVerticalGrid from '../../components/preview/verticalGrid'
 import PreviewVerticalLayout from '../../components/preview/verticalLayout'
 import PreviewImageArea from '../../components/preview/imageArea'
-import PreviewNavBar from '../../components/preview/navbar'
+import PreviewNavBar from '../../components/preview/navBar'
 import PreviewPhotoGallery from '../../components/preview/photoGallery'
 
 const blockService = new BlockService()

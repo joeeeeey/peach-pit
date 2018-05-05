@@ -11,7 +11,7 @@ import EditableTextArea from '../../components/edit/textArea'
 import EditableVerticalLayout from '../../components/edit/verticalLayout'
 import EditableVerticalGrid from '../../components/edit/verticalGrid'
 import EditableImageArea from '../../components/edit/imageArea'
-import EditableNavBar from '../../components/edit/navbar'
+import EditableNavBar from '../../components/edit/navBar'
 import EditablePhotoGallery from '../../components/edit/photoGallery'
 
 

@@ -1,24 +1,115 @@
-开发环境:
-
-System: Macos
-
-Tools: 
-
-Git, Mysql, Node, Nginx
-
-
-
-
 
 # This project was bootstrapped with meterial-ui example
 <!-- TODO change dependencies to specfic version -->
+
+### 开发环境:
+
+>System:
+
+* Macos
+
+>Tools: 
+
+* Git
+* Mysql
+* Node
+* Nginx(optional)
+
+### 开发逻辑约定
+
+#### 组件数据结构: 
+
+> 数据字段说明
+
+native: boolean  是否原生。 如 div 为 true, 若是自己封装的则为 false
+
+composite: boolean  是否为复合。 复合意义为非原生的组建，并且没有对应的代码映射到这个组件。Example: 一 个垂直布局 verticalLayout 有对应的对应的编辑组件文件 `components/edit/verticalLayout.js` 与预览组件文件 `components/preview/verticalLayout.js`，该组件 composite 则为 `false`(或 `null`, 此处并未要求强制声明 `false`)。 若管理员将两个垂直布局在编辑页面进行增加保存为新的布局，则成为复合布局(这两个垂直布局在保存存 layout 时会默认被一个 div 包裹)。 此处注意一定要大于两个原始布局才会被自动保存为复合。
+
+nodeName: 节点名称，原始自建组件命名方式为驼峰，并且首字母大写。 原生组件都小写(div, h1, etc..)。此处注意复合组件的根节点 nodeName 是 div。
+
+props: object React 属性，代码中可以取到。
+
+children array 子元素，可为空， Example: 一个完整的组件的数据结构。
+
+> 例子
+
+```javascript
+{
+  native: false, 
+  composite: false,
+  nodeName: 'VerticalLayout',
+  props: {
+    backgroundInfo: {
+      background: '#b1d3db',
+        backgroundType: 'pureColor',
+          imageInfo: { },
+      fillType: null,
+      enableParallex: null
+    }
+  }，
+  children: []
+}
+```
+
+#### 可编辑组件开发约定
+
+> 声明
+1. 以下 `${nodeName}` 是_组件数据结构_中的 nodeName 
+2. 复合组建没有代码文件的映射
+
+* 文件位置约定:
+编辑组件在 `components/edit/` 下
+预览组件在 `components/preview/` 下
+
+* 文件名称约定:
+编辑组件: `${nodeName}.js`
+预览组件: `${nodeName}.js`
+
+* class 命名约定:
+编辑组件名称: `Editable + ${nodeName}`
+预览组件名称: `Preview + ${nodeName}`
+
+#### CSS 开发约定
+
+* 文件位置约定: 
+`src/css/xx.css`
+
+* 引入约定:
+在 src/index.js 文件中引入，不在子组件引入
+
+#### 与打包项目 pack-container 的关系
+
+pack-container 只需要预览组件内容，所以也只需要预览组件引用的包和 css。
+
+但打包项目 packge.json 中应与该项目尽量保持一致，虽然有些包可能用不到，这样降低开发成本，因为打包时其实是按需引入的。后期 docker 后可以优化。
+
+目前都使用的文件
+
+`src/components/preview/*`
+`src/css/*`
+`src/utils/*`
+
+更次更新时，上述文件夹直接替换
+
+src/index.js 文件应该给 pack 自己考虑
+
+
+
+
+
+
+
+
+
+
+--
 
 ### 关于顶层样式(布局 layout)
 1. 只有在代码中声明的样式，才能被加入到顶层样式 (指 root 节点下的子节点)
 2. 顶层样式应在 addNode 时就初始化自身 id, 以便于锚点
 3. 一个垂直布局可以衍生与许多子布局，但要注意这些布局不含 id，这回导致 admin 目前无法直接看 layout #TODO 
 
-### 模板预览 图片比例饿
+### 模板预览 图片比例
 
 700 / 376= 1.86
 
@@ -33,10 +124,8 @@ rsync:
 
 
 ### 源于顶层 layout 的 id 生成过程
-1. 从 edit 界面增加时，数据库中的原始 node 数据是都不存储 id 的，直接
-调用 store 的 addNode 方法， 编辑页面监听到重新渲染，此时
- * 若非复合节点，如 verticalLayout 自己在的 componentDidMount 中会检查 props 的 id，没有的话就更新一次，这样其实不太好，相当于又渲染了一次页面.TODO 统一在 root 页面增加时加上这个 id, 这个 id 是可以与 key 不同的.
- * 复合节点因为不存在代码的映射，所以在 root 节点直接加了，其他也应如此
+
+在 root 节点增加时加入
 
 
 
