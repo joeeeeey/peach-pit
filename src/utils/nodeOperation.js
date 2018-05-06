@@ -32,6 +32,7 @@ function objectPresent(obj) {
 //   若 childKey 存在，则需要找到 parentkey 中的 childKey 位置在后方插入
 function addNode(currentDom, parentKey, newNode, childKey = null) {
   if (!currentDom._relation[parentKey]) { currentDom._relation[parentKey] = [] }
+
   let nodeChildren = currentDom._relation[parentKey]
 
   let { _relation, _root, ...newNodeData } = newNode
@@ -111,6 +112,8 @@ function removeNode(currentDom, targetKey, parentKey) {
 function doHeighten(flattenData, startDom = null) {
   let domData = flattenData[startDom]
   if (domData.props) {
+    // 是不是没必要删除, 保存到数据库，可以和 id 起到一样的效果
+    // 在加载时判断有的话就不生成
     delete domData.props['selfkey']
     delete domData.props['parentkey']
   }
@@ -127,35 +130,25 @@ function doHeighten(flattenData, startDom = null) {
 
 // navbar 更新的方案, navbar 的 props.rootChildren 中需要存储当前顶层节点的内容
 // navbar 必须知道总共的节点
-function satisfyNavBar(flattenData, topLeaveKeys) {
-  let hasNavBar = false
-  let navBarsKeys = [] // 支持有多个 navbar 共存
+function satisfyNavBar(flattenData, rootKey) {
+  let rootNode = flattenData[rootKey]
 
-  // 遍历 root 下 key 找出 navBar 的 key
-  for (let i = 0; i < topLeaveKeys.length; i++) {
-    if (flattenData[topLeaveKeys[i]].nodeName === 'NavBar') {
-      hasNavBar = true
-      navBarsKeys.push(topLeaveKeys[i])
-    }
-  }
-  // 存在则将剩余的 children 整理信息存入 navbar 的 props 中
-  if (hasNavBar) {
-    let rootChildrenKeys = topLeaveKeys.filter((i) => { return navBarsKeys.indexOf(i) < 0; });
-    let rootChildren = rootChildrenKeys.map(k => {
-      const { layoutName, nodeName } = flattenData[k]
-      return {
-        id: flattenData[k].props.id,
-        name: layoutName,
-        nodeName: nodeName,
+  let { navBarChildren } = rootNode.props
+
+  if (navBarChildren) {
+    // 目前只能遍历查找，但其实 props 里的 selfkey 和 parentkey 应该被存下来
+    let topLeaveKeys = flattenData._relation[rootKey]
+
+    let navBarNode = null
+    for (let i = 0; i < topLeaveKeys.length; i++) {
+      if (flattenData[topLeaveKeys[i]].nodeName === 'NavBar') {
+        navBarNode = flattenData[topLeaveKeys[i]]
+        break;
       }
-    })
-    for (let i = 0; i < navBarsKeys.length; i++) {
-      flattenData[navBarsKeys[i]].props.rootChildren = rootChildren
     }
-    return flattenData
-  } else {
-    return flattenData
+    navBarNode.props.rootChildren = navBarChildren
   }
+  return flattenData
 }
 
 
@@ -166,7 +159,7 @@ function heightenDomTree(flattenData) {
     const rootKey = flattenData._root
     if (rootKey) {
       // root 也是有样式的
-      flattenData = satisfyNavBar(flattenData, flattenData._relation[rootKey])
+      flattenData = satisfyNavBar(flattenData, rootKey)
 
       let { native, nodeName, ...remained } = flattenData[rootKey];
 
@@ -179,28 +172,17 @@ function heightenDomTree(flattenData) {
   }
 }
 
-// // 还原, dom tree object 升维
-// // 在新建，更新 tmp, layout 使用
-
-// function heightenDomTree(flattenData, startDom = null) {
-//   if (startDom === null) {
-//     startDom = flattenData._root
-//   }
-//   let domData = flattenData[startDom]
-//   if (domData.props) {
-//     delete domData.props['selfkey']
-//     delete domData.props['parentkey']
-//   }
-//   let childrenNames = flattenData._relation[startDom]
-//   if (Array.isArray(childrenNames) && childrenNames.length > 0) {
-//     domData.children = []
-//     for (let i = 0; i < childrenNames.length; i++) {
-//       domData.children.push(heightenDomTree(flattenData, childrenNames[i]))
-//     }
-//   }
-
-//   return domData
-// }
+  // {nodeName: 'div', children: []}
+  //  div 替换为 root
+  function wrapRoot(block = null){
+    if (block) {
+      const domString = block.data
+      const domData = JSON.parse(domString)
+      return { native: false, nodeName: 'Root', children: domData.children, props: domData.props || { style: {} } }
+    } else {
+      return { native: false, nodeName: 'Root', children: [], props: { style: {} } }
+    }
+  }
 
 // dom tree object 降维
 function flattenDomTree(nodeData, parentKey = '', flattenData = { _relation: {} }) {
@@ -312,6 +294,7 @@ const nodeOperation = {
   flattenedData2Code: flattenedData2Code,
   addNode: addNode,
   removeNode: removeNode,
-  incryptKey: incryptKey
+  incryptKey: incryptKey,
+  wrapRoot: wrapRoot,
 }
 export default nodeOperation;

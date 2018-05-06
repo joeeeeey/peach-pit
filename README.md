@@ -27,21 +27,12 @@ composite: boolean  是否为复合。 复合意义为非原生的组建，并�
 
 nodeName: 节点名称，原始自建组件命名方式为驼峰，并且首字母大写。 原生组件都小写(div, h1, etc..)。此处注意复合组件的根节点 nodeName 是 div。
 
-navBarInfo object root 节点特有属性 node['_root'].props.navBarInfo。 Example: {navBarKey: 'xx',
-rootChildren: [{id: x, name: x, nodeName}]}
-
-navBarChildren: array root 节点特有属性 node['_root'].props.navBarChildren Example: [{id: x, name: x, nodeName}]
-相关逻辑
-1. navBar 只能在 root 节点加入
-2. 加入navBar 时，判断 rootChildren 是否存在，存在返回已有 navBar,即最多出现一个 navBar,没有则可以加入。此时根据当前 node 信息 update store 中的 node.rootChildren
-3. root 节点加入其他顶层布局时，判断是否有 rootChildren(是否有 navBar 存在)，有的话，rootChildren 中 push 新的元素，没有的话跳过。
-4. root 节点去除其他顶层布局时，判断是否有 rootChildren(是否有 navBar 存在)，有的话，重新计算 rootChildren并做更新操作。
-
-
-
 props: object React 属性，代码中可以取到。
 
 children array 子元素，可为空， Example: 一个完整的组件的数据结构。
+
+Notice
+垂直布局嵌套时候，应注意子垂直布局没有 id。
 
 
 

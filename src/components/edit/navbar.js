@@ -74,6 +74,26 @@ export default class EditableNavBar extends React.Component {
     Events.scrollEvent.remove('end');
   }
 
+  // 得到整个 node
+  wholeNode = () => {
+    return this.context.store.getState().node
+  }
+
+  rootNode = () => {
+    if (this.wholeNode()) {
+      const rootKey = this.wholeNode()._root
+      if (rootKey) {
+        return this.wholeNode()[rootKey]
+      }
+    }
+  }
+
+  navBarChildren = () => {
+    if (this.rootNode()) {
+      return this.rootNode().props.navBarChildren
+    } else { return [] }
+  }
+
   getRootChildrenKey = () => {
     if (this.context.store.getState().node) {
       const rootKey = this.context.store.getState().node._root
@@ -120,7 +140,7 @@ export default class EditableNavBar extends React.Component {
             </div>
 
             <div name="nav-item" style={{ "WebkitBoxFlex": "1", "flexGrow": "1", "textAlign": "right" }}>
-              {this.getRootChildren().map(child =>
+              {this.navBarChildren().map(child =>
                 <NavBarAnchor affectRoot={this.props.affectRoot} child={child} key={child.id || Math.random().toString().slice(3, 10)} />
               )}
             </div>

@@ -1,3 +1,13 @@
+// props:
+
+// navBarChildren: array root 节点特有属性 node['_root'].props.navBarChildren Example: [{id: x, name: x, nodeName}]
+// 相关逻辑
+// 1. navBar 只能在 root 节点加入
+// 2. 加入navBar 时，判断 rootChildren 是否存在，存在返回已有 navBar,即最多出现一个 navBar,没有则可以加入。此时根据当前 node 信息 update store 中的 node.rootChildren
+// 3. root 节点加入其他顶层布局时，判断是否有 rootChildren(是否有 navBar 存在)，有的话，rootChildren 中 push 新的元素，没有的话跳过。
+// 4. root 节点去除其他顶层布局时，判断是否有 rootChildren(是否有 navBar 存在)，有的话，重新计算 rootChildren并做更新操作。
+
+
 // edit 根节点 
 // 显示最高权限的编辑器
 // preview 其实是个空 div
@@ -178,16 +188,62 @@ class EditableRoot extends Component {
     });
   }
 
+  // 删除节点时得到导航栏更新的 payload
+  getRootDeleteNodeUpdateNavBarPayload = (targetKey) => {
+    let thisNode = this.wholeNode()[targetKey]
+    let updateNodesPayload = []
+    const { navBarChildren } = this.props
+
+    // 检查并更新导航栏内容
+    // 如果有导航栏
+    if (navBarChildren) {
+      // 删除导航栏
+      if (thisNode.nodeName === 'NavBar') {
+        const affectRoot = thisNode.props.affectRoot
+        let updateNodesPayload = []
+        for (let a in affectRoot) {
+          updateNodesPayload.push({
+            value: 0, // TODO 最好的方式是判断是字符串还是数字, 数字就减，字符变为 null
+            nestedKey: `${this.props.selfkey},props,style,${a}`
+          })
+        }
+        // 清空 navBarChildren 内容
+        updateNodesPayload.push({
+          value: null,
+          nestedKey: `${this.props.selfkey},props,navBarChildren`
+        })
+        return updateNodesPayload
+
+      } else {
+        // 更新导航栏
+        // 去除 rootChildren 中的这个元素
+        const newChilren = navBarChildren.filter(x => x.id !== thisNode.props.id)
+        updateNodesPayload.push({
+          value: newChilren,
+          nestedKey: `${this.props.selfkey},props,navBarChildren`
+        })
+        return updateNodesPayload
+      }
+    }
+
+  }
+
   removeNode = (targetKey) => {
     let compositePayload = {
       payloadData: {
         removeNodes: { payloadData: [{ targetKey: targetKey, parentKey: this.props.selfkey }] },
       }
     }
-    const updateNodesPayload = this.updateRootStyle('removeNode', this.context.store.getState().node[targetKey])
+    let updateNodesPayload = []
 
-    if (updateNodesPayload) {
-      compositePayload.payloadData.updateNodes = updateNodesPayload
+    // 得到 navBar 更新内容
+    let updateNavBarPayload = this.getRootDeleteNodeUpdateNavBarPayload(targetKey)
+    if (updateNavBarPayload) {
+      updateNodesPayload = updateNodesPayload.concat(updateNavBarPayload)
+    }
+
+    if (updateNodesPayload && updateNodesPayload.length > 0) {
+      compositePayload.payloadData.updateNodes = { payloadData: updateNodesPayload }
     }
 
     this.context.store.dispatch({
@@ -199,56 +255,31 @@ class EditableRoot extends Component {
 
   // 如果是导航栏或者其他会影响整个页面 padding margin 的 node 有变化(增删)，需要更新 root 的样式
   // example:  {affectRoot :{'paddingTop': 64}}
-  updateRootStyle = (operation, node) => {
-    if (operation === 'addNode') {
-      if (node.nodeName === 'NavBar') {
-        const affectRoot = node.props.affectRoot
-        if (affectRoot) {
-          let updateNodesPayload = []
-          for (let a in affectRoot) {
-            updateNodesPayload.push({
-              value: affectRoot[a],
-              nestedKey: `${this.props.selfkey},props,style,${a}`
-            })
-          }
-          return { payloadData: updateNodesPayload }
-        } else {
-          return null
-        }
-      } else {
-        return null
-      }
-    } else if (operation === 'removeNode') {
-      if (node.nodeName === 'NavBar') {
-        const affectRoot = node.props.affectRoot
-        let updateNodesPayload = []
-        for (let a in affectRoot) {
-          updateNodesPayload.push({
-            value: 0, // TODO 最好的方式是判断是字符串还是数字, 数字就减，字符变为 null
-            nestedKey: `${this.props.selfkey},props,style,${a}`
-          })
-        }
-        return { payloadData: updateNodesPayload }
-      } else {
-        return null
-      }
-    }
-  }
 
   // 顶层版面的新增节点方法
   // 新增内容为 layout 对象
   //    新增时, 需要给这个 layout 对象的 props 增加一个新的 uniq id 
-  //    若为非复合样式(指有代码文件映射这个 layout)， 每个存在数据
+  //    若为非复合样式(有代码文件映射这个 layout)， 每个存在数据
   //    库的 node 都会被一个仅为替代 _root 的 div 包裹, 而 div 
   //    下肯定只会有一个子元素
   // 
   // 复合样式则直接将整个 div 当成是应该加入的 layout 对象
+
+
+  // 导航栏内容在此更新
+  // 1. navBar 只能在 root 节点加入
+  // 2. 加入navBar 时，判断 navBarChildren 是否存在，存在返回已有 navBar,即最多出现一个 navBar,没有则可以加入。此时根据当前 node 信息 update store 中的 node.navBarChildren
+  // 3. root 节点加入其他顶层布局时，判断是否有 navBarChildren(是否有 navBar 存在)，有的话，navBarChildren 中 push 新的元素，没有的话跳过。
+  // 4. root 节点去除其他顶层布局时，判断是否有 navBarChildren(是否有 navBar 存在)，有的话，重新计算 navBarChildren 并做更新操作。
+
+
   addNode = (nodeData, layoutName) => {
     nodeData = JSON.parse(nodeData)
     let compositePayload = null
-    // 复合样式的情况
+    let thisNode = null
+    // 复合节点的情况
     if (nodeData.composite) {
-      let compositelayoutId = Math.random().toString().slice(2, 10)
+      let compositelayoutId = nodeOperation.incryptKey(layoutName)
       nodeData.props.id = compositelayoutId
       nodeData.layoutName = layoutName
       let addNodesPayload = [
@@ -260,10 +291,18 @@ class EditableRoot extends Component {
           addNodes: { payloadData: addNodesPayload },
         }
       }
+      thisNode = nodeData
 
     } else {
-      // number of nodeData children should be 1
       let chilrenData = nodeData.children
+
+      // number of nodeData children should be 1
+      if (chilrenData.length !== 1) {
+        console.warn('非复合节点的 chilren 个数只能为 1， 当前为 ${chilrenData.length}')
+        return
+      }
+
+      // 此处只是为了方便用了 map， 其实只有一个元素
       let addNodesPayload = chilrenData.map(
         x => {
           x.props.id = x.props.id ? x.props.id : nodeOperation.incryptKey(layoutName)
@@ -279,12 +318,29 @@ class EditableRoot extends Component {
           addNodes: { payloadData: addNodesPayload },
         }
       }
-      // 根据是否有 navbar 来更新 root 样式 TODO 优化适应更多情况
-      const updateNodesPayload = this.updateRootStyle('addNode', chilrenData[0])
-      if (updateNodesPayload) {
-        compositePayload.payloadData.updateNodes = updateNodesPayload
-      }
+
+      thisNode = chilrenData[0]
     }
+
+    let updateNodesPayload = []
+
+    // 检查并更新导航栏内容
+    if (this.props.navBarChildren) {
+      if (thisNode.nodeName === 'NavBar') {
+        // 已经存在了导航栏情况
+        message.warn('不支持多个导航栏共存', 3)
+        return
+      } else {
+        // 更新导航栏
+        const updateNavBarPayload = this.getRootAddNodeUpdateNavBarPayload(thisNode)
+        updateNodesPayload = updateNodesPayload.concat(updateNavBarPayload)
+      }
+    } else {
+      const addNavBarPayload = this.getAddNavBarPayload(thisNode)
+      updateNodesPayload = updateNodesPayload.concat(addNavBarPayload)
+    }
+
+    compositePayload.payloadData.updateNodes = { payloadData: updateNodesPayload }
 
     this.context.store.dispatch({
       type: 'composite',
@@ -293,6 +349,57 @@ class EditableRoot extends Component {
     })
   }
 
+  // 根节点增加其他元素更新导航栏时的更新内容
+  getRootAddNodeUpdateNavBarPayload = (thisNode) => {
+    let updateNavBarPayload = []
+    const child = {
+      id: thisNode.props.id,
+      name: thisNode.layoutName,
+      layoutName: thisNode.layoutName,
+    }
+
+    let { navBarChildren } = this.props
+    navBarChildren.push(child)
+    updateNavBarPayload.push({
+      value: navBarChildren,
+      nestedKey: `${this.props.selfkey},props,navBarChildren`
+    })
+
+    return updateNavBarPayload
+  }
+
+  // 根节点增加导航栏时的更新内容
+  // 1. 更新 root.props.navBarChildren
+  // 2. 更新导航栏影响 root 的样式
+  getAddNavBarPayload = (thisNode) => {
+    let addNavBarPayload = []
+    addNavBarPayload.push({
+      value: this.getRootChildren().map(x => {
+        let { sectionKey, ...y } = x
+        return y
+      }),
+      nestedKey: `${this.props.selfkey},props,navBarChildren`
+    })
+
+    // 更新影响 root 的样式
+    const affectRoot = thisNode.props.affectRoot
+    if (affectRoot) {
+      for (let a in affectRoot) {
+        addNavBarPayload.push({
+          value: affectRoot[a],
+          nestedKey: `${this.props.selfkey},props,style,${a}`
+        })
+      }
+
+    }
+    return addNavBarPayload
+  }
+
+
+  // 得到整个 node
+  wholeNode = () => {
+    return this.context.store.getState().node
+  }
 
   // 测试代码生成的功能，应该由后端完成
   // TODO Do it at Backend 

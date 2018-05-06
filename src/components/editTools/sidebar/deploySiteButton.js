@@ -16,6 +16,7 @@ import Dialog, {
   DialogTitle,
 } from 'material-ui/Dialog';
 import { Link } from 'react-router-dom';
+import { ImagePictureAsPdf } from 'material-ui';
 
 
 const deployService = new DeployService()
@@ -31,8 +32,16 @@ export default class DeploySiteButton extends React.Component {
     }
   }
 
+  // 预览时通过调用升维方法去除了扁平数据的一些属性，并且做了一些调整，如 存在 root.props.navBarChildren 
+  // 数据存储到 navBar 本身 props, 而改动个的整个 node 不会被返回，所以打包时需要取到最新的 node 数据，选择
+  // 从数据库中取
   getSiteData = () => {
     return JSON.parse(JSON.stringify(this.context.store.getState().node))
+  }
+
+  // {nodeName: 'div', children: []}
+  wrapRoot = (block = null) => {
+    return nodeOperation.wrapRoot(block)
   }
 
   getUpdateSiteParmas = () => {
@@ -48,6 +57,7 @@ export default class DeploySiteButton extends React.Component {
 
 
   deploy = () => {
+    // todo 利用 async await 解决回调地狱？
     this.setState({ isDeploying: true })
     const removeMsgLoading = message.loading('正在部署中..大概需要40秒', 0);
     siteService.update(this.getUpdateSiteParmas())
@@ -59,23 +69,35 @@ export default class DeploySiteButton extends React.Component {
               const { data } = response
               if (data.code === 0) {
                 const containerPreviewFileRelativePath = data.data.containerPreviewFileRelativePath
-                const indexFileCode = this.getCodeInIndex(containerPreviewFileRelativePath)
-
-                let params = {
-                  indexFileCode: indexFileCode,
-                  siteId: this.siteId,
-                }
-                deployService.deploy(params)
-                  .then(res => {
-                    removeMsgLoading()
-                    const { data } = res
-                    this.setState({ isDeploying: false })
+                // 从数据库重新获取
+                siteService.getSiteById({ id: this.siteId })
+                  .then(response => {
+                    const { data } = response
                     if (data.code === 0) {
-                      message.success('部署成功')
-                      this.setState({ siteUrl: data.data.siteUrl, openDeployFinishedDialog: true })
+                      let ftData = nodeOperation.flattenDomTree(this.wrapRoot(data.data))
+                      const indexFileCode = this.getCodeInIndex(containerPreviewFileRelativePath, ftData)
+                      // return
+                      let params = {
+                        indexFileCode: indexFileCode,
+                        siteId: this.siteId,
+                      }
+                      deployService.deploy(params)
+                        .then(res => {
+                          removeMsgLoading()
+                          const { data } = res
+                          this.setState({ isDeploying: false })
+                          if (data.code === 0) {
+                            message.success('部署成功')
+                            this.setState({ siteUrl: data.data.siteUrl, openDeployFinishedDialog: true })
+                          } else {
+                            this.setState({ isDeploying: false })
+                            message.error(`😥 ${data.msg}`, 2)
+                          }
+                        })
+
                     } else {
-                      this.setState({ isDeploying: false })
-                      message.error(`😥 ${data.msg}`, 2)
+                      message.error('出现异常, 节点数据为空', 3)
+                      return
                     }
                   })
               } else {
@@ -100,9 +122,8 @@ export default class DeploySiteButton extends React.Component {
     return s.replace(/^.{1}/g, s[0].toLowerCase());
   }
 
-  getCodeInIndex = (containerPreviewFileRelativePath) => {
-    let nodeData = this.getSiteData()
-
+  getCodeInIndex = (containerPreviewFileRelativePath, nodeData) => {
+    console.log(nodeData)
     let importComponents = []
     for (let i in nodeData) {
       if (!nodeData[i].native && nodeData[i].nodeName) {
