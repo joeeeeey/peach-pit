@@ -225,7 +225,6 @@ class EditableRoot extends Component {
         return updateNodesPayload
       }
     }
-
   }
 
   removeNode = (targetKey) => {
@@ -326,7 +325,9 @@ class EditableRoot extends Component {
 
     // 检查并更新导航栏内容
     if (this.props.navBarChildren) {
+      console.log(this.props.navBarChildren)
       if (thisNode.nodeName === 'NavBar') {
+
         // 已经存在了导航栏情况
         message.warn('不支持多个导航栏共存', 3)
         return
@@ -336,12 +337,16 @@ class EditableRoot extends Component {
         updateNodesPayload = updateNodesPayload.concat(updateNavBarPayload)
       }
     } else {
-      const addNavBarPayload = this.getAddNavBarPayload(thisNode)
-      updateNodesPayload = updateNodesPayload.concat(addNavBarPayload)
+      if (thisNode.nodeName === 'NavBar') {
+        const addNavBarPayload = this.getAddNavBarPayload(thisNode)
+        updateNodesPayload = updateNodesPayload.concat(addNavBarPayload)
+      }
     }
 
-    compositePayload.payloadData.updateNodes = { payloadData: updateNodesPayload }
-
+    if(updateNodesPayload && updateNodesPayload.length > 0){
+      compositePayload.payloadData.updateNodes = { payloadData: updateNodesPayload }
+    }
+    
     this.context.store.dispatch({
       type: 'composite',
       payload: compositePayload,

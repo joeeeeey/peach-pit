@@ -141,13 +141,6 @@ class Edit extends React.Component {
   // {nodeName: 'div', children: []}
   wrapRoot = (block = null) => {
     return nodeOperation.wrapRoot(block)
-    // if (block) {
-    //   const domString = block.data
-    //   const domData = JSON.parse(domString)
-    //   return { native: false, nodeName: 'Root', children: domData.children, props: domData.props || { style: {} } }
-    // } else {
-    //   return { native: false, nodeName: 'Root', children: [], props: { style: {} } }
-    // }
   }
 
   toF = (code) => {
