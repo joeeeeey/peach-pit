@@ -1,5 +1,6 @@
 // 该文件会被拷贝到打包文件中的 src/index.js
 // 应该只引入预览组件御草的 cssimport React from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import Index from './pages/index';
 
