@@ -35,6 +35,9 @@ function addNode(currentDom, parentKey, newNode, childKey = null) {
 
   let nodeChildren = currentDom._relation[parentKey]
 
+  // 传入时是个多层对象，需要降维
+  newNode = flattenDomTree(newNode)
+
   let { _relation, _root, ...newNodeData } = newNode
   // let newNodeRootKey = newNodes._relation._root
   // 新加的节点必须有根节点
@@ -243,7 +246,6 @@ function getClassName(action) {
 
 // 降维数据转化为代码
 function flattenedData2Code(flattenData, action, selfDomKey = null, parentDomKey = 'root', code = "") {
-  // console.log('flattenedData2Code')
   if (flattenData === null) {
     return code;
   }

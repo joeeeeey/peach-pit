@@ -83,6 +83,39 @@ Notice
 * porps 开发约定
 TODO 待重构
 将 props 在构造方法中替换为该组件的 state, props 不应不出现在其他地方
+大的重构方案，解决编辑页面组件数量达到一定程度(>70)后操作延迟高的问题。
+这个问题是因为更新 stroe 中的 node 后， edit 页面会调用 flattenedData2Code 方法
+递归地根据 node 数重新生成代码，十分影响性能。
+
+新的解决方式:
+1. edit 页面中只新建 root 节点, 传入所有 import 的 components, 其他等 props, node.root 的 children
+```javascript
+<EditableRoot
+  importComponents={EditableTextArea: EditableTextArea, ......}
+  ...props
+  children={node.root.children}
+>
+</EditableRoot>
+```
+
+2. EditableRoot 中用 state.children = props.children, 通过 map state.children 和 flattenedData2Code 中的
+部分方法(可能需新方法, 生成的代码要使用 `importComponents`)生成只有顶层节点是 React element 对象的数组，如下
+```javascript
+let topLevelChildren = [
+  {selfkey: xxxx_chilren_props_selfkey, element: React.createElement(.....)},
+  ......
+]
+```
+addNode 则 push 新数据, deleteNode 则遍历该数据去除对应
+```javascript
+<div>
+topLevelChildren.map(x => {
+  x.element
+})
+</div>
+```
+3. 可编辑组件的写法也是和 root 一样的方式，不同的是通过 map state.children 和 flattenedData2Code 生成所有子节点的对象的数组
+其余增删修改逻辑与 root 同
 
 
 * 特殊组件

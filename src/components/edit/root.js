@@ -52,11 +52,13 @@ const buttonStyle = { color: 'white', width: '100%', justifyContent: 'left' }
 class EditableRoot extends Component {
   constructor(props, context) {
     super(props);
+   
     this.state = {
       openPreview: false,
       editInfo: context.store.getState().editInfo,   // {source: "das", id: "32", role: "admin"}
       layouts: [], // 可选择加入的样式
       navBarChildren: this.props.navBarChildren,
+      // children:  React.Children.toArray(this.props.children),
     }
     this.navbar = []
     this.selfkey = this.props.selfkey
@@ -494,17 +496,6 @@ class EditableRoot extends Component {
   }
 
   render() {
-
-    let ad = React.createElement(
-      Button,
-      { "deltaDeltaValue": [{ "insert": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "attributes": { "align": "center" } }], "readOnly": false, "selfkey": "TextArea_0b6d6657e46841ed20b1278e632cc940", "parentkey": "VerticalGrid_167188f68282ae457408346c56a8b7b9" }
-    )
-
-    console.log(ad)
-    if(this.props.children){
-      console.log(this.props.children[0])
-    }
-   
     // TODO 使用 state 替代
     const rootDivStyle = this.props.style
 
@@ -543,7 +534,6 @@ class EditableRoot extends Component {
                   addNode={this.addNode}
                 />
               </Menu.Item>
-
 
               <SubMenu key="addNewLayout" title={<span><Icon type="setting" />新增布局(所有)</span>}>
                 {

@@ -108,8 +108,7 @@ function addNode(node, payload) {
     nodeOperation.addNode(
       node,
       targetKey,
-      // TODO remove topLevel judge ?
-      nodeOperation.flattenDomTree(level === 'topLevel' ? nodeData.children : nodeData),
+      nodeData,
       childKey,
     )
   } else {
