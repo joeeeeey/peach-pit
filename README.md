@@ -74,6 +74,30 @@ Notice
 编辑组件名称: `Editable + ${nodeName}`
 预览组件名称: `Preview + ${nodeName}`
 
+* 注释约定
+
+在文件开文
+1. 用注释表名该组件对象例子。
+2. 可接受的 props 和意义
+
+* porps 开发约定
+TODO 待重构
+将 props 在构造方法中替换为该组件的 state, props 不应不出现在其他地方
+
+
+* 特殊组件
+
+> 导航栏
+
+相关逻辑: 
+  1. navBar 只能在 root 节点加入
+  2. 加入navBar 时，判断 navBarChildren 是否存在，存在返回已有 navBar,即最多出现一个 navBar,没有则可以加入。此时根据当前 node 信息 update store 中的 node.navBarChildren
+  3. root 节点加入其他顶层布局时，判断是否有 navBarChildren(是否有 navBar 存在)，有的话，navBarChildren 中 push 新的元素，没有的话跳过。
+  4. root 节点去除其他顶层布局时，判断是否有 navBarChildren(是否有 navBar 存在)，有的话，重新计算 navBarChildren 并做更新操作。
+
+
+
+
 #### CSS 开发约定
 
 * 文件位置约定: 

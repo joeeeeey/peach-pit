@@ -1,11 +1,7 @@
 // props:
 
-// navBarChildren: array root 节点特有属性 node['_root'].props.navBarChildren Example: [{id: x, name: x, nodeName}]
-// 相关逻辑
-// 1. navBar 只能在 root 节点加入
-// 2. 加入navBar 时，判断 rootChildren 是否存在，存在返回已有 navBar,即最多出现一个 navBar,没有则可以加入。此时根据当前 node 信息 update store 中的 node.rootChildren
-// 3. root 节点加入其他顶层布局时，判断是否有 rootChildren(是否有 navBar 存在)，有的话，rootChildren 中 push 新的元素，没有的话跳过。
-// 4. root 节点去除其他顶层布局时，判断是否有 rootChildren(是否有 navBar 存在)，有的话，重新计算 rootChildren并做更新操作。
+// navBarChildren: array 导航栏子元素 
+// style: object 样式 Example: {paddingTop: 60}
 
 
 // edit 根节点 
@@ -60,16 +56,18 @@ class EditableRoot extends Component {
       openPreview: false,
       editInfo: context.store.getState().editInfo,   // {source: "das", id: "32", role: "admin"}
       layouts: [], // 可选择加入的样式
+      navBarChildren: this.props.navBarChildren,
     }
     this.navbar = []
+    this.selfkey = this.props.selfkey
   }
 
   // 获得顶层元素 key，来加载侧边栏 layout
   getRootChildrenKey = () => {
-    if (this.context.store.getState().node) {
-      const rootKey = this.props.selfkey
+    if (this.wholeNode()) {
+      const rootKey = this.selfkey
       if (rootKey) {
-        return this.context.store.getState().node._relation[rootKey]
+        return this.wholeNode()._relation[rootKey]
       } else {
         return []
       }
@@ -82,7 +80,7 @@ class EditableRoot extends Component {
     const keys = this.getRootChildrenKey()
     if (keys && keys.length > 0) {
       return keys.map(key => {
-        const { layoutName, props } = this.context.store.getState().node[key]
+        const { layoutName, props } = this.wholeNode()[key]
         return {
           id: props.id,
           name: layoutName,
@@ -180,7 +178,7 @@ class EditableRoot extends Component {
   }
 
   clearNode = () => {
-    const rootKey = this.props.selfkey
+    const rootKey = this.selfkey
     this.context.store.dispatch({
       type: 'removeNode',
       payload: { targetKey: rootKey, parentKey: null },
@@ -192,7 +190,7 @@ class EditableRoot extends Component {
   getRootDeleteNodeUpdateNavBarPayload = (targetKey) => {
     let thisNode = this.wholeNode()[targetKey]
     let updateNodesPayload = []
-    const { navBarChildren } = this.props
+    let { navBarChildren } = this.state
 
     // 检查并更新导航栏内容
     // 如果有导航栏
@@ -204,24 +202,28 @@ class EditableRoot extends Component {
         for (let a in affectRoot) {
           updateNodesPayload.push({
             value: 0, // TODO 最好的方式是判断是字符串还是数字, 数字就减，字符变为 null
-            nestedKey: `${this.props.selfkey},props,style,${a}`
+            nestedKey: `${this.selfkey},props,style,${a}`
           })
         }
         // 清空 navBarChildren 内容
         updateNodesPayload.push({
           value: null,
-          nestedKey: `${this.props.selfkey},props,navBarChildren`
+          nestedKey: `${this.selfkey},props,navBarChildren`
         })
-        return updateNodesPayload
 
+        this.setNavBarState(null)
+
+        return updateNodesPayload
       } else {
         // 更新导航栏
         // 去除 rootChildren 中的这个元素
         const newChilren = navBarChildren.filter(x => x.id !== thisNode.props.id)
         updateNodesPayload.push({
           value: newChilren,
-          nestedKey: `${this.props.selfkey},props,navBarChildren`
+          nestedKey: `${this.selfkey},props,navBarChildren`
         })
+
+        this.setNavBarState(newChilren)
         return updateNodesPayload
       }
     }
@@ -230,7 +232,7 @@ class EditableRoot extends Component {
   removeNode = (targetKey) => {
     let compositePayload = {
       payloadData: {
-        removeNodes: { payloadData: [{ targetKey: targetKey, parentKey: this.props.selfkey }] },
+        removeNodes: { payloadData: [{ targetKey: targetKey, parentKey: this.selfkey }] },
       }
     }
     let updateNodesPayload = []
@@ -264,14 +266,6 @@ class EditableRoot extends Component {
   // 
   // 复合样式则直接将整个 div 当成是应该加入的 layout 对象
 
-
-  // 导航栏内容在此更新
-  // 1. navBar 只能在 root 节点加入
-  // 2. 加入navBar 时，判断 navBarChildren 是否存在，存在返回已有 navBar,即最多出现一个 navBar,没有则可以加入。此时根据当前 node 信息 update store 中的 node.navBarChildren
-  // 3. root 节点加入其他顶层布局时，判断是否有 navBarChildren(是否有 navBar 存在)，有的话，navBarChildren 中 push 新的元素，没有的话跳过。
-  // 4. root 节点去除其他顶层布局时，判断是否有 navBarChildren(是否有 navBar 存在)，有的话，重新计算 navBarChildren 并做更新操作。
-
-
   addNode = (nodeData, layoutName) => {
     nodeData = JSON.parse(nodeData)
     let compositePayload = null
@@ -282,7 +276,7 @@ class EditableRoot extends Component {
       nodeData.props.id = compositelayoutId
       nodeData.layoutName = layoutName
       let addNodesPayload = [
-        { nodeData: nodeData, targetKey: this.props.selfkey }
+        { nodeData: nodeData, targetKey: this.selfkey }
       ]
 
       compositePayload = {
@@ -307,7 +301,7 @@ class EditableRoot extends Component {
           x.props.id = x.props.id ? x.props.id : nodeOperation.incryptKey(layoutName)
           x.layoutName = layoutName
           return {
-            nodeData: x, targetKey: this.props.selfkey
+            nodeData: x, targetKey: this.selfkey
           }
         }
       )
@@ -324,8 +318,7 @@ class EditableRoot extends Component {
     let updateNodesPayload = []
 
     // 检查并更新导航栏内容
-    if (this.props.navBarChildren) {
-      console.log(this.props.navBarChildren)
+    if (this.state.navBarChildren) {
       if (thisNode.nodeName === 'NavBar') {
 
         // 已经存在了导航栏情况
@@ -343,10 +336,10 @@ class EditableRoot extends Component {
       }
     }
 
-    if(updateNodesPayload && updateNodesPayload.length > 0){
+    if (updateNodesPayload && updateNodesPayload.length > 0) {
       compositePayload.payloadData.updateNodes = { payloadData: updateNodesPayload }
     }
-    
+
     this.context.store.dispatch({
       type: 'composite',
       payload: compositePayload,
@@ -363,14 +356,21 @@ class EditableRoot extends Component {
       layoutName: thisNode.layoutName,
     }
 
-    let { navBarChildren } = this.props
+    let { navBarChildren } = this.state
     navBarChildren.push(child)
+
+    this.setNavBarState(navBarChildren)
+
     updateNavBarPayload.push({
       value: navBarChildren,
-      nestedKey: `${this.props.selfkey},props,navBarChildren`
+      nestedKey: `${this.selfkey},props,navBarChildren`
     })
 
     return updateNavBarPayload
+  }
+
+  setNavBarState = (value) => {
+    this.setState({ navBarChildren: value })
   }
 
   // 根节点增加导航栏时的更新内容
@@ -378,12 +378,16 @@ class EditableRoot extends Component {
   // 2. 更新导航栏影响 root 的样式
   getAddNavBarPayload = (thisNode) => {
     let addNavBarPayload = []
+
+    let navBarChildren = this.getRootChildren().map(x => {
+      let { sectionKey, ...y } = x
+      return y
+    })
+
+
     addNavBarPayload.push({
-      value: this.getRootChildren().map(x => {
-        let { sectionKey, ...y } = x
-        return y
-      }),
-      nestedKey: `${this.props.selfkey},props,navBarChildren`
+      value: navBarChildren,
+      nestedKey: `${this.selfkey},props,navBarChildren`
     })
 
     // 更新影响 root 的样式
@@ -392,11 +396,13 @@ class EditableRoot extends Component {
       for (let a in affectRoot) {
         addNavBarPayload.push({
           value: affectRoot[a],
-          nestedKey: `${this.props.selfkey},props,style,${a}`
+          nestedKey: `${this.selfkey},props,style,${a}`
         })
       }
 
     }
+
+    this.setNavBarState(navBarChildren)
     return addNavBarPayload
   }
 
@@ -439,7 +445,7 @@ class EditableRoot extends Component {
       let parmas = {
         id: id,
       }
-      let nodeData = JSON.parse(JSON.stringify(this.context.store.getState().node));
+      let nodeData = JSON.parse(JSON.stringify(this.wholeNode()));
       parmas.data = JSON.stringify(nodeOperation.heightenDomTree(nodeData))
 
       this.service.update(parmas)
@@ -488,6 +494,18 @@ class EditableRoot extends Component {
   }
 
   render() {
+
+    let ad = React.createElement(
+      Button,
+      { "deltaDeltaValue": [{ "insert": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "attributes": { "align": "center" } }], "readOnly": false, "selfkey": "TextArea_0b6d6657e46841ed20b1278e632cc940", "parentkey": "VerticalGrid_167188f68282ae457408346c56a8b7b9" }
+    )
+
+    console.log(ad)
+    if(this.props.children){
+      console.log(this.props.children[0])
+    }
+   
+    // TODO 使用 state 替代
     const rootDivStyle = this.props.style
 
     return (
