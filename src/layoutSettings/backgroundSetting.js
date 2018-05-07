@@ -18,27 +18,47 @@
 //     background-position: 50% 50%;
 //     background-image: url(http://o0m4okv24.qnssl.com/static/backgrounds/nature/170.jpg);
 
+
+// fullHeight
+
+
 const defaultParallexStyle = {
   backgroundAttachment: 'fixed',
-  backgroundPosition: 'center',
-  backgroundRepeat: 'noRepeat',
+  backgroundPosition: '50% 50%',
+  backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',
 }
 
 // 填充样式
-function getBackgroundFillTypeStyle(type, background) {
-  switch (type) {
+function getBackgroundFillTypeStyle(fillType, background) {
+  switch (fillType) {
     // 平铺
     case 'tile':
-      return { background: background }
+      return {
+        backgroundImage: background
+      }
     // 拉伸
     case 'stretch':
-      return { background: background + ' no-repeat', backgroundSize: '100% 100%' }
+      return {
+        backgroundSize: '100% 100%',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundPosition: '50% 50%',
+        backgroundImage: background
+      }
     // 填充 将整个图片都放入区域，不改变长宽比例，然后居中。需要手动计算设置长宽?
-    case 'fill':
-      return { background: background }
+    // case 'fill':
+    //   return {
+    //     backgroundSize: 'cover',
+    //     backgroundPosition: '50% 50%',
+    //     backgroundImage: background
+    //   }
     default:
-      return { background: background }
+      return {
+        backgroundSize: 'cover',
+        backgroundPosition: '50% 50%',
+        backgroundImage: background
+      }
   }
 }
 // 视差样式
@@ -48,19 +68,41 @@ function getBackgroundParallexStyle(enableParallex) {
   } else { return {} }
 }
 
+function getBackgroundHeightStyle(fullHeight) {
+  if (fullHeight) {
+    return { minHeight: '100vh' }
+  } else {
+    return {}
+  }
+}
+
 function getBackgroundStyle(backgroundInfo) {
   const {
     background,
     backgroundType,
     fillType,
     enableParallex,
+    fullHeight,
   } = backgroundInfo
 
-  // 填充样式
-  const backgroundFillTypeStyle = getBackgroundFillTypeStyle(fillType, background)
-  // 视差效果
-  const parallexStyle = backgroundType === 'image' ? getBackgroundParallexStyle(enableParallex) : {}
-  return Object.assign({}, backgroundFillTypeStyle, parallexStyle)
+  let finalStyle = {}
+
+  if (backgroundType === 'image') {
+    // 填充样式
+    const backgroundFillTypeStyle = getBackgroundFillTypeStyle(fillType, background)
+
+    // 视差效果
+    const parallexStyle = getBackgroundParallexStyle(enableParallex)
+
+    const heightStyle = getBackgroundHeightStyle(fullHeight)
+
+    Object.assign(finalStyle, backgroundFillTypeStyle, parallexStyle, heightStyle)
+
+  } else if (backgroundType === 'pureColor') {
+    Object.assign(finalStyle, { background: background })
+  }
+
+  return Object.assign({}, finalStyle)
 }
 
 

@@ -35,8 +35,8 @@ export default class ChangeBackgroundButton extends React.Component {
   constructor(props, context) {
     super(props);
     this.positionStyle = this.props.positionStyle || { position: 'absolute', right: '2%', top: 4, "borderRadius": "10%", "background": "#303233" }
-    const {backgroundInfo} = this.props 
-    const {backgroundType, enableParallex, fillType, background} = backgroundInfo
+    const { backgroundInfo } = this.props
+    const { backgroundType, enableParallex, fillType, fullHeight, background } = backgroundInfo
 
     this.state = {
       visible: false,
@@ -46,6 +46,7 @@ export default class ChangeBackgroundButton extends React.Component {
       colorPicker: 'twitter', // 默认选择的画板
       background: backgroundType === "pureColor" ? background : '#ffffff', // 默认颜色
       colorPickerHue: 100, // 默认色调为淡色 dark
+      fullHeight: !!fullHeight,
     }
   }
 
@@ -86,6 +87,12 @@ export default class ChangeBackgroundButton extends React.Component {
       payload: compositePayload,
       target: 'node',
     })
+  }
+
+  updateFullHeightStyle = () => {
+    this.setState({ fullHeight: !this.state.fullHeight },
+      () =>
+        this.updateNodeBackground([{ value: this.state.fullHeight, type: 'fullHeight' }]))    
   }
 
   updateParallexStyle = () => {
@@ -176,6 +183,30 @@ export default class ChangeBackgroundButton extends React.Component {
         <Menu.Item key={'UploaderEntrance'}>
           <UploaderEntrance container={'div'} uploadSuccess={this.handleUploadSuccess} nestedkeyprefix={`${this.props.parentkey},props,backgroundInfo`} />
         </Menu.Item>
+
+        {backgroundType === 'image' &&
+          <Menu.Item key={'updateParallexStyleButton'}>
+            {/* <Button onClick={this.updateParallexStyle} color="secondary" style={buttonStyle}>
+              {this.state.enableParallex ? '关闭视差' : '启用视差'}
+            </Button> */}
+            <div style={{ maxWidth: 180, textAlign: 'center' }}>
+              <div style={{ width: '100%' }}>
+                <div style={{ float: 'left', width: '50%' }}>
+                  <Button onClick={this.updateParallexStyle} color="secondary" size='small' style={{ marginBottom: 5 }} >
+                    {this.state.enableParallex ? '关闭视差' : '启用视差'}
+                  </Button>
+                </div>
+
+                <div style={{ width: '50%' }}>
+                  <Button onClick={this.updateFullHeightStyle} color="secondary" size='small' style={{ marginBottom: 5 }} >
+                    {this.state.fullHeight ? '内容撑开' : '满屏背景'}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </Menu.Item>
+        }
+
         {backgroundType === 'image' &&
           <Menu.Item key={'fillTypeSelection'}>
             <div>
@@ -187,13 +218,7 @@ export default class ChangeBackgroundButton extends React.Component {
             </div>
           </Menu.Item>
         }
-        {backgroundType === 'image' &&
-          <Menu.Item key={'updateParallexStyleButton'}>
-            <Button onClick={this.updateParallexStyle} color="secondary" style={buttonStyle}>
-              {this.state.enableParallex ? '关闭视差' : '启用视差'}
-            </Button>
-          </Menu.Item>
-        }
+
 
         <Menu.Item key={'updataBackgroundColorButtons'}>
           <div style={{ maxWidth: 180, textAlign: 'center' }}>

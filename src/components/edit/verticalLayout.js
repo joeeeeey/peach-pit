@@ -191,14 +191,9 @@ export default class EditableVerticalLayout extends Component {
     // 填充样式
     const backgroundStyle = Object.assign({ position: 'relative' }, backgroundSetting.getBackgroundStyle(backgroundInfo))
 
-    // TODO 可改变的两个属性
-    // 无空白填充 noPadding // 子元素满宽度 fullWidth
-    // 子元素沾满 fullWithChilren = true
-
     return (
       <div style={backgroundStyle} id={id}>
         <ChangeBackgroundButton fullWithChilren={this.props.fullWithChilren} backgroundInfo={backgroundInfo} parentkey={this.props.selfkey} />
-        {/* <div className={this.getLayoutDivStyle()} > */}
           <div className={this.getLayoutDivStyle()}  name="layoutDiv" style={{ position: 'relative' }}>
             <GridArrangementOptionLists {...this.props}
               handleRearrangeGird={this.handleRearrangeGird}
@@ -217,7 +212,6 @@ export default class EditableVerticalLayout extends Component {
             </Grid>
           </div>
         </div>
-      // </div>
     );
   }
 }

@@ -117,6 +117,9 @@ topLevelChildren.map(x => {
 3. 可编辑组件的写法也是和 root 一样的方式，不同的是通过 map state.children 和 flattenedData2Code 生成所有子节点的对象的数组
 其余增删修改逻辑与 root 同
 
+该重构任务比较庞大，建议等网站有一定业务后重构，虽然会更痛苦一点
+
+---
 
 * 特殊组件
 
