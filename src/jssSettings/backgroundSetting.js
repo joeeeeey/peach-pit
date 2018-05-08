@@ -14,13 +14,13 @@
 
 // 有背景图的无视差样式，只用内容撑开:
 // background-repeat: no-repeat;
-//     background-size: cover;
-//     background-position: 50% 50%;
-//     background-image: url(http://o0m4okv24.qnssl.com/static/backgrounds/nature/170.jpg);
-
+// background-size: cover;
+// background-position: 50% 50%;
+// background-image: url(http://o0m4okv24.qnssl.com/static/backgrounds/nature/170.jpg);
 
 // fullHeight
-
+// display: grid 是为了满屏时将内容垂直居中
+// 子元素设置 margin: auto https://css-tricks.com/centering-css-complete-guide/
 
 const defaultParallexStyle = {
   backgroundAttachment: 'fixed',
@@ -69,8 +69,10 @@ function getBackgroundParallexStyle(enableParallex) {
 }
 
 function getBackgroundHeightStyle(fullHeight) {
+  // display: grid 是为了满屏时将内容垂直居中
+  // 子元素设置 margin: auto https://css-tricks.com/centering-css-complete-guide/
   if (fullHeight) {
-    return { minHeight: '100vh',  display: 'grid' }
+    return { minHeight: '100vh', display: 'grid' }
   } else {
     return {}
   }
