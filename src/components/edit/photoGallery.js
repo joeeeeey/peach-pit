@@ -65,7 +65,7 @@ import EditableImageArea from '../edit/imageArea'
 import AdjustGalleryStyleButton from '../editTools/photoGallery/adjustGalleryStyleButton'
 import AddGalleryElementButton from '../editTools/photoGallery/addGalleryElementButton'
 import ChangeBackgroundButton from '../editTools/layout/changeBackgroundButton'
-import backgroundSetting from '../../layoutSettings/backgroundSetting'
+import backgroundSetting from '../../jssSettings/backgroundSetting'
 
 const imgContainerStyle = {
   "overflow": "hidden",
@@ -155,7 +155,6 @@ export default class EditablePhotoGallery extends Component {
             }
 
             return (
-
               <div id={id} style={backgroundStyle}>
                 <ChangeBackgroundButton backgroundInfo={backgroundInfo} parentkey={this.props.selfkey} />
                 <AdjustGalleryStyleButton {...this.props} />
@@ -169,14 +168,15 @@ export default class EditablePhotoGallery extends Component {
                       imgContainerMargin
                     ).map(childPhotoInfo =>
                       <div key={childPhotoInfo.props.selfkey} name="imgContainer" style={Object.assign({ margin: imgContainerMargin }, imgContainerStyle)}>
-                        <div>
+                        {/* <div> */}
                           <EditableImageArea
                             src={childPhotoInfo.src}
                             imageContainerStyle={{}}
                             imageStyle={{ width: childPhotoInfo.width, height: childPhotoInfo.height }}
+                            noMeasure={true}
                             {...childPhotoInfo.props}
                           />
-                        </div>
+                        {/* </div> */}
                       </div>
                     )
                   }

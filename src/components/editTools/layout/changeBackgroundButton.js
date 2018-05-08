@@ -92,7 +92,7 @@ export default class ChangeBackgroundButton extends React.Component {
   updateFullHeightStyle = () => {
     this.setState({ fullHeight: !this.state.fullHeight },
       () =>
-        this.updateNodeBackground([{ value: this.state.fullHeight, type: 'fullHeight' }]))    
+        this.updateNodeBackground([{ value: this.state.fullHeight, type: 'fullHeight' }]))
   }
 
   updateParallexStyle = () => {
@@ -192,13 +192,13 @@ export default class ChangeBackgroundButton extends React.Component {
             <div style={{ maxWidth: 180, textAlign: 'center' }}>
               <div style={{ width: '100%' }}>
                 <div style={{ float: 'left', width: '50%' }}>
-                  <Button onClick={this.updateParallexStyle} color="secondary" size='small' style={{ marginBottom: 5 }} >
+                  <Button onClick={this.updateParallexStyle} size='small' style={{ marginBottom: 5 }} >
                     {this.state.enableParallex ? '关闭视差' : '启用视差'}
                   </Button>
                 </div>
 
                 <div style={{ width: '50%' }}>
-                  <Button onClick={this.updateFullHeightStyle} color="secondary" size='small' style={{ marginBottom: 5 }} >
+                  <Button onClick={this.updateFullHeightStyle} size='small' style={{ marginBottom: 5 }} >
                     {this.state.fullHeight ? '内容撑开' : '满屏背景'}
                   </Button>
                 </div>
@@ -265,9 +265,9 @@ export default class ChangeBackgroundButton extends React.Component {
           trigger={['click']}
           onVisibleChange={this.handleVisibleChange}
           visible={this.state.visible}>
-          <Button style={{ minWidth: 60, color: '#FFF', fontSize: 8 }}>
+          <Button size='small' style={{ minWidth: 18, color: '#FFF', fontSize: '1vw' }}>
             背景
-        </Button>
+          </Button>
         </Dropdown>
       </div>
     );

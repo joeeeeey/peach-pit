@@ -36,7 +36,7 @@ import TemplateService from '../../services/templateService'
 import LayoutService from '../../services/layoutService'
 import SiteService from '../../services/siteService'
 import DeployService from '../../services/deployService'
-// import Test from '../../pages/test'
+import Test from '../../pages/test'
 
 
 
@@ -563,6 +563,7 @@ class EditableRoot extends Component {
             </Menu>
           </Sider>
           <Layout style={{ marginLeft: 200, minHeight: '45.25rem', background: 'none', }} className={''}>
+            {/* <Test/> */}
             <div id="divInRootAfterLayout" style={rootDivStyle}>
               {this.props.children}
             </div>

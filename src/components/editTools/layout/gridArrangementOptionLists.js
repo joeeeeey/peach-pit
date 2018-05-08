@@ -57,9 +57,10 @@ export default class GridArrangementOptionLists extends React.Component {
   getPositionStyle = () => {
     if (this.props.positionStyle) { return this.props.positionStyle }
     if (this.props.fullWithChilren) {
-      return { zIndex: 50, position: 'absolute', left: '2%', top: 10, "borderRadius": "10%", "background": "#303233" }
+      return { zIndex: 50, position: 'absolute', left: '3%', top: 12, "borderRadius": "10%", "background": "#303233" }
     } else {
-      return { zIndex: 50, position: 'absolute', left: '-8%', top: -20, "borderRadius": "10%", "background": "#303233" }
+      return { zIndex: 50, position: 'absolute', left: '-8%', top: 0, "borderRadius": "10%", "background": "#303233" }
+      // return { zIndex: 50, position: 'absolute', left: '-8%', top: 10, "borderRadius": "10%", "background": "#303233" }
     }
   }
 
@@ -70,9 +71,9 @@ export default class GridArrangementOptionLists extends React.Component {
           onVisibleChange={this.handleVisibleChange}
           visible={this.state.visible}
         >
-          <Button style={{ minWidth: 18, color: '#FFF', fontSize: 8 }}>
-            布局
-        </Button>
+          <Button size='small' style={{ minWidth: 18, color: '#FFF', fontSize: '1vw' }}>
+              布局
+          </Button>
         </Dropdown>
       </div>
     );

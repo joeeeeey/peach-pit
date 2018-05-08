@@ -17,7 +17,7 @@
 // {"native":false,"nodeName":"VerticalLayout","props":{}}
 import React, { Component } from 'react';
 import Grid from 'material-ui/Grid';
-import backgroundSetting from '../../layoutSettings/backgroundSetting'
+import backgroundSetting from '../../jssSettings/backgroundSetting'
 
 
 // Layout 的公共样式， 可以抽离

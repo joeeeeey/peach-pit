@@ -59,10 +59,13 @@ export default class HorizontalLayout extends React.Component {
               </Grid>
 
               <Grid item xs={12} sm={4} md={4} lg={4} style={horizontalGridChildStyle}>
-                <Paper style={{height: '20%'}}>adasdasd</Paper>
+                <div style={{height: 20}}>
+                <Paper style={{height: '20'}}>adasdasd</Paper>
+                </div>
+               
               </Grid>
               <Grid item xs={12} sm={4} md={4} lg={4} style={horizontalGridChildStyle}>
-                <Paper style={{height: '20%'}}>asdadsda</Paper>
+                <Paper style={{height: '20'}}>asdadsda</Paper>
               </Grid>
               <Grid item xs={12} sm={4} md={4} lg={4} style={horizontalGridChildStyle}>
                 <Paper style={{height: '20%'}}>adadss</Paper>
@@ -70,13 +73,6 @@ export default class HorizontalLayout extends React.Component {
 
             </Grid>
 
-            <Grid name="水平" style={horizontalGridStyle} container direction={'row'}>
-              <Paper >xs=12 sm=6</Paper>
-            </Grid>
-
-            <Grid item xs={12} sm={12} md={6} lg={6}>
-              <Paper >xs=12 sm=6</Paper>
-            </Grid>
           </Grid>
         </Grid>
       </div>

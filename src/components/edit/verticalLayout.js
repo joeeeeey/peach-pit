@@ -43,7 +43,7 @@ import Grid from 'material-ui/Grid';
 import ChangeBackgroundButton from '../editTools/layout/changeBackgroundButton'
 import GridArrangementOptionLists from '../editTools/layout/gridArrangementOptionLists'
 import ArrayOper from '../../utils/arrOperation'
-import backgroundSetting from '../../layoutSettings/backgroundSetting'
+import backgroundSetting from '../../jssSettings/backgroundSetting'
 
 
 // Layout 的公共样式， 可以抽离

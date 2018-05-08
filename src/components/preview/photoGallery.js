@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Measure from 'react-measure';
 import computeImage from '../../utils/computeImage'
 import PreviewImageArea from '../preview/imageArea'
-import backgroundSetting from '../../layoutSettings/backgroundSetting'
+import backgroundSetting from '../../jssSettings/backgroundSetting'
 
 const imgContainerStyle = {
   "overflow": "hidden",
