@@ -70,7 +70,7 @@ function getBackgroundParallexStyle(enableParallex) {
 
 function getBackgroundHeightStyle(fullHeight) {
   if (fullHeight) {
-    return { minHeight: '100vh' }
+    return { minHeight: '100vh',  display: 'grid' }
   } else {
     return {}
   }

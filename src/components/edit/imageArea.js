@@ -18,6 +18,8 @@ import ImageAreaSetting from '../../jssSettings/imageAreaSetting'
 import UploaderEntrance from '../editTools/image/uploaderEntrance'
 
 const defaultImageStyle = { maxWidth: '100%', maxHeight: '100%' }
+const defaultImageContainerStyle = ImageAreaSetting.defaultImageContainerStyle()
+
 const defaultOverlayStyle = { textAlign: 'center', "position": "absolute", "width": "100%", "height": "100%", "top": "0", "left": "0", "right": "0", "bottom": "0", "backgroundColor": "rgba(0,0,0,0.5)", "zIndex": "2", "cursor": "pointer" }
 const buttonStyle = { width: '100%', height: '86%', color: 'white', justifyContent: 'center' }
 
@@ -30,7 +32,7 @@ export default class EditableImageArea extends Component {
       contanierWidth: -1,
       overlayDisplay:
         { display: 'none' },
-      imageStyle: this.props.imageStyle || defaultImageStyle
+      imageStyle: defaultImageStyle
     }
     this.editImageDialog = null
   }
@@ -102,28 +104,23 @@ export default class EditableImageArea extends Component {
 
 
   // 展示 imgae 的元素
-  imageElement = (src, alt, imageStyle) => {
+  imageElement = (src, alt) => {
     return (
       <img
         src={src}
-        style={this.state.imageStyle}
+        style={this.props.imageStyle || this.state.imageStyle}
         alt={alt || 'default_alt'}
         onLoad={this.onImgLoad}
       ></img>
     )
   }
-
-  getWidth = (contanierWidth) => {
-    return { width: contanierWidth || '50%' }
-  }
-
+  
   // 在屏幕大小发生变化时加载，获得样式
   reSizeImage = (contanierWidth) => {
     this.setState({ contanierWidth: contanierWidth })
     const imgDimensions = this.state.imgDimensions
     if (imgDimensions.naturalWidth) {
       const imageStyle = ImageAreaSetting.getImageStyle(contanierWidth, imgDimensions)
-      console.log(`获得重新计算的大小: ${JSON.stringify(imageStyle)}`)
       this.setState({ imageStyle: imageStyle })
     }
   }
@@ -132,8 +129,11 @@ export default class EditableImageArea extends Component {
     // galleryStyle 中存储画廊类型以及画廊需要存储的特征, 如: { type: 'verticalGallery', width: 1, height: 1 }
     // 会影响编辑页面的显示
 
-    const { src, alt, imageStyle = defaultImageStyle, imageContainerStyle = { margin: '1px 15px' } } = this.props
-
+    const {
+      src,
+      alt,
+      imageContainerStyle = defaultImageContainerStyle,
+    } = this.props
     return (
       <div>
         {
@@ -149,7 +149,7 @@ export default class EditableImageArea extends Component {
                     style={Object.assign({ position: 'relative', textAlign: 'center' }, imageContainerStyle)}
                     onMouseOver={this.hoverImg} >
                     {this.imageOverlayElement()}
-                    {this.imageElement(src, alt, imageStyle)}
+                    {this.imageElement(src, alt)}
                   </div>)
               }
             }
@@ -160,7 +160,7 @@ export default class EditableImageArea extends Component {
             style={Object.assign({ position: 'relative', textAlign: 'center' }, imageContainerStyle)}
             onMouseOver={this.hoverImg} >
             {this.imageOverlayElement()}
-            {this.imageElement(src, alt, imageStyle)}
+            {this.imageElement(src, alt)}
           </div>
         }
       </div>

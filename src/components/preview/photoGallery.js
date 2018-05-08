@@ -90,6 +90,7 @@ export default class PreviewPhotoGallery extends Component {
                       <div key={childPhotoInfo.props.selfkey} name="imgContainer" style={Object.assign({ margin: imgContainerMargin }, imgContainerStyle)}>
                         <div>
                           <PreviewImageArea
+                            noMeasure={true}
                             src={childPhotoInfo.src}
                             imageContainerStyle={{}}
                             imageStyle={{ width: childPhotoInfo.width, height: childPhotoInfo.height }}

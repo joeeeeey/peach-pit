@@ -7,8 +7,11 @@
 
 const defaultImageStyle = { maxWidth: '100%', maxHeight: '100%' }
 
-const defaultImageContainerStyle = { margin: '1px 15px' }
+// const defaultImageContainerStyle = { margin: '1px 2%' }
 
+function defaultImageContainerStyle(){
+  return { margin: '1px 2%' }
+}
 
 function getImageStyle(porps) {
   if (porps.imageStyle) {
@@ -39,6 +42,7 @@ function getImageStyle(contanierWidth, imgDimensions) {
 
 const ImageAreaSetting = {
   getImageStyle: getImageStyle,
+  defaultImageContainerStyle: defaultImageContainerStyle
 }
 
 export default ImageAreaSetting

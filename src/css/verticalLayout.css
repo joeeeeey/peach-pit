@@ -1,13 +1,14 @@
 
 .verticalLayoutContainerFullWithChilren{
-  margin: 0 0;
+  /* margin: 0 0; */
+  margin: auto;
   width: 100%;
   flex-grow: 1;
   padding: 0 0;
 }
 
 .verticalLayoutContainerDefault{
-  margin: 0 auto;
+  margin: auto;
   width: 84%;
   flex-grow: 1;
   padding: 5% 0;

@@ -89,6 +89,7 @@ export default class ChangeBackgroundButton extends React.Component {
     })
   }
 
+  //TODO fullHeight 应该搭配内容居中使用
   updateFullHeightStyle = () => {
     this.setState({ fullHeight: !this.state.fullHeight },
       () =>
