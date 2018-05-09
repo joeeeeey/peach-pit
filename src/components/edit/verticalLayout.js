@@ -24,19 +24,24 @@
 // background backgroundType 必传
 
 // 原始代码段
-// {
-//   native: false, nodeName: 'VerticalLayout',
-//     props: {
-//       backgroundInfo: {
-//         background: '#b1d3db',
-//           backgroundType: 'pureColor',
-//             imageInfo: { },
-//         fillType: null,
-//         enableParallex: null
-//       }
-//   }
+// const node = {
+//   native: false,
+//   nodeName: 'VerticalLayout',
+  // props: {
+  //    backgroundInfo: {
+  // background: 'white',
+  // backgroundType: 'pureColor',
+  // imageInfo: {},
+  // fillType: null,
+  // enableParallex: null
+  //  }
+//   },
+//   children: [
+//     { native: false, nodeName: 'VerticalGrid' },
+//     { native: false, nodeName: 'VerticalGrid' }]
 // }
-// {"native":false,"nodeName":"VerticalLayout","props":{"backgroundInfo":{"background":"#b1d3db","backgroundType":"pureColor","imageInfo":{},"fillType":null,"enableParallex":null}}}
+
+// {"native":false,"nodeName":"VerticalLayout","props":{"backgroundInfo":{"background":"white","backgroundType":"pureColor","imageInfo":{},"fillType":null,"enableParallex":null}},"children":[{"native":false,"nodeName":"VerticalGrid"},{"native":false,"nodeName":"VerticalGrid"}]}
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Grid from 'material-ui/Grid';
@@ -71,13 +76,13 @@ export default class EditableVerticalLayout extends Component {
     }
   }
 
-  initialLayoutId = () => {
-    this.context.store.dispatch({
-      type: 'update',
-      payload: { nestedKey: `${this.props.selfkey},props,id`, value: this.props.selfkey },
-      target: 'node',
-    });
-  }
+  // initialLayoutId = () => {
+  //   this.context.store.dispatch({
+  //     type: 'update',
+  //     payload: { nestedKey: `${this.props.selfkey},props,id`, value: this.props.selfkey },
+  //     target: 'node',
+  //   });
+  // }
 
   // 如果没有 children, 那就用 addNode 方法给自己增加两个 children
   // TODO 使用批量增加
@@ -194,24 +199,24 @@ export default class EditableVerticalLayout extends Component {
     return (
       <div style={backgroundStyle} id={id}>
         <ChangeBackgroundButton fullWithChilren={this.props.fullWithChilren} backgroundInfo={backgroundInfo} parentkey={this.props.selfkey} />
-          <div className={this.getLayoutDivStyle()}  name="layoutDiv" style={{ position: 'relative' }}>
-            <GridArrangementOptionLists {...this.props}
-              handleRearrangeGird={this.handleRearrangeGird}
-              changeFullWithChilrenButton={this.changeFullWithChilrenButton}
-            />
-            <Grid name={'chilrenContanier'} container direction={containerDirection} >
-              {this.props.children &&
-                React.Children.toArray(this.props.children).map((child, index) => {
-                  return (
-                    <Grid style={{ padding: '0px 0px' }} key={child.props.selfkey} item xs={12} sm={this.flex[index]} md={this.flex[index]} lg={this.flex[index]} xl={this.flex[index]}>
-                      {child}
-                    </Grid>
-                  )
-                })
-              }
-            </Grid>
-          </div>
+        <div className={this.getLayoutDivStyle()} name="layoutDiv" style={{ position: 'relative' }}>
+          <GridArrangementOptionLists {...this.props}
+            handleRearrangeGird={this.handleRearrangeGird}
+            changeFullWithChilrenButton={this.changeFullWithChilrenButton}
+          />
+          <Grid name={'chilrenContanier'} container direction={containerDirection} >
+            {this.props.children &&
+              React.Children.toArray(this.props.children).map((child, index) => {
+                return (
+                  <Grid style={{ padding: '0px 0px' }} key={child.props.selfkey} item xs={12} sm={this.flex[index]} md={this.flex[index]} lg={this.flex[index]} xl={this.flex[index]}>
+                    {child}
+                  </Grid>
+                )
+              })
+            }
+          </Grid>
         </div>
+      </div>
     );
   }
 }

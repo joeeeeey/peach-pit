@@ -13,13 +13,13 @@ function defaultImageContainerStyle(){
   return { margin: '1px 2%' }
 }
 
-function getImageStyle(porps) {
-  if (porps.imageStyle) {
-    return porps.imageStyle
-  } else {
-    return defaultImageStyle
-  }
-}
+// function getImageStyle(porps) {
+//   if (porps.imageStyle) {
+//     return porps.imageStyle
+//   } else {
+//     return defaultImageStyle
+//   }
+// }
 
 function getImageStyle(contanierWidth, imgDimensions) {
   // console.log(`contanierWidth is ${contanierWidth}`)
@@ -33,7 +33,6 @@ function getImageStyle(contanierWidth, imgDimensions) {
       return {width: '100%', height: '100%'}
     }else{
       const ratio = Math.round((naturalWidth/naturaHeight) * 100)
-
       return {width: `${ratio}%`, height: '100%'}
     }
   }

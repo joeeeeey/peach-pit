@@ -21,7 +21,7 @@ const defaultImageStyle = { maxWidth: '100%', maxHeight: '100%' }
 const defaultImageContainerStyle = ImageAreaSetting.defaultImageContainerStyle()
 
 const defaultOverlayStyle = { textAlign: 'center', "position": "absolute", "width": "100%", "height": "100%", "top": "0", "left": "0", "right": "0", "bottom": "0", "backgroundColor": "rgba(0,0,0,0.5)", "zIndex": "2", "cursor": "pointer" }
-const buttonStyle = { width: '100%', height: '86%', color: 'white', justifyContent: 'center' }
+const buttonStyle = { width: '100%', height: '73%', color: 'white', justifyContent: 'center' }
 
 
 export default class EditableImageArea extends Component {
@@ -68,6 +68,9 @@ export default class EditableImageArea extends Component {
       naturalWidth: img.naturalWidth,
       naturaHeight: img.naturalHeight,
     }
+    
+    this.reportHeight(img.offsetHeight)
+
     this.setState({
       imgDimensions: imgDimensions
     });
@@ -94,9 +97,12 @@ export default class EditableImageArea extends Component {
             nestedkeyprefix={`${this.props.selfkey},props`}
           />
         </div>
-        <Button color="secondary" onClick={this.removeImageArea} style={{ width: '100%', height: '14%', color: 'white', justifyContent: 'center' }}>
-          删除
-        </Button>
+        {
+          !this.props.hiddenDelete &&
+          <Button color="secondary" onClick={this.removeImageArea} style={{ width: '100%', height: '14%', color: 'white', justifyContent: 'center' }}>
+            删除
+          </Button>
+        }
         {/* <EditImageDialog ref={(el) => { this.editImageDialog = el }} parentkey={this.props.parentkey} targetkey={this.props.selfkey} /> */}
       </div>
     )
@@ -114,9 +120,11 @@ export default class EditableImageArea extends Component {
       ></img>
     )
   }
-  
+
   // 在屏幕大小发生变化时加载，获得样式
-  reSizeImage = (contanierWidth) => {
+  reSizeImage = (contanierWidth, contanierHeight) => {
+    this.reportHeight(contanierHeight)
+
     this.setState({ contanierWidth: contanierWidth })
     const imgDimensions = this.state.imgDimensions
     if (imgDimensions.naturalWidth) {
@@ -124,6 +132,15 @@ export default class EditableImageArea extends Component {
       this.setState({ imageStyle: imageStyle })
     }
   }
+
+  // 有的父元素需要知道子元素 resize 后的高度
+  // 向父元素回传自身所占高度
+  reportHeight = (height) => {
+    if(this.props.reportHeight){
+      this.props.reportHeight(height, this.props.selfkey)
+    }      
+  }
+
 
   render() {
     // galleryStyle 中存储画廊类型以及画廊需要存储的特征, 如: { type: 'verticalGallery', width: 1, height: 1 }
@@ -137,7 +154,7 @@ export default class EditableImageArea extends Component {
     return (
       <div>
         {
-          !this.props.noMeasure && <Measure bounds onResize={(contentRect) => this.reSizeImage(contentRect.bounds.width)}>
+          !this.props.noMeasure && <Measure bounds onResize={(contentRect) => this.reSizeImage(contentRect.bounds.width, contentRect.bounds.height)}>
             {
               ({ measureRef }) => {
                 if (this.state.contanierWidth < 1) {

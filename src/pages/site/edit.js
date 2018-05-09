@@ -13,7 +13,7 @@ import EditableVerticalGrid from '../../components/edit/verticalGrid'
 import EditableImageArea from '../../components/edit/imageArea'
 import EditableNavBar from '../../components/edit/navBar'
 import EditablePhotoGallery from '../../components/edit/photoGallery'
-
+import EditableImageDescription from '../../components/edit/imageDescription'
 
 // 测试的组件 
 // import Test from '../test'
@@ -125,7 +125,6 @@ class Edit extends React.Component {
 
   initialNodeData(block) {
     let ftData = nodeOperation.flattenDomTree(this.wrapRoot(block))
-    // console.log(JSON.parse(block.data))
     // let ftData = nodeOperation.flattenDomTree(ftData)
     console.log(ftData)
     this.setState({ nodeData: ftData })
@@ -154,6 +153,7 @@ class Edit extends React.Component {
       EditableImageArea: EditableImageArea,
       EditableNavBar: EditableNavBar,
       EditablePhotoGallery: EditablePhotoGallery,
+      EditableImageDescription: EditableImageDescription,
     })
     return App
   }
