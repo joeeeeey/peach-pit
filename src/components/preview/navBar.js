@@ -62,7 +62,7 @@ export default class PreviewNavBar extends React.Component {
       <div name="navbar" style={{ borderColor: '#cdced0' }}>
         <div name="container2" style={container2Style}>
           <div name="container3" style={container3Style}>
-            <div name="logo" style={{ "maxWidth": "200px" }}>
+            <div name="logo" style={{ "maxWidth": "200px", minWidth: '3.125rem' }}>
               <div style={{ paddingLeft: 10 }}>
                 {this.props.children && this.props.children[0]}
               </div>
