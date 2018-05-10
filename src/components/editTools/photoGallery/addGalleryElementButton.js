@@ -8,28 +8,6 @@ export default class AddGalleryElementButton extends React.Component {
     super(props);
   }
 
-  updateGalleryStyle = () => {
-    const updateNodesPayload = ['imgContainerMargin', 'intensity', 'galleryWidth']
-      .map(key => {
-        return {
-          value: this.state[key],
-          nestedKey: `${this.props.selfkey},props,${key}`
-        }
-      })
-
-    const compositePayload = {
-      payloadData: {
-        updateNodes: { payloadData: updateNodesPayload },
-      }
-    }
-
-    this.context.store.dispatch({
-      type: 'composite',
-      payload: compositePayload,
-      target: 'node',
-    })
-  }
-
   addGalleryElement = () => {
     const defaultChild = {
       native: false,
@@ -55,8 +33,10 @@ export default class AddGalleryElementButton extends React.Component {
 
   render() {
     return (
-      <div style={{ margin: 'auto', marginTop: 5,   width: '20%', opacity: 0.5, textAlign: 'center', background: '#303233' }}>
-        <Button onClick={this.addGalleryElement} style={{ width: '100%', color: '#FFF', fontSize: 8 }}>
+      <div className={'addElementButtonContanier'}>
+        <Button
+          onClick={this.addGalleryElement}
+          className={'addElementButton'}>
           增加元素
         </Button>
       </div>

@@ -116,6 +116,7 @@ export default class EditableVerticalLayout extends Component {
       } else if (flex.length < this.flex.length) {
         // 减少了子元素个数, 默认从最后一个元素开始去除
         const reverseCount = this.flex.length - flex.length
+
         const reverseChildrenKeys = this.props.children.map(x => x.props.selfkey).reverse()
 
         let removeNodesPayload = []

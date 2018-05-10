@@ -14,6 +14,7 @@ import PreviewVerticalLayout from '../../components/preview/verticalLayout'
 import PreviewImageArea from '../../components/preview/imageArea'
 import PreviewNavBar from '../../components/preview/navBar'
 import PreviewPhotoGallery from '../../components/preview/photoGallery'
+import PreviewImageDescription from '../../components/preview/imageDescription' 
 
 const blockService = new BlockService()
 
@@ -107,6 +108,7 @@ class Preview extends React.Component {
       PreviewImageArea: PreviewImageArea,
       PreviewNavBar: PreviewNavBar,
       PreviewPhotoGallery: PreviewPhotoGallery,
+      PreviewImageDescription: PreviewImageDescription,
     })
     return App
   }

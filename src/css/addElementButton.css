@@ -1,0 +1,14 @@
+.addElementButtonContanier{
+  margin: auto;
+  width: 15%;
+  opacity: 0.5;
+  text-align: center;
+  background: #303233; 
+}
+
+.addElementButton{
+  font-weight: 800 !important;
+  width: 100%;
+  color: #FFF !important; 
+  font-size: 1.2vw !important;
+}

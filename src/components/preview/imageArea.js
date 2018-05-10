@@ -55,7 +55,8 @@ export default class PreviewImageArea extends Component {
 
 
   // 在屏幕大小发生变化时加载，获得样式
-  reSizeImage = (contanierWidth) => {
+  reSizeImage = (contanierWidth, contanierHeight) => {
+    this.reportHeight(contanierHeight)
     this.setState({ contanierWidth: contanierWidth })
     const imgDimensions = this.state.imgDimensions
     if (imgDimensions.naturalWidth) {
@@ -64,6 +65,13 @@ export default class PreviewImageArea extends Component {
     }
   }
 
+  // 有的父元素需要知道子元素 resize 后的高度
+  // 向父元素回传自身所占高度
+  reportHeight = (height) => {
+    if(this.props.reportHeight){
+      this.props.reportHeight(height, this.props.selfkey)
+    }      
+  }
 
   render() {
     const { src,
@@ -76,7 +84,7 @@ export default class PreviewImageArea extends Component {
       <div>
         {
           !this.props.noMeasure &&
-          <Measure bounds onResize={(contentRect) => this.reSizeImage(contentRect.bounds.width)}>
+          <Measure bounds onResize={(contentRect) => this.reSizeImage(contentRect.bounds.width, contentRect.bounds.height)}>
             {
               ({ measureRef }) => {
                 if (this.state.contanierWidth < 1) {

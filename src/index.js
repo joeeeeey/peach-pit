@@ -11,6 +11,6 @@ import './css/quill.css'
 import 'react-quill/dist/quill.snow.css'; // ES6
 import './css/registerFrom.css'
 import './css/verticalLayout.css'
-
+import './css/addElementButton.css'
 
 ReactDOM.render(<Index />,document.querySelector('#root'));

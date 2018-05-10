@@ -31,9 +31,15 @@ export default class RemoveNodeSpirit extends Component {
 
 
   confirmDeleteNode = () => {
+    const { childrenkey, parentkey, deleteCallback, callBackValue } = this.props
+    // 父节点需要删除时回调
+    if (deleteCallback) {
+      deleteCallback(callBackValue)
+    }
+
     this.context.store.dispatch({
       type: 'removeNode',
-      payload: { targetKey: this.props.childrenkey, parentKey: this.props.parentkey },
+      payload: { targetKey: childrenkey, parentKey: parentkey },
       target: 'node',
     });
   }
@@ -42,7 +48,7 @@ export default class RemoveNodeSpirit extends Component {
     return (
       <Popover content={popoverContent(this.confirmDeleteNode)} trigger="click">
         <IconButton style={{ blackground: 'black', height: 30 }}>
-          <DeleteIcon />
+          <DeleteIcon style={{ width: '2vw', height: '2vw' }} />
         </IconButton>
       </Popover>
     );
