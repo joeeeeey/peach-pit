@@ -27,14 +27,14 @@
 // const node = {
 //   native: false,
 //   nodeName: 'VerticalLayout',
-  // props: {
-  //    backgroundInfo: {
-  // background: 'white',
-  // backgroundType: 'pureColor',
-  // imageInfo: {},
-  // fillType: null,
-  // enableParallex: null
-  //  }
+// props: {
+//    backgroundInfo: {
+// background: 'white',
+// backgroundType: 'pureColor',
+// imageInfo: {},
+// fillType: null,
+// enableParallex: null
+//  }
 //   },
 //   children: [
 //     { native: false, nodeName: 'VerticalGrid' },
@@ -201,7 +201,8 @@ export default class EditableVerticalLayout extends Component {
       <div style={backgroundStyle} id={id}>
         <ChangeBackgroundButton fullWithChilren={this.props.fullWithChilren} backgroundInfo={backgroundInfo} parentkey={this.props.selfkey} />
         <div className={this.getLayoutDivStyle()} name="layoutDiv" style={{ position: 'relative' }}>
-          <GridArrangementOptionLists {...this.props}
+          <GridArrangementOptionLists
+            {...this.props}
             handleRearrangeGird={this.handleRearrangeGird}
             changeFullWithChilrenButton={this.changeFullWithChilrenButton}
           />

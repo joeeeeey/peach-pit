@@ -40,7 +40,7 @@ export default class PreviewImageDescription extends React.Component {
         rowInfo[i + 1].push(key)
       });
     }
-    
+
     this.state.rowInfo = rowInfo
   }
 
@@ -117,19 +117,19 @@ export default class PreviewImageDescription extends React.Component {
         this.setState(updateInfo)
       }
     } else {
-        this.setState({ column: this.props.column })
-        
-        const selfRow = this.state[`${selfKey}Row`]
+      this.setState({ column: this.props.column })
 
-        // => imageHeightInfo: {k1: 300, k2: 200}
-        let imageHeightInfo = this.state.imageHeightInfo
-        imageHeightInfo[selfKey] = height
-        let rowInfo = this.state.rowInfo // => {1: [k1,k2,k3], 2: [k4]}
-        let rowUpdateInfo = this.redraw(selfRow, rowInfo, imageHeightInfo)
+      const selfRow = this.state[`${selfKey}Row`]
 
-        let updateInfo = Object.assign({}, rowUpdateInfo, { imageHeightInfo: imageHeightInfo })
-        this.setState(updateInfo)
-      }
+      // => imageHeightInfo: {k1: 300, k2: 200}
+      let imageHeightInfo = this.state.imageHeightInfo
+      imageHeightInfo[selfKey] = height
+      let rowInfo = this.state.rowInfo // => {1: [k1,k2,k3], 2: [k4]}
+      let rowUpdateInfo = this.redraw(selfRow, rowInfo, imageHeightInfo)
+
+      let updateInfo = Object.assign({}, rowUpdateInfo, { imageHeightInfo: imageHeightInfo })
+      this.setState(updateInfo)
+    }
     // }
   }
 
@@ -159,8 +159,15 @@ export default class PreviewImageDescription extends React.Component {
     } else {
       return {}
     }
+  }
 
 
+  getLayoutDivStyle = () => {
+    if (this.props.fullWithChilren) {
+      return 'verticalLayoutContainerFullWithChilren'
+    } else {
+      return 'verticalLayoutContainerDefault'
+    }
   }
 
   render() {
@@ -170,45 +177,47 @@ export default class PreviewImageDescription extends React.Component {
 
     return (
       <div style={backgroundStyle} id={id}>
-        <Grid name="水平"
-          container
-          direction={'row'}
-          justify={'center'}>
+        <div className={this.getLayoutDivStyle()}>
+          <Grid name="水平"
+            container
+            direction={'row'}
+            justify={'center'}>
 
-          {this.props.children &&
-            React.Children.toArray(this.props.children).map((child, index) => {
-              // 子元素的子元素
-              const childChildren = child.props.children
-              const imageProps = childChildren[0].props
-              const verticalLayoutProps = childChildren[1].props
-              const imageKey = imageProps.selfkey
+            {this.props.children &&
+              React.Children.toArray(this.props.children).map((child, index) => {
+                // 子元素的子元素
+                const childChildren = child.props.children
+                const imageProps = childChildren[0].props
+                const verticalLayoutProps = childChildren[1].props
+                const imageKey = imageProps.selfkey
 
-              return (
-                <Grid key={child.props.selfkey} item xs={12} sm={this.state.flex} md={this.state.flex} lg={this.state.flex} xl={this.state.flex}>
-                  <div name="girdContainer" style={{ padding: '5%', position: 'relative' }}>
-                    <div
-                      name="imageAreaContanier"
-                      style={Object.assign(
-                        {},
-                        this.state[`${imageKey}IACS`],
-                        verticalCenterStyle)}
-                    >
-                      <PreviewImageArea
-                        imageContainerStyle={{}}
-                        noMeasure={false}
-                        {...imageProps}
-                        reportHeight={this.reportHeight}
+                return (
+                  <Grid key={child.props.selfkey} item xs={12} sm={this.state.flex} md={this.state.flex} lg={this.state.flex} xl={this.state.flex}>
+                    <div name="girdContainer" style={{ padding: '5%', position: 'relative' }}>
+                      <div
+                        name="imageAreaContanier"
+                        style={Object.assign(
+                          {},
+                          this.state[`${imageKey}IACS`],
+                          verticalCenterStyle)}
+                      >
+                        <PreviewImageArea
+                          imageContainerStyle={{}}
+                          noMeasure={false}
+                          {...imageProps}
+                          reportHeight={this.reportHeight}
+                        />
+                      </div>
+                      <PreviewVerticalLayout
+                        {...verticalLayoutProps}
                       />
                     </div>
-                    <PreviewVerticalLayout
-                      {...verticalLayoutProps}
-                    />
-                  </div>
-                </Grid>
-              )
-            })
-          }
-        </Grid>
+                  </Grid>
+                )
+              })
+            }
+          </Grid>
+        </div>
       </div>
     );
   }

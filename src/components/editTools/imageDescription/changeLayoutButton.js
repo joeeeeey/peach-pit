@@ -5,7 +5,7 @@ import Grid from 'material-ui/Grid';
 const buttonStyle = { minWidth: 10, justifyContent: 'left' }
 
 
-export default class GridArrangementOptionLists extends React.Component {
+export default class ChangeLayoutButton extends React.Component {
   constructor(props, context) {
     super(props);
     this.positionStyle = this.props.positionStyle || { position: 'absolute', left: '-8%', top: -20, "borderRadius": "10%", "background": "#303233" }
@@ -16,11 +16,15 @@ export default class GridArrangementOptionLists extends React.Component {
     this.setState({ visible: flag });
   }
 
-  rearrangeGird = (flex) => {
-    this.props.handleRearrangeGird(flex)
+  changeFullWithChilrenButton = () => {
+    this.props.changeFullWithChilrenButton(!!!this.props.fullWithChilren)
   }
 
 
+  rearrangeItem = (flex) => {
+    this.props.handleRearrangement(flex)
+  }
+  
   menu(f) {
     return (
       <Menu>
@@ -31,15 +35,16 @@ export default class GridArrangementOptionLists extends React.Component {
         </Menu.Item>
         <Menu.Item key="arrangLabel">
           <div style={{ width: '100%', textAlign: 'center' }}>
-            <span style={{ marginTop: 5, fontSize: '0.5vw', fontWeight: 500 }}>以12 格为基准选择排列方式:</span>
+            <span style={{ marginTop: 5, fontSize: '0.5vw', fontWeight: 500 }}>每列容纳元素:</span>
           </div>
 
+
           <Grid name="水平" style={{ maxWidth: 200 }} container direction={'row'} spacing={0} justify={'center'}>
-            {[[12], [6, 6], [4, 8], [8, 4], [4, 4, 4], [5, 2, 5], [3, 6, 3], [2, 8, 2], [3, 3, 3, 3]].map(item =>
-              <Grid item xs={4} key={JSON.stringify(item)}>
+            {[2, 3, 4, 6].map(item =>
+              <Grid item xs={4} key={item}>
                 <div style={{ padding: '5px 5px', width: '100%' }}>
                   <Button onClick={() => { f(item) }} color="secondary" style={buttonStyle}>
-                    {`${item.join(',')}`}
+                    {item}
                   </Button>
                 </div>
               </Grid>
@@ -49,10 +54,6 @@ export default class GridArrangementOptionLists extends React.Component {
         </Menu.Item>
       </Menu>
     )
-  }
-
-  changeFullWithChilrenButton = () => {
-    this.props.changeFullWithChilrenButton(!!!this.props.fullWithChilren)
   }
 
 
@@ -68,8 +69,8 @@ export default class GridArrangementOptionLists extends React.Component {
 
   render() {
     return (
-      <div name={"GridArrangementOptionLists"} style={this.getPositionStyle()}>
-        <Dropdown overlay={this.menu(this.rearrangeGird)} trigger={['click']}
+      <div name={"ChangeLayoutButton"} style={this.getPositionStyle()}>
+        <Dropdown overlay={this.menu(this.rearrangeItem)} trigger={['click']}
           onVisibleChange={this.handleVisibleChange}
           visible={this.state.visible}
         >

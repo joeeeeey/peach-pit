@@ -64,6 +64,7 @@ import backgroundSetting from '../../jssSettings/backgroundSetting'
 import ChangeBackgroundButton from '../editTools/layout/changeBackgroundButton'
 import AddImageDescriptionElementButton from '../editTools/imageDescription/addImageDescriptionElementButton'
 import RemoveNodeSpirit from '../editTools/layout/removeNodeSpirit'
+import ChangeLayoutButton from '../editTools/imageDescription/changeLayoutButton'
 
 
 const RemoveNodeSpiritContainerStyle = { zIndex: 46, position: 'absolute', right: -15 }
@@ -82,7 +83,8 @@ export default class EditableImageDescription extends React.Component {
     const { column, children } = this.props
     const childrenArray = React.Children.toArray(children)
     const childrenKeys = childrenArray.map(x => x.props.children[0].props.selfkey)
-
+    this.needUpdateRow = []
+    this.imageHeightInfo = []
     this.state = {
       column: column,
       flex: 12 / column,
@@ -104,12 +106,48 @@ export default class EditableImageDescription extends React.Component {
         rowInfo[i + 1].push(key)
       });
     }
-    
+
     this.state.rowInfo = rowInfo
   }
 
-  componentDidMount = () => {
-    // this.initState()
+  // 改变 column
+  handleRearrangement = (column) => {
+    let { childrenKeys, imageHeightInfo } = this.state
+    if (column === this.state.column) {
+      return
+    }
+
+    const flex = 12 / column
+    // 重新计算行信息
+    const result = this.getRowStateAndInfo(childrenKeys, column)
+    const { rowState, rowInfo, rows } = result
+
+    let updateInfo = Object.assign({}, rowState, {
+      rowInfo: rowInfo,
+      childrenKeys: childrenKeys,
+      imageHeightInfo: imageHeightInfo,
+      column: column,
+      flex: flex,
+    })
+
+    // 对每行进行重绘
+    for (let i = 1; i < rows + 1; i++) {
+      Object.assign(updateInfo, this.redraw(i, rowInfo, imageHeightInfo))
+    }
+
+    this.setState(updateInfo)
+
+    let updateNodesPayload = [{ value: column, nestedKey: `${this.props.selfkey},props,column` }]
+    const compositePayload = {
+      payloadData: {
+        updateNodes: { payloadData: updateNodesPayload },
+      }
+    }
+    this.context.store.dispatch({
+      type: 'composite',
+      payload: compositePayload,
+      target: 'node',
+    })
   }
 
   getChildrenKeys = () => {
@@ -121,32 +159,9 @@ export default class EditableImageDescription extends React.Component {
     return childrenKeys
   }
 
-  initState = () => {
-    const childrenKeys = this.getChildrenKeys()
-
-    const childrenCounts = childrenKeys.length
-
-    // 1. 初始化 IACS
-    // IACS is short for 'ImageAreaContainerStyle'
-    // 设置默认的 minHeight
-    let state = this.state
-
-    for (let i = 0; i < childrenCounts; i++) {
-      const key = childrenKeys[i]
-      state[`${key}IACS`] = state[`${key}IACS`] || { minHeight: 0 }
-    }
-
-    // 2. 计算记录每个元素位置
-    // 行数 = 总数/列 的商 + 余数(大于 0 则是 1)
-    const result = this.getRowStateAndInfo(childrenKeys)
-    const { rowState, rowInfo } = result
-
-    this.setState(Object.assign(rowState, state, { rowInfo: rowInfo }))
-  }
-
-  getRowStateAndInfo = (childrenKeys) => {
+  getRowStateAndInfo = (childrenKeys, column) => {
     const counts = childrenKeys.length
-    const { column } = this.state
+
     const rows = Math.floor(counts / column) + ((counts % column) > 0 ? 1 : 0)
 
     // 重算
@@ -166,19 +181,30 @@ export default class EditableImageDescription extends React.Component {
     return { rowState: rowState, rowInfo: rowInfo, rows: rows }
   }
 
-
-  getChildContext() {
-    return { store: this.context.store };
+  // 改变 fillWithChidlren 
+  changeFullWithChilrenButton = (value) => {
+    let updateNodesPayload = [{ value: value, nestedKey: `${this.props.selfkey},props,fullWithChilren` }]
+    const compositePayload = {
+      payloadData: {
+        updateNodes: { payloadData: updateNodesPayload },
+      }
+    }
+    this.context.store.dispatch({
+      type: 'composite',
+      payload: compositePayload,
+      target: 'node',
+    })
   }
+
 
   addElement = (selfKey, height) => {
     // 得到当前 childrenKeys imageHeightInfo 并去除这个元素
-    let { childrenKeys, imageHeightInfo } = this.state
+    let { childrenKeys, imageHeightInfo, column } = this.state
     childrenKeys.push(selfKey)
     imageHeightInfo[selfKey] = height
 
     // 重新计算行信息
-    const result = this.getRowStateAndInfo(childrenKeys)
+    const result = this.getRowStateAndInfo(childrenKeys, column)
     const { rowState, rowInfo, rows } = result
 
     let updateInfo = Object.assign({}, rowState, {
@@ -188,6 +214,31 @@ export default class EditableImageDescription extends React.Component {
     })
 
     Object.assign(updateInfo, this.redraw(rows, rowInfo, imageHeightInfo))
+
+    this.setState(updateInfo)
+  }
+
+
+  deleteElement = (imageKey) => {
+    // 得到当前 childrenKeys imageHeightInfo 并去除这个元素
+    let { childrenKeys, imageHeightInfo, column } = this.state
+    childrenKeys = childrenKeys.filter(x => x !== imageKey)
+    delete imageHeightInfo[imageKey]
+
+    // 重新计算行信息
+    const result = this.getRowStateAndInfo(childrenKeys, column)
+    const { rowState, rowInfo, rows } = result
+
+    let updateInfo = Object.assign({}, rowState, {
+      rowInfo: rowInfo,
+      childrenKeys: childrenKeys,
+      imageHeightInfo: imageHeightInfo,
+    })
+
+    // 对每行进行重绘
+    for (let i = 1; i < rows + 1; i++) {
+      Object.assign(updateInfo, this.redraw(i, rowInfo, imageHeightInfo))
+    }
 
     this.setState(updateInfo)
   }
@@ -205,29 +256,61 @@ export default class EditableImageDescription extends React.Component {
           updateInfo[`${key}IACS`] = { minHeight: 0 }
         }
       }
-        
+
       this.setState(updateInfo)
     } else {
-      this.setState({ column: this.props.column })
+
+      const { column } = this.props
+      if (column !== this.state.column) {
+        this.setState({ column: this.props.column })
+      }
+
 
       if (!this.state[`${selfKey}Row`]) {
         // 找不到 selfkey, 说明是增加了元素
         // TODO 现在用这种方式检查增加子元素不是很好
         this.addElement(selfKey, height)
       } else {
+
         // 新方案
         const selfRow = this.state[`${selfKey}Row`]
 
         // => imageHeightInfo: {k1: 300, k2: 200}
         let imageHeightInfo = this.state.imageHeightInfo
+        if (imageHeightInfo[selfKey] <= (height + 1) && imageHeightInfo[selfKey] > (height - 1)) {
+          return
+        }
+
         imageHeightInfo[selfKey] = height
-        let rowInfo = this.state.rowInfo // => {1: [k1,k2,k3], 2: [k4]}
-        let rowUpdateInfo = this.redraw(selfRow, rowInfo, imageHeightInfo)
 
-        let updateInfo = Object.assign({}, rowUpdateInfo, { imageHeightInfo: imageHeightInfo })
-        this.setState(updateInfo)
 
-        console.log(height, selfKey)
+        this.needUpdateRow.push(selfRow)
+        this.imageHeightInfo[selfKey] = height
+        if (this.saveTriggerTimer !== undefined) {
+          clearTimeout(this.saveTriggerTimer)
+        }
+
+        // 延时 200 毫秒保存改动
+        this.saveTriggerTimer = setTimeout(() => {
+          console.log(`settimeout 启动`)
+          let updateInfo = {}
+          this.needUpdateRow = [...new Set(this.needUpdateRow)]
+          for (let i = 0; i < this.needUpdateRow.length; i++) {
+            Object.assign(updateInfo, this.redraw(this.needUpdateRow[i], this.state.rowInfo, this.imageHeightInfo))
+          }
+
+          this.setState(Object.assign(updateInfo, { imageHeightInfo: this.imageHeightInfo }))
+          this.saveTriggerTimer = undefined;
+          this.needUpdateRow = []
+          // this.imageHeightInfo = {}
+        }, 80);
+
+
+        // let rowInfo = this.state.rowInfo // => {1: [k1,k2,k3], 2: [k4]}
+        // let rowUpdateInfo = this.redraw(selfRow, rowInfo, imageHeightInfo)
+
+        // let updateInfo = Object.assign({}, rowUpdateInfo, { imageHeightInfo: imageHeightInfo })
+        // this.setState(updateInfo)
       }
     }
   }
@@ -238,7 +321,11 @@ export default class EditableImageDescription extends React.Component {
     // 并且将最大的高度设为 minHeight
     let minHeight = 0
     const thisRowKeys = rowInfo[row] // => [k1,k2,k3]
-
+    // console.log(`redraw, row is ${row}`)
+    // console.log(`redraw, imageHeightInfo is`)
+    // console.log(imageHeightInfo)
+    // console.log(`redraw thisRowKeys is`)
+    // console.log(thisRowKeys)
     for (let i = 0; i < thisRowKeys.length; i++) {
       const key = thisRowKeys[i]
       if (imageHeightInfo[key] && imageHeightInfo[key] > minHeight) {
@@ -257,32 +344,18 @@ export default class EditableImageDescription extends React.Component {
     } else {
       return {}
     }
-
-
   }
 
-  deleteElement = (imageKey) => {
-    // 得到当前 childrenKeys imageHeightInfo 并去除这个元素
-    let { childrenKeys, imageHeightInfo } = this.state
-    childrenKeys = childrenKeys.filter(x => x !== imageKey)
-    delete imageHeightInfo[imageKey]
-
-    // 重新计算行信息
-    const result = this.getRowStateAndInfo(childrenKeys)
-    const { rowState, rowInfo, rows } = result
-
-    let updateInfo = Object.assign({}, rowState, {
-      rowInfo: rowInfo,
-      childrenKeys: childrenKeys,
-      imageHeightInfo: imageHeightInfo,
-    })
-
-    // 对每行进行重绘
-    for (let i = 1; i < rows + 1; i++) {
-      Object.assign(updateInfo, this.redraw(i, rowInfo, imageHeightInfo))
+  getLayoutDivStyle = () => {
+    if (this.props.fullWithChilren) {
+      return 'verticalLayoutContainerFullWithChilren'
+    } else {
+      return 'verticalLayoutContainerDefault'
     }
+  }
 
-    this.setState(updateInfo)
+  getChildContext() {
+    return { store: this.context.store };
   }
 
   render() {
@@ -292,60 +365,67 @@ export default class EditableImageDescription extends React.Component {
 
 
     return (
-      // <div style={{ background: 'white', marginTop: 20 }}>
       <div style={backgroundStyle} id={id}>
         <ChangeBackgroundButton fullWithChilren={this.props.fullWithChilren} backgroundInfo={backgroundInfo} parentkey={this.props.selfkey} />
-        <Grid name="水平"
-          container
-          direction={'row'}
-          justify={'center'}>
+        <div className={this.getLayoutDivStyle()} name="layoutDiv" style={{ position: 'relative' }}>
+          <ChangeLayoutButton
+            {...this.props}
+            handleRearrangement={this.handleRearrangement}
+            changeFullWithChilrenButton={this.changeFullWithChilrenButton}
+          />
 
-          {this.props.children &&
-            React.Children.toArray(this.props.children).map((child, index) => {
-              // 子元素的子元素
-              const childChildren = child.props.children
-              const imageProps = childChildren[0].props
-              const verticalLayoutProps = childChildren[1].props
-              const imageKey = imageProps.selfkey
+          <Grid name="水平"
+            container
+            direction={'row'}
+            justify={'center'}>
 
-              return (
-                <Grid key={child.props.selfkey} item xs={12} sm={this.state.flex} md={this.state.flex} lg={this.state.flex} xl={this.state.flex}>
-                  <div name="girdContainer" style={{ padding: '5%', position: 'relative' }}>
-                    <div key='RemoveNodeSpritContainer' style={RemoveNodeSpiritContainerStyle}>
-                      <RemoveNodeSpirit
-                        parentkey={this.props.selfkey}
-                        childrenkey={child.props.selfkey}
-                        callBackValue={imageKey}
-                        deleteCallback={this.deleteElement}
+            {this.props.children &&
+              React.Children.toArray(this.props.children).map((child, index) => {
+                // 子元素的子元素
+                const childChildren = child.props.children
+                const imageProps = childChildren[0].props
+                const verticalLayoutProps = childChildren[1].props
+                const imageKey = imageProps.selfkey
+
+                return (
+                  <Grid key={child.props.selfkey} item xs={12} sm={this.state.flex} md={this.state.flex} lg={this.state.flex} xl={this.state.flex}>
+                    <div name="girdContainer" style={{ padding: '5%', position: 'relative' }}>
+                      <div key='RemoveNodeSpritContainer' style={RemoveNodeSpiritContainerStyle}>
+                        <RemoveNodeSpirit
+                          parentkey={this.props.selfkey}
+                          childrenkey={child.props.selfkey}
+                          callBackValue={imageKey}
+                          deleteCallback={this.deleteElement}
+                        />
+                      </div>
+                      <div
+                        name="imageAreaContanier"
+                        style={Object.assign(
+                          {},
+                          this.state[`${imageKey}IACS`],
+                          verticalCenterStyle)}
+                      >
+                        <EditableImageArea
+                          hiddenDelete={true}
+                          imageContainerStyle={{}}
+                          noMeasure={false}
+                          {...imageProps}
+                          reportHeight={this.reportHeight}
+                        />
+                      </div>
+                      <EditableVerticalLayout
+                        {...verticalLayoutProps}
                       />
                     </div>
-                    <div
-                      name="imageAreaContanier"
-                      style={Object.assign(
-                        {},
-                        this.state[`${imageKey}IACS`],
-                        verticalCenterStyle)}
-                    >
-                      <EditableImageArea
-                        hiddenDelete={true}
-                        imageContainerStyle={{}}
-                        noMeasure={false}
-                        {...imageProps}
-                        reportHeight={this.reportHeight}
-                      />
-                    </div>
-                    <EditableVerticalLayout
-                      {...verticalLayoutProps}
-                    />
-                  </div>
 
-                </Grid>
-              )
-            })
-          }
-          {/* </Grid> */}
-        </Grid>
-        <AddImageDescriptionElementButton {...this.props} />
+                  </Grid>
+                )
+              })
+            }
+            {/* </Grid> */}
+          </Grid>
+          <AddImageDescriptionElementButton {...this.props} />
+        </div>
       </div>
     );
   }
