@@ -77,22 +77,16 @@ class Preview extends React.Component {
     }
   }
 
+
   initialNodeData(block) {
     let ftData = nodeOperation.flattenDomTree(this.wrapRoot(block))
     this.setState({ nodeData: ftData })
   }
 
-  // 数据库中的节点数据是没有 _root 这个 key 的
-  // 在此处加上根节点
   wrapRoot = (block = null) => {
-    if (block) {
-      const domString = block.data
-      const domData = JSON.parse(domString)
-      return { native: false, nodeName: 'Root', children: [domData] }
-    } else {
-      return { native: false, nodeName: 'Root', children: [] }
-    }
+    return nodeOperation.wrapRoot(block)
   }
+
 
   toF = (code) => {
     const func = new Function("React", "Components", `return ${code}`);
@@ -114,7 +108,6 @@ class Preview extends React.Component {
   }
 
   render = () => {
-    console.log(this.state.nodeData)
     return (
       <div>
         {this.toF(nodeOperation.flattenedData2Code(JSON.parse(JSON.stringify(this.state.nodeData)), 'preview'))}

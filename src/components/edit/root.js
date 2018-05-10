@@ -58,7 +58,6 @@ class EditableRoot extends Component {
       editInfo: context.store.getState().editInfo,   // {source: "das", id: "32", role: "admin"}
       layouts: [], // 可选择加入的样式
       navBarChildren: this.props.navBarChildren,
-      // children:  React.Children.toArray(this.props.children),
     }
     this.navbar = []
     this.selfkey = this.props.selfkey

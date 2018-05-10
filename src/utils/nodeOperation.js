@@ -136,7 +136,7 @@ function doHeighten(flattenData, startDom = null) {
 function satisfyNavBar(flattenData, rootKey) {
   let rootNode = flattenData[rootKey]
 
-  let { navBarChildren } = rootNode.props
+  let navBarChildren = rootNode.props.navBarChildren
 
   if (navBarChildren) {
     // 目前只能遍历查找，但其实 props 里的 selfkey 和 parentkey 应该被存下来
@@ -175,17 +175,17 @@ function heightenDomTree(flattenData) {
   }
 }
 
-  // {nodeName: 'div', children: []}
-  //  div 替换为 root
-  function wrapRoot(block = null){
-    if (block) {
-      const domString = block.data
-      const domData = JSON.parse(domString)
-      return { native: false, nodeName: 'Root', children: domData.children, props: domData.props || { style: {} } }
-    } else {
-      return { native: false, nodeName: 'Root', children: [], props: { style: {} } }
-    }
+// {nodeName: 'div', children: []}
+//  div 替换为 root
+function wrapRoot(block = null) {
+  if (block) {
+    const domString = block.data
+    const domData = JSON.parse(domString)
+    return { native: false, nodeName: 'Root', children: domData.children, props: domData.props || { style: {} } }
+  } else {
+    return { native: false, nodeName: 'Root', children: [], props: { style: {} } }
   }
+}
 
 // dom tree object 降维
 function flattenDomTree(nodeData, parentKey = '', flattenData = { _relation: {} }) {

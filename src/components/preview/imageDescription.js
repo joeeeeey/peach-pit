@@ -35,7 +35,6 @@ export default class PreviewImageDescription extends React.Component {
     for (let i = 0; i < rows; i++) {
       childrenKeys.slice(i * column, ((i + 1) * column)).forEach(key => {
         this.state[`${key}Row`] = i + 1
-        // this.state[`${key}IACS`] =  { minHeight: 0 } // 初始化 IACS
         rowInfo[i + 1] = rowInfo[i + 1] || []
         rowInfo[i + 1].push(key)
       });
@@ -44,9 +43,6 @@ export default class PreviewImageDescription extends React.Component {
     this.state.rowInfo = rowInfo
   }
 
-  componentDidMount = () => {
-    // this.initState()
-  }
 
   getChildrenKeys = () => {
     const { children } = this.props

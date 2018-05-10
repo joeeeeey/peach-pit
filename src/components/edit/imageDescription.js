@@ -66,7 +66,6 @@ import AddImageDescriptionElementButton from '../editTools/imageDescription/addI
 import RemoveNodeSpirit from '../editTools/layout/removeNodeSpirit'
 import ChangeLayoutButton from '../editTools/imageDescription/changeLayoutButton'
 
-
 const RemoveNodeSpiritContainerStyle = { zIndex: 46, position: 'absolute', right: -15 }
 
 const verticalCenterStyle = {
@@ -74,7 +73,6 @@ const verticalCenterStyle = {
   flexDirection: 'column',
   justifyContent: 'center'
 }
-
 
 export default class EditableImageDescription extends React.Component {
   constructor(props, context) {
@@ -265,7 +263,6 @@ export default class EditableImageDescription extends React.Component {
         this.setState({ column: this.props.column })
       }
 
-
       if (!this.state[`${selfKey}Row`]) {
         // 找不到 selfkey, 说明是增加了元素
         // TODO 现在用这种方式检查增加子元素不是很好
@@ -290,9 +287,9 @@ export default class EditableImageDescription extends React.Component {
           clearTimeout(this.saveTriggerTimer)
         }
 
-        // 延时 200 毫秒保存改动
+        // 延时 95 毫秒进行所有图片重绘
         this.saveTriggerTimer = setTimeout(() => {
-          console.log(`settimeout 启动`)
+          // console.log(`settimeout 启动`)
           let updateInfo = {}
           this.needUpdateRow = [...new Set(this.needUpdateRow)]
           for (let i = 0; i < this.needUpdateRow.length; i++) {
@@ -302,15 +299,7 @@ export default class EditableImageDescription extends React.Component {
           this.setState(Object.assign(updateInfo, { imageHeightInfo: this.imageHeightInfo }))
           this.saveTriggerTimer = undefined;
           this.needUpdateRow = []
-          // this.imageHeightInfo = {}
-        }, 80);
-
-
-        // let rowInfo = this.state.rowInfo // => {1: [k1,k2,k3], 2: [k4]}
-        // let rowUpdateInfo = this.redraw(selfRow, rowInfo, imageHeightInfo)
-
-        // let updateInfo = Object.assign({}, rowUpdateInfo, { imageHeightInfo: imageHeightInfo })
-        // this.setState(updateInfo)
+        }, 95);
       }
     }
   }
@@ -321,11 +310,7 @@ export default class EditableImageDescription extends React.Component {
     // 并且将最大的高度设为 minHeight
     let minHeight = 0
     const thisRowKeys = rowInfo[row] // => [k1,k2,k3]
-    // console.log(`redraw, row is ${row}`)
-    // console.log(`redraw, imageHeightInfo is`)
-    // console.log(imageHeightInfo)
-    // console.log(`redraw thisRowKeys is`)
-    // console.log(thisRowKeys)
+
     for (let i = 0; i < thisRowKeys.length; i++) {
       const key = thisRowKeys[i]
       if (imageHeightInfo[key] && imageHeightInfo[key] > minHeight) {
@@ -422,7 +407,6 @@ export default class EditableImageDescription extends React.Component {
                 )
               })
             }
-            {/* </Grid> */}
           </Grid>
           <AddImageDescriptionElementButton {...this.props} />
         </div>
