@@ -210,6 +210,9 @@ function flattenDomTree(nodeData, parentKey = '', flattenData = { _relation: {} 
   for (let i = 0; i < nodeData.length; i++) {
     let node = nodeData[i]
     let key = `${node.nodeName}_${incryptKey(node.nodeName)}`
+    if(node.props && node.props.id){
+      key = node.props.id
+    }
     if (parentKey !== '') {
       let childrenKeys = flattenData._relation[parentKey]
       if (Array.isArray(childrenKeys) && childrenKeys.length > 0) {

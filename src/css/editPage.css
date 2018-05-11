@@ -13,3 +13,24 @@
 .__react_component_tooltip.show {
   opacity: 0.2;
 }
+
+
+.vertical-layout-div{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.topLevelMenuItemLeftIcon{
+  display: inline-block;
+  position: absolute;
+  left: -20%; 
+}
+
+
+.topLevelMenuItemRightIcon{
+  display: inline-block;
+  position: absolute;
+  right: 3%; 
+}

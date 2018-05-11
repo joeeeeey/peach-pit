@@ -36,10 +36,9 @@ import TemplateService from '../../services/templateService'
 import LayoutService from '../../services/layoutService'
 import SiteService from '../../services/siteService'
 import DeployService from '../../services/deployService'
-import Test from '../../pages/test'
-
-
-
+// import Test from '../../pages/test'
+import GridLayout from 'react-grid-layout';
+import ArrayOper from '../../utils/arrOperation'
 
 const layoutService = new LayoutService()
 const templateService = new TemplateService()
@@ -52,12 +51,13 @@ const buttonStyle = { color: 'white', width: '100%', justifyContent: 'left' }
 class EditableRoot extends Component {
   constructor(props, context) {
     super(props);
-   
+
     this.state = {
       openPreview: false,
       editInfo: context.store.getState().editInfo,   // {source: "das", id: "32", role: "admin"}
       layouts: [], // 可选择加入的样式
       navBarChildren: this.props.navBarChildren,
+      topLevelItemisDraggable: false, // 顶层板块可被拖拽
     }
     this.navbar = []
     this.selfkey = this.props.selfkey
@@ -299,7 +299,7 @@ class EditableRoot extends Component {
       // 此处只是为了方便用了 map， 其实只有一个元素
       let addNodesPayload = chilrenData.map(
         x => {
-          x.props.id = x.props.id ? x.props.id : nodeOperation.incryptKey(layoutName)
+          x.props.id = x.props.id ? x.props.id : `${chilrenData[0].nodeName + '_' + nodeOperation.incryptKey(layoutName)}`
           x.layoutName = layoutName
           return {
             nodeData: x, targetKey: this.selfkey
@@ -494,6 +494,65 @@ class EditableRoot extends Component {
     this.initSidebarChoosenLayouts()
   }
 
+  changeTopLevelItemDraggable = () => {
+    const { topLevelItemisDraggable } = this.state
+    this.setState({ topLevelItemisDraggable: !topLevelItemisDraggable })
+  }
+
+  // 拖拽顶层板块
+  handleDrag = (layout) => {
+    // [{ w: 1, h: 1, x: 0, y: 4, i: "aaa" }]
+
+
+    const rootKey = this.props.selfkey
+    const currentRootRelation = this.wholeNode()._relation[rootKey]
+    layout.sort((a, b) => { return (a.y > b.y) ? 1 : ((b.y > a.y) ? -1 : 0) })
+    const dragRootRealtion = layout.map(x => x.i)
+
+    // 根据 relation 数组判断拖拽是否改变了位置
+    if (ArrayOper.compare(currentRootRelation, dragRootRealtion)) {
+      return
+    }
+
+    const navBarKey = currentRootRelation.filter(x => x.includes('NavBar'))[0]
+
+    layout = layout.filter(x => !x.i.includes('NavBar'))
+
+    let newRootRealtion = layout.map(x => x.i)
+
+    let compositePayload = { payloadData: {} }
+
+    let updateNodesPayload = []
+
+    // [{id: "VerticalLayout_08ed82ac646dff6be8598d2f28e83a3a", name: "味觉盛宴", layoutName: "味觉盛宴"}]
+    let { navBarChildren } = this.state
+    if (navBarChildren) {
+      let newNavBarChildren = []
+      for (let i = 0; i < navBarChildren.length; i++) {
+        const child = navBarChildren[i]
+        newNavBarChildren[newRootRealtion.indexOf(child.id)] = child
+      }
+      this.setNavBarState(newNavBarChildren)
+      // console.log(newNavBarChildren)
+      updateNodesPayload.push({
+        value: newNavBarChildren,
+        nestedKey: `${this.selfkey},props,navBarChildren`
+      })
+    }
+
+    if (navBarKey) { newRootRealtion.splice(0, 0, navBarKey) }
+
+    updateNodesPayload.push({ value: newRootRealtion, nestedKey: `_relation,${rootKey}` })
+
+    compositePayload.payloadData.updateNodes = { payloadData: updateNodesPayload }
+
+    this.context.store.dispatch({
+      type: 'composite',
+      payload: compositePayload,
+      target: 'node',
+    })
+  }
+
   render() {
     // TODO 使用 state 替代
     const rootDivStyle = this.props.style
@@ -516,16 +575,34 @@ class EditableRoot extends Component {
               {this.state.editInfo.role === 'user' && this.deploySiteButton()}
 
 
-              <SubMenu key="topLevelSections" title={<span><Icon type="database" />顶层板块</span>}>
-                {
-                  this.getRootChildren().map(child =>
-                    <Menu.Item style={{ whiteSpace: 'nowrap', overflowX: 'auto' }} key={child.sectionKey}>
-                      <TopLevelMenuItem child={child} removeNode={this.removeNode} />
-                    </Menu.Item>
-                  )
-                }
-              </SubMenu>
+              <Menu.Item key="topLevelSectionsDivider">
+                <Divider dashed />
+              </Menu.Item>
 
+              <Menu.Item key="topLevelSections" style={{ height: '100%', paddingLeft: 0 }}>
+                <Button color="secondary"
+                  onClick={this.changeTopLevelItemDraggable}
+                  style={this.state.topLevelItemisDraggable ?  { width: '100%', justifyContent: 'center', color: '#FFECB3'}:  { width: '100%', justifyContent: 'center', color: '#C8E6C9'}}>
+                  {this.state.topLevelItemisDraggable ? '关闭板块拖拽' : '开启板块拖拽'}
+                </Button>
+                <div style={{ position: 'relative' }}>
+                  <GridLayout
+                    isDraggable={this.state.topLevelItemisDraggable}
+                    // onLayoutChange={this.handleDrag}
+                    onDragStop={this.handleDrag}
+                    useCSSTransforms={false}
+                    className="layout" cols={1} rowHeight={30} width={180}>
+                    {
+                      this.getRootChildren().map((child, index) =>
+                        <div key={child.id} data-grid={{ x: 0, y: index, w: 12, h: 1 }}>
+                          <TopLevelMenuItem isDraggable={this.state.topLevelItemisDraggable} child={child} removeNode={this.removeNode} />
+                        </div>
+                      )
+                    }
+                  </GridLayout>
+                </div>
+
+              </Menu.Item>
               <Menu.Item key="LayoutsListPopover">
                 <LayoutsListPopover
                   layouts={this.state.layouts.filter(x => x.category === '常用')}

@@ -6,7 +6,10 @@ import Button from 'material-ui/Button';
 import DeleteIcon from 'material-ui-icons/Delete';
 import EditIcon from 'material-ui-icons/Edit';
 import DoneIcon from 'material-ui-icons/Done';
+import SwapVertIcon from 'material-ui-icons/SwapVert';
+
 import IconButton from 'material-ui/IconButton';
+
 import Scroll from 'react-scroll';
 import { Input } from 'antd';
 // 悬浮
@@ -86,17 +89,17 @@ export default class TopLevelMenuItem extends React.Component {
               <Button style={Object.assign({ width: '100%' }, itemFontStyle, this.getLinkStyle())}>{this.props.child.layoutName}</Button>
             </ScLink>
           }
-          {this.state.isEditing &&
-            <Input placeholder="输入板块名称" 
-            defaultValue={this.props.child.layoutName} 
-            onChange={this.changeLayoutName}
-            onPressEnter={this.done}
+          {this.state.isEditing && !this.props.isDraggable &&
+            <Input placeholder="输入板块名称"
+              defaultValue={this.props.child.layoutName}
+              onChange={this.changeLayoutName}
+              onPressEnter={this.done}
             />
           }
         </div>
 
-        {this.state.isEditing &&
-          <div id="doneDiv" style={{ display: 'inline-block', position: 'absolute', left: '2%' }}>
+        {this.state.isEditing && !this.props.isDraggable &&
+          <div id="doneDiv" className={'topLevelMenuItemLeftIcon'} >
             <IconButton
               style={{ color: '#A3D9A5' }}
               onClick={this.done}
@@ -107,8 +110,8 @@ export default class TopLevelMenuItem extends React.Component {
 
           </div>
         }
-        {this.state.isEditing === false &&
-          <div id="editDiv" style={{ display: 'inline-block', position: 'absolute', left: '3%' }}>
+        {this.state.isEditing === false && !this.props.isDraggable &&
+          <div id="editDiv" className={'topLevelMenuItemLeftIcon'} >
             <IconButton
               style={{ color: '#CBD1CB' }}
               onClick={this.beginEditing}
@@ -118,15 +121,29 @@ export default class TopLevelMenuItem extends React.Component {
           </div>
         }
 
+        {
+          !this.props.isDraggable &&
+          <div id="inco12" className={'topLevelMenuItemRightIcon'}>
+            <IconButton
+              style={{ color: '#CBD1CB' }}
+              onClick={() => { this.props.removeNode(child.sectionKey) }}
+              aria-label="Delete">
+              <DeleteIcon />
+            </IconButton>
+          </div>
+        }
 
-        <div id="inco12" style={{ display: 'inline-block', position: 'absolute', right: '3%' }}>
-          <IconButton
-            style={{ color: '#CBD1CB' }}
-            onClick={() => { this.props.removeNode(child.sectionKey) }}
-            aria-label="Delete">
-            <DeleteIcon />
-          </IconButton>
-        </div>
+        {
+          this.props.isDraggable &&
+          <div id="incoDraggable" className={'topLevelMenuItemRightIcon'}>
+            <IconButton
+              style={{ color: '#CBD1CB' }}
+              aria-label="Draggable">
+             <SwapVertIcon />
+            </IconButton>
+          </div>
+        }
+
 
       </div>
     );

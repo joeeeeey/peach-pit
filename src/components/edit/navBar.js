@@ -94,36 +94,6 @@ export default class EditableNavBar extends React.Component {
     } else { return [] }
   }
 
-  getRootChildrenKey = () => {
-    if (this.context.store.getState().node) {
-      const rootKey = this.context.store.getState().node._root
-      if (rootKey) {
-        return this.context.store.getState().node._relation[rootKey]
-      } else {
-        return []
-      }
-    } else {
-      return []
-    }
-  }
-
-  // 获得顶层元素, 此处将 navbar 消除
-  getRootChildren = () => {
-    const keys = this.getRootChildrenKey()
-    if (keys.length > 0) {
-      return keys.map(key => {
-        const { layoutName, nodeName } = this.context.store.getState().node[key]
-        return {
-          id: this.context.store.getState().node[key].props.id,
-          name: layoutName,
-          nodeName: nodeName,
-        }
-      }).filter(item => item.nodeName !== 'NavBar')
-    } else {
-      return []
-    }
-  }
-
   render() {
     return (
       <div name="navbar" style={{ borderColor: '#cdced0' }}>
