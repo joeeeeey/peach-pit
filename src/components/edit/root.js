@@ -268,6 +268,7 @@ class EditableRoot extends Component {
   // 复合样式则直接将整个 div 当成是应该加入的 layout 对象
 
   addNode = (nodeData, layoutName) => {
+    // this.setState({topLevelItemisDraggable: false})
     nodeData = JSON.parse(nodeData)
     let compositePayload = null
     let thisNode = null
@@ -502,10 +503,10 @@ class EditableRoot extends Component {
   // 拖拽顶层板块
   handleDrag = (layout) => {
     // [{ w: 1, h: 1, x: 0, y: 4, i: "aaa" }]
-
-
     const rootKey = this.props.selfkey
     const currentRootRelation = this.wholeNode()._relation[rootKey]
+    console.log(`currentRootRelation is `)
+    console.log(currentRootRelation)
     layout.sort((a, b) => { return (a.y > b.y) ? 1 : ((b.y > a.y) ? -1 : 0) })
     const dragRootRealtion = layout.map(x => x.i)
 
@@ -525,8 +526,9 @@ class EditableRoot extends Component {
     let updateNodesPayload = []
 
     // [{id: "VerticalLayout_08ed82ac646dff6be8598d2f28e83a3a", name: "味觉盛宴", layoutName: "味觉盛宴"}]
-    let { navBarChildren } = this.state
-    if (navBarChildren) {
+   
+    if (navBarKey) {
+      let { navBarChildren } = this.state
       let newNavBarChildren = []
       for (let i = 0; i < navBarChildren.length; i++) {
         const child = navBarChildren[i]
@@ -538,14 +540,15 @@ class EditableRoot extends Component {
         value: newNavBarChildren,
         nestedKey: `${this.selfkey},props,navBarChildren`
       })
+      newRootRealtion.splice(0, 0, navBarKey)
     }
 
-    if (navBarKey) { newRootRealtion.splice(0, 0, navBarKey) }
+    // if (navBarKey) { newRootRealtion.splice(0, 0, navBarKey) }
 
     updateNodesPayload.push({ value: newRootRealtion, nestedKey: `_relation,${rootKey}` })
 
     compositePayload.payloadData.updateNodes = { payloadData: updateNodesPayload }
-
+    console.log(compositePayload)
     this.context.store.dispatch({
       type: 'composite',
       payload: compositePayload,

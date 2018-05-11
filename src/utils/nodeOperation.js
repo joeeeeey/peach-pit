@@ -191,7 +191,12 @@ function wrapRoot(block = null) {
 function flattenDomTree(nodeData, parentKey = '', flattenData = { _relation: {} }) {
   // 是根节点的情况
   if (!Array.isArray(nodeData) && nodeData !== null && typeof nodeData === 'object') {
-    let rootKey = `${nodeData.nodeName}_${incryptKey(nodeData.nodeName)}`
+    let rootKey = null
+    if (nodeData.props && nodeData.props.id) {
+      rootKey = nodeData.props.id
+    } else {
+      rootKey = `${nodeData.nodeName}_${incryptKey(nodeData.nodeName)}`
+    }
     flattenData._root = rootKey
     // nodeData = [nodeData]
     let { children, ...value } = nodeData;
@@ -209,9 +214,11 @@ function flattenDomTree(nodeData, parentKey = '', flattenData = { _relation: {} 
   // 是子节点
   for (let i = 0; i < nodeData.length; i++) {
     let node = nodeData[i]
-    let key = `${node.nodeName}_${incryptKey(node.nodeName)}`
-    if(node.props && node.props.id){
+    let key = null
+    if (node.props && node.props.id) {
       key = node.props.id
+    } else {
+      key = `${node.nodeName}_${incryptKey(node.nodeName)}`
     }
     if (parentKey !== '') {
       let childrenKeys = flattenData._relation[parentKey]
