@@ -184,12 +184,19 @@ export default class ChangeBackgroundButton extends React.Component {
         <Menu.Item key={'UploaderEntrance'}>
           <UploaderEntrance container={'div'} uploadSuccess={this.handleUploadSuccess} nestedkeyprefix={`${this.props.parentkey},props,backgroundInfo`} />
         </Menu.Item>
+        {backgroundType === 'pureColor' &&
+          <Menu.Item key={'FullHeightBackground'}>
+            <div style={{ width: '100%', textAlign: 'center' }}>
+              <Button onClick={this.updateFullHeightStyle} size='small' style={{ marginBottom: 5 }} >
+                {this.state.fullHeight ? '内容撑开' : '满屏背景'}
+              </Button>
+            </div>
+          </Menu.Item>
+        }
 
-        {backgroundType === 'image' &&
+        {
+          backgroundType === 'image' &&
           <Menu.Item key={'updateParallexStyleButton'}>
-            {/* <Button onClick={this.updateParallexStyle} color="secondary" style={buttonStyle}>
-              {this.state.enableParallex ? '关闭视差' : '启用视差'}
-            </Button> */}
             <div style={{ maxWidth: 180, textAlign: 'center' }}>
               <div style={{ width: '100%' }}>
                 <div style={{ float: 'left', width: '50%' }}>

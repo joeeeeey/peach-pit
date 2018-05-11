@@ -101,7 +101,8 @@ function getBackgroundStyle(backgroundInfo) {
     Object.assign(finalStyle, backgroundFillTypeStyle, parallexStyle, heightStyle)
 
   } else if (backgroundType === 'pureColor') {
-    Object.assign(finalStyle, { background: background })
+    const heightStyle = getBackgroundHeightStyle(fullHeight)
+    Object.assign(finalStyle, { background: background }, heightStyle)
   }
 
   return Object.assign({}, finalStyle)
