@@ -121,59 +121,6 @@ export default class UploaderArea extends React.Component {
       });
   }
 
-  // // 更新以 div 为容器的背景信息，
-  // // 1. background 2. backgroundType
-  // getDivContainerUpdateInfo = (nestedkeyprefix) => {
-  //   let updateNodesPayload = [
-  //     { key: 'background', value: `url(${this.imgUrl})` },
-  //     { key: 'backgroundType', value: 'image' }
-  //   ].map(element => { return { value: element.value, nestedKey: `${nestedkeyprefix},${element.key}` } })
-
-  //   return {
-  //     payloadData: {
-  //       updateNodes: { payloadData: updateNodesPayload },
-  //     }
-  //   }
-  // }
-  // getImageContainerUpdateInfo = (nestedkeyprefix) => {
-  //   return {
-  //     payloadData: {
-  //       updateNodes: {
-  //         payloadData: [{
-  //           value: `${this.imgUrl}`,
-  //           nestedKey: `${nestedkeyprefix},src`
-  //         }]
-  //       },
-  //     }
-  //   }
-  // }
-
-  // 根据承载图片不同的元素来更新不同的 nodeTree props
-  // About  css background VS img tag => http://buildawesomewebsites.com/blog/html-img-tags-vs-css-background-images
-  // updateNodeTree = () => {
-  //   const { nestedkeyprefix } = this.props
-  //   if (!nestedkeyprefix) {
-  //     message.error(`更新编辑页面失败,缺少需要更新的节点位置`, 1.2)
-  //   } else {
-  //     let compositePayload = null
-  //     switch (this.props.container) {
-  //       case 'div':
-  //         compositePayload = this.getDivContainerUpdateInfo(nestedkeyprefix)
-  //         break;
-  //       case 'image':
-  //         compositePayload = this.getImageContainerUpdateInfo(nestedkeyprefix)
-  //         break
-  //       default:
-  //         return false
-  //     }
-  //     this.context.store.dispatch({
-  //       type: 'composite',
-  //       payload: compositePayload,
-  //       target: 'node',
-  //     })
-  //   }
-  // }
-
   uploadImg = () => {
     let fd = new FormData()
     fd.append('file', this.img)

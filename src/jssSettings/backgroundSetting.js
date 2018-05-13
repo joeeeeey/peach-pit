@@ -29,6 +29,20 @@ const defaultParallexStyle = {
   backgroundSize: 'cover',
 }
 
+// TODO 使用 webp 需要做浏览器判断
+// function getBackgroundImageUrl(originUrl) {
+//   let url = originUrl.slice(0,-1)
+//   // 是否压缩 后期可作为选项?
+//   const doCompress = true
+//   if (doCompress) {
+//     // => url(http://xxx!/format/webp)
+//     url = url + '!/format/webp'
+//     return `${url})`
+//   } else {
+//     return url
+//   }
+// }
+
 // 填充样式
 function getBackgroundFillTypeStyle(fillType, background) {
   switch (fillType) {

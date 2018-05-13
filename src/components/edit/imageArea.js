@@ -116,6 +116,8 @@ export default class EditableImageArea extends Component {
 
   // 展示 imgae 的元素
   imageElement = (src, alt) => {
+    // TODO 使用 webp 需要做浏览器判断
+    // src={src + '!/format/webp'}    
     return (
       <img
         src={src}

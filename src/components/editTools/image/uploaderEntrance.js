@@ -17,18 +17,14 @@ import UpyunService from '../../../services/upyunService'
 import { Modal, Tabs, message } from 'antd';
 
 import DoneOutlineIcon from 'material-ui-icons/CheckCircle';
-import IconButton from 'material-ui/IconButton';
 import dateOperation from '../../../utils/dateOperation'
-
 
 const TabPane = Tabs.TabPane;
 const upyunService = new UpyunService()
 
-
 export default class UploaderEntrance extends React.Component {
   constructor(props, context) {
     super(props);
-
   }
   state = {
     open: false,
@@ -160,17 +156,17 @@ export default class UploaderEntrance extends React.Component {
                         <Grid item xs={12} lg={2} md={2} sm={2} key={x.name}>
                           <div style={{ padding: '4px', textAlign: 'center' }}>
                             <span>{dateOperation.unixTime2FormatDate(x.updatedAt)}</span>
-                            <Button 
-                            onClick={() => this.handleUploadSuccess(x.path)}
-                            mini={true} 
-                            style={{ color: '#A5D6A7', marginBottom: 6 }}>
+                            <Button
+                              onClick={() => this.handleUploadSuccess(x.path)}
+                              mini={true}
+                              style={{ color: '#A5D6A7', marginBottom: 6 }}>
                               <DoneOutlineIcon style={{ marginRight: 8 }} />
                               使用
                             </Button>
                             <img
-                             onClick={() => this.handleUploadSuccess(x.path)}
+                              onClick={() => this.handleUploadSuccess(x.path)}
                               src={`${x.path}!thumbnails/fw/200/format/webp`}
-                              style={{ width: '100%', height: '100%' }}
+                              style={{ width: '100%', height: '100%',  cursor: 'pointer' }}
                             ></img>
                           </div>
                         </Grid>

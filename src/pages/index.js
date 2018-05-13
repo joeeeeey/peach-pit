@@ -53,7 +53,7 @@ class Index extends Component {
     super(props)
     readCookideSetStore('taohe_user', 'user')
 
-    readCookideSetStore('taohe_admin', 'administrator')
+    readCookideSetStore('taohe_admin', 'administrator')    
   }
 
   getChildContext() {
