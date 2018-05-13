@@ -1,4 +1,8 @@
 // 传入 props
+// container  string 'div' 根据不同容器保存不同内容
+// src,
+// alt,
+// imageContainerStyle
 
 // {
 //   native: false, nodeName: 'ImageArea',
@@ -68,7 +72,7 @@ export default class EditableImageArea extends Component {
       naturalWidth: img.naturalWidth,
       naturaHeight: img.naturalHeight,
     }
-    
+
     this.reportHeight(img.offsetHeight)
 
     this.setState({
@@ -95,6 +99,7 @@ export default class EditableImageArea extends Component {
             uploadButtonStyle={{ height: '100%' }}
             container={'image'}
             nestedkeyprefix={`${this.props.selfkey},props`}
+            showUploadedImage={true}
           />
         </div>
         {
@@ -136,9 +141,9 @@ export default class EditableImageArea extends Component {
   // 有的父元素需要知道子元素 resize 后的高度
   // 向父元素回传自身所占高度
   reportHeight = (height) => {
-    if(this.props.reportHeight){
+    if (this.props.reportHeight) {
       this.props.reportHeight(height, this.props.selfkey)
-    }      
+    }
   }
 
 

@@ -505,8 +505,6 @@ class EditableRoot extends Component {
     // [{ w: 1, h: 1, x: 0, y: 4, i: "aaa" }]
     const rootKey = this.props.selfkey
     const currentRootRelation = this.wholeNode()._relation[rootKey]
-    console.log(`currentRootRelation is `)
-    console.log(currentRootRelation)
     layout.sort((a, b) => { return (a.y > b.y) ? 1 : ((b.y > a.y) ? -1 : 0) })
     const dragRootRealtion = layout.map(x => x.i)
 
@@ -535,7 +533,6 @@ class EditableRoot extends Component {
         newNavBarChildren[newRootRealtion.indexOf(child.id)] = child
       }
       this.setNavBarState(newNavBarChildren)
-      // console.log(newNavBarChildren)
       updateNodesPayload.push({
         value: newNavBarChildren,
         nestedKey: `${this.selfkey},props,navBarChildren`
@@ -543,7 +540,6 @@ class EditableRoot extends Component {
       newRootRealtion.splice(0, 0, navBarKey)
     }
 
-    // if (navBarKey) { newRootRealtion.splice(0, 0, navBarKey) }
 
     updateNodesPayload.push({ value: newRootRealtion, nestedKey: `_relation,${rootKey}` })
 

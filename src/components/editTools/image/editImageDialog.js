@@ -67,7 +67,11 @@ export default class EditImageDialog extends React.Component {
         >
           <DialogTitle id="form-dialog-title">编辑图片</DialogTitle>
           <DialogContent style={{ width: 500 }}>
-            <UploaderEntrance container={'image'} uploadSuccess={this.handleUploadSuccess} nestedkeyprefix={`${this.props.targetkey},props`} />
+            <UploaderEntrance 
+            container={'image'} 
+            uploadSuccess={this.handleUploadSuccess} 
+            nestedkeyprefix={`${this.props.targetkey},props`} 
+            showUploadedImage={true}/>
             <div style={{ textAlign: 'center', marginTop: 12 }}>
               <Button onClick={this.removeImage} color="secondary" style={{color: 'grey'}}>
                 删除该图片

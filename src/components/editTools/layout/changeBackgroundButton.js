@@ -182,7 +182,11 @@ export default class ChangeBackgroundButton extends React.Component {
     return (
       <Menu >
         <Menu.Item key={'UploaderEntrance'}>
-          <UploaderEntrance container={'div'} uploadSuccess={this.handleUploadSuccess} nestedkeyprefix={`${this.props.parentkey},props,backgroundInfo`} />
+          <UploaderEntrance
+            container={'div'}
+            uploadSuccess={this.handleUploadSuccess}
+            nestedkeyprefix={`${this.props.parentkey},props,backgroundInfo`}
+            showUploadedImage={true} />
         </Menu.Item>
         {backgroundType === 'pureColor' &&
           <Menu.Item key={'FullHeightBackground'}>

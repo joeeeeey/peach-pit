@@ -15,12 +15,12 @@
 }
 
 
-.vertical-layout-div{
+/* .vertical-layout-div{
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: relative;
-}
+} */
 
 .topLevelMenuItemLeftIcon{
   display: inline-block;

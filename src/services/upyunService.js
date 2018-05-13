@@ -8,6 +8,10 @@ class UpyunService extends BaseService {
   getBasicImgToken = (params) => {
     return this.post('/api/admin/get_basic_img_token', params)
   }  
+
+  showUploadedFiles = (params) => {
+    return this.post('/api/show_uploaded_files', params)
+  }
 }
 
 export default UpyunService;

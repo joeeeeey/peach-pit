@@ -1,8 +1,10 @@
 .upload-btn-wrapper {
-  position: relative;
   overflow: hidden;
   display: inline-block;
-  top: 40%;
+  top: 32%;
+  left: 42%;
+  position: absolute
+
 }
 
 .btn {
@@ -27,4 +29,16 @@
   left: 0;
   top: 0;
   opacity: 0;
+}
+
+.imageUploaderContainer{
+  text-align: center;
+  border: 4px dashed #e2e4e7;
+  bottom: 40px;
+  left: 30px;
+  right: 30px; 
+  top: 0px;
+  width: auto; 
+  height: auto;
+  min-height: 140;  
 }

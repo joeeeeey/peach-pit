@@ -1,7 +1,7 @@
 import nodeOperation from '../utils/nodeOperation'
 
 // 调整 store 的结构
-// { user: {}, node: {}, administrator: {}, editPage:{role: 'admin', source: 'template', id: 5} }
+// { user: {}, node: {}, administrator: {}, editInfo:{role: 'admin', source: 'template', id: 5} }
 
 // action 结构
 // target 代表操作 store 中的某个节点
@@ -81,6 +81,11 @@ export default (state = { user: {}, administrator: {} }, action) => {
     switch (action.type) {
       case 'replace':
         state.editInfo = action.payload
+        return state
+      case 'update':
+        let { value } = action.payload
+
+        evalUpdate(state['editInfo'], action.payload.nestedKey, value)
         return state
       /* 不加这个注释就会有 warning */
       default:

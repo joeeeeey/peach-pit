@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import nodeOperation from '../../utils/nodeOperation'
 import BlockService from '../../services/blockService'
+import UpyunService from '../../services/upyunService'
 
 // 转义
 // import * as babel from 'babel-standalone';
@@ -17,7 +18,7 @@ import EditableImageDescription from '../../components/edit/imageDescription'
 
 // 测试的组件 
 // import Test from '../test'
-
+const upyunService = new UpyunService()
 const blockService = new BlockService()
 // const func = (function (React, Components) {
 //   return function App() {
@@ -73,19 +74,59 @@ class Edit extends React.Component {
     }
   }
 
-  // 最适合取到数据的地方
-  componentDidMount = () => {
-    // 根据`当前用户角色` 和 `资源` 初始化编辑页信息
-    const source = this.getSourceFromUrl()
-    let role = { role: this.getRoleNameFromStore(this.context.store) }
+  // 获取 '调用得到已上传的图片' 参数
+  // role 是用户则将所有 sites 上传的图片都找出
+  // admin 只找出当前 source id 
+  getShowUploadedImageParams = (sourceInfo, role) => {
+    const { source, id } = sourceInfo
+    let sourceId = null
+    let traversal = null
+    if (role === 'user') {
+      sourceId = ''
+      traversal = true
+    } else {
+      traversal = false
+      sourceId = id || 'tmp'
+    }
 
-    const editInfo = Object.assign({}, source, role)
+    return {
+      page: 'editPage',
+      role: role,
+      source: source || 'layout',
+      sourceId: sourceId,
+      traversal: traversal
+    }
+  }
 
+  setEditInfoState = (editInfo) => {
     this.context.store.dispatch({
       type: 'replace',
       payload: editInfo,
       target: 'editInfo',
     });
+  }
+
+  // 最适合取到数据的地方
+  componentDidMount = () => {
+    // 根据`当前用户角色` 和 `资源` 初始化编辑页信息
+    const sourceInfo = this.getSourceFromUrl()
+    const role = this.getRoleNameFromStore(this.context.store)
+    const roleInfo = { role: role }
+    let editInfo = Object.assign({}, sourceInfo, roleInfo)
+
+    let params = this.getShowUploadedImageParams(editInfo, role)
+    this.setEditInfoState(editInfo)
+    upyunService.showUploadedFiles(params)
+      .then(response => {
+        const { data } = response
+        if (data.code === 0) {
+          editInfo.uploadedImages = data.data.imageFiles
+          this.setEditInfoState(editInfo)
+        }
+      })
+      .catch((error) => {
+        console.error(`获取已上传的图片出现异常: ${error}`)
+      });
 
     if (editInfo.source) {
       blockService.getNodeDataInEditInfo(editInfo)
