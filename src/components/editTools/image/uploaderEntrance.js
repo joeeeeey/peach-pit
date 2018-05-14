@@ -131,15 +131,15 @@ export default class UploaderEntrance extends React.Component {
             visible={this.state.open}
             title="图片操作"
             // style={{ minWidth: '60vw', "top": "50%", "transform": "translateY(-50%)" }}
-            style={{ minWidth: '60vw' }}
+            style={{ minWidth: '70vw' }}
             onCancel={this.handleClose}
             footer={[
               <AnButton key="back" onClick={this.handleClose}>取消操作</AnButton>,
             ]}
           >
 
-            <Tabs defaultActiveKey="1" style={{ minHeight: '60vh', maxHeight: '80vh' }}>
-              <TabPane tab="图片上传" key="1">
+            <Tabs defaultActiveKey="1" style={{ minHeight: '80vh', maxHeight: '80vh' }}>
+              <TabPane tab="上传新图片" key="1">
                 <div >
                   <UploaderArea
                     container={container}
@@ -153,21 +153,23 @@ export default class UploaderEntrance extends React.Component {
                   <Grid container alignItems={'center'}>
                     {
                       this.state.uploadedImage.map(x =>
-                        <Grid item xs={12} lg={2} md={2} sm={2} key={x.name}>
-                          <div style={{ padding: '4px', textAlign: 'center' }}>
-                            <span>{dateOperation.unixTime2FormatDate(x.updatedAt)}</span>
+                        <Grid item xs={12} lg={3} md={3} sm={3} key={x.name}>
+                          <div style={{ padding: '4%', textAlign: 'center', marginBottom: 10 }}>
+                            <img
+                              onClick={() => this.handleUploadSuccess(x.path)}
+                              src={`${x.path}!thumbnails/fw/200`}
+                              style={{ width: '100%', height: '100%', cursor: 'pointer', marginBottom: 6  }}
+                            ></img>
+                            <p>大小: {Math.floor(parseInt(x.size) / 1024)}KB</p>
+                            <span>日期: {dateOperation.unixTime2FormatDate(x.updatedAt)}</span>
                             <Button
                               onClick={() => this.handleUploadSuccess(x.path)}
                               mini={true}
-                              style={{ color: '#A5D6A7', marginBottom: 6 }}>
+                              style={{ color: '#A5D6A7'}}>
                               <DoneOutlineIcon style={{ marginRight: 8 }} />
                               使用
                             </Button>
-                            <img
-                              onClick={() => this.handleUploadSuccess(x.path)}
-                              src={`${x.path}!thumbnails/fw/200/format/webp`}
-                              style={{ width: '100%', height: '100%',  cursor: 'pointer' }}
-                            ></img>
+
                           </div>
                         </Grid>
                       )}

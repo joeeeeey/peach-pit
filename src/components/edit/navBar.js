@@ -90,7 +90,7 @@ export default class EditableNavBar extends React.Component {
 
   navBarChildren = () => {
     if (this.rootNode()) {
-      return this.rootNode().props.navBarChildren
+      return this.rootNode().props.navBarChildren || []
     } else { return [] }
   }
 

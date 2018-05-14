@@ -35,7 +35,8 @@ export default class GridArrangementOptionLists extends React.Component {
           </div>
 
           <Grid name="水平" style={{ maxWidth: 200 }} container direction={'row'} spacing={0} justify={'center'}>
-            {[[12], [6, 6], [4, 8], [8, 4], [4, 4, 4], [5, 2, 5], [3, 6, 3], [2, 8, 2], [3, 3, 3, 3]].map(item =>
+            {[[12], [6, 6], [4, 8], [8, 4], [4, 4, 4], [5, 2, 5],
+            [3, 6, 3], [2, 8, 2], [3, 3, 3, 3], [4, 1, 7], [7, 1, 4]].map(item =>
               <Grid item xs={4} key={JSON.stringify(item)}>
                 <div style={{ padding: '5px 5px', width: '100%' }}>
                   <Button onClick={() => { f(item) }} color="secondary" style={buttonStyle}>

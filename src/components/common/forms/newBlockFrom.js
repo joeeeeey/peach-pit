@@ -66,8 +66,10 @@ class MyFrom extends React.Component {
         block.name = values.blockName
         // 深拷贝 是否有更高效的方式?
         let nodeData = JSON.parse(JSON.stringify(this.context.store.getState().node));
+        let heightOption = { isLayout: false }
         // 如果是 layout, 根据 children 判断是不是符合类型
         if (values.blockType === 'layout') {
+          heightOption.isLayout = true
           const { _root } = nodeData
           // 根节点不止一个元素则是复合型
           if (nodeData._relation[_root].length > 1) {
@@ -75,7 +77,7 @@ class MyFrom extends React.Component {
           }
         }
 
-        block.data = JSON.stringify(nodeOperation.heightenDomTree(nodeData))
+        block.data = JSON.stringify(nodeOperation.heightenDomTree(nodeData, heightOption))
         if (values.blockType === 'template') {
           this.addTemplate(block)
         } else if (values.blockType === 'layout') {

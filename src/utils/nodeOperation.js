@@ -112,19 +112,39 @@ function removeNode(currentDom, targetKey, parentKey) {
 
 
 
-function doHeighten(flattenData, startDom = null) {
+function doHeighten(flattenData, startDom = null, isLayout = false) {
   let domData = flattenData[startDom]
-  if (domData.props) {
-    // 是不是没必要删除, 保存到数据库，可以和 id 起到一样的效果
-    // 在加载时判断有的话就不生成
-    delete domData.props['selfkey']
-    delete domData.props['parentkey']
+  if (isLayout) {
+    if (domData.props) {
+      delete domData.props['id']
+      delete domData.props['selfkey']
+    }
+  } else {
+    if (domData.props) {
+      domData.props.selfkey = startDom
+    } else {
+      domData.props = {}
+      domData.props.selfkey = startDom
+    }
   }
+
+  // if (domData.props) {
+  //   if (isLayout) {
+  //     delete domData.props['id']
+  //     delete domData.props['selfkey']
+  //   } else {
+  //     domData.props.selfkey = startDom
+  //   }
+  // } else {
+  //   domData.props = {}
+  //   domData.props.selfkey = startDom
+  // }
+
   let childrenNames = flattenData._relation[startDom]
   if (Array.isArray(childrenNames) && childrenNames.length > 0) {
     domData.children = []
     for (let i = 0; i < childrenNames.length; i++) {
-      domData.children.push(doHeighten(flattenData, childrenNames[i]))
+      domData.children.push(doHeighten(flattenData, childrenNames[i], isLayout))
     }
   }
   return domData
@@ -157,7 +177,8 @@ function satisfyNavBar(flattenData, rootKey) {
 
 // 需要去除最外层的 root, 若 root children 只有一个元素, 则保存该元素
 // 否则增加一层 {"native":true,"nodeName":"div"}
-function heightenDomTree(flattenData) {
+function heightenDomTree(flattenData, options = { isLayout: false }) {
+  const { isLayout } = options
   if (objectPresent(flattenData)) {
     const rootKey = flattenData._root
     if (rootKey) {
@@ -167,7 +188,7 @@ function heightenDomTree(flattenData) {
       let { native, nodeName, ...remained } = flattenData[rootKey];
 
       flattenData[rootKey] = { native: true, nodeName: 'div', ...remained }
-      return doHeighten(flattenData, rootKey)
+      return doHeighten(flattenData, rootKey, isLayout)
 
     } else {
       console.warn("ERROR, NEED ROOT KEY")
@@ -194,6 +215,8 @@ function flattenDomTree(nodeData, parentKey = '', flattenData = { _relation: {} 
     let rootKey = null
     if (nodeData.props && nodeData.props.id) {
       rootKey = nodeData.props.id
+    } else if (nodeData.props && nodeData.props.selfkey) {
+      rootKey = nodeData.props.selfkey
     } else {
       rootKey = `${nodeData.nodeName}_${incryptKey(nodeData.nodeName)}`
     }
@@ -215,8 +238,11 @@ function flattenDomTree(nodeData, parentKey = '', flattenData = { _relation: {} 
   for (let i = 0; i < nodeData.length; i++) {
     let node = nodeData[i]
     let key = null
+    // selfkey 优先与 id 一致，其次与之前的 selfkey 一致
     if (node.props && node.props.id) {
       key = node.props.id
+    } else if (node.props && node.props.selfkey) {
+      key = node.props.selfkey
     } else {
       key = `${node.nodeName}_${incryptKey(node.nodeName)}`
     }

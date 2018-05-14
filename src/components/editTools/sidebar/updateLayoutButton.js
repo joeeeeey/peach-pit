@@ -19,7 +19,8 @@ export default class UpdateLayoutButton extends React.Component {
     }
 
     let nodeData = JSON.parse(JSON.stringify(this.context.store.getState().node));
-    parmas.data = JSON.stringify(nodeOperation.heightenDomTree(nodeData))
+    let heightOption = { isLayout: true }
+    parmas.data = JSON.stringify(nodeOperation.heightenDomTree(nodeData, heightOption))
 
     layoutService.updateLayout(parmas)
       .then(response => {
