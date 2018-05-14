@@ -37,18 +37,23 @@ export default class TopLevelMenuItem extends React.Component {
   beginEditing = () => {
     this.setState({ isEditing: true })
   }
+
   done = () => {
     this.setState({ isEditing: false })
     if (this.props.child.layoutName !== this.state.layoutName) {
       const nestedKey = `${this.props.child.sectionKey},layoutName`
-      this.context.store.dispatch({
-        type: 'update',
-        payload: { nestedKey: nestedKey, value: this.state.layoutName },
-        target: 'node',
-      });
-    }
+      const changLayoutPayload = { nestedKey: nestedKey, value: this.state.layoutName }
+      if (this.props.changeLayoutName) {
+        this.props.changeLayoutName(
+          changLayoutPayload,
+          this.state.layoutName,
+          this.props.child
+        )
+      }
 
+    }
   }
+
   changeLayoutName = (e) => {
     this.setState({ layoutName: e.target.value })
   }
@@ -139,7 +144,7 @@ export default class TopLevelMenuItem extends React.Component {
             <IconButton
               style={{ color: '#CBD1CB' }}
               aria-label="Draggable">
-             <SwapVertIcon />
+              <SwapVertIcon />
             </IconButton>
           </div>
         }

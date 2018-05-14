@@ -85,6 +85,7 @@ export default class UploaderArea extends React.Component {
           this.saveKey = data.data.saveKey
           this.imgUrl = data.data.imgUrl
           this.imgUploadUrl = data.data.imgUploadUrl
+          this.fileSize = file.size
           let reader = new FileReader()
           reader.readAsDataURL(file)
           reader.onloadend = (e) => {
@@ -131,7 +132,7 @@ export default class UploaderArea extends React.Component {
         this.setState({ loading: false })
         if (res.data.code === 200) {
           message.success(`上传成功`, 2)
-          this.props.uploadSuccess(this.imgUrl)
+          this.props.uploadSuccess(this.imgUrl, this.fileSize)
 
           // this.updateNodeTree()
         } else {

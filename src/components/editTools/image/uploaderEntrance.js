@@ -85,8 +85,25 @@ export default class UploaderEntrance extends React.Component {
     }
   }
 
-  handleUploadSuccess = (imgUrl) => {
+  updateEditInfo = () => {
+    let uploadedImages = this.state.uploadedImage.push({
+      name: 'tmp', type: "N", size: this.fileSize,
+      updatedAt: Math.floor(new Date().getTime() / 1000),
+      path: this.imgUrl
+    })
+
+    this.context.store.dispatch({
+      type: 'composite',
+      payload: { nestedKey: 'uploadedImages', value: uploadedImages },
+      target: 'editInfo',
+    })
+
+  }
+
+  handleUploadSuccess = (imgUrl, fileSize) => {
     this.imgUrl = imgUrl
+    this.fileSize = fileSize
+    this.updateEditInfo()
     this.updateNodeTree()
     // uploadSuccess
     if (this.props.uploadSuccess && typeof (this.props.uploadSuccess) === 'function') {
@@ -158,14 +175,14 @@ export default class UploaderEntrance extends React.Component {
                             <img
                               onClick={() => this.handleUploadSuccess(x.path)}
                               src={`${x.path}!thumbnails/fw/200`}
-                              style={{ width: '100%', height: '100%', cursor: 'pointer', marginBottom: 6  }}
+                              style={{ width: '100%', height: '100%', cursor: 'pointer', marginBottom: 6 }}
                             ></img>
                             <p>大小: {Math.floor(parseInt(x.size) / 1024)}KB</p>
                             <span>日期: {dateOperation.unixTime2FormatDate(x.updatedAt)}</span>
                             <Button
                               onClick={() => this.handleUploadSuccess(x.path)}
                               mini={true}
-                              style={{ color: '#A5D6A7'}}>
+                              style={{ color: '#A5D6A7' }}>
                               <DoneOutlineIcon style={{ marginRight: 8 }} />
                               使用
                             </Button>

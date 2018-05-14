@@ -499,6 +499,35 @@ class EditableRoot extends Component {
     const { topLevelItemisDraggable } = this.state
     this.setState({ topLevelItemisDraggable: !topLevelItemisDraggable })
   }
+  // 顶层板块名称变化
+  handleChangeLayoutName = (changLayoutPayload, newLayoutName, child) => {
+    let compositePayload = { payloadData: {} }
+
+    let updateNodesPayload = [changLayoutPayload]
+
+    let navBarChildren = this.props.navBarChildren
+    if (navBarChildren && navBarChildren.length > 0) {
+      for (let i = 0; i < navBarChildren.length; i++) {
+        if (navBarChildren[i].id === child.id) {
+          navBarChildren[i].name = newLayoutName
+          break
+        }
+      }
+      updateNodesPayload.push({
+        value: navBarChildren,
+        nestedKey: `${this.selfkey},props,navBarChildren`
+      })
+      this.setNavBarState(navBarChildren)
+    }
+
+    compositePayload.payloadData.updateNodes = { payloadData: updateNodesPayload }
+
+    this.context.store.dispatch({
+      type: 'composite',
+      payload: compositePayload,
+      target: 'node',
+    })
+  }
 
   // 拖拽顶层板块
   handleDrag = (layout) => {
@@ -524,7 +553,7 @@ class EditableRoot extends Component {
     let updateNodesPayload = []
 
     // [{id: "VerticalLayout_08ed82ac646dff6be8598d2f28e83a3a", name: "味觉盛宴", layoutName: "味觉盛宴"}]
-   
+
     if (navBarKey) {
       let { navBarChildren } = this.state
       let newNavBarChildren = []
@@ -581,7 +610,7 @@ class EditableRoot extends Component {
               <Menu.Item key="topLevelSections" style={{ height: '100%', paddingLeft: 0 }}>
                 <Button color="secondary"
                   onClick={this.changeTopLevelItemDraggable}
-                  style={this.state.topLevelItemisDraggable ?  { width: '100%', justifyContent: 'center', color: '#FFECB3'}:  { width: '100%', justifyContent: 'center', color: '#C8E6C9'}}>
+                  style={this.state.topLevelItemisDraggable ? { width: '100%', justifyContent: 'center', color: '#FFECB3' } : { width: '100%', justifyContent: 'center', color: '#C8E6C9' }}>
                   {this.state.topLevelItemisDraggable ? '关闭板块拖拽' : '开启板块拖拽'}
                 </Button>
                 <div style={{ position: 'relative' }}>
@@ -594,7 +623,12 @@ class EditableRoot extends Component {
                     {
                       this.getRootChildren().map((child, index) =>
                         <div key={child.id} data-grid={{ x: 0, y: index, w: 12, h: 1 }}>
-                          <TopLevelMenuItem isDraggable={this.state.topLevelItemisDraggable} child={child} removeNode={this.removeNode} />
+                          <TopLevelMenuItem
+                            isDraggable={this.state.topLevelItemisDraggable}
+                            child={child}
+                            removeNode={this.removeNode}
+                            changeLayoutName={this.handleChangeLayoutName}
+                          />
                         </div>
                       )
                     }
