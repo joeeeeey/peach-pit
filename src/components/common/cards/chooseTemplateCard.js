@@ -8,6 +8,7 @@ import Card, { CardActions, CardContent, CardMedia } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
+import { message } from 'antd';
 
 import SiteService from '../../../services/siteService'
 const siteService = new SiteService()
@@ -59,17 +60,21 @@ class ChooseTemplateCard extends React.Component {
   }
 
   preview = () => {
-    const url = `/user/previewPage?source=template&id=${this.props.record.id}`
-    // 打开新页面
-    const win = window.open(url, '_blank');
-    win.focus();
+    try {
+      const url = `/user/previewPage?source=template&id=${this.props.record.id}`
+      // 打开新页面
+      const win = window.open(url, '_blank');
+      win.focus();
+    } catch (error) {
+      message.error(`😥 出现异常:, 请设置浏览器允许该网站弹窗哦`, 3)
+    }
   }
 
   render() {
     const { classes, record } = this.props;
     const { name, thumbnail_url } = record
 
-    const { redirectToEdit, siteId} = this.state;
+    const { redirectToEdit, siteId } = this.state;
 
     if (redirectToEdit && siteId) {
       return <Redirect to={`/user/editPage?id=${siteId}&source=site`} />;
@@ -79,12 +84,12 @@ class ChooseTemplateCard extends React.Component {
       <Grid item xl={4} lg={6} md={6} sm={6} xs={12} >
         <Card className={classes.card}>
           <CardMedia
-            onClick={this.beginEdit} 
+            onClick={this.beginEdit}
             className={classes.media}
             image={thumbnail_url || "http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/ee6abd28bece31864a13b934fdbda223"}
           />
           <CardContent>
-            <div style={{marginTop: 20, marginBottom: 13}}>
+            <div style={{ marginTop: 20, marginBottom: 13 }}>
 
             </div>
             <Typography gutterBottom variant="headline" component="h2">
