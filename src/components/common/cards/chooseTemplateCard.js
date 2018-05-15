@@ -56,8 +56,15 @@ class ChooseTemplateCard extends React.Component {
       .catch(function (error) {
         console.error(`选择模板编辑出现异常： ${error}`)
       });
-    // addSiteByTemplate
   }
+
+  preview = () => {
+    const url = `/user/previewPage?source=template&id=${this.props.record.id}`
+    // 打开新页面
+    const win = window.open(url, '_blank');
+    win.focus();
+  }
+
   render() {
     const { classes, record } = this.props;
     const { name, thumbnail_url } = record
@@ -85,9 +92,9 @@ class ChooseTemplateCard extends React.Component {
             </Typography>
           </CardContent>
           <CardActions>
-            {/* <Button size="small" color="primary" >
-              查看
-            </Button> */}
+            <Button size="small" color="primary" onClick={this.preview}>
+              预览
+            </Button>
             <Button onClick={this.beginEdit} size="small" color="primary" >
               使用该模板
             </Button>

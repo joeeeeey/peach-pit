@@ -16,7 +16,7 @@ export default class CustomToolbar extends Component {
 
   render() {
     const { toolbarStyle = {}, formats } = this.props
-    
+
     return (
       <div
         style={Object.assign({ background: 'white' }, toolbarStyle)}
@@ -27,6 +27,10 @@ export default class CustomToolbar extends Component {
         <select className="ql-header" defaultValue={""} onChange={e => e.persist()}>
         </select>
 
+        <select className="ql-size" >
+        </select>
+        <select className="ql-align"></select>
+
         <select className="ql-font"></select>
         <button className="ql-bold" />
         <button className="ql-italic" />
@@ -35,8 +39,6 @@ export default class CustomToolbar extends Component {
         {/* {formats && formats.includes('image') &&
           <button className="ql-image" />
         } */}
-
-        <select className="ql-align"></select>
 
         <select className="ql-color"></select>
         {formats && formats.includes('list') &&
@@ -57,8 +59,7 @@ export default class CustomToolbar extends Component {
         }
 
 
-        <select className="ql-size" >
-        </select>
+
 
         <button className="ql-link" />
       </div>

@@ -84,7 +84,6 @@ export default (state = { user: {}, administrator: {} }, action) => {
         return state
       case 'update':
         let { value } = action.payload
-
         evalUpdate(state['editInfo'], action.payload.nestedKey, value)
         return state
       /* 不加这个注释就会有 warning */

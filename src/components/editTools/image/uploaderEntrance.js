@@ -86,18 +86,21 @@ export default class UploaderEntrance extends React.Component {
   }
 
   updateEditInfo = () => {
-    let uploadedImages = this.state.uploadedImage.push({
-      name: 'tmp', type: "N", size: this.fileSize,
+    let uploadedImages = this.state.uploadedImages
+    uploadedImages.push({
+      name: `${this.fileSize}tmp`, type: "N", size: this.fileSize,
       updatedAt: Math.floor(new Date().getTime() / 1000),
       path: this.imgUrl
     })
+
+    this.setState({uploadedImages: uploadedImages})
 
     this.context.store.dispatch({
       type: 'composite',
       payload: { nestedKey: 'uploadedImages', value: uploadedImages },
       target: 'editInfo',
     })
-
+    // editInfo.uploadedImages 
   }
 
   handleUploadSuccess = (imgUrl, fileSize) => {
@@ -119,12 +122,12 @@ export default class UploaderEntrance extends React.Component {
     this.setState({
       open: true,
       // [{"name":"697ds","type":"N","size":"9828","updatedAt":"1525228916","path":"http://xx"}]
-      uploadedImage: this.context.store.getState().editInfo.uploadedImages || [],
+      uploadedImages: this.context.store.getState().editInfo.uploadedImages || [],
     });
   };
 
   handleClose = () => {
-    this.setState({ open: false, uploadedImage: [] });
+    this.setState({ open: false, uploadedImages: [] });
   };
 
   handleChange = name => event => {
@@ -169,7 +172,7 @@ export default class UploaderEntrance extends React.Component {
                 <TabPane tab="使用已上传的图片" key="2" style={{ overflow: 'auto', maxHeight: '80vh' }}>
                   <Grid container alignItems={'center'}>
                     {
-                      this.state.uploadedImage.map(x =>
+                      this.state.uploadedImages.map(x =>
                         <Grid item xs={12} lg={3} md={3} sm={3} key={x.name}>
                           <div style={{ padding: '4%', textAlign: 'center', marginBottom: 10 }}>
                             <img

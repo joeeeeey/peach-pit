@@ -24,12 +24,11 @@ function menu(f) {
       {[
         { nodeName: '文本框', name: '文本框' },
         { nodeName: '图片', name: '图片' },
+        { nodeName: '图片说明', name: '图片说明' },
         { nodeName: '纵向布局', name: '纵向布局' },
         { nodeName: '展示说明', name: '展示说明' },
-        // { nodeName: '双纵向标题列表', name: '双纵向标题列表' },
-        { nodeName: '图片说明', name: '图片说明' },
         { nodeName: '画廊', name: '画廊' },
-        
+        // { nodeName: '双纵向标题列表', name: '双纵向标题列表' },
       ].map(item =>
         <Menu.Item key={item.nodeName}>
           <Button onClick={() => { f(item.nodeName) }} color="secondary" style={buttonStyle}>
