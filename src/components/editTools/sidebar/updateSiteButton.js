@@ -14,10 +14,13 @@ export default class UpdateSiteButton extends Component {
   }
 
   updateSite = () => {
+    const editInfo = this.context.store.getState().editInfo
     let parmas = {
-      id: parseInt(this.context.store.getState().editInfo.id),
+      id: parseInt(editInfo.id),
     }
-
+    if(editInfo.name){
+      parmas.name = editInfo.name
+    }
     let nodeData = JSON.parse(JSON.stringify(this.context.store.getState().node));
     parmas.data = JSON.stringify(nodeOperation.heightenDomTree(nodeData))
 

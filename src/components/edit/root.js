@@ -31,6 +31,8 @@ import DeploySiteButton from '../editTools/sidebar/deploySiteButton'
 import TopLevelMenuItem from '../editTools/sidebar/topLevelMenuItme'
 // 布局列表气泡卡片
 import LayoutsListPopover from '../editTools/sidebar/layoutsListPreviewPopover'
+// 更改网站名称
+import UpdateSiteNameItem from '../editTools/sidebar/updateSiteNameItem'
 
 import TemplateService from '../../services/templateService'
 import LayoutService from '../../services/layoutService'
@@ -152,6 +154,14 @@ class EditableRoot extends Component {
     return (
       <Menu.Item key="updateSiteButton">
         <UpdateSiteButton style={buttonStyle} />
+      </Menu.Item>
+    )
+  }
+
+  updateSiteNameItem = () => {
+    return (
+      <Menu.Item key="UpdateSiteNameItem">
+        <UpdateSiteNameItem />
       </Menu.Item>
     )
   }
@@ -657,6 +667,7 @@ class EditableRoot extends Component {
                   )
                 }
               </SubMenu>
+              {this.state.editInfo.role === 'user' && this.updateSiteNameItem()}
               <Menu.Item key="Divider1">
                 <Divider dashed />
               </Menu.Item>

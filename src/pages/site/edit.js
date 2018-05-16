@@ -106,6 +106,15 @@ class Edit extends React.Component {
     });
   }
 
+  updateEditInfoState = (nestedKey, value) => {
+    this.context.store.dispatch({
+      type: 'update',
+      payload: {nestedKey: nestedKey, value: value},
+      target: 'editInfo',
+    });
+  }
+
+
   // 最适合取到数据的地方
   componentDidMount = () => {
     // 根据`当前用户角色` 和 `资源` 初始化编辑页信息
@@ -120,8 +129,9 @@ class Edit extends React.Component {
       .then(response => {
         const { data } = response
         if (data.code === 0) {
-          editInfo.uploadedImages = data.data.imageFiles
-          this.setEditInfoState(editInfo)
+          // editInfo.uploadedImages = data.data.imageFiles
+          // this.setEditInfoState(editInfo)
+          this.updateEditInfoState(`uploadedImages`, data.data.imageFiles)
         }
       })
       .catch((error) => {
@@ -134,7 +144,13 @@ class Edit extends React.Component {
           const { data } = response
           // console.log(data)
           if (data.code === 0) {
-            this.initialNodeData(data.data)
+            // {id: 1, name: 'dsd', thumb_url: 'xxx', data: '..'}
+            let block = data.data
+            // editInfo.name = block.name
+
+            // 此处 setEditInfoState 需要在 initialNodeData 下方执行
+            // TODO why? 将两个 dispatch 合并
+            this.initialNodeData(block)
           } else {
             console.warn(data.msg)
           }
@@ -167,15 +183,20 @@ class Edit extends React.Component {
   initialNodeData(block) {
     let ftData = nodeOperation.flattenDomTree(this.wrapRoot(block))
     // let ftData = nodeOperation.flattenDomTree(ftData)
-    console.log(ftData)
+    // console.log(ftData)
     this.setState({ nodeData: ftData })
+
+   
     this.context.store.dispatch({
       type: 'replace',
       payload: ftData,
       target: 'node',
     });
 
-    // TODO setState after dispatch
+    this.updateEditInfoState(`name`, block.name)
+    // 此处 updateEditInfoState 一定要在 replace node 下方
+    // TODO why?
+   
   }
 
   // {nodeName: 'div', children: []}
@@ -203,7 +224,7 @@ class Edit extends React.Component {
   }
 
   render = () => {
-    // console.log(this.state.nodeData)
+    console.log(this.state.nodeData)
     return (
       <div>
         {this.toF(nodeOperation.flattenedData2Code(JSON.parse(JSON.stringify(this.state.nodeData)), 'edit'))}
