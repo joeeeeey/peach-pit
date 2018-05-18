@@ -63,20 +63,21 @@ class ButtonAppBar extends React.Component {
               >主页
               </Button>
             }
-            {!beforeLogin &&
+
+            {/* {!beforeLogin && */}
               <Button
                 style={{ color: 'white' }}
                 component={Link} to="/about"
               >关于本站
               </Button>
-            }
-            {!beforeLogin &&
-              <Button
-                style={{ color: 'white' }}
-                component={Link} to="/user/chooseTemplate"
-              > 模板选择
-              </Button>
-            }
+            {/* } */}
+
+            <Button
+              style={{ color: 'white', marginLeft: 15 }}
+              component={Link} to="/user/chooseTemplate"
+              >查看模板
+            </Button>
+
             {!beforeLogin &&
               <Button
                 style={{ color: 'white', marginLeft: 15 }}

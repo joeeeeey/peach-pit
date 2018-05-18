@@ -64,6 +64,10 @@ class Editor extends Component {
       this.saveTriggerTimer = setTimeout(() => {
         this.saveTriggerTimer = undefined;
         let nestedKey = `${this.props.selfkey},props,deltaDeltaValue`
+
+        // TODO 需要将value 中的文本内容中的 \ => \\
+        // const re = /"\n"/gi;
+        // nodeCode = nodeCode.replace(re, '"\\n"');
         this.context.store.dispatch({
           type: 'update',
           payload: { nestedKey: nestedKey, value: this.quillRef.editor.delta.ops },

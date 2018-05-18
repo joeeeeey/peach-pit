@@ -70,7 +70,11 @@ class Index extends Component {
       <Router history={history}>
         <Switch>
           <Route path="/" exact component={Home} />
-          <CheckUserLogin store={store} shouldBe={true} path="/about" exact component={AboutPage} />
+          <Route path="/tourist/chooseTemplate" exact component={ChooseTmp} />
+          <Route path="/tourist/previewPage" component={Preview} />
+
+          
+
           <Route path="/admin/login" component={AdminLogin} />
           <Route path="/admin/home" component={AdminHome} />
           <Route path="/admin/templateIndex" component={AdminTemplateIndex} />
@@ -79,8 +83,10 @@ class Index extends Component {
           <Route path="/admin/previewPage" component={Preview} />
           <Route path="/administrator/previewPage" component={Preview} />
 
+          <Route path="/user/chooseTemplate" exact component={ChooseTmp} />
+          <Route path="/about" exact component={AboutPage} />
+          {/* <CheckUserLogin store={store} shouldBe={true} path="/about" exact component={AboutPage} /> */}
           <CheckUserLogin store={store} shouldBe={true} path="/user/sites" exact component={UserSite} />
-          <CheckUserLogin store={store} shouldBe={true} path="/user/chooseTemplate" exact component={ChooseTmp} />
           <CheckUserLogin store={store} shouldBe={false} path="/user/login" component={UserLogin} />
           <CheckUserLogin store={store} shouldBe={true} path="/user/previewPage" component={Preview} />
           <CheckUserLogin store={store} shouldBe={true} path="/user/editPage" component={Edit} />

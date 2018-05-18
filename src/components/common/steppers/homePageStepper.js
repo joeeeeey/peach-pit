@@ -30,23 +30,23 @@ class HomePageStepper extends React.Component {
     activeStep: 0,
   };
 
-  autoStepperNext = () => {
-    // 控制轮播次数
-    if (this.carouselTimes > 0) {
-      if (this.state.activeStep < 2) {
-        this.setState({
-          activeStep: this.state.activeStep + 1,
-        });
-      } else {
-        this.carouselTimes = this.carouselTimes - 1
-        this.setState({
-          activeStep: 0,
-        });
-      }
-    } else {
-      clearInterval(this.timerID);
-    }
-  }
+  // autoStepperNext = () => {
+  //   // 控制轮播次数
+  //   if (this.carouselTimes > 0) {
+  //     if (this.state.activeStep < 2) {
+  //       this.setState({
+  //         activeStep: this.state.activeStep + 1,
+  //       });
+  //     } else {
+  //       this.carouselTimes = this.carouselTimes - 1
+  //       this.setState({
+  //         activeStep: 0,
+  //       });
+  //     }
+  //   } else {
+  //     clearInterval(this.timerID);
+  //   }
+  // }
 
   getStepContent = (step) => {
     switch (step) {
@@ -61,17 +61,17 @@ class HomePageStepper extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.carouselTimes = 2
-    this.timerID = setInterval(
-      () => this.autoStepperNext(),
-      2000
-    );
-  }
+  // componentDidMount() {
+    // this.carouselTimes = 2
+    // this.timerID = setInterval(
+    //   () => this.autoStepperNext(),
+    //   2000
+    // );
+  // }
 
-  componentWillUnmount() {
-    clearInterval(this.timerID);
-  }
+  // componentWillUnmount() {
+    // clearInterval(this.timerID);
+  // }
 
   handleNext = () => {
     this.setState({

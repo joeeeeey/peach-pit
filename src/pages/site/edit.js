@@ -106,12 +106,14 @@ class Edit extends React.Component {
     });
   }
 
-  updateEditInfoState = (nestedKey, value) => {
-    this.context.store.dispatch({
-      type: 'update',
-      payload: {nestedKey: nestedKey, value: value},
-      target: 'editInfo',
-    });
+  updateEditInfoState = (nestedKey, block) => {
+    if(block){
+      this.context.store.dispatch({
+        type: 'update',
+        payload: {nestedKey: nestedKey, value: block.name},
+        target: 'editInfo',
+      });
+    }
   }
 
 
@@ -192,8 +194,8 @@ class Edit extends React.Component {
       payload: ftData,
       target: 'node',
     });
-
-    this.updateEditInfoState(`name`, block.name)
+    // 网站名称加入 editInfo 中
+    this.updateEditInfoState(`name`, block)
     // 此处 updateEditInfoState 一定要在 replace node 下方
     // TODO why?
    

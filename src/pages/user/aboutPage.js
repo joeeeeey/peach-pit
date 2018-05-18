@@ -2,18 +2,24 @@
 
 import React, { Component } from 'react';
 import AppBar from '../../components/common/layouts/appBar'
+import PropTypes from 'prop-types';
 
-export default class UserSite extends Component {
+
+export default class AboutPage extends Component {
   constructor(props, context) {
     super(props)
-
+    this.beforeLogin = true
+    const user = context.store.getState().user
+    if(user && user.isLogin){
+      this.beforeLogin = false
+    }
   }
 
 
   render() {
     return (
       <div>
-        <AppBar />
+        <AppBar beforeLogin={this.beforeLogin}/>
         <div style={{ color: '#777', textAlign: 'center', padding: '30px 80px' }}>
           <h3 style={{ textAlign: 'center' }}>简介</h3>
           <p style={{ fontSize: 16, marginTop: 20, textAlign: 'center' }}>桃核空间是一个帮你建站并且直接发布的站点。发布时你的网站将会被分配本站的一个二级域名， 整个过程都是免费的。</p>
@@ -41,8 +47,8 @@ export default class UserSite extends Component {
             <div style={{ width: '50%', margin: 'auto', float: 'left' }}>
               <div style={{ width: '80%', padding: '20px 20px', margin: 'auto', }}>
                 <img
-                  style={{ maxWidth: '100%', maxHeight: 283 }}
-                  src={"http://blog-src.b0.upaiyun.com/taohe/dev/basic/template/25fd894c6a70512b189a7605f463d126"}
+                  style={{ width: '100%', height:'100%' }}
+                  src={"http://blog-src.b0.upaiyun.com/taohe/dev/basic/template/25fd894c6a70512b189a7605f463d126!thumbnails/sq/220"}
                   alt={"my_alipay_qr"}
                 />
               </div>
@@ -50,8 +56,8 @@ export default class UserSite extends Component {
             <div style={{ width: '50%', margin: 'auto', float: 'right' }}>
               <div style={{ width: '80%', padding: '20px 20px', margin: 'auto', }}>
                 <img
-                  style={{ maxWidth: '100%', maxHeight: 283 }}
-                  src={"http://blog-src.b0.upaiyun.com/taohe/dev/basic/template/7e38adfe0a35139cc9ca229561496c7a"}
+                  style={{ width: '100%', height:'100%' }}
+                  src={"http://blog-src.b0.upaiyun.com/taohe/dev/basic/template/7e38adfe0a35139cc9ca229561496c7a!thumbnails/sq/220"}
                   alt={"my_wechat_qr"}
                 />
               </div>
@@ -63,7 +69,9 @@ export default class UserSite extends Component {
   }
 }
 
-
+AboutPage.contextTypes = {
+  store: PropTypes.object,
+};
 
 // 简介
 // 桃核空间是一个帮你建站并且直接发布的站点。发布时你的网站将会被分配本站的一个二级域名， 整个过程都是免费的。

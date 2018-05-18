@@ -23,8 +23,14 @@ class ChooseTmp extends Component {
       templateCategroies: [],
       templates: [],
     };
-  }
 
+    const user = context.store.getState().user
+    if (user && user.isLogin) {
+      this.userId = user.profile.id
+    } else {
+      this.userId = null
+    }
+  }
 
 
   // 初始化模板的种类
@@ -87,13 +93,13 @@ class ChooseTmp extends Component {
   render() {
     return (
       <div>
-        <ButtonAppBar />
-        <div style={{ width: '80%', textAlign: 'center', margin: 'auto' }}>
+        <ButtonAppBar beforeLogin={this.userId ? false : true} />
+        <div style={{ width: '86%', textAlign: 'center', margin: 'auto' }}>
           < TitleAndSubTitle
-            titleContent="选择一个模板"
-            subTitleContent="随意选择，模板选择后可随意更换" />
+            titleContent="选择模板进行编辑"
+            subTitleContent="" />
 
-          <div>
+          <div style={{ marginBottom: '2%' }}>
             <RadioGroup onChange={this.selectTmpCategory}>
               <RadioButton key={'all'} value={'all'}>所有</RadioButton>
               {this.state.templateCategroies.map(x =>
@@ -102,12 +108,12 @@ class ChooseTmp extends Component {
             </RadioGroup>
           </div>
 
-          <Grid container spacing={24} justify={'center'} style={{ width: '80%', margin: 'auto' }}>
+          <Grid container spacing={24} justify={'center'} style={{ width: '90%', margin: 'auto' }}>
             {
               this.state.templates.map(record => (
                 <ChooseTemplateCard
                   key={record.id}
-                  userId={this.context.store.getState().user.profile.id}
+                  userId={this.userId}
                   record={record} />
               ))
             }

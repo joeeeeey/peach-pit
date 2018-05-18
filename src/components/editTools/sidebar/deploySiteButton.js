@@ -123,7 +123,6 @@ export default class DeploySiteButton extends React.Component {
   }
 
   getCodeInIndex = (containerPreviewFileRelativePath, nodeData) => {
-    console.log(nodeData)
     let importComponents = []
     for (let i in nodeData) {
       if (!nodeData[i].native && nodeData[i].nodeName) {
