@@ -20,6 +20,11 @@ class SiteService extends BaseService {
   deleteSite = (params) => {
     return this.post('/api/delete_site', params)
   }
+
+  // 压缩静态文件
+  compressStaticFile = (params) => {
+    return this.post('/api/compress_static_file', params)
+  }
 }
 
 export default SiteService;

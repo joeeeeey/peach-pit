@@ -9,6 +9,7 @@ import EditIcon from 'material-ui-icons/Edit';
 import Typography from 'material-ui/Typography';
 import green from 'material-ui/colors/green';
 import grey from 'material-ui/colors/grey';
+import blue from 'material-ui/colors/blue';
 
 
 
@@ -57,6 +58,44 @@ export default class UserSite extends Component {
           console.error(`获取用户网站信息失败: ${data.msg}`)
         }
       })
+  }
+
+  // 压缩静态文件
+  compressStaticFiles = (siteId) => {
+    siteService.compressStaticFile({ siteId: siteId })
+      .then(response => {
+        const { data } = response
+        console.log(data)
+        if (data.code === 0) {
+          const { compressedFilePath,compressedFileName } = data.data
+
+          // var zip_file_path = "" //put inside "" your path with file.zip
+          // var zip_file_name = "" //put inside "" file name or something
+
+          try {
+            let a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            a.href = compressedFilePath;
+            a.download = compressedFileName;
+            a.click();
+            document.body.removeChild(a);
+  
+          } catch (error) {
+            console.error('下载失败')
+          }
+
+          // if (data.data.compressFilePath) {
+          //   message.success('删除成功', 2)
+          //   const remianedSites = this.state.sites.filter(site => site.id !== siteId);
+
+          //   this.setState({ sites: remianedSites })
+          // }
+        } else {
+          console.error(`获取用户网站信息失败: ${data.msg}`)
+        }
+      })
+    // compressStaticFile
   }
 
   render() {
@@ -111,6 +150,24 @@ export default class UserSite extends Component {
                             border: 'none'
                           }}>已上线
                       </Button>
+                      </Tooltip>
+                    }
+
+                    {item.deployment_id && item.deploymentUrl &&
+                      <Tooltip title={`压缩打包文件并下载`}>
+                        <Button
+                          size={'small'}
+                          onClick={() => this.compressStaticFiles(item.id)}
+                          target={'_blank'}
+                          style={{
+                            marginLeft: 5,
+                            backgroundColor: blue[500],
+                            color: 'white',
+                            borderRadius: 6,
+                            fontSize: 10,
+                            border: 'none'
+                          }}>下载代码
+                          </Button>
                       </Tooltip>
                     }
 
