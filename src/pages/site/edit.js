@@ -106,14 +106,12 @@ class Edit extends React.Component {
     });
   }
 
-  updateEditInfoState = (nestedKey, block) => {
-    if(block){
-      this.context.store.dispatch({
-        type: 'update',
-        payload: {nestedKey: nestedKey, value: block.name},
-        target: 'editInfo',
-      });
-    }
+  updateEditInfoState = (nestedKey, value) => {
+    this.context.store.dispatch({
+      type: 'update',
+      payload: { nestedKey: nestedKey, value: value },
+      target: 'editInfo',
+    });
   }
 
 
@@ -144,7 +142,6 @@ class Edit extends React.Component {
       blockService.getNodeDataInEditInfo(editInfo)
         .then(response => {
           const { data } = response
-          // console.log(data)
           if (data.code === 0) {
             // {id: 1, name: 'dsd', thumb_url: 'xxx', data: '..'}
             let block = data.data
@@ -188,17 +185,20 @@ class Edit extends React.Component {
     // console.log(ftData)
     this.setState({ nodeData: ftData })
 
-   
+
     this.context.store.dispatch({
       type: 'replace',
       payload: ftData,
       target: 'node',
     });
     // 网站名称加入 editInfo 中
-    this.updateEditInfoState(`name`, block)
+    // value = block.name
+    if(block.name){
+      this.updateEditInfoState(`name`, block.name)
+    }
     // 此处 updateEditInfoState 一定要在 replace node 下方
     // TODO why?
-   
+
   }
 
   // {nodeName: 'div', children: []}
@@ -226,7 +226,7 @@ class Edit extends React.Component {
   }
 
   render = () => {
-    console.log(this.state.nodeData)
+    // console.log(this.state.nodeData)
     return (
       <div>
         {this.toF(nodeOperation.flattenedData2Code(JSON.parse(JSON.stringify(this.state.nodeData)), 'edit'))}

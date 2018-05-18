@@ -65,13 +65,8 @@ export default class UserSite extends Component {
     siteService.compressStaticFile({ siteId: siteId })
       .then(response => {
         const { data } = response
-        console.log(data)
         if (data.code === 0) {
           const { compressedFilePath,compressedFileName } = data.data
-
-          // var zip_file_path = "" //put inside "" your path with file.zip
-          // var zip_file_name = "" //put inside "" file name or something
-
           try {
             let a = document.createElement("a");
             document.body.appendChild(a);
@@ -84,18 +79,10 @@ export default class UserSite extends Component {
           } catch (error) {
             console.error('下载失败')
           }
-
-          // if (data.data.compressFilePath) {
-          //   message.success('删除成功', 2)
-          //   const remianedSites = this.state.sites.filter(site => site.id !== siteId);
-
-          //   this.setState({ sites: remianedSites })
-          // }
         } else {
           console.error(`获取用户网站信息失败: ${data.msg}`)
         }
       })
-    // compressStaticFile
   }
 
   render() {

@@ -142,6 +142,7 @@ export default class UploaderEntrance extends React.Component {
       uploaderEntranceContainerStyle = {},
       uploadButtonStyle = {}
     } = this.props
+
     return (
       <div name="UploaderEntranceContainer" style={uploaderEntranceContainerStyle}>
         <Button onClick={this.handleClickOpen} style={Object.assign(this.buttonStyle(), uploadButtonStyle)} color="secondary">上传图片</Button>

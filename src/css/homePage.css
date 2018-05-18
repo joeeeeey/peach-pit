@@ -25,3 +25,15 @@ div[class^="jss"], div[class*=" jss"] {
 div[class*=" jss"] {
 	padding: 0px 0px !important;
 }
+
+.introduce-text-big{
+	font-size: calc(1.6vw + 1.6vh);
+	font-family: "Times New Roman",Georgia,Serif;
+	color: #fff;	
+}
+
+.introduce-text-small{
+	font-size: calc(0.9vw + 0.9vh);
+	font-family: "Times New Roman",Georgia,Serif;
+	color: #fff;	
+}
