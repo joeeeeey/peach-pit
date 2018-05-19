@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import { Link } from 'react-router-dom';
 import HomePageStepper from '../../components/common/steppers/homePageStepper'
+import ResponsiveIntro from '../../components/derive/homePage/responsiveIntro'
+import { Divider } from 'antd';
 
 const styles = theme => ({
   root: {
@@ -48,24 +50,8 @@ class Home extends Component {
 
             </h1>
             <div style={{marginTop: '5%'}}></div>
-
-            <span className={'introduce-text-small'}>一个可以</span>     
-
-            <span className={'introduce-text-big'}>及时编辑发布网站，</span>  
-            <span className={'introduce-text-small'}>还能</span>        
-            <span className={'introduce-text-big'}>下载打包后文件</span>    
-            <span className={'introduce-text-small'}>的地方。</span>         
+            <span className={'introduce-text-big'}>发布你的网站，从未如此简单。</span>  
           </div>
-
-          {/* <div style={{position: 'absolute', left: 0, top: '25%', width: '100%', textAlign: 'center' }}>
-            <h2 style={{
-              fontSize: "calc(1.5vw + 1.5vh)",
-              "fontFamily": "\"Times New Roman\",Georgia,Serif",
-              color: '#fff'
-            }}>
-              一个可以<br/>及时编辑、发布你的网站 <br/>并且<br/>还能下载打包后的文件<br/>的地方
-            </h2>
-          </div> */}
           <div style={{ position: 'absolute', bottom: '8%', left: 0, width: '100%', textAlign: 'center' }}>
             <Button component={Link} to={`/user/chooseTemplate`}
               size="large"
@@ -73,17 +59,8 @@ class Home extends Component {
               现在开始</Button>
           </div>
         </div>
-        <div style={{ paddingButtom: 60, paddingTop: 60, backgroundColor: 'white', width: '100%', textAlign: 'center' }}>
-          <h2 style={{
-            fontSize: "calc(1.8vw + 1.8vh)",
-            "fontFamily": "\"Times New Roman\",Georgia,Serif"
-          }}>流程说明</h2>
-          <div style={{ backgroundColor: 'white', width: '80%', marginLeft: '15%', textAlign: 'center' }}>
-
-            <HomePageStepper />
-          </div>
-        </div>
-
+        <HomePageStepper />
+          <ResponsiveIntro/>
         <div style={Object.assign({
           position: 'relative',
           background: "url(http://blog-src.b0.upaiyun.com/taohe/dev/basic/template/08a4696af75ec0bd75b778f1aeb44e44",
@@ -97,9 +74,9 @@ class Home extends Component {
           </div>
         </div>
 
-
+        {/* <Divider dashed /> */}
         <div style={{ width: '100%', textAlign: 'center', marginBottom: 20, marginTop: 20 }}>
-          <span>Copyright 2018 -- Joey</span>
+          <span className={'introduce-text-small'} style={{color: 'black'}}>Copyright 2018 -- Joey</span>
         </div>
       </div>
     );

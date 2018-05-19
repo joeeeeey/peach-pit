@@ -193,7 +193,7 @@ class Edit extends React.Component {
     });
     // 网站名称加入 editInfo 中
     // value = block.name
-    if(block.name){
+    if(block && block.name){
       this.updateEditInfoState(`name`, block.name)
     }
     // 此处 updateEditInfoState 一定要在 replace node 下方

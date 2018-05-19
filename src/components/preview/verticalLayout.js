@@ -51,7 +51,7 @@ export default class PreviewVerticalLayout extends Component {
             {this.props.children &&
               React.Children.toArray(this.props.children).map((child, index) => {
                 return (
-                  <Grid key={child.props.selfkey} item xs={12} sm={this.flex[index]} md={this.flex[index]} lg={this.flex[index]} xl={this.flex[index]}>
+                  <Grid key={index} item xs={12} sm={this.flex[index]} md={this.flex[index]} lg={this.flex[index]} xl={this.flex[index]}>
                     {child}
                   </Grid>
                 )
