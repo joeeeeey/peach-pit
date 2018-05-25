@@ -55,11 +55,16 @@ export default class DeploySiteButton extends React.Component {
     return params
   }
 
+  componentWillUnmount() {
+    if (this.removeMsgLoading) {
+      this.removeMsgLoading()
+    }
+  }
 
   deploy = () => {
     // todo 利用 async await 解决回调地狱？
     this.setState({ isDeploying: true })
-    const removeMsgLoading = message.loading('正在部署中..大概需要40秒', 0);
+    this.removeMsgLoading = message.loading('正在部署中..大概需要60秒', 0);
     siteService.update(this.getUpdateSiteParmas())
       .then(response => {
         const { data } = response
@@ -83,7 +88,7 @@ export default class DeploySiteButton extends React.Component {
                       }
                       deployService.deploy(params)
                         .then(res => {
-                          removeMsgLoading()
+                          this.removeMsgLoading()
                           const { data } = res
                           this.setState({ isDeploying: false })
                           if (data.code === 0) {
@@ -94,6 +99,10 @@ export default class DeploySiteButton extends React.Component {
                             message.error(`😥 ${data.msg}`, 2)
                           }
                         })
+                        .catch(error => {
+                          this.removeMsgLoading()
+                          message.error(`出现异常 ${error}`)
+                        });
 
                     } else {
                       message.error('出现异常, 节点数据为空', 3)
@@ -101,13 +110,13 @@ export default class DeploySiteButton extends React.Component {
                     }
                   })
               } else {
-                removeMsgLoading()
+                this.removeMsgLoading()
                 this.setState({ isDeploying: false })
                 message.error(`😥 部署失败 ${data.msg}`, 2)
               }
             })
         } else {
-          removeMsgLoading()
+          this.removeMsgLoading()
           this.setState({ isDeploying: false })
           message.error(`😥 部署失败 ${data.msg}`, 2)
         }

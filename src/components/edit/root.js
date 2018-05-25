@@ -37,14 +37,13 @@ import UpdateSiteNameItem from '../editTools/sidebar/updateSiteNameItem'
 import TemplateService from '../../services/templateService'
 import LayoutService from '../../services/layoutService'
 import SiteService from '../../services/siteService'
-import DeployService from '../../services/deployService'
+
 // import Test from '../../pages/test'
 import GridLayout from 'react-grid-layout';
 import ArrayOper from '../../utils/arrOperation'
 
 const layoutService = new LayoutService()
 const templateService = new TemplateService()
-const deployService = new DeployService()
 const siteService = new SiteService()
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
