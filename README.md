@@ -1,7 +1,3 @@
-
-# This project was bootstrapped with meterial-ui example
-<!-- TODO change dependencies to specfic version -->
-
 ### 开发环境:
 
 >System:
@@ -23,7 +19,7 @@
 
 native: boolean  是否原生。 如 div 为 true, 若是自己封装的则为 false
 
-composite: boolean  是否为复合。 复合意义为非原生的组建，并且没有对应的代码映射到这个组件。Example: 一 个垂直布局 verticalLayout 有对应的对应的编辑组件文件 `components/edit/verticalLayout.js` 与预览组件文件 `components/preview/verticalLayout.js`，该组件 composite 则为 `false`(或 `null`, 此处并未要求强制声明 `false`)。 若管理员将两个垂直布局在编辑页面进行增加保存为新的布局，则成为复合布局(这两个垂直布局在保存存 layout 时会默认被一个 div 包裹)。 此处注意一定要大于两个原始布局才会被自动保存为复合。
+composite: boolean  是否为复合。 复合意义为非原生的组件，并且没有对应的代码映射到这个组件。Example: 一 个垂直布局 verticalLayout 有对应的对应的编辑组件文件 `components/edit/verticalLayout.js` 与预览组件文件 `components/preview/verticalLayout.js`，该组件 composite 则为 `false`(或 `null`, 此处并未要求强制声明 `false`)。 若管理员将两个垂直布局在编辑页面进行增加保存为新的布局，则成为复合布局(这两个垂直布局在保存存 layout 时会默认被一个 div 包裹)。 此处注意一定要大于两个原始布局才会被自动保存为复合。
 
 nodeName: 节点名称，原始自建组件命名方式为驼峰，并且首字母大写。 原生组件都小写(div, h1, etc..)。此处注意复合组件的根节点 nodeName 是 div。
 
@@ -31,7 +27,7 @@ props: object React 属性，代码中可以取到。
 
 children array 子元素，可为空， Example: 一个完整的组件的数据结构。
 
-Notice
+Notice:
 垂直布局嵌套时候，应注意子垂直布局没有 id。
 
 
@@ -155,15 +151,6 @@ pack-container 只需要预览组件内容，所以也只需要预览组件引�
 
 src/index.js 文件应该给 pack 自己考虑
 
-
-
-
-
-
-
-
-
-
 --
 
 ### 关于顶层样式(布局 layout)
@@ -188,10 +175,3 @@ rsync:
 ### 源于顶层 layout 的 id 生成过程
 
 在 root 节点增加时加入
-
-
-
-
-
-
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
