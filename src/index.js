@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Index from './pages/index';
-// import 'typeface-roboto'
-
+// import all css files here
 import 'antd/dist/antd.css'
 import './css/homePage.css'
 import './css/editPage.css'
