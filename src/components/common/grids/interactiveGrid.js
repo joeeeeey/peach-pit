@@ -1,44 +1,43 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Grid from 'material-ui/Grid';
-import { FormControl, FormLabel, FormControlLabel } from 'material-ui/Form';
-import Radio, { RadioGroup } from 'material-ui/Radio';
-import Paper from 'material-ui/Paper';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "material-ui/styles";
+import Grid from "material-ui/Grid";
+import { FormControl, FormLabel, FormControlLabel } from "material-ui/Form";
+import Radio, { RadioGroup } from "material-ui/Radio";
+import Paper from "material-ui/Paper";
 
 const styles = theme => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   demo: {
-    height: 240,
+    height: 240
   },
   paper: {
     // padding: theme.spacing.unit * 2,
     // height: '100%',
 
     padding: theme.spacing.unit * 1,
-    textAlign: 'center',
+    textAlign: "center",
     color: theme.palette.text.secondary,
     height: 240,
-    margin: 15,
-
+    margin: 15
   },
   control: {
-    padding: theme.spacing.unit * 2,
-  },
+    padding: theme.spacing.unit * 2
+  }
 });
 
 class InteractiveGrid extends React.Component {
   state = {
-    direction: 'row', // ["row", "row-reverse", "column"]
-    justify: 'space-around', // ["flex-start", "center", "flex-end", "space-between", "space-around"]
-    alignItems: 'center', // ["flex-start","center","flex-end","stretch","baseline"]
+    direction: "row", // ["row", "row-reverse", "column"]
+    justify: "space-around", // ["flex-start", "center", "flex-end", "space-between", "space-around"]
+    alignItems: "center" // ["flex-start","center","flex-end","stretch","baseline"]
   };
 
   handleChange = key => (event, value) => {
     this.setState({
-      [key]: value,
+      [key]: value
     });
   };
 
@@ -55,18 +54,13 @@ class InteractiveGrid extends React.Component {
             className={classes.demo}
             alignItems={alignItems}
             direction={direction}
-            justify={justify}
-          >
-
-            
-              <Grid item md={5} xs={12} sm={6}>
-                <Paper className={classes.paper}>test_12</Paper>
-              </Grid>
-              <Grid item md={5} xs={12} sm={6}>
-                <Paper className={classes.paper}>test_12</Paper>
-              </Grid>
-       
-
+            justify={justify}>
+            <Grid item md={5} xs={12} sm={6}>
+              <Paper className={classes.paper}>test_12</Paper>
+            </Grid>
+            <Grid item md={5} xs={12} sm={6}>
+              <Paper className={classes.paper}>test_12</Paper>
+            </Grid>
 
             {/* [0,1,2] change to be prop */}
             {/* {[0, 1, 2].map(value => (
@@ -87,7 +81,7 @@ class InteractiveGrid extends React.Component {
 }
 
 InteractiveGrid.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(InteractiveGrid);

@@ -1,35 +1,35 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
-import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
-import MenuIcon from 'material-ui-icons/Menu';
-import { Link } from 'react-router-dom';
-import Menu, { MenuItem } from 'material-ui/Menu';
-import AccountCircle from 'material-ui-icons/AccountCircle';
-import Cookies from 'js-cookie';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "material-ui/styles";
+import AppBar from "material-ui/AppBar";
+import Toolbar from "material-ui/Toolbar";
+import Typography from "material-ui/Typography";
+import Button from "material-ui/Button";
+import IconButton from "material-ui/IconButton";
+import MenuIcon from "material-ui-icons/Menu";
+import { Link } from "react-router-dom";
+import Menu, { MenuItem } from "material-ui/Menu";
+import AccountCircle from "material-ui-icons/AccountCircle";
+import Cookies from "js-cookie";
 
 const styles = {
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   flex: {
-    flex: 1,
+    flex: 1
   },
   menuButton: {
     marginLeft: -12,
-    marginRight: 20,
-  },
+    marginRight: 20
+  }
 };
 
 class ButtonAppBar extends React.Component {
   constructor(props, context) {
-    super(props)
+    super(props);
     this.state = {
-      anchorEl: null,
+      anchorEl: null
     };
   }
   handleMenu = event => {
@@ -42,10 +42,10 @@ class ButtonAppBar extends React.Component {
 
   logOut = () => {
     this.setState({ anchorEl: null });
-    Cookies.remove('taohe_admin', { path: '/' }); 
-    Cookies.remove('taohe_admin.sig', { path: '/' }); 
+    Cookies.remove("taohe_admin", { path: "/" });
+    Cookies.remove("taohe_admin.sig", { path: "/" });
     window.location.reload();
-  }
+  };
 
   render() {
     // 控制 bar 上用户图标
@@ -57,44 +57,51 @@ class ButtonAppBar extends React.Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton component={Link} to="/admin/home" className={classes.menuButton} color="inherit" aria-label="Menu">
+            <IconButton
+              component={Link}
+              to="/admin/home"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="Menu">
               <MenuIcon />
             </IconButton>
-            <Typography variant="title" color="inherit" className={classes.flex}>
-            </Typography>
+            <Typography
+              variant="title"
+              color="inherit"
+              className={classes.flex}
+            />
             {/* TODO user state */}
-            {this.context.store.getState().administrator.isLogin ?
+            {this.context.store.getState().administrator.isLogin ? (
               <div>
                 <IconButton
-                  aria-owns={open ? 'menu-appbar' : null}
+                  aria-owns={open ? "menu-appbar" : null}
                   aria-haspopup="true"
                   onClick={this.handleMenu}
-                  color="inherit"
-                >
+                  color="inherit">
                   <AccountCircle />
                 </IconButton>
                 <Menu
                   id="menu-appbar"
                   anchorEl={anchorEl}
                   anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
+                    vertical: "top",
+                    horizontal: "right"
                   }}
                   transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
+                    vertical: "top",
+                    horizontal: "right"
                   }}
                   open={open}
-                  onClose={this.handleClose}
-                >
+                  onClose={this.handleClose}>
                   <MenuItem onClick={this.handleClose}>我的信息</MenuItem>
                   <MenuItem onClick={this.logOut}>登出</MenuItem>
                 </Menu>
               </div>
-              :
-              <Button component={Link} to="/user/login" color="inherit">登录</Button>
-            }
-
+            ) : (
+              <Button component={Link} to="/user/login" color="inherit">
+                登录
+              </Button>
+            )}
           </Toolbar>
         </AppBar>
       </div>
@@ -107,7 +114,7 @@ ButtonAppBar.contextTypes = {
 };
 
 ButtonAppBar.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(ButtonAppBar);

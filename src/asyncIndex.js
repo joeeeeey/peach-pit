@@ -3,7 +3,6 @@
 // 会使得网页内部跳转很慢
 // 所以先牺牲首屏性能来提高内部交互体验
 // 后期改造组件，并研究加载的细节
- 
 
 // import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
@@ -26,7 +25,6 @@
 // import PPSpace from '../reducers/index'
 // import Cookies from 'js-cookie';
 // import CheckUserLogin from '../utils/checkUserLogin'
-
 
 // const AsyncUserLogin = Loadable({
 //   loader: () => import('./user/loginPage'),
@@ -75,9 +73,6 @@
 
 // export const history = createBrowserHistory();
 
-
-
-
 // function readCookideSetStore(key, target) {
 //   const cookieString = Cookies.get(key)
 
@@ -108,13 +103,12 @@
 //   // 预览页面 admin => /admin/previewPage?source=xx&id=xx
 //   //         user => user/previewPage?source=site&id=xx
 
-  
 //   render() {
 //     return (
 //       <Router history={history}>
 //         <Switch>
 //           <Route path="/" exact component={Home} />
-          
+
 //           <Route path="/admin/login" component={AsyncAdminLogin} />
 //           <Route path="/admin/home" component={AsyncAdminHome} />
 //           <Route path="/admin/templateIndex" component={AsyncAdminTemplateIndex} />

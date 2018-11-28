@@ -1,21 +1,21 @@
-import React, { Component } from 'react';
-import AppBar from '../../common/layouts/appBar'
-import GuideInfo from './guideInfo'
-import { withStyles } from 'material-ui/styles';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import AppBar from "../../common/layouts/appBar";
+import GuideInfo from "./guideInfo";
+import { withStyles } from "material-ui/styles";
+import PropTypes from "prop-types";
 
 const styles = theme => ({
   root: {
-    textAlign: 'center',
-    backgroundColor: 'grey',
-    [theme.breakpoints.up('md')]: {
-      backgroundColor: 'white',
+    textAlign: "center",
+    backgroundColor: "grey",
+    [theme.breakpoints.up("md")]: {
+      backgroundColor: "white"
     },
-    height: window.innerHeight,
+    height: window.innerHeight
   },
   imgae: {
     width: window.innerWidth,
-    zIndex: -10,
+    zIndex: -10
   }
 });
 

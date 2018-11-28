@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import Button from 'material-ui/Button';
-import { withStyles } from 'material-ui/styles';
+import React, { Component } from "react";
+import Button from "material-ui/Button";
+import { withStyles } from "material-ui/styles";
 
 // 单页路由 用法 https://reacttraining.com/react-router/
-import { Redirect } from 'react-router-dom'
-import TitleAndSubTitle from '../../common/titleAndSubTitle'
+import { Redirect } from "react-router-dom";
+import TitleAndSubTitle from "../../common/titleAndSubTitle";
 
 const styles = theme => ({
   root: {
@@ -12,27 +12,27 @@ const styles = theme => ({
     // paddingTop: theme.spacing.unit * 1,
   },
   beginButton: {
-    paddingTop: 10,
-  },
+    paddingTop: 10
+  }
 });
 
 class GuideInfo extends Component {
   state = {
-    redirectChooseTmp: false,
+    redirectChooseTmp: false
   };
 
   chooseTmp = () => {
     this.setState({
-      redirectChooseTmp: true,
+      redirectChooseTmp: true
     });
   };
 
   render() {
     const { classes } = this.props;
     const TitleAndSubTitleStyle = {
-      titleStyle: { paddingTop: 20, color: 'white' },
+      titleStyle: { paddingTop: 20, color: "white" },
       subTitleStyle: { paddingTop: 15 }
-    }
+    };
 
     if (this.state.redirectChooseTmp) {
       return <Redirect push to="/user/chooseTemplate" />;
@@ -40,10 +40,11 @@ class GuideInfo extends Component {
 
     return (
       <div className={classes.root}>
-        < TitleAndSubTitle
+        <TitleAndSubTitle
           titleContent="PEACH PIT SPACE"
           subTitleContent="建站利器"
-          style={TitleAndSubTitleStyle} />
+          style={TitleAndSubTitleStyle}
+        />
         <div className={classes.beginButton}>
           <Button
             size="large"

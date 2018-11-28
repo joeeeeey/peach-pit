@@ -3,7 +3,7 @@ function isIOS() {
 }
 
 const deviceDetect = {
-  isIOS: isIOS,
-}
+  isIOS: isIOS
+};
 
-export default deviceDetect
+export default deviceDetect;

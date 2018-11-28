@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import GridList, { GridListTile } from 'material-ui/GridList';
-import EditableGridListTile from '../edit/gridListTile'
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "material-ui/styles";
+import GridList, { GridListTile } from "material-ui/GridList";
+import EditableGridListTile from "../edit/gridListTile";
 /**
 let props = {
   style: {
@@ -20,10 +20,9 @@ let props = {
 }
 */
 
-
 export default class EditableGridList extends React.Component {
   constructor(props, context) {
-    super(props)
+    super(props);
   }
 
   render() {
@@ -41,13 +40,13 @@ export default class EditableGridList extends React.Component {
     //   }
     // }
 
-    const {style, cellHeight, cols} = this.props
+    const { style, cellHeight, cols } = this.props;
     const tile = {
-      img: '/images/ORG_DSC01101.jpg',
-      title: 'Image',
+      img: "/images/ORG_DSC01101.jpg",
+      title: "Image",
       cols: 1,
       rows: 1
-    }
+    };
 
     return (
       <div style={style.root}>
@@ -56,10 +55,12 @@ export default class EditableGridList extends React.Component {
           {React.createElement(
             GridListTile,
             { key: tile.img, cols: tile.cols || 1, rows: tile.rows || 1 },
-            React.createElement(EditableGridListTile, { src: tile.img, alt: tile.title })
+            React.createElement(EditableGridListTile, {
+              src: tile.img,
+              alt: tile.title
+            })
           )}
 
-   
           {/* {tileData.map(tile => (
             <GridListTile key={tile.img} cols={tile.cols || 1} rows={tile.rows || 1}>
               // <img src={tile.img} alt={tile.title} />
@@ -70,7 +71,6 @@ export default class EditableGridList extends React.Component {
     );
   }
 }
-
 
 // EditableGridList.propTypes = {
 //   classes: PropTypes.object.isRequired,

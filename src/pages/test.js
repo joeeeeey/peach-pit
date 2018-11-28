@@ -1,17 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 // import { withStyles } from 'material-ui/styles';
-import Grid from 'material-ui/Grid';
+import Grid from "material-ui/Grid";
 // import { FormControl, FormLabel, FormControlLabel } from 'material-ui/Form';
 // import Radio, { RadioGroup } from 'material-ui/Radio';
-import Paper from 'material-ui/Paper';
-import EditableImageArea from '../components/edit/imageArea'
-import EditableTextArea from '../components/edit/textArea'
-import EditableVerticalLayout from '../components/edit/verticalLayout'
+import Paper from "material-ui/Paper";
+import EditableImageArea from "../components/edit/imageArea";
+import EditableTextArea from "../components/edit/textArea";
+import EditableVerticalLayout from "../components/edit/verticalLayout";
 
 const children = [
-  { props: {}, src: "http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/a96322da6ff86340da9a23bc2fbb59a6" }
-]
+  {
+    props: {},
+    src:
+      "http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/a96322da6ff86340da9a23bc2fbb59a6"
+  }
+];
 
 // const node = {
 //   native: false,
@@ -57,12 +61,11 @@ const children = [
 
 export default class EditableImageDescription extends React.Component {
   constructor(props, context) {
-    super(props)
+    super(props);
     this.state = {
       row: this.props.row || 3, // 默认三行
-      childrenCounts: this.props.children || 0,
-
-    }
+      childrenCounts: this.props.children || 0
+    };
   }
 
   getChildContext() {
@@ -70,31 +73,41 @@ export default class EditableImageDescription extends React.Component {
   }
 
   render() {
-    const { classes, containerConfig = {
-      justify: "center",
-      spacing: 16,
-    } } = this.props;
-    const { justify, spacing } = containerConfig
+    const {
+      classes,
+      containerConfig = {
+        justify: "center",
+        spacing: 16
+      }
+    } = this.props;
+    const { justify, spacing } = containerConfig;
 
     const horizontalGridStyle = {
-      "border": "1px solid black",
-      marginTop: 20,
+      border: "1px solid black",
+      marginTop: 20
       // height: '100%'
-    }
+    };
 
     const horizontalGridChildStyle = {
-      "border": "1px solid blue",
-
-    }
+      border: "1px solid blue"
+    };
 
     return (
-      <div style={{ background: 'white', marginTop: 20, }}>
-
-        <Grid name="水平" style={horizontalGridStyle}
-          container direction={'row'}
-          justify={'center'}>
-          <Grid item xs={12} sm={3} md={3} lg={3} style={horizontalGridChildStyle}>
-            <div name="girdContainer" style={{ padding: '5%' }}>
+      <div style={{ background: "white", marginTop: 20 }}>
+        <Grid
+          name="水平"
+          style={horizontalGridStyle}
+          container
+          direction={"row"}
+          justify={"center"}>
+          <Grid
+            item
+            xs={12}
+            sm={3}
+            md={3}
+            lg={3}
+            style={horizontalGridChildStyle}>
+            <div name="girdContainer" style={{ padding: "5%" }}>
               <EditableImageArea
                 src={children[0].src}
                 imageContainerStyle={{}}
@@ -106,8 +119,8 @@ export default class EditableImageDescription extends React.Component {
               <Paper style={{ minHeight: 100 }}>
                 <EditableVerticalLayout
                   backgroundInfo={{
-                    background: 'white',
-                    backgroundType: 'pureColor',
+                    background: "white",
+                    backgroundType: "pureColor",
                     imageInfo: {},
                     fillType: null,
                     enableParallex: null
@@ -116,12 +129,18 @@ export default class EditableImageDescription extends React.Component {
 
                 {/* <EditableTextArea /> */}
               </Paper>
-              <Paper >xs=12 sm=6</Paper>
+              <Paper>xs=12 sm=6</Paper>
             </div>
           </Grid>
 
-          <Grid item xs={12} sm={4} md={4} lg={4} style={horizontalGridChildStyle}>
-            <Paper style={{ height: '20%' }}>xs=12 sm=6</Paper>
+          <Grid
+            item
+            xs={12}
+            sm={4}
+            md={4}
+            lg={4}
+            style={horizontalGridChildStyle}>
+            <Paper style={{ height: "20%" }}>xs=12 sm=6</Paper>
           </Grid>
         </Grid>
       </div>
@@ -137,9 +156,8 @@ EditableImageDescription.childContextTypes = {
   store: PropTypes.object
 };
 
-
-
-{/* <Grid item xs={12} sm={4} md={4} lg={4} style={horizontalGridChildStyle}>
+{
+  /* <Grid item xs={12} sm={4} md={4} lg={4} style={horizontalGridChildStyle}>
 <EditableImageArea 
 imageStyle={{minHeight: 200, height: '100%', width: '100%'}} 
 imageContainerStyle={{height: '100%'}}
@@ -157,7 +175,8 @@ src={'http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporar
 </Grid>
 <Grid item xs={12} sm={4} md={4} lg={4} style={horizontalGridChildStyle}>
 <Paper style={{height: '20%'}}>adadss</Paper>
-</Grid> */}
+</Grid> */
+}
 
 // const styles = theme => ({
 //   root: {
@@ -205,7 +224,7 @@ src={'http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporar
 //             {[0, 1, 2,3,4,5,6,7].map(value => (
 //               <Grid key={value} item>
 //                 <Paper
-//                   
+//
 //                   style={{ paddingTop: (value + 1) * 10, paddingBottom: (value + 1) * 10 }}
 //                 >
 //                   {`Cell ${value + 1}`}

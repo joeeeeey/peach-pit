@@ -1,6 +1,6 @@
-// edit 根节点 
+// edit 根节点
 // 其实是个 div
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 export default class PreviewRoot extends Component {
   constructor(props, context) {
@@ -8,11 +8,7 @@ export default class PreviewRoot extends Component {
   }
 
   render() {
-    const rootDivStyle = this.props.style
-    return (
-      <div style={rootDivStyle}>
-        {this.props.children}
-      </div>
-    );
+    const rootDivStyle = this.props.style;
+    return <div style={rootDivStyle}>{this.props.children}</div>;
   }
 }

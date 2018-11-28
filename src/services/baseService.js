@@ -1,7 +1,7 @@
-import axios from 'axios'
+import axios from "axios";
 
 class BaseService {
-  get = (url, params={}, timeout = 50000) => {
+  get = (url, params = {}, timeout = 50000) => {
     this.instance = this.instance || axios.create();
 
     this.instance.defaults.timeout = timeout;
@@ -9,10 +9,10 @@ class BaseService {
     return this.instance.get(url, {
       params: params,
       timeout: timeout
-    })
-  }
+    });
+  };
 
-  post = (url, params={}, timeout = 50000) => {
+  post = (url, params = {}, timeout = 50000) => {
     this.instance = this.instance || axios.create();
 
     this.instance.defaults.timeout = timeout;
@@ -20,8 +20,8 @@ class BaseService {
     return this.instance.post(url, {
       params: params,
       timeout: timeout
-    })
-  }
+    });
+  };
 }
 
 export default BaseService;

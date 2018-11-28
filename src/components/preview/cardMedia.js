@@ -1,6 +1,6 @@
 // 传入 props
-import React, { Component } from 'react';
-import { CardMedia } from 'material-ui/Card';
+import React, { Component } from "react";
+import { CardMedia } from "material-ui/Card";
 
 export default class PreviewCardMedia extends Component {
   constructor(props) {
@@ -8,20 +8,7 @@ export default class PreviewCardMedia extends Component {
   }
 
   render() {
-    const { style, image, title } = this.props
-    return (
-      <CardMedia
-        style={style}
-        image={image}
-        title={title}
-      />
-    );
+    const { style, image, title } = this.props;
+    return <CardMedia style={style} image={image} title={title} />;
   }
 }
-
-
-
-
-
-
-
