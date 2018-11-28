@@ -1,3 +1,113 @@
+/**
+ * @file 操作 dom 节点的方法
+ */
+
+/**
+ * 高维(数据层级对应 dom 树或虚拟 dom 树的层级) nodeData 格式:
+ * 
+ * {
+ *   "native": false,
+ *   "nodeName": "VerticalLayout",
+ *   "props": {
+ *     "backgroundInfo": {
+ *       "background": "white",
+ *       "backgroundType": "pureColor",
+ *       "imageInfo": {},
+ *       "fillType": null,
+ *       "enableParallex": null
+ *     },
+ *     "id": "VerticalLayout_7a6d2f823aab32de788b752b81515415"
+ *   },
+ *   "layoutName": "自定义纵向布局",
+ *   "children": [
+ *     {
+ *       "native": false,
+ *       "nodeName": "VerticalGrid"
+ *     },
+ *     {
+ *       "native": false,
+ *       "nodeName": "VerticalGrid"
+ *     }
+ *   ]
+ * }
+ * 
+ * @param {string} native
+ *   节点名称，有 component 代码映射的节点命名方式为驼峰，并且首字母大写
+ *   (verticalLayout)。原生组件都小写(div, h1, etc..)。此处注意复合
+ *   组件的根节点 nodeName 是 div。
+ * 
+ * @param {boolean} native
+ *   Mark whether the node(nodeName) is a native html node。
+ *   Eg: 
+ *     The nodeName `div` is `true`, if the nodeName is 
+ *     generate by code, it is false.
+ * 
+ * @param {boolean} composite
+ *   是否为复合。 复合代表[非原生的组件]并且[没有对应的代码映射到这个组件]。
+ *   Eg: 
+ *     一个垂直布局 verticalLayout 有对应的编辑组件文件 
+ *     `components/edit/verticalLayout.js` 与预览组件文件
+ *     `components/preview/verticalLayout.js`, 该组件 composite 
+ *     则为 `false`(或 `null`, 此处并未要求强制声明 `false`)。若管理员
+ *     将两个垂直布局在编辑页面进行增加保存为新的布局，则成为复合布局(这两个
+ *     垂直布局在保存存 layout 时会默认被一个 div 包裹)。 此处注意一定要
+ *     大于两个原始布局才会被自动保存为复合。
+ * 
+ * @param {object} props
+ *   存储节点的属性，如 `style` 可以规定节点的 css 样式。 对于
+ *   [有 component 代码映射的节点], 会有更多复杂的属性(与代码逻辑相关)。
+ * 
+ * @param {array} children
+ *   子元素，可为空。 
+ *   Eg: 
+ *     数组元素为一个完整的组件的数据结构(递归 nodeData)。
+ * 
+ */
+
+/**
+ * 低维 nodeData 格式:
+ * 
+ * {
+ *   "_relation": {
+ *     "VerticalLayout_7a6d2f823aab32de788b752b81515415": [
+ *       "VerticalGrid_1.0274019355984925",
+ *       "VerticalGrid_1.2670302330989138"
+ *     ]
+ *   },
+ *   "_root": "VerticalLayout_7a6d2f823aab32de788b752b81515415",
+ *   "VerticalLayout_7a6d2f823aab32de788b752b81515415": {
+ *     "native": false,
+ *     "nodeName": "VerticalLayout",
+ *     "props": {
+ *       "backgroundInfo": {
+ *         "background": "white",
+ *         "backgroundType": "pureColor",
+ *         "imageInfo": {},
+ *         "fillType": null,
+ *         "enableParallex": null
+ *       },
+ *       "id": "VerticalLayout_7a6d2f823aab32de788b752b81515415"
+ *     },
+ *     "layoutName": "自定义纵向布局"
+ *   },
+ *   "VerticalGrid_1.0274019355984925": {
+ *     "native": false,
+ *     "nodeName": "VerticalGrid"
+ *   },
+ *   "VerticalGrid_1.2670302330989138": {
+ *     "native": false,
+ *     "nodeName": "VerticalGrid"
+ *   }
+ * }
+ * 
+ * @param {array} _root
+ *   根节点的 id
+ * 
+ * @param {array} _relation
+ *   节点之间的父子关系
+ * 
+ */
+
 import md5 from "md5";
 
 function randomStr() {
@@ -90,6 +200,30 @@ function removeNode(currentDom, targetKey, parentKey) {
   }
 }
 
+
+// navbar 更新的方案, navbar 的 props.rootChildren 中需要存储当前顶层节点的内容
+// navbar 必须知道总共的节点
+function satisfyNavBar(flattenData, rootKey) {
+  let rootNode = flattenData[rootKey];
+
+  let navBarChildren = rootNode.props.navBarChildren;
+
+  if (navBarChildren) {
+    // 目前只能遍历查找，但其实 props 里的 selfkey 和 parentkey 应该被存下来
+    let topLeaveKeys = flattenData._relation[rootKey];
+
+    let navBarNode = null;
+    for (let i = 0; i < topLeaveKeys.length; i++) {
+      if (flattenData[topLeaveKeys[i]].nodeName === "NavBar") {
+        navBarNode = flattenData[topLeaveKeys[i]];
+        break;
+      }
+    }
+    navBarNode.props.rootChildren = navBarChildren;
+  }
+  return flattenData;
+}
+
 // { _relation:
 //   { '(0){div}':
 //      [ '(0){div}(0){AppBar}',
@@ -107,7 +241,7 @@ function removeNode(currentDom, targetKey, parentKey) {
 //   { native: false,
 //     nodeName: 'FullWidthGrid',
 //     props: { containerConfig: [Object], itemsConfig: [Object] } } }
-
+// 将以上 nodeData 升维
 function doHeighten(flattenData, startDom = null, isLayout = false) {
   let domData = flattenData[startDom];
   if (isLayout) {
@@ -146,29 +280,6 @@ function doHeighten(flattenData, startDom = null, isLayout = false) {
     }
   }
   return domData;
-}
-
-// navbar 更新的方案, navbar 的 props.rootChildren 中需要存储当前顶层节点的内容
-// navbar 必须知道总共的节点
-function satisfyNavBar(flattenData, rootKey) {
-  let rootNode = flattenData[rootKey];
-
-  let navBarChildren = rootNode.props.navBarChildren;
-
-  if (navBarChildren) {
-    // 目前只能遍历查找，但其实 props 里的 selfkey 和 parentkey 应该被存下来
-    let topLeaveKeys = flattenData._relation[rootKey];
-
-    let navBarNode = null;
-    for (let i = 0; i < topLeaveKeys.length; i++) {
-      if (flattenData[topLeaveKeys[i]].nodeName === "NavBar") {
-        navBarNode = flattenData[topLeaveKeys[i]];
-        break;
-      }
-    }
-    navBarNode.props.rootChildren = navBarChildren;
-  }
-  return flattenData;
 }
 
 // 需要去除最外层的 root, 若 root children 只有一个元素, 则保存该元素
