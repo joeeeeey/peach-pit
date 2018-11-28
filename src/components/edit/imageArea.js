@@ -14,7 +14,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Button from "material-ui/Button";
 import Measure from "react-measure";
-import ImageAreaSetting from "../../jssSettings/imageAreaSetting";
+import ImageAreaSetting from "jssSettings/imageAreaSetting";
 
 // 有编辑功能在加上
 // import EditImageDialog from '../editTools/image/editImageDialog'

@@ -3,8 +3,8 @@ import { withStyles } from "material-ui/styles";
 import PropTypes from "prop-types";
 import Button from "material-ui/Button";
 import { Link } from "react-router-dom";
-import HomePageStepper from "../../components/common/steppers/homePageStepper";
-import ResponsiveIntro from "../../components/derive/homePage/responsiveIntro";
+import HomePageStepper from "components/common/steppers/homePageStepper";
+import ResponsiveIntro from "components/derive/homePage/responsiveIntro";
 
 const styles = theme => ({
   root: {

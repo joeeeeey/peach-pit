@@ -4,10 +4,10 @@ import { withStyles } from "material-ui/styles";
 import Tabs, { Tab } from "material-ui/Tabs";
 import Paper from "material-ui/Paper";
 import Grid from "material-ui/Grid";
-import AppBar from "../../components/common/layouts/appBar";
+import AppBar from "components/common/layouts/appBar";
 // login form
-import LoginFrom from "../../components/common/forms/login";
-import RegisterFrom from "../../components/common/forms/register";
+import LoginFrom from "components/common/forms/login";
+import RegisterFrom from "components/common/forms/register";
 
 function TabContainer({ children, dir = "x-reverse" }) {
   return (

@@ -16,15 +16,15 @@
 
 // // 延时加载
 // import Loadable from "react-loadable";
-// import { Load } from "../components/load";
+// import { Load } from "components/load";
 
 // // 首屏组件
 // import Home from '../pages/user/homePage'
 
 // import { createStore } from 'redux'
-// import PPSpace from '../reducers/index'
+// import PPSpace from 'reducers/index'
 // import Cookies from 'js-cookie';
-// import CheckUserLogin from '../utils/checkUserLogin'
+// import CheckUserLogin from 'utils/checkUserLogin'
 
 // const AsyncUserLogin = Loadable({
 //   loader: () => import('./user/loginPage'),

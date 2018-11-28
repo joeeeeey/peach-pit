@@ -1,20 +1,20 @@
 import React from "react";
 import PropTypes from "prop-types";
-import nodeOperation from "../../utils/nodeOperation";
-import BlockService from "../../services/blockService";
+import nodeOperation from "utils/nodeOperation";
+import BlockService from "services/blockService";
 
 // Preview components in other views
-import PreviewRoot from "../../components/preview/root";
-import PreviewTextArea from "../../components/preview/textArea";
-import PreviewLetfRightGrid from "../../components/preview/letfRightGrid";
-import PreviewCard from "../../components/preview/card";
-import PreviewCardMedia from "../../components/preview/cardMedia";
-import PreviewVerticalGrid from "../../components/preview/verticalGrid";
-import PreviewVerticalLayout from "../../components/preview/verticalLayout";
-import PreviewImageArea from "../../components/preview/imageArea";
-import PreviewNavBar from "../../components/preview/navBar";
-import PreviewPhotoGallery from "../../components/preview/photoGallery";
-import PreviewImageDescription from "../../components/preview/imageDescription";
+import PreviewRoot from "components/preview/root";
+import PreviewTextArea from "components/preview/textArea";
+import PreviewLetfRightGrid from "components/preview/letfRightGrid";
+import PreviewCard from "components/preview/card";
+import PreviewCardMedia from "components/preview/cardMedia";
+import PreviewVerticalGrid from "components/preview/verticalGrid";
+import PreviewVerticalLayout from "components/preview/verticalLayout";
+import PreviewImageArea from "components/preview/imageArea";
+import PreviewNavBar from "components/preview/navBar";
+import PreviewPhotoGallery from "components/preview/photoGallery";
+import PreviewImageDescription from "components/preview/imageDescription";
 
 const blockService = new BlockService();
 

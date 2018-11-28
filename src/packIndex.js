@@ -4,9 +4,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Index from "./pages/index";
 
-import "./css/homePage.css";
-import "./css/verticalLayout.css";
-import "./css/quill.css";
+import "css/homePage.css";
+import "css/verticalLayout.css";
+import "css/quill.css";
 import "react-quill/dist/quill.snow.css"; // ES6
 
 ReactDOM.render(<Index />, document.querySelector("#root"));

@@ -16,7 +16,7 @@
 // {"native":false,"nodeName":"VerticalLayout","props":{}}
 import React, { Component } from "react";
 import Grid from "material-ui/Grid";
-import backgroundSetting from "../../jssSettings/backgroundSetting";
+import backgroundSetting from "jssSettings/backgroundSetting";
 
 // Layout 的公共样式， 可以抽离
 // 需要占据主屏幕 80% 位置左右两侧自动 margin

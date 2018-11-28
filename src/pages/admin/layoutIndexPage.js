@@ -1,12 +1,12 @@
 import React from "react";
-import AppBar from "../../components/common/layouts/adminAppBar";
+import AppBar from "components/common/layouts/adminAppBar";
 import PropTypes from "prop-types";
 import { Table, Input, Button, Icon, message } from "antd";
 import { Link } from "react-router-dom";
 import MuButton from "material-ui/Button";
 import UpdateBlockThumbButton from "./updateBlockThumbButton";
 
-import LayoutService from "../../services/layoutService";
+import LayoutService from "services/layoutService";
 
 const layoutService = new LayoutService();
 

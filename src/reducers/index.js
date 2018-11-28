@@ -1,4 +1,4 @@
-import nodeOperation from "../utils/nodeOperation";
+import nodeOperation from "utils/nodeOperation";
 
 // 调整 store 的结构
 // { user: {}, node: {}, administrator: {}, editInfo:{role: 'admin', source: 'template', id: 5} }

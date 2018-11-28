@@ -1,9 +1,9 @@
 import React from "react";
 import Grid from "material-ui/Grid";
-import PreviewImageArea from "../../components/preview/imageArea";
-import PreviewTextArea from "../../components/preview/textArea";
-import PreviewVerticalLayout from "../../components/preview/verticalLayout";
-import backgroundSetting from "../../jssSettings/backgroundSetting";
+import PreviewImageArea from "components/preview/imageArea";
+import PreviewTextArea from "components/preview/textArea";
+import PreviewVerticalLayout from "components/preview/verticalLayout";
+import backgroundSetting from "jssSettings/backgroundSetting";
 
 const verticalCenterStyle = {
   display: "flex",

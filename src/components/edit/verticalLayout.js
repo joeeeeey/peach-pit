@@ -47,8 +47,8 @@ import PropTypes from "prop-types";
 import Grid from "material-ui/Grid";
 import ChangeBackgroundButton from "../editTools/layout/changeBackgroundButton";
 import GridArrangementOptionLists from "../editTools/layout/gridArrangementOptionLists";
-import ArrayOper from "../../utils/arrOperation";
-import backgroundSetting from "../../jssSettings/backgroundSetting";
+import ArrayOper from "utils/arrOperation";
+import backgroundSetting from "jssSettings/backgroundSetting";
 
 // Layout 的公共样式， 可以抽离
 // 需要占据主屏幕 80% 位置左右两侧自动 margin

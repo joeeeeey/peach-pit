@@ -5,7 +5,7 @@ import React from "react";
 import { message } from "antd";
 import PropTypes from "prop-types";
 import axios from "axios";
-import UpyunService from "../../../services/upyunService";
+import UpyunService from "services/upyunService";
 import { Spin } from "antd";
 
 const upyunService = new UpyunService();

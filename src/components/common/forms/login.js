@@ -4,8 +4,8 @@ import { Redirect } from "react-router-dom";
 // Ant
 import "antd/dist/antd.css";
 import { Form, Icon, Input, message } from "antd";
-import UserService from "../../../services/userService";
-import AdminService from "../../../services/adminService";
+import UserService from "services/userService";
+import AdminService from "services/adminService";
 
 // Mu
 import MuButton from "material-ui/Button";

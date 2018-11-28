@@ -9,7 +9,7 @@ import Grid from "material-ui/Grid";
 import Typography from "material-ui/Typography";
 import { message } from "antd";
 
-import SiteService from "../../../services/siteService";
+import SiteService from "services/siteService";
 const siteService = new SiteService();
 
 const styles = theme => ({

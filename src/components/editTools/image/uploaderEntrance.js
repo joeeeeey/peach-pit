@@ -13,10 +13,10 @@ import Grid from "material-ui/Grid";
 import PropTypes from "prop-types";
 import UploaderArea from "./uploaderArea";
 import AnButton from "antd/lib/button";
-import UpyunService from "../../../services/upyunService";
+import UpyunService from "services/upyunService";
 import { Modal, Tabs, message } from "antd";
 import DoneOutlineIcon from "material-ui-icons/CheckCircle";
-import dateOperation from "../../../utils/dateOperation";
+import dateOperation from "utils/dateOperation";
 
 const TabPane = Tabs.TabPane;
 const upyunService = new UpyunService();

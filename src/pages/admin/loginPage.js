@@ -6,7 +6,7 @@ import Paper from "material-ui/Paper";
 import Grid from "material-ui/Grid";
 
 // login form
-import LoginFrom from "../../components/common/forms/login";
+import LoginFrom from "components/common/forms/login";
 
 function TabContainer({ children, dir = "x-reverse" }) {
   return (

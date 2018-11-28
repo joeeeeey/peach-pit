@@ -1,12 +1,12 @@
 import React from "react";
-import AppBar from "../../components/common/layouts/adminAppBar";
+import AppBar from "components/common/layouts/adminAppBar";
 import { Table, Input, Button, Icon, message } from "antd";
 import { Link } from "react-router-dom";
 import MuButton from "material-ui/Button";
 
 import UpdateBlockThumbButton from "./updateBlockThumbButton";
 
-import TemplateService from "../../services/templateService";
+import TemplateService from "services/templateService";
 const templateService = new TemplateService();
 
 class TemplateIndexPage extends React.Component {

@@ -21,7 +21,7 @@
 // fullHeight
 // display: grid 是为了满屏时将内容垂直居中
 // 子元素设置 margin: auto https://css-tricks.com/centering-css-complete-guide/
-import deviceDetect from '../utils/deviceDetect'
+import deviceDetect from 'utils/deviceDetect'
 
 const defaultParallexStyle = {
   backgroundAttachment: 'fixed',

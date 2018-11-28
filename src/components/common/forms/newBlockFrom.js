@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import "antd/dist/antd.css";
 import { Form, Select, Input, message } from "antd";
 import MuButton from "material-ui/Button";
-import nodeOperation from "../../../utils/nodeOperation";
-import TemplateService from "../../../services/templateService";
-import LayoutService from "../../../services/layoutService";
+import nodeOperation from "utils/nodeOperation";
+import TemplateService from "services/templateService";
+import LayoutService from "services/layoutService";
 const templateService = new TemplateService();
 const layoutService = new LayoutService();
 

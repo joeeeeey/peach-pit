@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import AppBar from "../../components/common/layouts/appBar";
+import AppBar from "components/common/layouts/appBar";
 import PropTypes from "prop-types";
 
 export default class AboutPage extends Component {

@@ -5,9 +5,9 @@ import Grid from "material-ui/Grid";
 // import { FormControl, FormLabel, FormControlLabel } from 'material-ui/Form';
 // import Radio, { RadioGroup } from 'material-ui/Radio';
 import Paper from "material-ui/Paper";
-import EditableImageArea from "../components/edit/imageArea";
-import EditableTextArea from "../components/edit/textArea";
-import EditableVerticalLayout from "../components/edit/verticalLayout";
+import EditableImageArea from "components/edit/imageArea";
+import EditableTextArea from "components/edit/textArea";
+import EditableVerticalLayout from "components/edit/verticalLayout";
 
 const children = [
   {

@@ -6,9 +6,9 @@ import { message } from "antd";
 import PropTypes from "prop-types";
 import axios from "axios";
 import Button from "material-ui/Button";
-import UpyunService from "../../services/upyunService";
-import TemplateService from "../../services/templateService";
-import LayoutService from "../../services/layoutService";
+import UpyunService from "services/upyunService";
+import TemplateService from "services/templateService";
+import LayoutService from "services/layoutService";
 
 const upyunService = new UpyunService();
 const templateService = new TemplateService();

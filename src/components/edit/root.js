@@ -10,7 +10,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Button from "material-ui/Button";
 import { Link } from "react-router-dom";
-import nodeOperation from "../../utils/nodeOperation";
+import nodeOperation from "utils/nodeOperation";
 // 侧边栏以及 appbar
 import { Layout, Menu, Icon, Popover, Divider, message } from "antd";
 
@@ -33,13 +33,13 @@ import LayoutsListPopover from "../editTools/sidebar/layoutsListPreviewPopover";
 // 更改网站名称
 import UpdateSiteNameItem from "../editTools/sidebar/updateSiteNameItem";
 
-import TemplateService from "../../services/templateService";
-import LayoutService from "../../services/layoutService";
-import SiteService from "../../services/siteService";
+import TemplateService from "services/templateService";
+import LayoutService from "services/layoutService";
+import SiteService from "services/siteService";
 
 // import Test from '../../pages/test'
 import GridLayout from "react-grid-layout";
-import ArrayOper from "../../utils/arrOperation";
+import ArrayOper from "utils/arrOperation";
 
 const layoutService = new LayoutService();
 const templateService = new TemplateService();

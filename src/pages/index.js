@@ -27,9 +27,9 @@ import Preview from "./site/preview";
 // import Test from './test'
 
 import { createStore } from "redux";
-import PPSpace from "../reducers/index";
+import PPSpace from "reducers/index";
 import Cookies from "js-cookie";
-import CheckUserLogin from "../utils/checkUserLogin";
+import CheckUserLogin from "utils/checkUserLogin";
 
 export const store = createStore(PPSpace);
 

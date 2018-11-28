@@ -4,10 +4,10 @@ import "antd/dist/antd.css";
 import { Form, Icon, Input, Tooltip, message } from "antd";
 import MuButton from "material-ui/Button";
 // 正则
-import regPattern from "../../../utils/regPattern";
+import regPattern from "utils/regPattern";
 import { Redirect } from "react-router-dom";
 
-import UserService from "../../../services/userService";
+import UserService from "services/userService";
 
 const FormItem = Form.Item;
 const userService = new UserService();

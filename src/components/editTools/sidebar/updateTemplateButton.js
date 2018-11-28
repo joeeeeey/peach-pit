@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import { message } from 'antd';
 
-import TemplateService from '../../../services/templateService'
-import nodeOperation from '../../../utils/nodeOperation'
+import TemplateService from 'services/templateService'
+import nodeOperation from 'utils/nodeOperation'
 
 const templateService = new TemplateService()
 

@@ -3,13 +3,13 @@ import React, { Component } from "react";
 import Grid from "material-ui/Grid";
 import PropTypes from "prop-types";
 
-import TitleAndSubTitle from "../../components/common/titleAndSubTitle";
-import ButtonAppBar from "../../components/common/layouts/appBar";
-import ChooseTemplateCard from "../../components/common/cards/chooseTemplateCard";
+import TitleAndSubTitle from "components/common/titleAndSubTitle";
+import ButtonAppBar from "components/common/layouts/appBar";
+import ChooseTemplateCard from "components/common/cards/chooseTemplateCard";
 
 import { Radio } from "antd";
 
-import TemplateService from "../../services/templateService";
+import TemplateService from "services/templateService";
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import AppBar from "../../components/common/layouts/adminAppBar";
+import AppBar from "components/common/layouts/adminAppBar";
 import { withStyles } from "material-ui/styles";
 import PropTypes from "prop-types";
-import ResponsiveCardGrid from "../../components/common/grids/responsiveCardGrid";
+import ResponsiveCardGrid from "components/common/grids/responsiveCardGrid";
 
 import { CardActions, CardContent } from "material-ui/Card";
 import Button from "material-ui/Button";
@@ -10,7 +10,7 @@ import Typography from "material-ui/Typography";
 import { Link } from "react-router-dom";
 import AddIcon from "material-ui-icons/Add";
 
-import BlankCard from "../../components/common/cards/blankCard";
+import BlankCard from "components/common/cards/blankCard";
 
 const styles = theme => ({
   root: {

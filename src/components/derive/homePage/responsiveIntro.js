@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import PreviewRoot from "../../../components/preview/root";
-import PreviewVerticalLayout from "../../../components/preview/verticalLayout";
-import PreviewVerticalGrid from "../../../components/preview/verticalGrid";
-import PreviewTextArea from "../../../components/preview/textArea";
-import PreviewImageArea from "../../../components/preview/imageArea";
+import PreviewRoot from "components/preview/root";
+import PreviewVerticalLayout from "components/preview/verticalLayout";
+import PreviewVerticalGrid from "components/preview/verticalGrid";
+import PreviewTextArea from "components/preview/textArea";
+import PreviewImageArea from "components/preview/imageArea";
 
 class ResponsiveIntro extends Component {
   render() {

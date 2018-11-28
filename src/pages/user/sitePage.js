@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import AppBar from "../../components/common/layouts/appBar";
+import AppBar from "components/common/layouts/appBar";
 import PropTypes from "prop-types";
 import Button from "material-ui/Button";
 
@@ -13,7 +13,7 @@ import blue from "material-ui/colors/blue";
 import { Link } from "react-router-dom";
 import { List, Divider, Popconfirm, message, Tooltip } from "antd";
 
-import SiteService from "../../services/siteService";
+import SiteService from "services/siteService";
 
 const siteService = new SiteService();
 

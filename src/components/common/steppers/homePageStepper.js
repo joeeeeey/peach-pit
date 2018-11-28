@@ -4,10 +4,10 @@ import { withStyles } from "material-ui/styles";
 import Stepper, { Step, StepLabel, StepContent } from "material-ui/Stepper";
 import Button from "material-ui/Button";
 import Paper from "material-ui/Paper";
-import PreviewRoot from "../../../components/preview/root";
-import PreviewVerticalLayout from "../../../components/preview/verticalLayout";
-import PreviewVerticalGrid from "../../../components/preview/verticalGrid";
-import PreviewTextArea from "../../../components/preview/textArea";
+import PreviewRoot from "components/preview/root";
+import PreviewVerticalLayout from "components/preview/verticalLayout";
+import PreviewVerticalGrid from "components/preview/verticalGrid";
+import PreviewTextArea from "components/preview/textArea";
 
 const styles = theme => ({
   button: {
