@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import nodeOperation from "utils/nodeOperation";
 import BlockService from "services/blockService";
-import UpyunService from "services/upyunService";
+import CdnService from "services/cdnService";
 // 此处需要引入所有可编辑组件
 import EditableRoot from "components/edit/root";
 import EditableTextArea from "components/edit/textArea";
@@ -15,7 +15,7 @@ import EditableImageDescription from "components/edit/imageDescription";
 
 // 测试的组件
 // import Test from '../test'
-const upyunService = new UpyunService();
+const cdnService = new CdnService();
 const blockService = new BlockService();
 // const func = (function (React, Components) {
 //   return function App() {
@@ -121,7 +121,7 @@ class Edit extends React.Component {
 
     let params = this.getShowUploadedImageParams(editInfo, role);
     this.setEditInfoState(editInfo);
-    upyunService
+    cdnService
       .showUploadedFiles(params)
       .then(response => {
         const { data } = response;

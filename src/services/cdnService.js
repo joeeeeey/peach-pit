@@ -1,6 +1,6 @@
 import BaseService from "./baseService";
 
-class UpyunService extends BaseService {
+class CdnService extends BaseService {
   getImgToken = params => {
     return this.post("/api/get_img_token", params);
   };
@@ -14,4 +14,4 @@ class UpyunService extends BaseService {
   };
 }
 
-export default UpyunService;
+export default CdnService;

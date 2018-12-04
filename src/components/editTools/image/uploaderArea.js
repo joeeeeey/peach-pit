@@ -5,10 +5,10 @@ import React from "react";
 import { message } from "antd";
 import PropTypes from "prop-types";
 import axios from "axios";
-import UpyunService from "services/upyunService";
+import CdnService from "services/cdnService";
 import { Spin } from "antd";
 
-const upyunService = new UpyunService();
+const cdnService = new CdnService();
 
 const containerStyle = {
   textAlign: "center",
@@ -56,7 +56,7 @@ export default class UploaderArea extends React.Component {
     const { role, source, id } = this.context.store.getState().editInfo;
     // TODO 区分完善 admin 和 user 保存图片的路径，可将此逻辑移到后端处理
 
-    return upyunService.getImgToken({
+    return cdnService.getImgToken({
       filePath: `/${role}/${source}/${file.name}`,
       role: role,
       // TODO roleId 在 state 中取不到直接在 cookie 中取?
@@ -71,7 +71,7 @@ export default class UploaderArea extends React.Component {
   buildFileReader = file => {
     // TODO 增加 loading
     this.setState({ loading: true });
-    // upyunService
+    // cdnService
     this.getFilePath(file)
       .then(response => {
         const { data } = response;
