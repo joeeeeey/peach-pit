@@ -62,9 +62,9 @@ import PropTypes from "prop-types";
 import Measure from "react-measure";
 import computeImage from "utils/computeImage";
 import EditableImageArea from "../edit/imageArea";
-import AdjustGalleryStyleButton from "../editTools/photoGallery/adjustGalleryStyleButton";
-import AddGalleryElementButton from "../editTools/photoGallery/addGalleryElementButton";
-import ChangeBackgroundButton from "../editTools/layout/changeBackgroundButton";
+import AdjustGalleryStyleButton from "components/editTools/photoGallery/adjustGalleryStyleButton";
+import AddGalleryElementButton from "components/editTools/photoGallery/addGalleryElementButton";
+import ChangeBackgroundButton from "components/editTools/layout/changeBackgroundButton";
 import backgroundSetting from "jssSettings/backgroundSetting";
 
 const imgContainerStyle = {

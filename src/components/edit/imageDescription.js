@@ -61,10 +61,10 @@ import EditableImageArea from "components/edit/imageArea";
 import EditableTextArea from "components/edit/textArea";
 import EditableVerticalLayout from "components/edit/verticalLayout";
 import backgroundSetting from "jssSettings/backgroundSetting";
-import ChangeBackgroundButton from "../editTools/layout/changeBackgroundButton";
-import AddImageDescriptionElementButton from "../editTools/imageDescription/addImageDescriptionElementButton";
-import RemoveNodeSpirit from "../editTools/layout/removeNodeSpirit";
-import ChangeLayoutButton from "../editTools/imageDescription/changeLayoutButton";
+import ChangeBackgroundButton from "components/editTools/layout/changeBackgroundButton";
+import AddImageDescriptionElementButton from "components/editTools/imageDescription/addImageDescriptionElementButton";
+import RemoveNodeSpirit from "components/editTools/layout/removeNodeSpirit";
+import ChangeLayoutButton from "components/editTools/imageDescription/changeLayoutButton";
 
 const RemoveNodeSpiritContainerStyle = {
   zIndex: 46,

@@ -126,7 +126,6 @@ rsync:
 
     rsync  -azP -e 'ssh -p 21538' build/* root@172.247.38.148:/code/static_files
 
-
 ### 源于顶层 layout 的 id 生成过程
 
 在 root 节点增加时加入

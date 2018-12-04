@@ -45,8 +45,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Grid from "material-ui/Grid";
-import ChangeBackgroundButton from "../editTools/layout/changeBackgroundButton";
-import GridArrangementOptionLists from "../editTools/layout/gridArrangementOptionLists";
+import ChangeBackgroundButton from "components/editTools/layout/changeBackgroundButton";
+import GridArrangementOptionLists from "components/editTools/layout/gridArrangementOptionLists";
 import ArrayOper from "utils/arrOperation";
 import backgroundSetting from "jssSettings/backgroundSetting";
 

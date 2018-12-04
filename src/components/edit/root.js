@@ -10,36 +10,33 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Button from "material-ui/Button";
 import { Link } from "react-router-dom";
-import nodeOperation from "utils/nodeOperation";
 // 侧边栏以及 appbar
 import { Layout, Menu, Icon, Popover, Divider, message } from "antd";
-
+import GridLayout from "react-grid-layout";
+import ArrayOper from "utils/arrOperation";
 // 插入节点代码
-import InsertNodeCodeDialog from "../editTools/sidebar/insertNodeCodeDialog";
+import InsertNodeCodeDialog from "components/editTools/sidebar/insertNodeCodeDialog";
 // 保存到新的板块
-import SaveToNewBlockDialog from "../editTools/sidebar/saveToNewBlockDialog";
+import SaveToNewBlockDialog from "components/editTools/sidebar/saveToNewBlockDialog";
 // 更新模板按钮
-import UpdateTemplateButton from "../editTools/sidebar/updateTemplateButton";
+import UpdateTemplateButton from "components/editTools/sidebar/updateTemplateButton";
 // 更新样式按钮
-import UpdateLayoutButton from "../editTools/sidebar/updateLayoutButton";
+import UpdateLayoutButton from "components/editTools/sidebar/updateLayoutButton";
 // 更新网站按钮
-import UpdateSiteButton from "../editTools/sidebar/updateSiteButton";
+import UpdateSiteButton from "components/editTools/sidebar/updateSiteButton";
 // 部署网站按钮
-import DeploySiteButton from "../editTools/sidebar/deploySiteButton";
+import DeploySiteButton from "components/editTools/sidebar/deploySiteButton";
 // 顶层样式操作模板
-import TopLevelMenuItem from "../editTools/sidebar/topLevelMenuItme";
+import TopLevelMenuItem from "components/editTools/sidebar/topLevelMenuItme";
 // 布局列表气泡卡片
-import LayoutsListPopover from "../editTools/sidebar/layoutsListPreviewPopover";
+import LayoutsListPopover from "components/editTools/sidebar/layoutsListPreviewPopover";
 // 更改网站名称
-import UpdateSiteNameItem from "../editTools/sidebar/updateSiteNameItem";
-
+import UpdateSiteNameItem from "components/editTools/sidebar/updateSiteNameItem";
 import TemplateService from "services/templateService";
 import LayoutService from "services/layoutService";
 import SiteService from "services/siteService";
-
+import nodeOperation from "utils/nodeOperation";
 // import Test from '../../pages/test'
-import GridLayout from "react-grid-layout";
-import ArrayOper from "utils/arrOperation";
 
 const layoutService = new LayoutService();
 const templateService = new TemplateService();
@@ -56,7 +53,7 @@ class EditableRoot extends Component {
       openPreview: false,
       editInfo: context.store.getState().editInfo, // {source: "das", id: "32", role: "admin"}
       layouts: [], // 可选择加入的样式
-      navBarChildren: this.props.navBarChildren,
+      navBarChildren: props.navBarChildren,
       topLevelItemisDraggable: false // 顶层板块可被拖拽
     };
     this.navbar = [];
@@ -612,7 +609,7 @@ class EditableRoot extends Component {
 
   render() {
     // TODO 使用 state 替代
-    const rootDivStyle = this.props.style;
+    const rootDivStyle = Object.assign({ marginBottom: '40px' }, this.props.style);
 
     return (
       <div>

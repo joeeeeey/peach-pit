@@ -5,8 +5,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Grid from "material-ui/Grid";
-import AddNodeSpirit from "../editTools/layout/addNodeSpirit";
-import RemoveNodeSpirit from "../editTools/layout/removeNodeSpirit";
+import AddNodeSpirit from "components/editTools/layout/addNodeSpirit";
+import RemoveNodeSpirit from "components/editTools/layout/removeNodeSpirit";
 
 const AddNodeSpiritContainerStyle = {
   zIndex: 45,
@@ -15,11 +15,13 @@ const AddNodeSpiritContainerStyle = {
   top: -5,
   width: "100%"
 };
+
 const RemoveNodeSpiritContainerStyle = {
   zIndex: 46,
   position: "absolute",
   right: -15
 };
+
 const ChildAddNodeSpiritContainerStyle = {
   zIndex: 45,
   minHeight: 23,
@@ -27,6 +29,7 @@ const ChildAddNodeSpiritContainerStyle = {
   top: -10,
   width: "100%"
 };
+
 export default class EditableVerticalGrid extends Component {
   constructor(props, context) {
     super(props);

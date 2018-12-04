@@ -17,9 +17,9 @@ import Measure from "react-measure";
 import ImageAreaSetting from "jssSettings/imageAreaSetting";
 
 // 有编辑功能在加上
-// import EditImageDialog from '../editTools/image/editImageDialog'
+// import EditImageDialog from 'components/editTools/image/editImageDialog'
 
-import UploaderEntrance from "../editTools/image/uploaderEntrance";
+import UploaderEntrance from "components/editTools/image/uploaderEntrance";
 
 const defaultImageStyle = { maxWidth: "100%", maxHeight: "100%" };
 const defaultImageContainerStyle = ImageAreaSetting.defaultImageContainerStyle();

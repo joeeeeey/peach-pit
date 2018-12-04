@@ -1,8 +1,6 @@
 .addElementButtonContanier{
-  position: absolute;
+  position: relative;
   margin: auto;
-  left: 35%;
-  bottom: -1;
   width: 30%;
   opacity: 0.8;
   text-align: center;

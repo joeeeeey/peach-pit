@@ -224,24 +224,8 @@ function satisfyNavBar(flattenData, rootKey) {
   return flattenData;
 }
 
-// { _relation:
-//   { '(0){div}':
-//      [ '(0){div}(0){AppBar}',
-//        '(0){div}(1){h1}',
-//        '(0){div}(2){FullWidthGrid}' ] },
-//  _root: '(0){div}',
-//  '(0){div}': { native: true, nodeName: 'div', props: { style: [Object] } },
-//  '(0){div}(0){AppBar}': { native: false, nodeName: 'AppBar', props: null },
-//  '(0){div}(1){h1}':
-//   { native: true,
-//     nodeName: 'h1',
-//     props: { style: [Object] },
-//     children: 'Hello World' },
-//  '(0){div}(2){FullWidthGrid}':
-//   { native: false,
-//     nodeName: 'FullWidthGrid',
-//     props: { containerConfig: [Object], itemsConfig: [Object] } } }
-// 将以上 nodeData 升维
+
+// 将低维 nodeData 升维
 function doHeighten(flattenData, startDom = null, isLayout = false) {
   let domData = flattenData[startDom];
   if (isLayout) {

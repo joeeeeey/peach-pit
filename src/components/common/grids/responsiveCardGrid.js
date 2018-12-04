@@ -1,5 +1,5 @@
 // 可接受参数
-// <FullWidthGrid
+// <ResponsiveCardGrid
 // containerConfig={spacing: 20, justify: 'space-around'}
 // itemsConfig={lists: [], itemName: 'WebTemplateCard'}
 // />
