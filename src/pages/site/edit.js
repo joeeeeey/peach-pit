@@ -3,9 +3,6 @@ import PropTypes from "prop-types";
 import nodeOperation from "utils/nodeOperation";
 import BlockService from "services/blockService";
 import UpyunService from "services/upyunService";
-
-// 转义
-// import * as babel from 'babel-standalone';
 // 此处需要引入所有可编辑组件
 import EditableRoot from "components/edit/root";
 import EditableTextArea from "components/edit/textArea";

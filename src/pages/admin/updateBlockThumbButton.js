@@ -36,7 +36,6 @@ export default class UpdateBlockThumbButton extends React.Component {
   };
 
   buildFileReader = file => {
-    // upyunService
     this.getFilePath(file)
       .then(response => {
         const { data } = response;

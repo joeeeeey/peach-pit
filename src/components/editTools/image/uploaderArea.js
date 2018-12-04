@@ -22,7 +22,7 @@ const containerStyle = {
   minHeight: 180
 };
 export default class UploaderArea extends React.Component {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
     this.state = { imageUrl: null, UploaderIsHover: false, loading: false };
 
