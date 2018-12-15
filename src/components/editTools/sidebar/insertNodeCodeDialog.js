@@ -1,15 +1,15 @@
-import React from 'react';
-import Button from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
+import React from "react";
+import Button from "material-ui/Button";
+import TextField from "material-ui/TextField";
 import Dialog, {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
-} from 'material-ui/Dialog';
-import PropTypes from 'prop-types';
+  DialogTitle
+} from "material-ui/Dialog";
+import PropTypes from "prop-types";
 
-import editToolBaseDialog from './editToolBaseDialog'
+import editToolBaseDialog from "./editToolBaseDialog";
 
 export default class InsertNodeCodeDialog extends editToolBaseDialog {
   constructor(props, context) {
@@ -17,29 +17,35 @@ export default class InsertNodeCodeDialog extends editToolBaseDialog {
   }
   state = {
     open: false,
-    code: '{"native":true,"nodeName":"h2","props":{"style":{"color":"green", "margin":"auto"}},"children":"Hello World2"}'
+    code:
+      '{"native":true,"nodeName":"h2","props":{"style":{"color":"green", "margin":"auto"}},"children":"Hello World2"}'
   };
 
   insertCode = () => {
     try {
-      const nodeData = JSON.parse(this.state.code)  
-      const rootKey = this.context.store.getState().node._root
+      const nodeData = JSON.parse(this.state.code);
+      const rootKey = this.context.store.getState().node._root;
 
       this.context.store.dispatch({
-        type: 'addNode',
+        type: "addNode",
         payload: { targetKey: rootKey, nodeData: nodeData },
-        target: 'node',
+        target: "node"
       });
-
     } catch (error) {
-      alert(`出现了异常: ${error.toString()}`)
+      alert(`出现了异常: ${error.toString()}`);
     }
-  }
+  };
 
   render() {
     return (
       <div>
-        <Button onClick={this.handleClickOpen} style={this.buttonStyle()} color="secondary">插入节点代码</Button>
+        <Button
+          onClick={this.handleClickOpen}
+          style={this.buttonStyle()}
+          color="secondary"
+        >
+          插入节点代码
+        </Button>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
@@ -48,8 +54,8 @@ export default class InsertNodeCodeDialog extends editToolBaseDialog {
           <DialogTitle id="form-dialog-title">插入节点代码</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              目前只支持传入 JSON.stringify(obj) 的代码。这句话一定要很长，这样就会使得
-              整个 Dialog 的 width 变长.
+              目前只支持传入 JSON.stringify(obj)
+              的代码。这句话一定要很长，这样就会使得 整个 Dialog 的 width 变长.
             </DialogContentText>
             <TextField
               autoFocus
@@ -59,7 +65,7 @@ export default class InsertNodeCodeDialog extends editToolBaseDialog {
               placeholder="js object"
               multiline
               value={this.state.code}
-              onChange={this.handleChange('code')}
+              onChange={this.handleChange("code")}
               fullWidth
             />
           </DialogContent>
@@ -77,7 +83,6 @@ export default class InsertNodeCodeDialog extends editToolBaseDialog {
   }
 }
 
-
 InsertNodeCodeDialog.contextTypes = {
-  store: PropTypes.object,
+  store: PropTypes.object
 };

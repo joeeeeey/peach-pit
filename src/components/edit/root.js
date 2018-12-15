@@ -428,6 +428,7 @@ class EditableRoot extends Component {
 
   // 得到整个 node
   wholeNode = () => {
+    // console.log('得到整个 node is: ', JSON.stringify(this.context.store.getState().node))
     return this.context.store.getState().node;
   };
 
@@ -483,7 +484,6 @@ class EditableRoot extends Component {
         .catch(function(error) {
           message.error(`😥 出现异常:, 请设置浏览器允许该网站弹窗哦`, 2);
         });
-    } else {
     }
   };
 

@@ -241,7 +241,8 @@ export default class ChangeBackgroundButton extends React.Component {
               <Button
                 onClick={this.updateFullHeightStyle}
                 size="small"
-                style={{ marginBottom: 5 }}>
+                style={{ marginBottom: 5 }}
+              >
                 {this.state.fullHeight ? "内容撑开" : "满屏背景"}
               </Button>
             </div>
@@ -256,7 +257,8 @@ export default class ChangeBackgroundButton extends React.Component {
                   <Button
                     onClick={this.updateParallexStyle}
                     size="small"
-                    style={{ marginBottom: 5 }}>
+                    style={{ marginBottom: 5 }}
+                  >
                     {this.state.enableParallex ? "关闭视差" : "启用视差"}
                   </Button>
                 </div>
@@ -265,7 +267,8 @@ export default class ChangeBackgroundButton extends React.Component {
                   <Button
                     onClick={this.updateFullHeightStyle}
                     size="small"
-                    style={{ marginBottom: 5 }}>
+                    style={{ marginBottom: 5 }}
+                  >
                     {this.state.fullHeight ? "内容撑开" : "满屏背景"}
                   </Button>
                 </div>
@@ -280,7 +283,8 @@ export default class ChangeBackgroundButton extends React.Component {
               <Select
                 defaultValue={this.getFillType(fillType)}
                 style={{ width: 120 }}
-                onChange={this.updateFillType}>
+                onChange={this.updateFillType}
+              >
                 <Option value="tile">平铺</Option>
                 <Option value="stretch">拉伸</Option>
                 <Option value="fill">填充</Option>
@@ -296,7 +300,8 @@ export default class ChangeBackgroundButton extends React.Component {
                 <Button
                   size="small"
                   style={{ marginBottom: 5 }}
-                  onClick={this.changeColorPicker}>
+                  onClick={this.changeColorPicker}
+                >
                   切换画板
                 </Button>
               </div>
@@ -305,7 +310,8 @@ export default class ChangeBackgroundButton extends React.Component {
                 <Button
                   size="small"
                   style={{ marginBottom: 5 }}
-                  onClick={this.changeColorPickerHue}>
+                  onClick={this.changeColorPickerHue}
+                >
                   色调深浅
                 </Button>
               </div>
@@ -342,10 +348,12 @@ export default class ChangeBackgroundButton extends React.Component {
           overlay={this.menu(this.updateNodeBackground, "background")}
           trigger={["click"]}
           onVisibleChange={this.handleVisibleChange}
-          visible={this.state.visible}>
+          visible={this.state.visible}
+        >
           <Button
             size="small"
-            style={{ minWidth: 18, color: "#FFF", fontSize: "1vw" }}>
+            style={{ minWidth: 18, color: "#FFF", fontSize: "1vw" }}
+          >
             背景
           </Button>
         </Dropdown>

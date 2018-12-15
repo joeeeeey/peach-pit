@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
 export default class editToolBaseDialog extends React.Component {
   buttonStyle = () => {
-    return { color: 'white', width: '100%', justifyContent: 'left' }
-  }
+    return { color: "white", width: "100%", justifyContent: "left" };
+  };
 
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -15,8 +15,7 @@ export default class editToolBaseDialog extends React.Component {
 
   handleChange = name => event => {
     this.setState({
-      [name]: event.target.value,
+      [name]: event.target.value
     });
   };
 }
-

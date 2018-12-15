@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Button from 'material-ui/Button';
-import { message } from 'antd';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Button from "material-ui/Button";
+import { message } from "antd";
 
-import SiteService from 'services/siteService'
-import nodeOperation from 'utils/nodeOperation'
+import SiteService from "services/siteService";
+import nodeOperation from "utils/nodeOperation";
 
-const siteService = new SiteService()
+const siteService = new SiteService();
 
 export default class UpdateSiteButton extends Component {
   constructor(props, context) {
@@ -14,32 +14,39 @@ export default class UpdateSiteButton extends Component {
   }
 
   updateSite = () => {
-    const editInfo = this.context.store.getState().editInfo
+    const editInfo = this.context.store.getState().editInfo;
     let parmas = {
-      id: parseInt(editInfo.id),
+      id: parseInt(editInfo.id)
+    };
+    if (editInfo.name) {
+      parmas.name = editInfo.name;
     }
-    if(editInfo.name){
-      parmas.name = editInfo.name
-    }
-    let nodeData = JSON.parse(JSON.stringify(this.context.store.getState().node));
-    parmas.data = JSON.stringify(nodeOperation.heightenDomTree(nodeData))
+    let nodeData = JSON.parse(
+      JSON.stringify(this.context.store.getState().node)
+    );
+    parmas.data = JSON.stringify(nodeOperation.heightenDomTree(nodeData));
 
-    siteService.update(parmas)
+    siteService
+      .update(parmas)
       .then(response => {
-        const { data } = response
+        const { data } = response;
         if (data.code === 0) {
-          message.success(`更新成功`, 6)
+          message.success(`更新成功`, 6);
         } else {
-          message.error(`😥 ${data.msg}`, 1.2)
+          message.error(`😥 ${data.msg}`, 1.2);
         }
       })
-      .catch(function (error) {
-        message.error(`😥 出现异常: ${error}`, 2)
+      .catch(function(error) {
+        message.error(`😥 出现异常: ${error}`, 2);
       });
-  }
+  };
   render() {
     return (
-      <Button onClick={this.updateSite} color="secondary" style={this.props.style}>
+      <Button
+        onClick={this.updateSite}
+        color="secondary"
+        style={this.props.style}
+      >
         保存修改
       </Button>
     );
@@ -47,5 +54,5 @@ export default class UpdateSiteButton extends Component {
 }
 
 UpdateSiteButton.contextTypes = {
-  store: PropTypes.object,
+  store: PropTypes.object
 };

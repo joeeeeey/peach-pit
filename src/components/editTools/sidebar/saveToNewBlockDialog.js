@@ -1,22 +1,22 @@
-import React from 'react';
-import Button from 'material-ui/Button';
+import React from "react";
+import Button from "material-ui/Button";
 import Dialog, {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
-} from 'material-ui/Dialog';
-import PropTypes from 'prop-types';
-import editToolBaseDialog from './editToolBaseDialog'
+  DialogTitle
+} from "material-ui/Dialog";
+import PropTypes from "prop-types";
+import editToolBaseDialog from "./editToolBaseDialog";
 
-import NewBlockFrom from '../../common/forms/newBlockFrom'
+import NewBlockFrom from "../../common/forms/newBlockFrom";
 
 export default class SaveToNewBlockDialog extends editToolBaseDialog {
   constructor(props, context) {
     super(props);
   }
   state = {
-    open: false,
+    open: false
   };
 
   getChildContext() {
@@ -24,17 +24,23 @@ export default class SaveToNewBlockDialog extends editToolBaseDialog {
   }
 
   saveSuccessHandler = () => {
-    this.handleClose()
-  }
+    this.handleClose();
+  };
 
   render() {
     return (
       <div>
-        <Button onClick={this.handleClickOpen} style={this.buttonStyle()} color="secondary">新增至板块 </Button>
+        <Button
+          onClick={this.handleClickOpen}
+          style={this.buttonStyle()}
+          color="secondary"
+        >
+          新增至板块{" "}
+        </Button>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
-          style={{zIndex:200}}
+          style={{ zIndex: 200 }}
           aria-labelledby="form-dialog-title"
         >
           <DialogTitle id="form-dialog-title">插入节点代码</DialogTitle>
@@ -60,5 +66,5 @@ SaveToNewBlockDialog.childContextTypes = {
   store: PropTypes.object
 };
 SaveToNewBlockDialog.contextTypes = {
-  store: PropTypes.object,
+  store: PropTypes.object
 };

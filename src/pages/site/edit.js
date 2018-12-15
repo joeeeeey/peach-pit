@@ -178,6 +178,7 @@ class Edit extends React.Component {
   }
 
   initialNodeData(block) {
+    console.log('initialNodeDatainitialNodeDatainitialNodeData')
     let ftData = nodeOperation.flattenDomTree(this.wrapRoot(block));
     // let ftData = nodeOperation.flattenDomTree(ftData)
     // console.log(ftData)

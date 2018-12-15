@@ -163,7 +163,8 @@ class Editor extends Component {
               style={Object.assign(
                 { position: "absolute", zIndex: 300 },
                 toolbarOverlayStyle
-              )}>
+              )}
+            >
               <EditorToolbar
                 formats={this.formats}
                 toolbarStyle={this.props.toolbarStyle}
@@ -176,7 +177,8 @@ class Editor extends Component {
         <div
           onMouseOver={this.onMouseOver}
           onMouseOut={this.onMouseOut}
-          style={this.hovorStyle()}>
+          style={this.hovorStyle()}
+        >
           <ReactQuill
             onChange={this.handleChange}
             modules={this.modules(this.quillId)}
@@ -199,7 +201,8 @@ class Editor extends Component {
               style={Object.assign(
                 { position: "absolute", zIndex: 300 },
                 toolbarOverlayStyle
-              )}>
+              )}
+            >
               <EditorToolbar
                 toolbarStyle={toolbarStyle}
                 id={this.quillId}

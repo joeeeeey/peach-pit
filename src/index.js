@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Index from "./pages/index";
-// import all css files here
+
+// Import all css files here.
 import "antd/dist/antd.css";
 import "css/homePage.css";
 import "css/editPage.css";

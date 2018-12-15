@@ -22,7 +22,8 @@ export default class CustomToolbar extends Component {
         style={Object.assign({ background: "white" }, toolbarStyle)}
         id={`${this.id}`}
         onMouseEnter={this.onMouseEnter}
-        onMouseLeave={this.onMouseLeave}>
+        onMouseLeave={this.onMouseLeave}
+      >
         <select
           className="ql-header"
           defaultValue={""}

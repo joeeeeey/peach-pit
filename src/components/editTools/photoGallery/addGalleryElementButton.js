@@ -1,7 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Button from 'material-ui/Button';
-
+import React from "react";
+import PropTypes from "prop-types";
+import Button from "material-ui/Button";
 
 export default class AddGalleryElementButton extends React.Component {
   constructor(props, context) {
@@ -11,32 +10,29 @@ export default class AddGalleryElementButton extends React.Component {
   addGalleryElement = () => {
     const defaultChild = {
       native: false,
-      nodeName: 'ImageArea',
+      nodeName: "ImageArea",
       props: {
-        alt: 'initial',
-        src: 'http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/bcde62d234912ae4371e20ec8cabcc02',
-        galleryStyle: { type: 'verticalGallery', width: 1, height: 1 }
+        alt: "initial",
+        src:
+          "http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/bcde62d234912ae4371e20ec8cabcc02",
+        galleryStyle: { type: "verticalGallery", width: 1, height: 1 }
       }
-    }
-
+    };
 
     this.context.store.dispatch({
-      type: 'addNode',
+      type: "addNode",
       payload: { targetKey: this.props.selfkey, nodeData: defaultChild },
-      target: 'node',
+      target: "node"
     });
-
 
     // 默认图片
     // http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/bcde62d234912ae4371e20ec8cabcc02
-  }
+  };
 
   render() {
     return (
-      <div className={'addElementButtonContanier'}>
-        <Button
-          onClick={this.addGalleryElement}
-          className={'addElementButton'}>
+      <div className={"addElementButtonContanier"}>
+        <Button onClick={this.addGalleryElement} className={"addElementButton"}>
           增加元素
         </Button>
       </div>
@@ -45,5 +41,5 @@ export default class AddGalleryElementButton extends React.Component {
 }
 
 AddGalleryElementButton.contextTypes = {
-  store: PropTypes.object,
+  store: PropTypes.object
 };
