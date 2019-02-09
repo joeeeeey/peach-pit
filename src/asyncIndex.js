@@ -61,7 +61,7 @@
 
 // // 公共
 //  const AsyncEdit = Loadable({
-//   loader: () => import('./site/edit'),
+//   loader: () => import('./site/edit/edit'),
 //   loading: Load
 // });
 //  const AsyncPreview = Loadable({

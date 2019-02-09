@@ -78,7 +78,7 @@ const verticalCenterStyle = {
   justifyContent: "center"
 };
 
-export default class EditableImageDescription extends React.Component {
+export default class EditableImageDescription extends React.PureComponent {
   constructor(props, context) {
     super(props);
 

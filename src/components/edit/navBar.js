@@ -73,7 +73,7 @@ const container3Style = {
   margin: "auto"
 };
 
-export default class EditableNavBar extends React.Component {
+export default class EditableNavBar extends React.PureComponent {
   constructor(props, context) {
     super(props);
   }

@@ -9,12 +9,13 @@ import AdminService from "services/adminService";
 
 // Mu
 import MuButton from "material-ui/Button";
+import actionTypes from "constants/action-types";
 
 const FormItem = Form.Item;
 const userService = new UserService();
 const adminService = new AdminService();
 class NormalLoginForm extends React.Component {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
     this.state = { redirectIndex: false, redirectAdminIndex: false };
   }
@@ -29,9 +30,8 @@ class NormalLoginForm extends React.Component {
           message.success(`登录成功😘~欢迎你啊 ${adminProfile.nickname}`, 6);
 
           this.context.store.dispatch({
-            type: "replace",
+            type: actionTypes.RESET_ADMINISTRATOR,
             payload: { isLogin: true, adminProfile: adminProfile },
-            target: "administrator"
           });
 
           this.setState({
@@ -56,9 +56,8 @@ class NormalLoginForm extends React.Component {
           message.success(`登录成功😘~欢迎你 ${userProfile.nickname}`, 6);
 
           this.context.store.dispatch({
-            type: "replace",
+            type: actionTypes.RESET_USER,
             payload: { isLogin: true, profile: userProfile },
-            target: "user"
           });
           this.setState({
             redirectIndex: true

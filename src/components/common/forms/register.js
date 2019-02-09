@@ -6,8 +6,8 @@ import MuButton from "material-ui/Button";
 // 正则
 import regPattern from "utils/regPattern";
 import { Redirect } from "react-router-dom";
-
 import UserService from "services/userService";
+import actionTypes from "constants/action-types";
 
 const FormItem = Form.Item;
 const userService = new UserService();
@@ -37,15 +37,13 @@ class RegistrationForm extends React.Component {
               message.success(`注册成功😘~欢迎你 ${userProfile.nickname}`, 8);
 
               this.context.store.dispatch({
-                type: "update",
+                type: actionTypes.UPDATE_USER,
                 payload: { nestedKey: "isLogin", value: true },
-                target: "user"
               });
 
               this.context.store.dispatch({
-                type: "update",
+                type: actionTypes.UPDATE_USER,
                 payload: { nestedKey: "profile", value: userProfile },
-                target: "user"
               });
 
               this.setState({

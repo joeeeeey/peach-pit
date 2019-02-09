@@ -10,7 +10,7 @@
 // }
 
 // {"native":false,"nodeName":"ImageArea","props":{"src":"http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/layout/8/1a4729c10b66ea0d2b5b9f25f2ea7039"}}
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Button from "material-ui/Button";
 import Measure from "react-measure";
@@ -44,7 +44,7 @@ const buttonStyle = {
   justifyContent: "center"
 };
 
-export default class EditableImageArea extends Component {
+export default class EditableImageArea extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {

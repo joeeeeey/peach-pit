@@ -1,6 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "material-ui/styles";
+// import PropTypes from "prop-types";
 import GridList, { GridListTile } from "material-ui/GridList";
 import EditableGridListTile from "../edit/gridListTile";
 /**
@@ -20,26 +19,12 @@ let props = {
 }
 */
 
-export default class EditableGridList extends React.Component {
-  constructor(props, context) {
+export default class EditableGridList extends React.PureComponent {
+  constructor(props) {
     super(props);
   }
 
   render() {
-    // console.log(this.props)
-    // const style = {
-    //   root: {
-    //     display: 'flex',
-    //     flexWrap: 'wrap',
-    //     justifyContent: 'space-around',
-    //     overflow: 'hidden',
-    //   },
-    //   gridList: {
-    //     width: 500,
-    //     height: 'auto',
-    //   }
-    // }
-
     const { style, cellHeight, cols } = this.props;
     const tile = {
       img: "/images/ORG_DSC01101.jpg",
@@ -51,7 +36,6 @@ export default class EditableGridList extends React.Component {
     return (
       <div style={style.root}>
         <GridList cellHeight={cellHeight} style={style.gridList} cols={cols}>
-          {/* {this.props.children} */}
           {React.createElement(
             GridListTile,
             { key: tile.img, cols: tile.cols || 1, rows: tile.rows || 1 },

@@ -57,7 +57,7 @@
 //   { src: 'https://source.unsplash.com/I1ASdgphUH4/800x599', width: 4, height: 3 }
 // ];
 
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Measure from "react-measure";
 import computeImage from "utils/computeImage";
@@ -73,7 +73,7 @@ const imgContainerStyle = {
   position: "relative"
 };
 
-export default class EditablePhotoGallery extends Component {
+export default class EditablePhotoGallery extends React.Component {
   constructor(props, context) {
     super(props);
     this.state = { width: -1 }; // 假定屏幕原始宽度

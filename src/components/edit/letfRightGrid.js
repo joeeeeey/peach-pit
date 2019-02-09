@@ -2,7 +2,7 @@
 import React from "react";
 import Grid from "material-ui/Grid";
 
-export default class EditableLetfRightGrid extends React.Component {
+export default class EditableLetfRightGrid extends React.PureComponent {
   render() {
     return (
       <div

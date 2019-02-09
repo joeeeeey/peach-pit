@@ -32,10 +32,12 @@
 
 * porps 开发约定
 TODO 待重构
-将 props 在构造方法中替换为该组件的 state, props 不应不出现在其他地方
+1. (使用 react-redux 的 dispatch 方法,) 
+2. 在更新降维对象后修改整个大节点。(对上次大节点进行改动，而不是用递归重新生产整个节点)。
+<!-- 将 props 在构造方法中替换为该组件的 state, props 不应不出现在其他地方
 大的重构方案，解决编辑页面组件数量达到一定程度(>70)后操作延迟高的问题。
 这个问题是因为更新 stroe 中的 node 后， edit 页面会调用 flattenedData2Code 方法
-递归地根据 node 数重新生成代码，十分影响性能。
+递归地根据 node 数重新生成代码，十分影响性能。 -->
 
 新的解决方式:
 1. edit 页面中只新建 root 节点, 传入所有 import 的 components, 其他等 props, node.root 的 children

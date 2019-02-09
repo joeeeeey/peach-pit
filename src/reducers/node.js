@@ -9,10 +9,7 @@ export default (state = null, action) => {
     let { value, targetKey, parentKey, nestedKey } = action.payload;
     switch (action.type) {
       case "replace":
-        return Object.assign({
-          state,
-          ...action.payload
-        });
+        return action.payload;
       case "update":
         return evalUpdate(state, nestedKey, value);
       // 批量更新
@@ -42,7 +39,6 @@ export default (state = null, action) => {
       case "composite":
         recombinateNodes(state, action.payload);
         return state;
-      /* 不加这个注释就会有 warning */
       default:
         return state;
     }

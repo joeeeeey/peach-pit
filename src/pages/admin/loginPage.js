@@ -8,7 +8,7 @@ import Grid from "material-ui/Grid";
 // login form
 import LoginFrom from "components/common/forms/login";
 
-function TabContainer({ children, dir = "x-reverse" }) {
+const TabContainer = ({ children }) => {
   return (
     <div>
       <Paper

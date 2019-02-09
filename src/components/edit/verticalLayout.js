@@ -42,7 +42,7 @@
 // }
 
 // {"native":false,"nodeName":"VerticalLayout","props":{"backgroundInfo":{"background":"white","backgroundType":"pureColor","imageInfo":{},"fillType":null,"enableParallex":null}},"children":[{"native":false,"nodeName":"VerticalGrid"},{"native":false,"nodeName":"VerticalGrid"}]}
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Grid from "material-ui/Grid";
 import ChangeBackgroundButton from "components/editTools/layout/changeBackgroundButton";
@@ -62,7 +62,7 @@ const defaultChildren = {
 
 const defalutFlexLayout = [8, 4];
 
-export default class EditableVerticalLayout extends Component {
+export default class EditableVerticalLayout extends React.PureComponent {
   // 可接受 props
   // spacing integer 控制子元素间距
   constructor(props, context) {

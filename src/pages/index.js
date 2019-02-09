@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-
-// import { withStyles } from 'material-ui/styles';
 import withRoot from "../withRoot"; // 用于读取 meterial-ui 主题
 
 // 单页路由 用法 https://reacttraining.com/react-router/
@@ -9,29 +7,28 @@ import { Router, Switch, Route } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
 // 首屏组件
-import Home from "../pages/user/homePage";
+import Home from "pages/user/homePage";
 
 // 其他路由组件
-import UserLogin from "./user/loginPage";
-import UserSite from "./user/sitePage";
-import AboutPage from "./user/aboutPage";
+import UserLogin from "pages/user/loginPage";
+import UserSite from "pages/user/sitePage";
+import AboutPage from "pages/user/aboutPage";
 
-import AdminLogin from "./admin/loginPage";
-import AdminHome from "./admin/homePage";
-import AdminTemplateIndex from "./admin/templateIndexPage";
-import AdminLayoutIndex from "./admin/layoutIndexPage";
-import ChooseTmp from "./template/chooseTmp";
+import AdminLogin from "pages/admin/loginPage";
+import AdminHome from "pages/admin/homePage";
+import AdminTemplateIndex from "pages/admin/templateIndexPage";
+import AdminLayoutIndex from "pages/admin/layoutIndexPage";
+import ChooseTmp from "pages/template/chooseTmp";
 
-import Edit from "./site/edit";
-import Preview from "./site/preview";
+import Edit from "pages/site/edit2/edit";
+import Preview from "pages/site/preview";
 // import Test from './test'
 
-import { createStore } from "redux";
-import PPSpace from "reducers/index";
+import store from "../store";
 import Cookies from "js-cookie";
 import CheckUserLogin from "utils/checkUserLogin";
-
-export const store = createStore(PPSpace);
+import { Provider } from "react-redux";
+import actionTypes from "constants/action-types";
 
 export const history = createBrowserHistory();
 
@@ -41,9 +38,8 @@ function readCookideSetStore(key, target) {
   if (cookieString) {
     const cookieData = JSON.parse(new Buffer(cookieString, "base64"));
     store.dispatch({
-      type: "replace",
-      payload: { isLogin: true, profile: cookieData },
-      target: target
+      type: target === "user" ? actionTypes.RESET_USER : actionTypes.RESET_ADMINISTRATOR,
+      payload: { isLogin: true, profile: cookieData }
     });
   }
 }
@@ -67,50 +63,30 @@ class Index extends Component {
 
   render() {
     return (
-      <Router history={history}>
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/tourist/chooseTemplate" exact component={ChooseTmp} />
-          <Route path="/tourist/previewPage" component={Preview} />
+      <Provider store={store}>
+        <Router history={history}>
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/tourist/chooseTemplate" exact component={ChooseTmp} />
+            <Route path="/tourist/previewPage" component={Preview} />
 
-          <Route path="/admin/login" component={AdminLogin} />
-          <Route path="/admin/home" component={AdminHome} />
-          <Route path="/admin/templateIndex" component={AdminTemplateIndex} />
-          <Route path="/admin/layoutIndex" component={AdminLayoutIndex} />
-          <Route path="/admin/editPage" component={Edit} />
-          <Route path="/admin/previewPage" component={Preview} />
-          <Route path="/administrator/previewPage" component={Preview} />
+            <Route path="/admin/login" component={AdminLogin} />
+            <Route path="/admin/home" component={AdminHome} />
+            <Route path="/admin/templateIndex" component={AdminTemplateIndex} />
+            <Route path="/admin/layoutIndex" component={AdminLayoutIndex} />
+            <Route path="/admin/editPage" component={Edit} />
+            <Route path="/admin/previewPage" component={Preview} />
+            <Route path="/administrator/previewPage" component={Preview} />
 
-          <Route path="/user/chooseTemplate" exact component={ChooseTmp} />
-          <Route path="/about" exact component={AboutPage} />
-          {/* <CheckUserLogin store={store} shouldBe={true} path="/about" exact component={AboutPage} /> */}
-          <CheckUserLogin
-            store={store}
-            shouldBe={true}
-            path="/user/sites"
-            exact
-            component={UserSite}
-          />
-          <CheckUserLogin
-            store={store}
-            shouldBe={false}
-            path="/user/login"
-            component={UserLogin}
-          />
-          <CheckUserLogin
-            store={store}
-            shouldBe={true}
-            path="/user/previewPage"
-            component={Preview}
-          />
-          <CheckUserLogin
-            store={store}
-            shouldBe={true}
-            path="/user/editPage"
-            component={Edit}
-          />
-        </Switch>
-      </Router>
+            <Route path="/user/chooseTemplate" exact component={ChooseTmp} />
+            <Route path="/about" exact component={AboutPage} />
+            <CheckUserLogin store={store} shouldBe={true} path="/user/sites" exact component={UserSite} />
+            <CheckUserLogin store={store} shouldBe={false} path="/user/login" component={UserLogin} />
+            <CheckUserLogin store={store} shouldBe={true} path="/user/previewPage" component={Preview} />
+            <CheckUserLogin store={store} shouldBe={true} path="/user/editPage" component={Edit} />
+          </Switch>
+        </Router>
+      </Provider>
     );
   }
 }

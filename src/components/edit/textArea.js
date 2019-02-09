@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Editor from "../meta/editor";
 
@@ -8,7 +8,7 @@ import Editor from "../meta/editor";
 // }
 
 // {"native":false,"nodeName":"TextArea","props":{"deltaDeltaValue":[{"insert":"好吃的东西","attributes":{"color":"#1c1a1a","font":"serif","size":"large","bold":true}},{"insert":"\n","attributes":{"align":"center","header":3}}],"readOnly":false}}
-export default class EditableTextArea extends Component {
+export default class EditableTextArea extends React.PureComponent {
   constructor(props, context) {
     super(props);
   }

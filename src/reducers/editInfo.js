@@ -6,10 +6,7 @@ export default (state = {}, action) => {
     let { value, nestedKey } = action.payload;
     switch (action.type) {
       case "replace":
-        return Object.assign({
-          state, 
-          ...action.payload
-        })
+        return action.payload;
       case "update":
         return evalUpdate(state, nestedKey, value);
 

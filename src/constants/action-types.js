@@ -1,0 +1,9 @@
+const actionTypes = {
+  // user
+  RESET_USER: "RESET_USER",
+  UPDATE_USER: "UPDATE_USER",
+  RESET_ADMINISTRATOR: "RESET_ADMINISTRATOR",
+  UPDATE_ADMINISTRATOR: "UPDATE_ADMINISTRATOR"
+};
+
+export default actionTypes;

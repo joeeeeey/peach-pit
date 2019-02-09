@@ -12,9 +12,10 @@ const getConnectKeys = (nestedKey) => {
   return connectKeys;
 }
 
-// TODO Ingore lint here
+/* eslint-disable */
 export const evalUpdate = (data, nestedKey, value) => {
   eval(`data${getConnectKeys(nestedKey)}=value`);
 
   return data;
 }
+/* eslint-enable */

@@ -4,7 +4,7 @@
 
 /**
  * 高维(数据层级对应 dom 树或虚拟 dom 树的层级) nodeData 格式:
- * 
+ *
  * {
  *   "native": false,
  *   "nodeName": "VerticalLayout",
@@ -30,43 +30,43 @@
  *     }
  *   ]
  * }
- * 
+ *
  * @param {string} native
  *   节点名称，有 component 代码映射的节点命名方式为驼峰，并且首字母大写
  *   (verticalLayout)。原生组件都小写(div, h1, etc..)。此处注意复合
  *   组件的根节点 nodeName 是 div。
- * 
+ *
  * @param {boolean} native
  *   Mark whether the node(nodeName) is a native html node。
- *   Eg: 
- *     The nodeName `div` is `true`, if the nodeName is 
+ *   Eg:
+ *     The nodeName `div` is `true`, if the nodeName is
  *     generate by code, it is false.
- * 
+ *
  * @param {boolean} composite
  *   是否为复合。 复合代表[非原生的组件]并且[没有对应的代码映射到这个组件]。
- *   Eg: 
- *     一个垂直布局 verticalLayout 有对应的编辑组件文件 
+ *   Eg:
+ *     一个垂直布局 verticalLayout 有对应的编辑组件文件
  *     `components/edit/verticalLayout.js` 与预览组件文件
- *     `components/preview/verticalLayout.js`, 该组件 composite 
+ *     `components/preview/verticalLayout.js`, 该组件 composite
  *     则为 `false`(或 `null`, 此处并未要求强制声明 `false`)。若管理员
  *     将两个垂直布局在编辑页面进行增加保存为新的布局，则成为复合布局(这两个
  *     垂直布局在保存存 layout 时会默认被一个 div 包裹)。 此处注意一定要
  *     大于两个原始布局才会被自动保存为复合。
- * 
+ *
  * @param {object} props
  *   存储节点的属性，如 `style` 可以规定节点的 css 样式。 对于
  *   [有 component 代码映射的节点], 会有更多复杂的属性(与代码逻辑相关)。
- * 
+ *
  * @param {array} children
- *   子元素，可为空。 
- *   Eg: 
+ *   子元素，可为空。
+ *   Eg:
  *     数组元素为一个完整的组件的数据结构(递归 nodeData)。
- * 
+ *
  */
 
 /**
  * 低维 nodeData 格式:
- * 
+ *
  * {
  *   "_relation": {
  *     "VerticalLayout_7a6d2f823aab32de788b752b81515415": [
@@ -99,13 +99,13 @@
  *     "nodeName": "VerticalGrid"
  *   }
  * }
- * 
+ *
  * @param {array} _root
  *   根节点的 id
- * 
+ *
  * @param {array} _relation
  *   节点之间的父子关系
- * 
+ *
  */
 
 import md5 from "md5";
@@ -136,10 +136,19 @@ function objectPresent(obj) {
   }
 }
 
-// 向当前节点增加新节点 (更新降维后的 dom tree data)
-//   根据 parentKey 找到childrenKeys, 将 selfKey 加入
-//   在 _relation 中加入自身的 relation, 并将自身除了 _root, _relation 合并到原 store
-//   若 childKey 存在，则需要找到 parentkey 中的 childKey 位置在后方插入
+/**
+ *
+ * @param {objecy} currentDom
+ * @param {string} parentKey
+ * @param {object} newNode
+ * @param {string} childKey
+ *
+ *   向当前节点增加新节点 (更新降维后的 dom tree data)
+ *   根据 parentKey 找到childrenKeys, 将 selfKey 加入
+ *   在 _relation 中加入自身的 relation, 并将自身除了 _root, _relation 合并到原 store
+ *   若 childKey 存在，则需要找到 parentkey 中的 childKey 位置在后方插入
+ */
+
 function addNode(currentDom, parentKey, newNode, childKey = null) {
   if (!currentDom._relation[parentKey]) {
     currentDom._relation[parentKey] = [];
@@ -185,9 +194,7 @@ function removeNode(currentDom, targetKey, parentKey) {
       }
     }
   } else {
-    currentDom._relation[parentKey] = currentDom._relation[parentKey].filter(
-      childrenKey => childrenKey !== targetKey
-    );
+    currentDom._relation[parentKey] = currentDom._relation[parentKey].filter(childrenKey => childrenKey !== targetKey);
     // 去除该节点内容
     delete currentDom[targetKey];
 
@@ -199,7 +206,6 @@ function removeNode(currentDom, targetKey, parentKey) {
     }
   }
 }
-
 
 // navbar 更新的方案, navbar 的 props.rootChildren 中需要存储当前顶层节点的内容
 // navbar 必须知道总共的节点
@@ -223,7 +229,6 @@ function satisfyNavBar(flattenData, rootKey) {
   }
   return flattenData;
 }
-
 
 // 将低维 nodeData 升维
 function doHeighten(flattenData, startDom = null, isLayout = false) {
@@ -258,9 +263,7 @@ function doHeighten(flattenData, startDom = null, isLayout = false) {
   if (Array.isArray(childrenNames) && childrenNames.length > 0) {
     domData.children = [];
     for (let i = 0; i < childrenNames.length; i++) {
-      domData.children.push(
-        doHeighten(flattenData, childrenNames[i], isLayout)
-      );
+      domData.children.push(doHeighten(flattenData, childrenNames[i], isLayout));
     }
   }
   return domData;
@@ -309,17 +312,9 @@ function wrapRoot(block = null) {
 }
 
 // dom tree object 降维
-function flattenDomTree(
-  nodeData,
-  parentKey = "",
-  flattenData = { _relation: {} }
-) {
+function flattenDomTree(nodeData, parentKey = "", flattenData = { _relation: {} }) {
   // 是根节点的情况
-  if (
-    !Array.isArray(nodeData) &&
-    nodeData !== null &&
-    typeof nodeData === "object"
-  ) {
+  if (!Array.isArray(nodeData) && nodeData !== null && typeof nodeData === "object") {
     let rootKey = null;
     if (nodeData.props && nodeData.props.id) {
       rootKey = nodeData.props.id;
@@ -387,13 +382,7 @@ function getClassName(action) {
 }
 
 // 降维数据转化为代码
-function flattenedData2Code(
-  flattenData,
-  action,
-  selfDomKey = null,
-  parentDomKey = "root",
-  code = ""
-) {
+function flattenedData2Code(flattenData, action, selfDomKey = null, parentDomKey = "root", code = "") {
   if (flattenData === null) {
     return code;
   }
@@ -426,13 +415,7 @@ function flattenedData2Code(
     childrenCode += `,\n${JSON.stringify(children)}`;
   } else if (Array.isArray(childrenNames) && childrenNames.length > 0) {
     for (let i = 0; i < childrenNames.length; i++) {
-      childrenCode += flattenedData2Code(
-        flattenData,
-        action,
-        childrenNames[i],
-        selfDomKey,
-        ",\n"
-      );
+      childrenCode += flattenedData2Code(flattenData, action, childrenNames[i], selfDomKey, ",\n");
     }
   }
 

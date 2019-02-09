@@ -6,7 +6,7 @@
 // edit 根节点
 // 显示最高权限的编辑器
 // preview 其实是个空 div
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Button from "material-ui/Button";
 import { Link } from "react-router-dom";
@@ -45,7 +45,7 @@ const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
 const buttonStyle = { color: "white", width: "100%", justifyContent: "left" };
-class EditableRoot extends Component {
+class EditableRoot extends React.PureComponent {
   constructor(props, context) {
     super(props);
 

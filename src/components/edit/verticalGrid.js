@@ -2,7 +2,7 @@
 
 // 垂直布局最外层是水平布局的 Grid
 // 而子 Grid 里才是垂直
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Grid from "material-ui/Grid";
 import AddNodeSpirit from "components/editTools/layout/addNodeSpirit";
@@ -30,7 +30,7 @@ const ChildAddNodeSpiritContainerStyle = {
   width: "100%"
 };
 
-export default class EditableVerticalGrid extends Component {
+export default class EditableVerticalGrid extends React.PureComponent {
   constructor(props, context) {
     super(props);
   }
