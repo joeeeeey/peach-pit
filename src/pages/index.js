@@ -70,6 +70,7 @@ class Index extends Component {
             <Route path="/tourist/chooseTemplate" exact component={ChooseTmp} />
             <Route path="/tourist/previewPage" component={Preview} />
 
+            {/* TODO check admin login */}
             <Route path="/admin/login" component={AdminLogin} />
             <Route path="/admin/home" component={AdminHome} />
             <Route path="/admin/templateIndex" component={AdminTemplateIndex} />

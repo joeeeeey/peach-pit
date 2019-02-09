@@ -13,16 +13,17 @@ import Grid from "material-ui/Grid";
 import PropTypes from "prop-types";
 import UploaderArea from "./uploaderArea";
 import AnButton from "antd/lib/button";
-import CdnService from "services/cdnService";
+// import CdnService from "services/cdnService";
 import { Modal, Tabs, message } from "antd";
 import DoneOutlineIcon from "material-ui-icons/CheckCircle";
 import dateOperation from "utils/dateOperation";
+import actionTypes from "constants/action-types";
 
 const TabPane = Tabs.TabPane;
-const cdnService = new CdnService();
+// const cdnService = new CdnService();
 
 export default class UploaderEntrance extends React.Component {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
   }
   state = {
@@ -83,7 +84,7 @@ export default class UploaderEntrance extends React.Component {
           return false;
       }
       this.context.store.dispatch({
-        type: "composite",
+        type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
         payload: compositePayload,
         target: "node"
       });
@@ -103,9 +104,8 @@ export default class UploaderEntrance extends React.Component {
     this.setState({ uploadedImages: uploadedImages });
 
     this.context.store.dispatch({
-      type: "composite",
+      type: actionTypes.UPDATE_EDIT_INFO,
       payload: { nestedKey: "uploadedImages", value: uploadedImages },
-      target: "editInfo"
     });
     // editInfo.uploadedImages
   };

@@ -12,6 +12,7 @@ import EditableImageArea from "components/edit/imageArea";
 import EditableNavBar from "components/edit/navBar";
 import EditablePhotoGallery from "components/edit/photoGallery";
 import EditableImageDescription from "components/edit/imageDescription";
+import actionTypes from "constants/action-types";
 
 // 测试的组件
 // import Test from '../test'
@@ -110,17 +111,15 @@ class Edit extends React.Component {
 
   setEditInfoState = editInfo => {
     this.context.store.dispatch({
-      type: "replace",
+      type: actionTypes.RESET_EDIT_INFO,
       payload: editInfo,
-      target: "editInfo"
     });
   };
 
   updateEditInfoState = (nestedKey, value) => {
     this.context.store.dispatch({
-      type: "update",
+      type: actionTypes.UPDATE_EDIT_INFO,
       payload: { nestedKey: nestedKey, value: value },
-      target: "editInfo"
     });
   };
 
@@ -156,8 +155,6 @@ class Edit extends React.Component {
           if (data.code === 0) {
             // {id: 1, name: 'dsd', thumb_url: 'xxx', data: '..'}
             let block = data.data;
-            // editInfo.name = block.name
-
             // 此处 setEditInfoState 需要在 initialNodeData 下方执行
             // TODO why? 将两个 dispatch 合并
             this.initialNodeData(block);
@@ -210,7 +207,7 @@ class Edit extends React.Component {
     this.setState({ nodeData: ftData });
 
     this.context.store.dispatch({
-      type: "replace",
+      type: actionTypes.RESET_FLATTENED_NODE,
       payload: ftData,
       target: "node"
     });
@@ -237,10 +234,13 @@ class Edit extends React.Component {
 
   render = () => {
     console.log('edit render: ',);
-    const codeString = nodeOperation.flattenedData2Code(JSON.parse(JSON.stringify(this.state.nodeData)), "edit");
-    const reactCode = this.toF(codeString);
-
-    // console.log('reactCode: ', reactCode);
+    const { nodeData } = this.state;
+    let reactCode = null;
+    if (nodeData) {
+      const codeString = nodeOperation.flattenedData2Code(JSON.parse(JSON.stringify(nodeData)), "edit");
+      // console.log('codeString: ', codeString);
+      reactCode = this.toF(codeString);
+    }
 
     return <div>{reactCode}</div>;
   };

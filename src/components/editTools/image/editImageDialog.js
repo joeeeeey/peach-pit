@@ -5,16 +5,14 @@
 
 import React from "react";
 import Button from "material-ui/Button";
-import TextField from "material-ui/TextField";
 import Dialog, {
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle
 } from "material-ui/Dialog";
 import PropTypes from "prop-types";
-
 import UploaderEntrance from "../image/uploaderEntrance";
+import actionTypes from "constants/action-types";
 
 export default class EditImageDialog extends React.Component {
   constructor(props, context) {
@@ -51,7 +49,7 @@ export default class EditImageDialog extends React.Component {
   removeImage = () => {
     let { targetkey, parentkey } = this.props;
     this.context.store.dispatch({
-      type: "removeNode",
+      type: actionTypes.REMOVE_FLATTENED_NODE,
       payload: { targetKey: targetkey, parentKey: parentkey },
       target: "node"
     });

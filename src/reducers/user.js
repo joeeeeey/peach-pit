@@ -1,5 +1,5 @@
 import { evalUpdate } from "utils/eval";
-import actionTypes from "../constants/action-types";
+import actionTypes from "constants/action-types";
 
 export default (state = {}, action) => {
   const { payload } = action;

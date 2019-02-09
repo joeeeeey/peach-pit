@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Button from "material-ui/Button";
+import actionTypes from "constants/action-types";
 
 export default class AddImageDescriptionElementButton extends React.Component {
   constructor(props, context) {
@@ -13,7 +14,7 @@ export default class AddImageDescriptionElementButton extends React.Component {
     );
 
     this.context.store.dispatch({
-      type: "addNode",
+      type: actionTypes.ADD_FLATTENED_NODE,
       payload: { targetKey: this.props.selfkey, nodeData: defaultChild },
       target: "node"
     });
@@ -22,9 +23,7 @@ export default class AddImageDescriptionElementButton extends React.Component {
   render() {
     return (
       <div className={"addElementButtonContanier"}>
-        <Button
-          onClick={this.addImageDescriptionElement}
-          className={"addElementButton"}>
+        <Button onClick={this.addImageDescriptionElement} className={"addElementButton"}>
           增加元素
         </Button>
       </div>

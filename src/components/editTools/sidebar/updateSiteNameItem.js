@@ -6,8 +6,8 @@ import Button from "material-ui/Button";
 import EditIcon from "material-ui-icons/Edit";
 import DoneIcon from "material-ui-icons/Done";
 import IconButton from "material-ui/IconButton";
-
 import { Input } from "antd";
+import actionTypes from "constants/action-types";
 
 const itemFontStyle = { fontFamily: '"Times New Roman",Georgia,Serif' };
 
@@ -27,9 +27,8 @@ export default class UpdateSiteNameItem extends React.Component {
 
   updateEditInfoState = (nestedKey, value) => {
     this.context.store.dispatch({
-      type: "update",
+      type: actionTypes.UPDATE_EDIT_INFO,
       payload: { nestedKey: nestedKey, value: value },
-      target: "editInfo"
     });
   };
 

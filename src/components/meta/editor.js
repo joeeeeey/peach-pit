@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ReactQuill from "react-quill"; // ES6
 import EditorToolbar from "./editorToolBar";
+import actionTypes from "constants/action-types";
 
-function randomStr() {
+const randomStr = () => {
   return `${(Math.random() + Math.random()).toString()}`;
 }
 
@@ -15,7 +16,7 @@ function randomStr() {
 // 若想要初始化大小, 可以使用这样的方式 [{"insert":"\n","attributes":{"header":1}}]
 
 class Editor extends Component {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
     this.state = {
       hoverEditor: false, // 控制样式
@@ -87,7 +88,7 @@ class Editor extends Component {
         // const re = /"\n"/gi;
         // nodeCode = nodeCode.replace(re, '"\\n"');
         this.context.store.dispatch({
-          type: "update",
+          type: actionTypes.UPDATE_FLATTENED_NODE,
           payload: {
             nestedKey: nestedKey,
             value: this.quillRef.editor.delta.ops

@@ -1,12 +1,12 @@
+// TODO useless, remove??
+import actionTypes from "constants/action-types";
+
 export default (state = {}, action) => {
-  if (action.target === "upYun") {
-    switch (action.type) {
-      case "replace":
-        return action.payload;
-      default:
-        return state;
-    }
-  } else {
-    return state;
+  const { payload } = action;
+  switch (action.type) {
+    case actionTypes.RESET_UPYUN:
+      return payload;
+    default:
+      return state;
   }
 };

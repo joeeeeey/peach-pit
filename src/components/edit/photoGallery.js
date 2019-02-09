@@ -66,6 +66,7 @@ import AdjustGalleryStyleButton from "components/editTools/photoGallery/adjustGa
 import AddGalleryElementButton from "components/editTools/photoGallery/addGalleryElementButton";
 import ChangeBackgroundButton from "components/editTools/layout/changeBackgroundButton";
 import backgroundSetting from "jssSettings/backgroundSetting";
+import actionTypes from "constants/action-types";
 
 const imgContainerStyle = {
   overflow: "hidden",
@@ -106,7 +107,7 @@ export default class EditablePhotoGallery extends React.Component {
 
   initialLayoutId = () => {
     this.context.store.dispatch({
-      type: "update",
+      type: actionTypes.UPDATE_FLATTENED_NODE,
       payload: {
         nestedKey: `${this.props.selfkey},props,id`,
         value: this.props.selfkey

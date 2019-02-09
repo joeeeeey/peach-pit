@@ -20,6 +20,7 @@ import ImageAreaSetting from "jssSettings/imageAreaSetting";
 // import EditImageDialog from 'components/editTools/image/editImageDialog'
 
 import UploaderEntrance from "components/editTools/image/uploaderEntrance";
+import actionTypes from "constants/action-types";
 
 const defaultImageStyle = { maxWidth: "100%", maxHeight: "100%" };
 const defaultImageContainerStyle = ImageAreaSetting.defaultImageContainerStyle();
@@ -75,7 +76,7 @@ export default class EditableImageArea extends React.PureComponent {
   removeImageArea = () => {
     let { selfkey, parentkey } = this.props;
     this.context.store.dispatch({
-      type: "removeNode",
+      type: actionTypes.REMOVE_FLATTENED_NODE,
       payload: { targetKey: selfkey, parentKey: parentkey },
       target: "node"
     });

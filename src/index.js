@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Index from "./pages/index";
+import Index from "pages/index";
 
 // Import all css files here.
 import "antd/dist/antd.css";

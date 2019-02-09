@@ -58,13 +58,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import Grid from "material-ui/Grid";
 import EditableImageArea from "components/edit/imageArea";
-import EditableTextArea from "components/edit/textArea";
 import EditableVerticalLayout from "components/edit/verticalLayout";
 import backgroundSetting from "jssSettings/backgroundSetting";
 import ChangeBackgroundButton from "components/editTools/layout/changeBackgroundButton";
 import AddImageDescriptionElementButton from "components/editTools/imageDescription/addImageDescriptionElementButton";
 import RemoveNodeSpirit from "components/editTools/layout/removeNodeSpirit";
 import ChangeLayoutButton from "components/editTools/imageDescription/changeLayoutButton";
+import actionTypes from "constants/action-types";
 
 const RemoveNodeSpiritContainerStyle = {
   zIndex: 46,
@@ -149,7 +149,7 @@ export default class EditableImageDescription extends React.PureComponent {
       }
     };
     this.context.store.dispatch({
-      type: "composite",
+      type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
       payload: compositePayload,
       target: "node"
     });
@@ -199,7 +199,7 @@ export default class EditableImageDescription extends React.PureComponent {
       }
     };
     this.context.store.dispatch({
-      type: "composite",
+      type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
       payload: compositePayload,
       target: "node"
     });

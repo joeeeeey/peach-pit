@@ -36,7 +36,7 @@ const iosParallexStyle = {
 };
 
 // TODO 使用 webp 需要做浏览器判断
-// function getBackgroundImageUrl(originUrl) {
+// const getBackgroundImageUrl = (originUrl) => {
 //   let url = originUrl.slice(0,-1)
 //   // 是否压缩 后期可作为选项?
 //   const doCompress = true
@@ -56,7 +56,7 @@ const iosParallexStyle = {
  * @param {*} background 
  * 
  */
-function getBackgroundFillTypeStyle(fillType, background) {
+const getBackgroundFillTypeStyle = (fillType, background) => {
   switch (fillType) {
     // 平铺
     case "tile":
@@ -87,7 +87,7 @@ function getBackgroundFillTypeStyle(fillType, background) {
   }
 }
 // 视差样式
-function getBackgroundParallexStyle(enableParallex) {
+const getBackgroundParallexStyle = (enableParallex) => {
   if (enableParallex) {
     if (deviceDetect.isIOS()) {
       return iosParallexStyle;
@@ -99,7 +99,7 @@ function getBackgroundParallexStyle(enableParallex) {
   }
 }
 
-function getBackgroundHeightStyle(fullHeight) {
+const getBackgroundHeightStyle = (fullHeight) => {
   // display: grid 是为了满屏时将内容垂直居中
   // 子元素设置 margin: auto https://css-tricks.com/centering-css-complete-guide/
   if (fullHeight) {
@@ -109,7 +109,7 @@ function getBackgroundHeightStyle(fullHeight) {
   }
 }
 
-function getBackgroundStyle(backgroundInfo) {
+const getBackgroundStyle = (backgroundInfo) => {
   const {
     background,
     backgroundType,

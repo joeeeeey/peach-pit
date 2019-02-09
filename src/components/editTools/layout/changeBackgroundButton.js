@@ -24,6 +24,7 @@ import deepOrange from "material-ui/colors/deepOrange";
 import brown from "material-ui/colors/brown";
 import grey from "material-ui/colors/grey";
 import blueGrey from "material-ui/colors/blueGrey";
+import actionTypes from "constants/action-types";
 
 const buttonStyle = { color: "grey", width: "100%", justifyContent: "left" };
 
@@ -96,7 +97,7 @@ export default class ChangeBackgroundButton extends React.Component {
       }
     };
     this.context.store.dispatch({
-      type: "composite",
+      type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
       payload: compositePayload,
       target: "node"
     });

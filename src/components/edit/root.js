@@ -37,6 +37,7 @@ import LayoutService from "services/layoutService";
 import SiteService from "services/siteService";
 import nodeOperation from "utils/nodeOperation";
 // import Test from '../../pages/test'
+import actionTypes from "constants/action-types";
 
 const layoutService = new LayoutService();
 const templateService = new TemplateService();
@@ -188,7 +189,7 @@ class EditableRoot extends React.PureComponent {
   clearNode = () => {
     const rootKey = this.selfkey;
     this.context.store.dispatch({
-      type: "removeNode",
+      type: actionTypes.REMOVE_FLATTENED_NODE,
       payload: { targetKey: rootKey, parentKey: null },
       target: "node"
     });
@@ -264,7 +265,7 @@ class EditableRoot extends React.PureComponent {
     }
 
     this.context.store.dispatch({
-      type: "composite",
+      type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
       payload: compositePayload,
       target: "node"
     });
@@ -363,7 +364,7 @@ class EditableRoot extends React.PureComponent {
     }
 
     this.context.store.dispatch({
-      type: "composite",
+      type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
       payload: compositePayload,
       target: "node"
     });
@@ -543,7 +544,7 @@ class EditableRoot extends React.PureComponent {
     };
 
     this.context.store.dispatch({
-      type: "composite",
+      type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
       payload: compositePayload,
       target: "node"
     });
@@ -601,7 +602,7 @@ class EditableRoot extends React.PureComponent {
     };
     console.log(compositePayload);
     this.context.store.dispatch({
-      type: "composite",
+      type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
       payload: compositePayload,
       target: "node"
     });

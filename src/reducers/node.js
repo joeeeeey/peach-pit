@@ -3,41 +3,41 @@
  */
 import { evalUpdate } from "utils/eval";
 import nodeOperation from "utils/nodeOperation";
+import actionTypes from "constants/action-types";
 
 export default (state = null, action) => {
   if (action.target === "node") {
     let { value, targetKey, parentKey, nestedKey } = action.payload;
     switch (action.type) {
-      case "replace":
+      case actionTypes.RESET_FLATTENED_NODE:
         return action.payload;
-      case "update":
+      case actionTypes.UPDATE_FLATTENED_NODE:
         return evalUpdate(state, nestedKey, value);
       // 批量更新
       // payloadData => [{nestedKey: nestedKey, value: value}]
-      case "updateNodes":
+      case actionTypes.UPDATE_FLATTENED_NODES:
         updateNodes(state, action.payload);
         return state;
       // 增加单个节点， 父元素发出的请求
-      case "addNode":
+      case actionTypes.ADD_FLATTENED_NODE:
         addNode(state, action.payload);
         return state;
       // 批量增加节点
       // { payloadData: [{ nodeData: nodeData, targetKey: targetKey }]
-      case "addNodes":
+      case actionTypes.ADD_FLATTENED_NODES:
         addNodes(state, action.payload);
         return state;
       // 销毁是子元素发出的请求
-      case "removeNode":
-        // let { targetKey, parentKey } = action.payload;
+      case actionTypes.REMOVE_FLATTENED_NODE:
         nodeOperation.removeNode(state, targetKey, parentKey);
         return state;
       // 批量删除节点
       // payload 为 {payloadData: [{targetKey: targetKey, parentKey, parentKey}]
-      case "removeNodes":
+      case actionTypes.REMOVE_FLATTENED_NODES:
         removeNodes(state, action.payload);
         return state;
-      case "composite":
-        recombinateNodes(state, action.payload);
+      case actionTypes.MIXED_PROCESSING_FLATTENED_NODES:
+        mixedProcessing(state, action.payload);
         return state;
       default:
         return state;
@@ -47,17 +47,17 @@ export default (state = null, action) => {
   }
 };
 
-function addNode(node, payload) {
-  let { nodeData, targetKey, level, childKey } = payload;
+const addNode = (node, payload) => {
+  let { nodeData, targetKey, childKey } = payload;
 
   if (nodeData != null) {
     nodeOperation.addNode(node, targetKey, nodeData, childKey);
   } else {
     console.warn(`增加单个节点: 需要增加的节点数据为空`);
   }
-}
+};
 
-function updateNodes(node, payload) {
+const updateNodes = (node, payload) => {
   const { payloadData } = payload;
   // payloadData => [{nestedKey: nestedKey, value: value}]
   if (payloadData && Array.isArray(payloadData) && payloadData.length > 0) {
@@ -67,27 +67,23 @@ function updateNodes(node, payload) {
   } else {
     console.warn(`批量更新节点: 需要更新的数据为空`);
   }
-}
+};
 
 // 批量删除节点
-function removeNodes(node, payload) {
+const removeNodes = (node, payload) => {
   // {payloadData: [{targetKey: targetKey, parentKey, parentKey}]
   const { payloadData } = payload;
   if (payloadData && Array.isArray(payloadData) && payloadData.length > 0) {
     for (let i = 0; i < payloadData.length; i++) {
-      nodeOperation.removeNode(
-        node,
-        payloadData[i].targetKey,
-        payloadData[i].parentKey
-      );
+      nodeOperation.removeNode(node, payloadData[i].targetKey, payloadData[i].parentKey);
     }
   } else {
     console.warn(`批量删除节点: 需要删除的数据为空`);
   }
-}
+};
 
 // 批量增加节点
-function addNodes(node, payload) {
+const addNodes = (node, payload) => {
   // { payloadData: [{ nodeData: nodeData, targetKey: targetKey }]
   const { payloadData } = payload;
   if (payloadData && Array.isArray(payloadData) && payloadData.length > 0) {
@@ -97,18 +93,14 @@ function addNodes(node, payload) {
   } else {
     console.warn(`批量增加节点: 需要增加的节点数据为空`);
   }
-}
+};
 
-// 复合操作节点，重组
-function recombinateNodes(node, payload) {
+// 混合处理节点，重组
+const mixedProcessing = (node, payload) => {
   // composite
   // payloadData => {updateNodes: {payloadData: []}, addNodes: {payloadData: []}, removeNodes:  {payloadData: []} }
   const { payloadData } = payload;
-  if (
-    !Array.isArray(payloadData) &&
-    payloadData !== null &&
-    typeof payloadData === "object"
-  ) {
+  if (!Array.isArray(payloadData) && payloadData !== null && typeof payloadData === "object") {
     if (payloadData.addNodes) {
       addNodes(node, payloadData.addNodes);
     }
@@ -121,4 +113,4 @@ function recombinateNodes(node, payload) {
   } else {
     console.warn(`复合操作节点: 复合节点数据为空`);
   }
-}
+};

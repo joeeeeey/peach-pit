@@ -10,8 +10,8 @@ import PropTypes from "prop-types";
 import Button from "material-ui/Button";
 import IconButton from "material-ui/IconButton";
 import DeleteIcon from "material-ui-icons/Delete";
-
 import { Popover } from "antd";
+import actionTypes from "constants/action-types";
 
 // TextArea is Meta 组件， 应当封装为 h1, h2?
 // 需要建表存储 meta
@@ -49,7 +49,7 @@ export default class RemoveNodeSpirit extends Component {
     }
 
     this.context.store.dispatch({
-      type: "removeNode",
+      type: actionTypes.REMOVE_FLATTENED_NODE,
       payload: { targetKey: childrenkey, parentKey: parentkey },
       target: "node"
     });

@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Button from "material-ui/Button";
 import { Menu, Dropdown, Slider } from "antd";
+import actionTypes from "constants/action-types";
 
 export default class AdjustGalleryStyleButton extends React.Component {
   constructor(props, context) {
@@ -52,7 +53,7 @@ export default class AdjustGalleryStyleButton extends React.Component {
     };
 
     this.context.store.dispatch({
-      type: "composite",
+      type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
       payload: compositePayload,
       target: "node"
     });

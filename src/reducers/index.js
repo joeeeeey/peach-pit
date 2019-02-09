@@ -19,8 +19,8 @@ import upYunReducer from "reducers/upYun";
 // }
 
 const reducer = combineReducers({
-  user: userReducer,
   node: nodeReducer,
+  user: userReducer,
   administrator: administratorReducer,
   editInfo: editInfoReducer,
   upYun: upYunReducer,

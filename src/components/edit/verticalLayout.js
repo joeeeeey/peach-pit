@@ -49,6 +49,7 @@ import ChangeBackgroundButton from "components/editTools/layout/changeBackground
 import GridArrangementOptionLists from "components/editTools/layout/gridArrangementOptionLists";
 import ArrayOper from "utils/arrOperation";
 import backgroundSetting from "jssSettings/backgroundSetting";
+import actionTypes from "constants/action-types";
 
 // Layout 的公共样式， 可以抽离
 // 需要占据主屏幕 80% 位置左右两侧自动 margin
@@ -89,7 +90,7 @@ export default class EditableVerticalLayout extends React.PureComponent {
   addDefaultChildren = () => {
     for (let i = 0; i < this.flex.length; i++) {
       this.context.store.dispatch({
-        type: "addNode",
+        type: actionTypes.ADD_FLATTENED_NODE,
         payload: { targetKey: this.props.selfkey, nodeData: defaultChildren },
         target: "node"
       });
@@ -109,7 +110,7 @@ export default class EditableVerticalLayout extends React.PureComponent {
         // 数量一致，只需要更新 flex 信息
         let nestedKey = `${this.props.selfkey},props,flex`;
         this.context.store.dispatch({
-          type: "update",
+          type: actionTypes.UPDATE_FLATTENED_NODE,
           payload: { nestedKey: nestedKey, value: flex },
           target: "node"
         });
@@ -140,7 +141,7 @@ export default class EditableVerticalLayout extends React.PureComponent {
         };
 
         this.context.store.dispatch({
-          type: "composite",
+          type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
           payload: compositePayload,
           target: "node"
         });
@@ -160,7 +161,7 @@ export default class EditableVerticalLayout extends React.PureComponent {
         };
 
         this.context.store.dispatch({
-          type: "composite",
+          type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
           payload: compositePayload,
           target: "node"
         });
@@ -184,7 +185,7 @@ export default class EditableVerticalLayout extends React.PureComponent {
       }
     };
     this.context.store.dispatch({
-      type: "composite",
+      type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
       payload: compositePayload,
       target: "node"
     });

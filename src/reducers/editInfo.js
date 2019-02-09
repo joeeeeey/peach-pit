@@ -1,20 +1,14 @@
 import { evalUpdate } from "utils/eval";
+import actionTypes from "constants/action-types";
 
 export default (state = {}, action) => {
-  // console.log(`store action here ${action.type}`)
-  if (action.target === "editInfo") {
-    let { value, nestedKey } = action.payload;
-    switch (action.type) {
-      case "replace":
-        return action.payload;
-      case "update":
-        return evalUpdate(state, nestedKey, value);
-
-      /* 不加这个注释就会有 warning */
-      default:
-        return state;
-    }
-  } else {
-    return state;
+  const { payload } = action;
+  switch (action.type) {
+    case actionTypes.RESET_EDIT_INFO:
+      return action.payload;
+    case actionTypes.UPDATE_EDIT_INFO:
+      return evalUpdate(state, payload.nestedKey, payload.value);
+    default:
+      return state;
   }
 };
