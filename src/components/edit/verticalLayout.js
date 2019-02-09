@@ -92,7 +92,6 @@ export default class EditableVerticalLayout extends React.PureComponent {
       this.context.store.dispatch({
         type: actionTypes.ADD_FLATTENED_NODE,
         payload: { targetKey: this.props.selfkey, nodeData: defaultChildren },
-        target: "node"
       });
     }
   };
@@ -112,7 +111,6 @@ export default class EditableVerticalLayout extends React.PureComponent {
         this.context.store.dispatch({
           type: actionTypes.UPDATE_FLATTENED_NODE,
           payload: { nestedKey: nestedKey, value: flex },
-          target: "node"
         });
       } else if (flex.length < this.flex.length) {
         // 减少了子元素个数, 默认从最后一个元素开始去除
@@ -143,7 +141,6 @@ export default class EditableVerticalLayout extends React.PureComponent {
         this.context.store.dispatch({
           type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
           payload: compositePayload,
-          target: "node"
         });
       } else {
         const increment = flex.length - this.flex.length;
@@ -163,7 +160,6 @@ export default class EditableVerticalLayout extends React.PureComponent {
         this.context.store.dispatch({
           type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
           payload: compositePayload,
-          target: "node"
         });
       }
     }
@@ -187,7 +183,6 @@ export default class EditableVerticalLayout extends React.PureComponent {
     this.context.store.dispatch({
       type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
       payload: compositePayload,
-      target: "node"
     });
   };
 

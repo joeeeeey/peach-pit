@@ -55,7 +55,6 @@ export default class AdjustGalleryStyleButton extends React.Component {
     this.context.store.dispatch({
       type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
       payload: compositePayload,
-      target: "node"
     });
     // { value: e.value, nestedKey: `${this.props.parentkey},props,backgroundInfo,${e.type}` }
   };

@@ -151,7 +151,6 @@ export default class EditableImageDescription extends React.PureComponent {
     this.context.store.dispatch({
       type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
       payload: compositePayload,
-      target: "node"
     });
   };
 
@@ -201,7 +200,6 @@ export default class EditableImageDescription extends React.PureComponent {
     this.context.store.dispatch({
       type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
       payload: compositePayload,
-      target: "node"
     });
   };
 

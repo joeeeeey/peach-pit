@@ -78,7 +78,6 @@ export default class EditableImageArea extends React.PureComponent {
     this.context.store.dispatch({
       type: actionTypes.REMOVE_FLATTENED_NODE,
       payload: { targetKey: selfkey, parentKey: parentkey },
-      target: "node"
     });
   };
 

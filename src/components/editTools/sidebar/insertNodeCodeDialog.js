@@ -8,11 +8,11 @@ import Dialog, {
   DialogTitle
 } from "material-ui/Dialog";
 import PropTypes from "prop-types";
-
 import editToolBaseDialog from "./editToolBaseDialog";
+import actionTypes from "constants/action-types";
 
 export default class InsertNodeCodeDialog extends editToolBaseDialog {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
   }
   state = {
@@ -27,9 +27,8 @@ export default class InsertNodeCodeDialog extends editToolBaseDialog {
       const rootKey = this.context.store.getState().node._root;
 
       this.context.store.dispatch({
-        type: "addNode",
+        type: actionTypes.ADD_FLATTENED_NODE,
         payload: { targetKey: rootKey, nodeData: nodeData },
-        target: "node"
       });
     } catch (error) {
       alert(`出现了异常: ${error.toString()}`);

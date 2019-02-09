@@ -51,7 +51,6 @@ export default class EditImageDialog extends React.Component {
     this.context.store.dispatch({
       type: actionTypes.REMOVE_FLATTENED_NODE,
       payload: { targetKey: targetkey, parentKey: parentkey },
-      target: "node"
     });
   };
 

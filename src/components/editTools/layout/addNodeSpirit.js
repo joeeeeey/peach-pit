@@ -12,6 +12,7 @@ import Button from "material-ui/Button";
 import AddIcon from "material-ui-icons/Add";
 import IconButton from "material-ui/IconButton";
 import { Menu, Dropdown } from "antd";
+import actionTypes from "constants/action-types";
 
 const buttonStyle = { color: "grey", width: "100%", justifyContent: "left" };
 
@@ -47,7 +48,7 @@ function menu(f) {
 }
 
 export default class AddNodeSpirit extends Component {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
     this.state = { hidden: this.props.hidden || true };
   }
@@ -65,19 +66,17 @@ export default class AddNodeSpirit extends Component {
     if (this.props.childrenkey) {
       // childKey
       this.context.store.dispatch({
-        type: "addNode",
+        type: actionTypes.ADD_FLATTENED_NODE,
         payload: {
           childKey: this.props.childrenkey,
           targetKey: this.props.parentkey,
           nodeData: nodeData
         },
-        target: "node"
       });
     } else {
       this.context.store.dispatch({
-        type: "addNode",
+        type: actionTypes.ADD_FLATTENED_NODE,
         payload: { targetKey: this.props.parentkey, nodeData: nodeData },
-        target: "node"
       });
     }
 

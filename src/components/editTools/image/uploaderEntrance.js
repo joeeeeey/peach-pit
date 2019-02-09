@@ -86,7 +86,6 @@ export default class UploaderEntrance extends React.Component {
       this.context.store.dispatch({
         type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
         payload: compositePayload,
-        target: "node"
       });
     }
   };

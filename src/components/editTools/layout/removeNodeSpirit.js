@@ -51,7 +51,6 @@ export default class RemoveNodeSpirit extends Component {
     this.context.store.dispatch({
       type: actionTypes.REMOVE_FLATTENED_NODE,
       payload: { targetKey: childrenkey, parentKey: parentkey },
-      target: "node"
     });
   };
 

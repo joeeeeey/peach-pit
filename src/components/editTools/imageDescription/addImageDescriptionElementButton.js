@@ -16,7 +16,6 @@ export default class AddImageDescriptionElementButton extends React.Component {
     this.context.store.dispatch({
       type: actionTypes.ADD_FLATTENED_NODE,
       payload: { targetKey: this.props.selfkey, nodeData: defaultChild },
-      target: "node"
     });
   };
 

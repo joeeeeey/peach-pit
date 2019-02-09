@@ -191,7 +191,6 @@ class EditableRoot extends React.PureComponent {
     this.context.store.dispatch({
       type: actionTypes.REMOVE_FLATTENED_NODE,
       payload: { targetKey: rootKey, parentKey: null },
-      target: "node"
     });
   };
 
@@ -267,7 +266,6 @@ class EditableRoot extends React.PureComponent {
     this.context.store.dispatch({
       type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
       payload: compositePayload,
-      target: "node"
     });
   };
 
@@ -317,8 +315,8 @@ class EditableRoot extends React.PureComponent {
         x.props.id = x.props.id
           ? x.props.id
           : `${chilrenData[0].nodeName +
-              "_" +
-              nodeOperation.incryptKey(layoutName)}`;
+          "_" +
+          nodeOperation.incryptKey(layoutName)}`;
         x.layoutName = layoutName;
         return {
           nodeData: x,
@@ -366,7 +364,6 @@ class EditableRoot extends React.PureComponent {
     this.context.store.dispatch({
       type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
       payload: compositePayload,
-      target: "node"
     });
   };
 
@@ -482,7 +479,7 @@ class EditableRoot extends React.PureComponent {
             message.error(`😥 ${data.msg}, 更新出现异常`, 2);
           }
         })
-        .catch(function(error) {
+        .catch(() => {
           message.error(`😥 出现异常:, 请设置浏览器允许该网站弹窗哦`, 2);
         });
     }
@@ -505,7 +502,7 @@ class EditableRoot extends React.PureComponent {
           console.warn(`获取样式失败: ${data.msg}`);
         }
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.warn(`获取样式失败: ${error}`);
       });
   };
@@ -546,7 +543,6 @@ class EditableRoot extends React.PureComponent {
     this.context.store.dispatch({
       type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
       payload: compositePayload,
-      target: "node"
     });
   };
 
@@ -604,7 +600,6 @@ class EditableRoot extends React.PureComponent {
     this.context.store.dispatch({
       type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
       payload: compositePayload,
-      target: "node"
     });
   };
 
@@ -660,15 +655,15 @@ class EditableRoot extends React.PureComponent {
                   style={
                     this.state.topLevelItemisDraggable
                       ? {
-                          width: "100%",
-                          justifyContent: "center",
-                          color: "#FFECB3"
-                        }
+                        width: "100%",
+                        justifyContent: "center",
+                        color: "#FFECB3"
+                      }
                       : {
-                          width: "100%",
-                          justifyContent: "center",
-                          color: "#C8E6C9"
-                        }
+                        width: "100%",
+                        justifyContent: "center",
+                        color: "#C8E6C9"
+                      }
                   }>
                   {this.state.topLevelItemisDraggable
                     ? "关闭板块拖拽"
@@ -677,7 +672,6 @@ class EditableRoot extends React.PureComponent {
                 <div style={{ position: "relative" }}>
                   <GridLayout
                     isDraggable={this.state.topLevelItemisDraggable}
-                    // onLayoutChange={this.handleDrag}
                     onDragStop={this.handleDrag}
                     useCSSTransforms={false}
                     className="layout"

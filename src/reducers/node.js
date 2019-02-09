@@ -6,44 +6,42 @@ import nodeOperation from "utils/nodeOperation";
 import actionTypes from "constants/action-types";
 
 export default (state = null, action) => {
-  if (action.target === "node") {
-    let { value, targetKey, parentKey, nestedKey } = action.payload;
-    switch (action.type) {
-      case actionTypes.RESET_FLATTENED_NODE:
-        return action.payload;
-      case actionTypes.UPDATE_FLATTENED_NODE:
-        return evalUpdate(state, nestedKey, value);
-      // 批量更新
-      // payloadData => [{nestedKey: nestedKey, value: value}]
-      case actionTypes.UPDATE_FLATTENED_NODES:
-        updateNodes(state, action.payload);
-        return state;
-      // 增加单个节点， 父元素发出的请求
-      case actionTypes.ADD_FLATTENED_NODE:
-        addNode(state, action.payload);
-        return state;
-      // 批量增加节点
-      // { payloadData: [{ nodeData: nodeData, targetKey: targetKey }]
-      case actionTypes.ADD_FLATTENED_NODES:
-        addNodes(state, action.payload);
-        return state;
-      // 销毁是子元素发出的请求
-      case actionTypes.REMOVE_FLATTENED_NODE:
-        nodeOperation.removeNode(state, targetKey, parentKey);
-        return state;
-      // 批量删除节点
-      // payload 为 {payloadData: [{targetKey: targetKey, parentKey, parentKey}]
-      case actionTypes.REMOVE_FLATTENED_NODES:
-        removeNodes(state, action.payload);
-        return state;
-      case actionTypes.MIXED_PROCESSING_FLATTENED_NODES:
-        mixedProcessing(state, action.payload);
-        return state;
-      default:
-        return state;
-    }
-  } else {
-    return state;
+  const { payload } = action;
+  // let { value, targetKey, parentKey, nestedKey } = action.payload;
+  switch (action.type) {
+    case actionTypes.RESET_FLATTENED_NODE:
+      return payload;
+    case actionTypes.UPDATE_FLATTENED_NODE:
+      return evalUpdate(state, payload.nestedKey, payload.value);
+    // 批量更新
+    // payloadData => [{nestedKey: nestedKey, value: value}]
+    case actionTypes.UPDATE_FLATTENED_NODES:
+      updateNodes(state, payload);
+      return Object.assign({}, state);
+    // 增加单个节点， 父元素发出的请求
+    case actionTypes.ADD_FLATTENED_NODE:
+      addNode(state, payload);
+      return Object.assign({}, state);
+    // 批量增加节点
+    // { payloadData: [{ nodeData: nodeData, targetKey: targetKey }]
+    case actionTypes.ADD_FLATTENED_NODES:
+      addNodes(state, payload);
+      return Object.assign({}, state);
+    // 销毁是子元素发出的请求
+    case actionTypes.REMOVE_FLATTENED_NODE:
+      nodeOperation.removeNode(state, payload.targetKey, payload.parentKey);
+      return Object.assign({}, state);
+    // 批量删除节点
+    // payload 为 {payloadData: [{targetKey: targetKey, parentKey, parentKey}]
+    case actionTypes.REMOVE_FLATTENED_NODES:
+      removeNodes(state, payload);
+      return Object.assign({}, state);
+    case actionTypes.MIXED_PROCESSING_FLATTENED_NODES:
+      mixedProcessing(state, payload);
+      return Object.assign({}, state);
+      // return Object.assign({}, state);
+    default:
+      return state;
   }
 };
 
@@ -69,6 +67,19 @@ const updateNodes = (node, payload) => {
   }
 };
 
+// 批量增加节点
+const addNodes = (node, payload) => {
+  // { payloadData: [{ nodeData: nodeData, targetKey: targetKey }]
+  const { payloadData } = payload;
+  if (payloadData && Array.isArray(payloadData) && payloadData.length > 0) {
+    for (let i = 0; i < payloadData.length; i++) {
+      addNode(node, payloadData[i]);
+    }
+  } else {
+    console.warn(`批量增加节点: 需要增加的节点数据为空`);
+  }
+};
+
 // 批量删除节点
 const removeNodes = (node, payload) => {
   // {payloadData: [{targetKey: targetKey, parentKey, parentKey}]
@@ -82,18 +93,6 @@ const removeNodes = (node, payload) => {
   }
 };
 
-// 批量增加节点
-const addNodes = (node, payload) => {
-  // { payloadData: [{ nodeData: nodeData, targetKey: targetKey }]
-  const { payloadData } = payload;
-  if (payloadData && Array.isArray(payloadData) && payloadData.length > 0) {
-    for (let i = 0; i < payloadData.length; i++) {
-      addNode(node, payloadData[i]);
-    }
-  } else {
-    console.warn(`批量增加节点: 需要增加的节点数据为空`);
-  }
-};
 
 // 混合处理节点，重组
 const mixedProcessing = (node, payload) => {

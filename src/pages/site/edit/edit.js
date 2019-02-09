@@ -12,26 +12,8 @@ import EditableImageArea from "components/edit/imageArea";
 import EditableNavBar from "components/edit/navBar";
 import EditablePhotoGallery from "components/edit/photoGallery";
 import EditableImageDescription from "components/edit/imageDescription";
+import EditRoot from "pages/site/edit/editRoot";
 import actionTypes from "constants/action-types";
-import { connect } from 'react-redux';
-
-// const mapStateToProps = state => ({
-//   flattenedNode: state.node,
-// });
-
-const mapStateToProps = (state /*, ownProps*/) => {
-  return {
-    flattenedNode: state.node
-  }
-}
-// const mapDispatchToProps = dispatch => ({
-//   closeModal: () => {
-//     dispatch(modalActions.closeModal());
-//   },
-//   openModal: ({ openedModal }) => {
-//     dispatch(modalActions.openModal({ openedModal }));
-//   },
-// });
 
 // 测试的组件
 // import Test from '../test'
@@ -71,9 +53,8 @@ const widgets = {
 //   }
 // })
 
-// @connect(mapStateToProps)
 class Edit extends React.Component {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
     this.state = { nodeData: null };
   }
@@ -175,6 +156,8 @@ class Edit extends React.Component {
           if (data.code === 0) {
             // {id: 1, name: 'dsd', thumb_url: 'xxx', data: '..'}
             let block = data.data;
+            // editInfo.name = block.name
+
             // 此处 setEditInfoState 需要在 initialNodeData 下方执行
             // TODO why? 将两个 dispatch 合并
             this.initialNodeData(block);
@@ -188,7 +171,7 @@ class Edit extends React.Component {
     } else {
       this.initialNodeData();
     }
-    // this.unsubscribe = this.context.store.subscribe(this.listener);
+    this.unsubscribe = this.context.store.subscribe(this.listener);
   };
 
   // TODO 引入 react-redux
@@ -199,12 +182,19 @@ class Edit extends React.Component {
     // console.log('编辑页面监听到了 store  变化')
     // 此处监听 store 的变化，只要发生了 dispatch 就都会被监听到
     let { node } = this.context.store.getState();
+    console.log('node: ', node);
     
     if (typeof node === "string") {
       return false;
     }
+    // const relation = node._relation;
+    // const rootKey = node._root;
+
 
     this.setState({ nodeData: node });
+
+    // console.log('node is: ', node);
+
   };
 
   // shouldComponentUpdate(nextProps) {
@@ -225,7 +215,6 @@ class Edit extends React.Component {
     this.context.store.dispatch({
       type: actionTypes.RESET_FLATTENED_NODE,
       payload: ftData,
-      target: "node"
     });
     // 网站名称加入 editInfo 中
     // value = block.name
@@ -249,15 +238,13 @@ class Edit extends React.Component {
   };
 
   render = () => {
-    console.log('edit render: ', this.props);
-    const { flattenedNode } = this.props;
-    let reactCode = null;
-    if (flattenedNode) {
-      const codeString = nodeOperation.flattenedData2Code(flattenedNode, "edit");
-      reactCode = this.toF(codeString);
-    }
+    // const codeString = nodeOperation.flattenedData2Code(JSON.parse(JSON.stringify(this.state.nodeData)), "edit");
+    // const reactCode = this.toF(codeString);
 
-    return <div>{reactCode}</div>;
+    // console.log('reactCode: ', reactCode);
+
+    // return <div>{reactCode}</div>;
+    return <EditableRoot><EditRoot flattenedNode={ this.state.nodeData }/></EditableRoot>
   };
 
   getChildContext() {
@@ -273,8 +260,4 @@ Edit.childContextTypes = {
   store: PropTypes.object
 };
 
-// Edit.PropTypes = {
-//   flattenedNode: PropTypes.object,
-// }
-
-export default connect(mapStateToProps, null)(Edit);
+export default Edit;

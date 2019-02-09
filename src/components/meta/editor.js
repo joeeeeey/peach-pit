@@ -93,7 +93,6 @@ class Editor extends Component {
             nestedKey: nestedKey,
             value: this.quillRef.editor.delta.ops
           },
-          target: "node"
         });
       }, 2000);
     }

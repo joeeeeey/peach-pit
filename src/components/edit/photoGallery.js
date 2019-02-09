@@ -112,7 +112,6 @@ export default class EditablePhotoGallery extends React.Component {
         nestedKey: `${this.props.selfkey},props,id`,
         value: this.props.selfkey
       },
-      target: "node"
     });
   };
 

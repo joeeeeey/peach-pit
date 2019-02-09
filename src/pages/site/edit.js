@@ -209,7 +209,6 @@
 //     this.context.store.dispatch({
 //       type: actionTypes.RESET_FLATTENED_NODE,
 //       payload: ftData,
-//       target: "node"
 //     });
 //     // 网站名称加入 editInfo 中
 //     // value = block.name
