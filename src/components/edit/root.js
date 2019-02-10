@@ -596,7 +596,7 @@ class EditableRoot extends React.PureComponent {
     compositePayload.payloadData.updateNodes = {
       payloadData: updateNodesPayload
     };
-    console.log(compositePayload);
+
     this.context.store.dispatch({
       type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
       payload: compositePayload,

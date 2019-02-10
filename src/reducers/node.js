@@ -7,7 +7,6 @@ import actionTypes from "constants/action-types";
 
 export default (state = null, action) => {
   const { payload } = action;
-  // let { value, targetKey, parentKey, nestedKey } = action.payload;
   switch (action.type) {
     case actionTypes.RESET_FLATTENED_NODE:
       return payload;
@@ -39,7 +38,6 @@ export default (state = null, action) => {
     case actionTypes.MIXED_PROCESSING_FLATTENED_NODES:
       mixedProcessing(state, payload);
       return Object.assign({}, state);
-      // return Object.assign({}, state);
     default:
       return state;
   }

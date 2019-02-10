@@ -75,7 +75,7 @@ const widgets = {
 class Edit extends React.Component {
   constructor(props, context) {
     super(props);
-    this.state = { nodeData: null };
+    // this.state = { nodeData: null };
   }
 
   getSourceFromUrl = () => {
@@ -195,32 +195,32 @@ class Edit extends React.Component {
   // Edit 组件根据顶层子元素的个数而改变
   // 顶层子元素内部的变化则在元素内部处理
 
-  listener = () => {
-    // console.log('编辑页面监听到了 store  变化')
-    // 此处监听 store 的变化，只要发生了 dispatch 就都会被监听到
-    let { node } = this.context.store.getState();
+  // listener = () => {
+  //   // console.log('编辑页面监听到了 store  变化')
+  //   // 此处监听 store 的变化，只要发生了 dispatch 就都会被监听到
+  //   let { node } = this.context.store.getState();
     
-    if (typeof node === "string") {
-      return false;
-    }
+  //   if (typeof node === "string") {
+  //     return false;
+  //   }
 
-    this.setState({ nodeData: node });
-  };
+  //   this.setState({ nodeData: node });
+  // };
 
   // shouldComponentUpdate(nextProps) {
   //   return true;
   // }
 
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
+  // componentWillUnmount() {
+  //   this.unsubscribe();
+  // }
 
   initialNodeData(block) {
     console.log("initialNodeDatainitialNodeDatainitialNodeData");
     let ftData = nodeOperation.flattenDomTree(this.wrapRoot(block));
     // let ftData = nodeOperation.flattenDomTree(ftData)
     // console.log(ftData)
-    this.setState({ nodeData: ftData });
+    // this.setState({ nodeData: ftData });
 
     this.context.store.dispatch({
       type: actionTypes.RESET_FLATTENED_NODE,
