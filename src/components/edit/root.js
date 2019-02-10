@@ -10,6 +10,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import Button from "material-ui/Button";
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+
 // 侧边栏以及 appbar
 import { Layout, Menu, Icon, Popover, Divider, message } from "antd";
 import GridLayout from "react-grid-layout";
@@ -45,6 +47,10 @@ const siteService = new SiteService();
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
+const mapStateToProps = state => ({
+  flattenedNode: state.node,
+});
+
 const buttonStyle = { color: "white", width: "100%", justifyContent: "left" };
 class EditableRoot extends React.PureComponent {
   constructor(props, context) {
@@ -54,7 +60,6 @@ class EditableRoot extends React.PureComponent {
       openPreview: false,
       editInfo: context.store.getState().editInfo, // {source: "das", id: "32", role: "admin"}
       layouts: [], // 可选择加入的样式
-      navBarChildren: props.navBarChildren,
       topLevelItemisDraggable: false // 顶层板块可被拖拽
     };
     this.navbar = [];
@@ -282,7 +287,6 @@ class EditableRoot extends React.PureComponent {
   // 复合样式则直接将整个 div 当成是应该加入的 layout 对象
 
   addNode = (nodeData, layoutName) => {
-    // this.setState({topLevelItemisDraggable: false})
     nodeData = JSON.parse(nodeData);
     let compositePayload = null;
     let thisNode = null;
@@ -336,7 +340,7 @@ class EditableRoot extends React.PureComponent {
     let updateNodesPayload = [];
 
     // 检查并更新导航栏内容
-    if (this.state.navBarChildren) {
+    if (this.props.navBarChildren) {
       if (thisNode.nodeName === "NavBar") {
         // 已经存在了导航栏情况
         message.warn("不支持多个导航栏共存", 3);
@@ -606,9 +610,10 @@ class EditableRoot extends React.PureComponent {
   render() {
     // TODO 使用 state 替代
     const rootDivStyle = Object.assign({ marginBottom: '40px' }, this.props.style);
+    console.log('rootDivStyle: ', this.props);
 
     return (
-      <div>
+      <div id="EditableRoot">
         <Layout>
           <Sider
             style={{
@@ -768,4 +773,4 @@ EditableRoot.contextTypes = {
   store: PropTypes.object
 };
 
-export default EditableRoot;
+export default connect(mapStateToProps)(EditableRoot);
