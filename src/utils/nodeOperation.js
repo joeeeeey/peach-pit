@@ -149,7 +149,7 @@ function objectPresent(obj) {
  *   若 childKey 存在，则需要找到 parentkey 中的 childKey 位置在后方插入
  */
 
-function addNode(currentDom, parentKey, newNode, childKey = null) {
+const addNode = (currentDom, parentKey, newNode, childKey = null) => {
   if (!currentDom._relation[parentKey]) {
     currentDom._relation[parentKey] = [];
   }
@@ -409,11 +409,9 @@ function flattenedData2Code(flattenData, action, selfDomKey = null, parentDomKey
   props = JSON.stringify(props);
 
   let childrenNames = flattenData._relation[selfDomKey];
-  let children = data.children;
   let childrenCode = "";
-  if (typeof children === "string") {
-    childrenCode += `,\n${JSON.stringify(children)}`;
-  } else if (Array.isArray(childrenNames) && childrenNames.length > 0) {
+
+  if (Array.isArray(childrenNames) && childrenNames.length > 0) {
     for (let i = 0; i < childrenNames.length; i++) {
       childrenCode += flattenedData2Code(flattenData, action, childrenNames[i], selfDomKey, ",\n");
     }
@@ -423,6 +421,42 @@ function flattenedData2Code(flattenData, action, selfDomKey = null, parentDomKey
         ${tagName},
         ${props}${childrenCode}
     )`;
+  return code;
+}
+
+/**
+ * 高维 node 转化为 react 代码.
+ * 
+ * @param {object} highDimensionalNode 
+ * @param {string} action 'edit' | 'preview'
+ * @param {string} code
+ *
+ * Note:
+ *   对于高维 node 对象， children 存在即为数组类型。
+ */
+const highDimensionalNode2Code = (node, action, code = "") => {
+  let tagName;
+  if (node.native) {
+    tagName = JSON.stringify(node.nodeName);
+  } else {
+    tagName = `${getClassName(action) + node.nodeName}`;
+  }
+
+  const props = JSON.stringify(node.props || {});
+
+  let children = node.children;
+  let childrenCode = "";
+
+  if (children && Array.isArray(children)) {
+    children.map(child => {
+      childrenCode += highDimensionalNode2Code(child, action, ",\n")
+    });
+  }
+
+  code += `React.createElement(
+    ${tagName},
+    ${props}${childrenCode}
+)`;
   return code;
 }
 
