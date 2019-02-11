@@ -27,8 +27,8 @@ const mapStateToProps = (state, ownProps) => ({
 class EditRoot extends React.Component {
   getChildren = () => {
     if (this.props.relation) {
-      return this.props.relation.map(x =>
-        <EditRootWithRedux selfkey={x} />
+      return this.props.relation.map((x, index) =>
+        <EditRootWithRedux selfkey={x} key={index}/>
       )
     }
     return null

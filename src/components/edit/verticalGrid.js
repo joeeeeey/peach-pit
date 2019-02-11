@@ -31,12 +31,12 @@ const ChildAddNodeSpiritContainerStyle = {
 };
 
 export default class EditableVerticalGrid extends React.Component {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
   }
 
   render() {
-    console.log('EditableVerticalGrid render: ', this.props);
+    // console.log('EditableVerticalGrid render: ', this.props);
     return (
       <div>
         <Grid

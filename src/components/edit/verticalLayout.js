@@ -73,7 +73,7 @@ export default class EditableVerticalLayout extends React.Component {
 
   componentDidMount() {
     if (this.props.children === null || this.props.children === undefined) {
-      this.props.flex = defalutFlexLayout;
+      // this.props.flex = defalutFlexLayout;
       this.addDefaultChildren();
     }
   }

@@ -243,3 +243,7 @@ EditableImageArea.childContextTypes = {
 EditableImageArea.contextTypes = {
   store: PropTypes.object
 };
+
+EditableImageArea.defaultProps = {
+  imageContainerStyle: defaultImageContainerStyle,
+};

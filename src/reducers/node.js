@@ -1,7 +1,7 @@
 /**
  * @file Redux actions of `node`.
  */
-import { evalUpdate, nodeEvalUpdate } from "utils/eval";
+import { nodeEvalUpdate } from "utils/eval";
 import nodeOperation from "utils/nodeOperation";
 import actionTypes from "constants/action-types";
 

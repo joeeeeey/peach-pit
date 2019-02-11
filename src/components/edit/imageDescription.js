@@ -56,6 +56,7 @@
 // {"native":false,"nodeName":"ImageDescription","props":{"backgroundInfo":{"background":"white","backgroundType":"pureColor","imageInfo":{},"fillType":null,"enableParallex":null},"column":3},"children":[{"native":true,"nodeName":"div","children":[{"native":false,"nodeName":"ImageArea","props":{"src":"http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/a96322da6ff86340da9a23bc2fbb59a6"}},{"native":false,"nodeName":"VerticalLayout","props":{"backgroundInfo":{"background":"white","backgroundType":"pureColor","imageInfo":{},"fillType":null,"enableParallex":null}}}]},{"native":true,"nodeName":"div","children":[{"native":false,"nodeName":"ImageArea","props":{"src":"http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/temporary/layout/a96322da6ff86340da9a23bc2fbb59a6"}},{"native":false,"nodeName":"VerticalLayout","props":{"backgroundInfo":{"background":"white","backgroundType":"pureColor","imageInfo":{},"fillType":null,"enableParallex":null}}}]}]}
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from 'react-redux';
 import Grid from "material-ui/Grid";
 import EditableImageArea from "components/edit/imageArea";
 import EditableVerticalLayout from "components/edit/verticalLayout";
@@ -65,6 +66,7 @@ import AddImageDescriptionElementButton from "components/editTools/imageDescript
 import RemoveNodeSpirit from "components/editTools/layout/removeNodeSpirit";
 import ChangeLayoutButton from "components/editTools/imageDescription/changeLayoutButton";
 import actionTypes from "constants/action-types";
+import EditRoot from "pages/site/edit2/editRoot";
 
 const RemoveNodeSpiritContainerStyle = {
   zIndex: 46,
@@ -78,15 +80,48 @@ const verticalCenterStyle = {
   justifyContent: "center"
 };
 
-export default class EditableImageDescription extends React.Component {
-  constructor(props, context) {
-    super(props);
+// 因需要调用子元素甚至孙元素的 porps,故在此订阅
+// TODO 重构
+// 更好的方式应为子元素使用 child 和文件渲染，单独订阅节点内筒
+// 这样更新效率更高，也容易理解阅读。
+const mapStateToProps = (state, ownProps) => {
+  let childProps = {};
+  const childrenKeys = ownProps.children.map(x => x.props.selfkey);
 
-    const { column, children } = this.props;
-    const childrenArray = React.Children.toArray(children);
-    const childrenKeys = childrenArray.map(
-      x => x.props.children[0].props.selfkey
-    );
+  let imageKeys = [];
+  let desKeys = [];
+  childrenKeys.map(key => {
+    childProps[key] = state.node[key];
+    state.node._relation[key].map((grandsonKey, index) => {
+      if (index === 0) {
+        imageKeys.push(grandsonKey);
+      }
+      if (index === 1) {
+        desKeys.push(grandsonKey);
+      }
+      childProps[grandsonKey] = state.node[grandsonKey];
+    })
+  })
+  childProps.imageKeys = imageKeys;
+  childProps.desKeys = desKeys;
+  childProps.relations = state.node._relation;
+  // 子节点+孙节点
+  return childProps;
+}
+
+class EditableImageDescription extends React.Component {
+  constructor(props) {
+    super(props);
+    // console.log('EditableImageDescription props: ', props);
+
+    const { column } = this.props;
+    // const { column, children } = this.props;
+    // const childrenArray = React.Children.toArray(children);
+    // const childrenKeys = childrenArray.map(
+    //   x => x.props.children[0].props.selfkey
+    // );
+
+    const childrenKeys = props.imageKeys;
     this.needUpdateRow = [];
     this.imageHeightInfo = [];
     this.state = {
@@ -152,17 +187,6 @@ export default class EditableImageDescription extends React.Component {
       type: actionTypes.MIXED_PROCESSING_FLATTENED_NODES,
       payload: compositePayload,
     });
-  };
-
-  getChildrenKeys = () => {
-    const { children } = this.props;
-    const childrenArray = React.Children.toArray(children);
-    const childrenCounts = childrenArray.length;
-    // 取出子元素中的图片放入数组
-    const childrenKeys = childrenArray.map(
-      x => x.props.children[0].props.selfkey
-    );
-    return childrenKeys;
   };
 
   getRowStateAndInfo = (childrenKeys, column) => {
@@ -360,7 +384,9 @@ export default class EditableImageDescription extends React.Component {
   }
 
   render() {
-    const { id = this.props.selfkey, backgroundInfo } = this.props;
+    console.log('render this.state: ', this.state);
+    // console.log('render props is: ', this.props);
+    const { id = this.props.selfkey, backgroundInfo, imageKeys, desKeys } = this.props;
 
     const backgroundStyle = Object.assign(
       { position: "relative" },
@@ -384,14 +410,16 @@ export default class EditableImageDescription extends React.Component {
             changeFullWithChilrenButton={this.changeFullWithChilrenButton}
           />
 
-          <Grid name="水平" container direction={"row"} justify={"center"}>
+          <Grid container direction={"row"} justify={"center"}>
             {this.props.children &&
               React.Children.toArray(this.props.children).map(
                 (child, index) => {
                   // 子元素的子元素
-                  const childChildren = child.props.children;
-                  const imageProps = childChildren[0].props;
-                  const verticalLayoutProps = childChildren[1].props;
+                  // const grandsons = child.props.children;
+                  // const imageProps = grandsons[0].props;
+                  // const verticalLayoutProps = grandsons[1].props;
+                  const imageProps = this.props[imageKeys[index]].props;
+                  const verticalLayoutProps = this.props[desKeys[index]].props;
                   const imageKey = imageProps.selfkey;
 
                   return (
@@ -424,14 +452,18 @@ export default class EditableImageDescription extends React.Component {
                             verticalCenterStyle
                           )}>
                           <EditableImageArea
-                            hiddenDelete={true}
+                            hiddenDelete
                             imageContainerStyle={{}}
                             noMeasure={false}
-                            {...imageProps}
                             reportHeight={this.reportHeight}
+                            {...imageProps}
                           />
                         </div>
-                        <EditableVerticalLayout {...verticalLayoutProps} />
+                        <EditableVerticalLayout {...verticalLayoutProps} >
+                          {this.props.relations[verticalLayoutProps.selfkey].map((x, index) =>
+                            <EditRoot selfkey={x} key={index} />
+                          )}
+                        </EditableVerticalLayout>
                       </div>
                     </Grid>
                   );
@@ -452,3 +484,6 @@ EditableImageDescription.contextTypes = {
 EditableImageDescription.childContextTypes = {
   store: PropTypes.object
 };
+
+const EditableImageDescriptionWithRedux = connect(mapStateToProps)(EditableImageDescription);
+export default EditableImageDescriptionWithRedux;

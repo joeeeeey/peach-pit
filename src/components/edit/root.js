@@ -57,21 +57,19 @@ const buttonStyle = { color: "white", width: "100%", justifyContent: "left" };
 class EditableRoot extends React.Component {
   constructor(props, context) {
     super(props);
-
     this.state = {
-      openPreview: false,
+      // openPreview: false,
       editInfo: context.store.getState().editInfo, // {source: "das", id: "32", role: "admin"}
       layouts: [], // 可选择加入的样式
       topLevelItemisDraggable: false // 顶层板块可被拖拽
     };
     this.navbar = [];
-    this.selfkey = this.props.selfkey;
   }
 
   // 获得顶层元素 key，来加载侧边栏 layout
   getRootChildrenKey = () => {
     if (this.wholeNode()) {
-      const rootKey = this.selfkey;
+      const rootKey = this.props.selfkey;
       if (rootKey) {
         return this.wholeNode()._relation[rootKey];
       } else {
@@ -194,7 +192,7 @@ class EditableRoot extends React.Component {
   };
 
   clearNode = () => {
-    const rootKey = this.selfkey;
+    const rootKey = this.props.selfkey;
     this.context.store.dispatch({
       type: actionTypes.REMOVE_FLATTENED_NODE,
       payload: { targetKey: rootKey, parentKey: null },
@@ -217,13 +215,13 @@ class EditableRoot extends React.Component {
         for (let a in affectRoot) {
           updateNodesPayload.push({
             value: 0, // TODO 最好的方式是判断是字符串还是数字, 数字就减，字符变为 null
-            nestedKey: `${this.selfkey},props,style,${a}`
+            nestedKey: `${this.props.selfkey},props,style,${a}`
           });
         }
         // 清空 navBarChildren 内容
         updateNodesPayload.push({
           value: null,
-          nestedKey: `${this.selfkey},props,navBarChildren`
+          nestedKey: `${this.props.selfkey},props,navBarChildren`
         });
 
         return updateNodesPayload;
@@ -235,7 +233,7 @@ class EditableRoot extends React.Component {
         );
         updateNodesPayload.push({
           value: newChilren,
-          nestedKey: `${this.selfkey},props,navBarChildren`
+          nestedKey: `${this.props.selfkey},props,navBarChildren`
         });
 
         return updateNodesPayload;
@@ -247,7 +245,7 @@ class EditableRoot extends React.Component {
     let compositePayload = {
       payloadData: {
         removeNodes: {
-          payloadData: [{ targetKey: targetKey, parentKey: this.selfkey }]
+          payloadData: [{ targetKey: targetKey, parentKey: this.props.selfkey }]
         }
       }
     };
@@ -294,7 +292,7 @@ class EditableRoot extends React.Component {
       let compositelayoutId = nodeOperation.incryptKey(layoutName);
       nodeData.props.id = compositelayoutId;
       nodeData.layoutName = layoutName;
-      let addNodesPayload = [{ nodeData: nodeData, targetKey: this.selfkey }];
+      let addNodesPayload = [{ nodeData: nodeData, targetKey: this.props.selfkey }];
 
       compositePayload = {
         payloadData: {
@@ -323,7 +321,7 @@ class EditableRoot extends React.Component {
         x.layoutName = layoutName;
         return {
           nodeData: x,
-          targetKey: this.selfkey
+          targetKey: this.props.selfkey
         };
       });
 
@@ -384,7 +382,7 @@ class EditableRoot extends React.Component {
 
     updateNavBarPayload.push({
       value: navBarChildren.concat([child]),
-      nestedKey: `${this.selfkey},props,navBarChildren`
+      nestedKey: `${this.props.selfkey},props,navBarChildren`
     });
 
     return updateNavBarPayload;
@@ -407,7 +405,7 @@ class EditableRoot extends React.Component {
 
     addNavBarPayload.push({
       value: navBarChildren,
-      nestedKey: `${this.selfkey},props,navBarChildren`
+      nestedKey: `${this.props.selfkey},props,navBarChildren`
     });
 
     // 更新影响 root 的样式
@@ -416,7 +414,7 @@ class EditableRoot extends React.Component {
       for (let a in affectRoot) {
         addNavBarPayload.push({
           value: affectRoot[a],
-          nestedKey: `${this.selfkey},props,style,${a}`
+          nestedKey: `${this.props.selfkey},props,style,${a}`
         });
       }
     }
@@ -531,7 +529,7 @@ class EditableRoot extends React.Component {
       }
       updateNodesPayload.push({
         value: navBarChildren,
-        nestedKey: `${this.selfkey},props,navBarChildren`
+        nestedKey: `${this.props.selfkey},props,navBarChildren`
       });
     }
 
@@ -581,7 +579,7 @@ class EditableRoot extends React.Component {
       }
       updateNodesPayload.push({
         value: newNavBarChildren,
-        nestedKey: `${this.selfkey},props,navBarChildren`
+        nestedKey: `${this.props.selfkey},props,navBarChildren`
       });
       newRootRealtion.splice(0, 0, navBarKey);
     }
@@ -604,7 +602,7 @@ class EditableRoot extends React.Component {
   render() {
     // todo 下面留白便于锚点, 使用更加合理的解决方案。
     const rootDivStyle = Object.assign({ marginBottom: '100vh' }, this.props.style);
-    console.log('rootDivStyle: ', this.props);
+    // console.log('rootDivStyle: ', this.props);
 
     return (
       <div id="EditableRoot">
@@ -756,8 +754,8 @@ class EditableRoot extends React.Component {
               {/* {this.props.children} */}
 
               {
-                this.props.relation && this.props.relation.map(x => 
-                  <EditRoot selfkey={x} />
+                this.props.relation && this.props.relation.map((x, index) =>
+                  <EditRoot selfkey={x} key={index} />
                 )
               }
             </div>
