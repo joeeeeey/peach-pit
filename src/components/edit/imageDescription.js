@@ -88,23 +88,14 @@ const mapStateToProps = (state, ownProps) => {
   let childProps = {};
   const childrenKeys = ownProps.children.map(x => x.props.selfkey);
 
-  let imageKeys = [];
-  let desKeys = [];
   childrenKeys.map(key => {
     childProps[key] = state.node[key];
-    state.node._relation[key].map((grandsonKey, index) => {
-      if (index === 0) {
-        imageKeys.push(grandsonKey);
-      }
-      if (index === 1) {
-        desKeys.push(grandsonKey);
-      }
+    childProps[`relation_${key}`] = state.node._relation[key];
+    state.node._relation[key].map((grandsonKey) => {
       childProps[grandsonKey] = state.node[grandsonKey];
+      childProps[`relation_${grandsonKey}`] = state.node._relation[grandsonKey];
     })
   })
-  childProps.imageKeys = imageKeys;
-  childProps.desKeys = desKeys;
-  childProps.relations = state.node._relation;
   // 子节点+孙节点
   return childProps;
 }
@@ -112,16 +103,9 @@ const mapStateToProps = (state, ownProps) => {
 class EditableImageDescription extends React.Component {
   constructor(props) {
     super(props);
-    // console.log('EditableImageDescription props: ', props);
-
     const { column } = this.props;
-    // const { column, children } = this.props;
-    // const childrenArray = React.Children.toArray(children);
-    // const childrenKeys = childrenArray.map(
-    //   x => x.props.children[0].props.selfkey
-    // );
 
-    const childrenKeys = props.imageKeys;
+    const childrenKeys = props.children.map(x => x.props.selfkey);
     this.needUpdateRow = [];
     this.imageHeightInfo = [];
     this.state = {
@@ -320,7 +304,6 @@ class EditableImageDescription extends React.Component {
 
         // 延时 95 毫秒进行所有图片重绘
         this.saveTriggerTimer = setTimeout(() => {
-          // console.log(`settimeout 启动`)
           let updateInfo = {};
           this.needUpdateRow = [...new Set(this.needUpdateRow)];
           for (let i = 0; i < this.needUpdateRow.length; i++) {
@@ -384,9 +367,7 @@ class EditableImageDescription extends React.Component {
   }
 
   render() {
-    console.log('render this.state: ', this.state);
-    // console.log('render props is: ', this.props);
-    const { id = this.props.selfkey, backgroundInfo, imageKeys, desKeys } = this.props;
+    const { id = this.props.selfkey, backgroundInfo } = this.props;
 
     const backgroundStyle = Object.assign(
       { position: "relative" },
@@ -415,12 +396,12 @@ class EditableImageDescription extends React.Component {
               React.Children.toArray(this.props.children).map(
                 (child, index) => {
                   // 子元素的子元素
-                  // const grandsons = child.props.children;
-                  // const imageProps = grandsons[0].props;
-                  // const verticalLayoutProps = grandsons[1].props;
-                  const imageProps = this.props[imageKeys[index]].props;
-                  const verticalLayoutProps = this.props[desKeys[index]].props;
-                  const imageKey = imageProps.selfkey;
+                  const childRelationKey = [`relation_${child.props.selfkey}`];
+                  const imKey = this.props[childRelationKey][0];
+                  const imageProps = this.props[imKey].props;
+                  const vlKey = this.props[childRelationKey][1];
+                  const verticalLayoutProps = this.props[vlKey].props;
+                  const childKey = this.state.childrenKeys[index];
 
                   return (
                     <Grid
@@ -440,7 +421,7 @@ class EditableImageDescription extends React.Component {
                           <RemoveNodeSpirit
                             parentkey={this.props.selfkey}
                             childrenkey={child.props.selfkey}
-                            callBackValue={imageKey}
+                            callBackValue={childKey}
                             deleteCallback={this.deleteElement}
                           />
                         </div>
@@ -448,7 +429,7 @@ class EditableImageDescription extends React.Component {
                           name="imageAreaContanier"
                           style={Object.assign(
                             {},
-                            this.state[`${imageKey}IACS`],
+                            this.state[`${childKey}IACS`],
                             verticalCenterStyle
                           )}>
                           <EditableImageArea
@@ -460,7 +441,7 @@ class EditableImageDescription extends React.Component {
                           />
                         </div>
                         <EditableVerticalLayout {...verticalLayoutProps} >
-                          {this.props.relations[verticalLayoutProps.selfkey].map((x, index) =>
+                          {this.props[`relation_${verticalLayoutProps.selfkey}`].map((x, index) =>
                             <EditRoot selfkey={x} key={index} />
                           )}
                         </EditableVerticalLayout>
