@@ -40,6 +40,7 @@ import SiteService from "services/siteService";
 import nodeOperation from "utils/nodeOperation";
 // import Test from '../../pages/test'
 import actionTypes from "constants/action-types";
+import EditRoot from "pages/site/edit2/editRoot";
 
 const layoutService = new LayoutService();
 const templateService = new TemplateService();
@@ -49,10 +50,11 @@ const SubMenu = Menu.SubMenu;
 
 const mapStateToProps = state => ({
   flattenedNode: state.node,
+  relation: state.node ? state.node._relation[state.node._root] : [],
 });
 
 const buttonStyle = { color: "white", width: "100%", justifyContent: "left" };
-class EditableRoot extends React.PureComponent {
+class EditableRoot extends React.Component {
   constructor(props, context) {
     super(props);
 
@@ -203,7 +205,7 @@ class EditableRoot extends React.PureComponent {
   getRootDeleteNodeUpdateNavBarPayload = targetKey => {
     let thisNode = this.wholeNode()[targetKey];
     let updateNodesPayload = [];
-    let { navBarChildren } = this.state;
+    let { navBarChildren } = this.props;
 
     // 检查并更新导航栏内容
     // 如果有导航栏
@@ -224,8 +226,6 @@ class EditableRoot extends React.PureComponent {
           nestedKey: `${this.selfkey},props,navBarChildren`
         });
 
-        this.setNavBarState(null);
-
         return updateNodesPayload;
       } else {
         // 更新导航栏
@@ -238,7 +238,6 @@ class EditableRoot extends React.PureComponent {
           nestedKey: `${this.selfkey},props,navBarChildren`
         });
 
-        this.setNavBarState(newChilren);
         return updateNodesPayload;
       }
     }
@@ -380,13 +379,11 @@ class EditableRoot extends React.PureComponent {
       layoutName: thisNode.layoutName
     };
 
-    let { navBarChildren } = this.state;
-    navBarChildren.push(child);
-
-    this.setNavBarState(navBarChildren);
+    let { navBarChildren } = this.props;
+    // navBarChildren.push(child);
 
     updateNavBarPayload.push({
-      value: navBarChildren,
+      value: navBarChildren.concat([child]),
       nestedKey: `${this.selfkey},props,navBarChildren`
     });
 
@@ -424,7 +421,6 @@ class EditableRoot extends React.PureComponent {
       }
     }
 
-    this.setNavBarState(navBarChildren);
     return addNavBarPayload;
   };
 
@@ -525,7 +521,7 @@ class EditableRoot extends React.PureComponent {
 
     let updateNodesPayload = [changLayoutPayload];
 
-    let navBarChildren = this.props.navBarChildren;
+    let navBarChildren = JSON.parse(JSON.stringify((this.props.navBarChildren)));
     if (navBarChildren && navBarChildren.length > 0) {
       for (let i = 0; i < navBarChildren.length; i++) {
         if (navBarChildren[i].id === child.id) {
@@ -537,7 +533,6 @@ class EditableRoot extends React.PureComponent {
         value: navBarChildren,
         nestedKey: `${this.selfkey},props,navBarChildren`
       });
-      this.setNavBarState(navBarChildren);
     }
 
     compositePayload.payloadData.updateNodes = {
@@ -578,13 +573,12 @@ class EditableRoot extends React.PureComponent {
     // [{id: "VerticalLayout_08ed82ac646dff6be8598d2f28e83a3a", name: "味觉盛宴", layoutName: "味觉盛宴"}]
 
     if (navBarKey) {
-      let { navBarChildren } = this.state;
+      let { navBarChildren } = this.props;
       let newNavBarChildren = [];
       for (let i = 0; i < navBarChildren.length; i++) {
         const child = navBarChildren[i];
         newNavBarChildren[newRootRealtion.indexOf(child.id)] = child;
       }
-      this.setNavBarState(newNavBarChildren);
       updateNodesPayload.push({
         value: newNavBarChildren,
         nestedKey: `${this.selfkey},props,navBarChildren`
@@ -608,8 +602,8 @@ class EditableRoot extends React.PureComponent {
   };
 
   render() {
-    // TODO 使用 state 替代
-    const rootDivStyle = Object.assign({ marginBottom: '40px' }, this.props.style);
+    // todo 下面留白便于锚点, 使用更加合理的解决方案。
+    const rootDivStyle = Object.assign({ marginBottom: '100vh' }, this.props.style);
     console.log('rootDivStyle: ', this.props);
 
     return (
@@ -756,7 +750,16 @@ class EditableRoot extends React.PureComponent {
             className={""}>
             {/* <Test/> */}
             <div id="divInRootAfterLayout" style={rootDivStyle}>
-              {this.props.children}
+              {/* TODO
+              连接 relation[selfKey], 根据其渲染子组建
+              子组建连接 relation[selfKey]， 根据其渲染自身。 */}
+              {/* {this.props.children} */}
+
+              {
+                this.props.relation && this.props.relation.map(x => 
+                  <EditRoot selfkey={x} />
+                )
+              }
             </div>
           </Layout>
         </Layout>

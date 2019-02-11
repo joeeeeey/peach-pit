@@ -45,7 +45,7 @@ const buttonStyle = {
   justifyContent: "center"
 };
 
-export default class EditableImageArea extends React.PureComponent {
+export default class EditableImageArea extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

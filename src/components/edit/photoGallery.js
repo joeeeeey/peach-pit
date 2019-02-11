@@ -60,6 +60,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Measure from "react-measure";
+import { connect } from 'react-redux';
 import computeImage from "utils/computeImage";
 import EditableImageArea from "../edit/imageArea";
 import AdjustGalleryStyleButton from "components/editTools/photoGallery/adjustGalleryStyleButton";
@@ -74,8 +75,19 @@ const imgContainerStyle = {
   position: "relative"
 };
 
-export default class EditablePhotoGallery extends React.Component {
-  constructor(props, context) {
+// Since it need child photo size to resize itself.
+// Bind it to child prop by multiple keys.
+const mapStateToProps = (state, ownProps) => {
+  let childProps = {};
+  ownProps.children.map(x => x.props.selfkey).map( key => {
+    childProps[key] = state.node[key];
+  })
+
+  return childProps;
+}
+
+class EditablePhotoGallery extends React.Component {
+  constructor(props) {
     super(props);
     this.state = { width: -1 }; // 假定屏幕原始宽度
   }
@@ -87,11 +99,12 @@ export default class EditablePhotoGallery extends React.Component {
   // { src: 'https://source.unsplash.com/I1ASdgphUH4/800x599', width: 4, height: 3 }
   getChildrenPhotoInfo = (width, childrens, columns, margin = 2) => {
     const photos = childrens.map(child => {
+      const childProp = this.props[child.props.selfkey];
       return {
-        src: child.props.src,
-        width: child.props.galleryStyle.width,
-        height: child.props.galleryStyle.height,
-        props: child.props
+        src: childProp.props.src,
+        width: childProp.props.galleryStyle.width,
+        height: childProp.props.galleryStyle.height,
+        props: childProp.props
       };
     });
 
@@ -122,11 +135,11 @@ export default class EditablePhotoGallery extends React.Component {
 
   render() {
     const {
-      imgContainerMargin, // 图片间距
+      id,
       intensity, // 密集度，默认在不同屏幕尺寸下排列的元素
       galleryWidth, // 画廊所占宽度 全幅，中幅，小幅 'fullWidth'
-      id,
-      backgroundInfo
+      backgroundInfo,
+      imgContainerMargin, // 图片间距
     } = this.props;
 
     const width = this.state.width;
@@ -187,7 +200,6 @@ export default class EditablePhotoGallery extends React.Component {
                       { margin: imgContainerMargin },
                       imgContainerStyle
                     )}>
-                    {/* <div> */}
                     <EditableImageArea
                       src={childPhotoInfo.src}
                       imageContainerStyle={{}}
@@ -198,7 +210,6 @@ export default class EditablePhotoGallery extends React.Component {
                       noMeasure={true}
                       {...childPhotoInfo.props}
                     />
-                    {/* </div> */}
                   </div>
                 ))}
 
@@ -223,3 +234,6 @@ EditablePhotoGallery.childContextTypes = {
 EditablePhotoGallery.contextTypes = {
   store: PropTypes.object
 };
+
+const EditablePhotoGalleryWithRedux = connect(mapStateToProps)(EditablePhotoGallery);
+export default EditablePhotoGalleryWithRedux;

@@ -1,7 +1,7 @@
 /**
  * @file Redux actions of `node`.
  */
-import { evalUpdate } from "utils/eval";
+import { evalUpdate, nodeEvalUpdate } from "utils/eval";
 import nodeOperation from "utils/nodeOperation";
 import actionTypes from "constants/action-types";
 
@@ -11,7 +11,8 @@ export default (state = null, action) => {
     case actionTypes.RESET_FLATTENED_NODE:
       return payload;
     case actionTypes.UPDATE_FLATTENED_NODE:
-      return evalUpdate(state, payload.nestedKey, payload.value);
+      nodeEvalUpdate(state, payload.nestedKey, payload.value);
+      return Object.assign({}, state);
     // 批量更新
     // payloadData => [{nestedKey: nestedKey, value: value}]
     case actionTypes.UPDATE_FLATTENED_NODES:
@@ -58,7 +59,7 @@ const updateNodes = (node, payload) => {
   // payloadData => [{nestedKey: nestedKey, value: value}]
   if (payloadData && Array.isArray(payloadData) && payloadData.length > 0) {
     for (let i = 0; i < payloadData.length; i++) {
-      evalUpdate(node, payloadData[i].nestedKey, payloadData[i].value);
+      nodeEvalUpdate(node, payloadData[i].nestedKey, payloadData[i].value);
     }
   } else {
     console.warn(`批量更新节点: 需要更新的数据为空`);

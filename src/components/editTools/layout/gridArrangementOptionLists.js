@@ -87,7 +87,7 @@ export default class GridArrangementOptionLists extends React.Component {
   }
 
   changeFullWithChilrenButton = () => {
-    this.props.changeFullWithChilrenButton(!!!this.props.fullWithChilren);
+    this.props.changeFullWithChilrenButton(!this.props.fullWithChilren);
   };
 
   getPositionStyle = () => {

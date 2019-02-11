@@ -8,7 +8,7 @@ import Editor from "../meta/editor";
 // }
 
 // {"native":false,"nodeName":"TextArea","props":{"deltaDeltaValue":[{"insert":"好吃的东西","attributes":{"color":"#1c1a1a","font":"serif","size":"large","bold":true}},{"insert":"\n","attributes":{"align":"center","header":3}}],"readOnly":false}}
-export default class EditableTextArea extends React.PureComponent {
+export default class EditableTextArea extends React.Component {
   constructor(props, context) {
     super(props);
   }

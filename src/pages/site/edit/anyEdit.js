@@ -49,7 +49,7 @@ const toF = code => {
   return App;
 };
 
-class AnyEdit extends React.PureComponent {
+class AnyEdit extends React.Component {
   getCode = () => {
     let tagName;
     if (this.props.native) {

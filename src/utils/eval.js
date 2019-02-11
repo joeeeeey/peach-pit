@@ -18,4 +18,13 @@ export const evalUpdate = (data, nestedKey, value) => {
 
   return data;
 }
+
+export const nodeEvalUpdate = (data, nestedKey, value) => {
+  const keys = nestedKey.split(",");
+  const nodeKey = keys[0];
+  eval(`data${getConnectKeys(nestedKey)}=value`);
+  data[nodeKey] = JSON.parse(JSON.stringify(data[nodeKey]));
+  return data;
+}
+
 /* eslint-enable */

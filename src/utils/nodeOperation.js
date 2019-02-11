@@ -173,6 +173,10 @@ const addNode = (currentDom, parentKey, newNode, childKey = null) => {
     nodeChildren.push(_root);
   }
 
+  // https://stackoverflow.com/questions/39667805/react-redux-update-item-in-array-doesnt-re-render
+  // TODO Use imuttable
+  currentDom._relation[parentKey] = JSON.parse(JSON.stringify(nodeChildren));
+
   Object.assign(currentDom._relation, _relation);
 
   // 合并节点内容
@@ -195,8 +199,10 @@ function removeNode(currentDom, targetKey, parentKey) {
     }
   } else {
     currentDom._relation[parentKey] = currentDom._relation[parentKey].filter(childrenKey => childrenKey !== targetKey);
-    // 去除该节点内容
-    delete currentDom[targetKey];
+    // delete 会使得 redux 强制更新所有子层级,
+    // 在此处只将节点内容存为空
+    // delete currentDom[targetKey];
+    currentDom[targetKey] = null;
 
     let selfChildrenKeys = _relation[targetKey];
     if (arrayPresent(selfChildrenKeys)) {
@@ -323,8 +329,11 @@ function flattenDomTree(nodeData, parentKey = "", flattenData = { _relation: {} 
     } else {
       rootKey = `${nodeData.nodeName}_${incryptKey(nodeData.nodeName)}`;
     }
+    // 任意节点增加至少 props 为 {selfkey: xxx}
+    if (!nodeData.props) {
+      nodeData.props = { selfkey: rootKey };
+    }
     flattenData._root = rootKey;
-    // nodeData = [nodeData]
     let { children, ...value } = nodeData;
     if (arrayPresent(children)) {
       flattenData[rootKey] = value;
@@ -346,9 +355,17 @@ function flattenDomTree(nodeData, parentKey = "", flattenData = { _relation: {} 
       key = node.props.id;
     } else if (node.props && node.props.selfkey) {
       key = node.props.selfkey;
-    } else {
+    } else if (nodeData.props && !nodeData.props.selfkey) {
+      key = `${nodeData.nodeName}_${incryptKey(nodeData.nodeName)}`;
+      node.props.selfkey = key;
+    }  else {
       key = `${node.nodeName}_${incryptKey(node.nodeName)}`;
     }
+
+    if (!node.props) {
+      node.props = { selfkey: key };
+    }
+
     if (parentKey !== "") {
       let childrenKeys = flattenData._relation[parentKey];
       if (Array.isArray(childrenKeys) && childrenKeys.length > 0) {

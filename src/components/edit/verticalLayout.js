@@ -56,23 +56,24 @@ import actionTypes from "constants/action-types";
 // TODO  padding top bottom 如何在屏幕变小时自动变小
 // const layoutStyle = { margin: '0 auto', width: '84%', flexGrow: 1, padding: '22px 0' }
 
-const defaultChildren = {
-  native: false,
-  nodeName: "VerticalGrid"
+
+const defaultChildren = () => {
+  return {
+    native: false,
+    nodeName: "VerticalGrid",
+    props: {},
+  };
 };
 
 const defalutFlexLayout = [8, 4];
 
-export default class EditableVerticalLayout extends React.PureComponent {
+export default class EditableVerticalLayout extends React.Component {
   // 可接受 props
   // spacing integer 控制子元素间距
-  constructor(props, context) {
-    super(props);
-  }
 
   componentDidMount() {
     if (this.props.children === null || this.props.children === undefined) {
-      this.flex = defalutFlexLayout;
+      this.props.flex = defalutFlexLayout;
       this.addDefaultChildren();
     }
   }
@@ -88,10 +89,10 @@ export default class EditableVerticalLayout extends React.PureComponent {
   // 如果没有 children, 那就用 addNode 方法给自己增加两个 children
   // TODO 使用批量增加
   addDefaultChildren = () => {
-    for (let i = 0; i < this.flex.length; i++) {
+    for (let i = 0; i < this.props.flex.length; i++) {
       this.context.store.dispatch({
         type: actionTypes.ADD_FLATTENED_NODE,
-        payload: { targetKey: this.props.selfkey, nodeData: defaultChildren },
+        payload: { targetKey: this.props.selfkey, nodeData: defaultChildren() },
       });
     }
   };
@@ -102,19 +103,20 @@ export default class EditableVerticalLayout extends React.PureComponent {
 
   // 重新布局，改变排列
   rearrangeChildren = flex => {
-    if (ArrayOper.compare(flex, this.flex)) {
+    if (ArrayOper.compare(flex, this.props.flex)) {
       return;
     } else {
-      if (flex.length === this.flex.length) {
+      if (flex.length === this.props.flex.length) {
         // 数量一致，只需要更新 flex 信息
         let nestedKey = `${this.props.selfkey},props,flex`;
+
         this.context.store.dispatch({
           type: actionTypes.UPDATE_FLATTENED_NODE,
-          payload: { nestedKey: nestedKey, value: flex },
+          payload: { nestedKey: nestedKey, value: JSON.parse(JSON.stringify((flex))) },
         });
-      } else if (flex.length < this.flex.length) {
+      } else if (flex.length < this.props.flex.length) {
         // 减少了子元素个数, 默认从最后一个元素开始去除
-        const reverseCount = this.flex.length - flex.length;
+        const reverseCount = this.props.flex.length - flex.length;
 
         const reverseChildrenKeys = this.props.children
           .map(x => x.props.selfkey)
@@ -143,9 +145,10 @@ export default class EditableVerticalLayout extends React.PureComponent {
           payload: compositePayload,
         });
       } else {
-        const increment = flex.length - this.flex.length;
+        // 增加元素
+        const increment = flex.length - this.props.flex.length;
         let addNodesPayload = Array.from(Array(increment).keys()).map(x => {
-          return { nodeData: defaultChildren, targetKey: this.props.selfkey };
+          return { nodeData: defaultChildren(), targetKey: this.props.selfkey };
         });
         let updateNodesPayload = [
           { value: flex, nestedKey: `${this.props.selfkey},props,flex` }
@@ -201,7 +204,7 @@ export default class EditableVerticalLayout extends React.PureComponent {
       backgroundInfo
     } = this.props;
 
-    this.flex = this.props.flex || defalutFlexLayout;
+    const { flex } = this.props;
     // 填充样式
     const backgroundStyle = Object.assign(
       { position: "relative" },
@@ -237,10 +240,10 @@ export default class EditableVerticalLayout extends React.PureComponent {
                       key={child.props.selfkey}
                       item
                       xs={12}
-                      sm={this.flex[index]}
-                      md={this.flex[index]}
-                      lg={this.flex[index]}
-                      xl={this.flex[index]}>
+                      sm={flex ? flex[index] : defalutFlexLayout[index]}
+                      md={flex ? flex[index] : defalutFlexLayout[index]}
+                      lg={flex ? flex[index] : defalutFlexLayout[index]}
+                      xl={flex ? flex[index] : defalutFlexLayout[index]}>
                       {child}
                     </Grid>
                   );

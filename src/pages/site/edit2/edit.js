@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from 'react-redux';
 import nodeOperation from "utils/nodeOperation";
 import BlockService from "services/blockService";
 import CdnService from "services/cdnService";
@@ -13,17 +14,11 @@ import EditableNavBar from "components/edit/navBar";
 import EditablePhotoGallery from "components/edit/photoGallery";
 import EditableImageDescription from "components/edit/imageDescription";
 import actionTypes from "constants/action-types";
-import { connect } from 'react-redux';
 
-// const mapStateToProps = state => ({
-//   flattenedNode: state.node,
-// });
+const mapStateToProps = state => ({
+  flattenedNode: state.node,
+});
 
-const mapStateToProps = (state /*, ownProps*/) => {
-  return {
-    flattenedNode: state.node
-  }
-}
 // const mapDispatchToProps = dispatch => ({
 //   closeModal: () => {
 //     dispatch(modalActions.closeModal());
@@ -221,14 +216,14 @@ class Edit extends React.Component {
     // let ftData = nodeOperation.flattenDomTree(ftData)
     // console.log(ftData)
     // this.setState({ nodeData: ftData });
-
+    // nodeOperation.heightenDomTree(ftData);
+    // console.log('nodeOperation.heightenDomTree(ftData);: ', nodeOperation.heightenDomTree(ftData));
     this.context.store.dispatch({
       type: actionTypes.RESET_FLATTENED_NODE,
       payload: ftData,
       target: "node"
     });
-    // 网站名称加入 editInfo 中
-    // value = block.name
+    // 正在编辑的网站名称加入 editInfo 中
     if (block && block.name) {
       this.updateEditInfoState(`name`, block.name);
     }
@@ -277,4 +272,4 @@ Edit.childContextTypes = {
 //   flattenedNode: PropTypes.object,
 // }
 
-export default connect(mapStateToProps, null)(Edit);
+export default connect(mapStateToProps)(Edit);

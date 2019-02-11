@@ -30,12 +30,13 @@ const ChildAddNodeSpiritContainerStyle = {
   width: "100%"
 };
 
-export default class EditableVerticalGrid extends React.PureComponent {
+export default class EditableVerticalGrid extends React.Component {
   constructor(props, context) {
     super(props);
   }
 
   render() {
+    console.log('EditableVerticalGrid render: ', this.props);
     return (
       <div>
         <Grid
@@ -45,7 +46,7 @@ export default class EditableVerticalGrid extends React.PureComponent {
           justify="space-around"
           alignItems="center">
           {this.props.children &&
-            React.Children.toArray(this.props.children).map((child, index) => {
+            React.Children.toArray(this.props.children).map((child) => {
               return (
                 <Grid
                   key={child.props.selfkey}

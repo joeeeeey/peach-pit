@@ -19,7 +19,7 @@ let props = {
 }
 */
 
-export default class EditableGridList extends React.PureComponent {
+export default class EditableGridList extends React.Component {
   constructor(props) {
     super(props);
   }

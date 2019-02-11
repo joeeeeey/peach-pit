@@ -182,8 +182,7 @@ class Edit extends React.Component {
     // console.log('编辑页面监听到了 store  变化')
     // 此处监听 store 的变化，只要发生了 dispatch 就都会被监听到
     let { node } = this.context.store.getState();
-    console.log('node: ', node);
-    
+
     if (typeof node === "string") {
       return false;
     }
@@ -192,9 +191,6 @@ class Edit extends React.Component {
 
 
     this.setState({ nodeData: node });
-
-    // console.log('node is: ', node);
-
   };
 
   // shouldComponentUpdate(nextProps) {
