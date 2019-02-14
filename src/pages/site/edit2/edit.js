@@ -4,75 +4,19 @@ import { connect } from 'react-redux';
 import nodeOperation from "utils/nodeOperation";
 import BlockService from "services/blockService";
 import CdnService from "services/cdnService";
-// 此处需要引入所有可编辑组件
-import EditableRoot from "components/edit/root";
-import EditableTextArea from "components/edit/textArea";
-import EditableVerticalLayout from "components/edit/verticalLayout";
-import EditableVerticalGrid from "components/edit/verticalGrid";
-import EditableImageArea from "components/edit/imageArea";
-import EditableNavBar from "components/edit/navBar";
-import EditablePhotoGallery from "components/edit/photoGallery";
-import EditableImageDescription from "components/edit/imageDescription";
 import actionTypes from "constants/action-types";
+import EditableRoot from "components/edit/root";
 
 const mapStateToProps = state => ({
-  flattenedNode: state.node,
+  node: state.node ? state.node[state.node._root] : null,
 });
-
-// const mapDispatchToProps = dispatch => ({
-//   closeModal: () => {
-//     dispatch(modalActions.closeModal());
-//   },
-//   openModal: ({ openedModal }) => {
-//     dispatch(modalActions.openModal({ openedModal }));
-//   },
-// });
 
 // 测试的组件
 // import Test from '../test'
 const cdnService = new CdnService();
 const blockService = new BlockService();
-/**
- * Put all editable components here
- */
-const widgets = {
-  EditableRoot: EditableRoot,
-  EditableTextArea: EditableTextArea,
-  EditableVerticalGrid: EditableVerticalGrid,
-  EditableVerticalLayout: EditableVerticalLayout,
-  EditableImageArea: EditableImageArea,
-  EditableNavBar: EditableNavBar,
-  EditablePhotoGallery: EditablePhotoGallery,
-  EditableImageDescription: EditableImageDescription
-};
-// const func = (function (React, Components) {
-//   return function App() {
-//     return (
-//       <div>
-//         {
-//           React.createElement(
-//             Components.AppBar,
-//             null
-//           )
-//         }
-//         {
-//           React.createElement(
-//             "h1",
-//             null,
-//             "Hello, world!")
-//         }
-//       </div>
-//     )
-//   }
-// })
 
-// @connect(mapStateToProps)
 class Edit extends React.Component {
-  constructor(props, context) {
-    super(props);
-    // this.state = { nodeData: null };
-  }
-
   getSourceFromUrl = () => {
     try {
       const urlParams = new URL(window.location.href);
@@ -183,41 +127,11 @@ class Edit extends React.Component {
     } else {
       this.initialNodeData();
     }
-    // this.unsubscribe = this.context.store.subscribe(this.listener);
   };
 
-  // TODO 引入 react-redux
-  // Edit 组件根据顶层子元素的个数而改变
-  // 顶层子元素内部的变化则在元素内部处理
-
-  // listener = () => {
-  //   // console.log('编辑页面监听到了 store  变化')
-  //   // 此处监听 store 的变化，只要发生了 dispatch 就都会被监听到
-  //   let { node } = this.context.store.getState();
-    
-  //   if (typeof node === "string") {
-  //     return false;
-  //   }
-
-  //   this.setState({ nodeData: node });
-  // };
-
-  // shouldComponentUpdate(nextProps) {
-  //   return true;
-  // }
-
-  // componentWillUnmount() {
-  //   this.unsubscribe();
-  // }
-
   initialNodeData(block) {
-    console.log("initialNodeDatainitialNodeDatainitialNodeData");
     let ftData = nodeOperation.flattenDomTree(this.wrapRoot(block));
-    // let ftData = nodeOperation.flattenDomTree(ftData)
-    // console.log(ftData)
-    // this.setState({ nodeData: ftData });
-    // nodeOperation.heightenDomTree(ftData);
-    // console.log('nodeOperation.heightenDomTree(ftData);: ', nodeOperation.heightenDomTree(ftData));
+
     this.context.store.dispatch({
       type: actionTypes.RESET_FLATTENED_NODE,
       payload: ftData,
@@ -236,23 +150,14 @@ class Edit extends React.Component {
     return nodeOperation.wrapRoot(block);
   };
 
-  toF = code => {
-    const func = new Function("React", "Components", `return ${code}`);
-    const App = func(React, widgets);
-
-    return App;
-  };
-
   render = () => {
-    console.log('edit render: ', this.props);
-    const { flattenedNode } = this.props;
-    let reactCode = null;
-    if (flattenedNode) {
-      const codeString = nodeOperation.flattenedData2Code(flattenedNode, "edit");
-      reactCode = this.toF(codeString);
+    const { node } = this.props;
+
+    if (node) {
+      return <EditableRoot {...this.props.node.props} />
     }
 
-    return <div>{reactCode}</div>;
+    return null;
   };
 
   getChildContext() {
@@ -268,8 +173,8 @@ Edit.childContextTypes = {
   store: PropTypes.object
 };
 
-// Edit.PropTypes = {
-//   flattenedNode: PropTypes.object,
-// }
+Edit.propTypes = {
+  node:  PropTypes.object
+}
 
 export default connect(mapStateToProps)(Edit);

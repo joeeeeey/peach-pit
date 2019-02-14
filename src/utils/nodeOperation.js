@@ -153,11 +153,12 @@ const addNode = (currentDom, parentKey, newNode, childKey = null) => {
   if (!currentDom._relation[parentKey]) {
     currentDom._relation[parentKey] = [];
   }
-
+  
   let nodeChildren = currentDom._relation[parentKey];
-
+  
   // 传入时是个多层对象，需要降维
   newNode = flattenDomTree(newNode);
+  newNode = addSelfAndParentKey(newNode, null, parentKey)
 
   let { _relation, _root, ...newNodeData } = newNode;
   // let newNodeRootKey = newNodes._relation._root
@@ -475,6 +476,44 @@ const highDimensionalNode2Code = (node, action, code = "") => {
     ${props}${childrenCode}
 )`;
   return code;
+}
+
+/**
+ * 
+ * Add selfKey and parentkey when newNode is added
+ * 
+ * @param {object} flattenData 
+ * @param {string} selfDomKey
+ * @param {string} parentDomKey
+ */
+const addSelfAndParentKey = (flattenData, selfDomKey = null, parentDomKey) => {
+  if (flattenData === null) {
+    return flattenData;
+  }
+  if (selfDomKey === null) {
+    selfDomKey = flattenData._root;
+  }
+  let data = flattenData[selfDomKey];
+
+  let props = data.props;
+  if (props !== null && typeof props === "object" && !Array.isArray(props)) {
+    props.selfkey = selfDomKey;
+    props.parentkey = parentDomKey;
+  } else {
+    props = { selfkey: selfDomKey, parentkey: parentDomKey };
+  }
+
+  props = JSON.stringify(props);
+
+  let childrenNames = flattenData._relation[selfDomKey];
+
+  if (Array.isArray(childrenNames) && childrenNames.length > 0) {
+    for (let i = 0; i < childrenNames.length; i++) {
+      addSelfAndParentKey(flattenData, childrenNames[i], selfDomKey, ",\n");
+    }
+  }
+
+  return flattenData;
 }
 
 const nodeOperation = {

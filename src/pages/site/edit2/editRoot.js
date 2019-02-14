@@ -37,8 +37,6 @@ class EditRoot extends React.Component {
   render = () => {
     const { node } = this.props;
 
-    // console.log('getChildren: ', this.props);
-
     let tagName = '';
     if (node.native) {
       tagName = node.nodeName;

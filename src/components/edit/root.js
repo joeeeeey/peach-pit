@@ -48,9 +48,8 @@ const siteService = new SiteService();
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
-const mapStateToProps = state => ({
-  flattenedNode: state.node,
-  relation: state.node ? state.node._relation[state.node._root] : [],
+const mapStateToProps = (state, ownProps) => ({
+  relation: state.node._relation[ownProps.selfkey],
 });
 
 const buttonStyle = { color: "white", width: "100%", justifyContent: "left" };
@@ -58,7 +57,6 @@ class EditableRoot extends React.Component {
   constructor(props, context) {
     super(props);
     this.state = {
-      // openPreview: false,
       editInfo: context.store.getState().editInfo, // {source: "das", id: "32", role: "admin"}
       layouts: [], // 可选择加入的样式
       topLevelItemisDraggable: false // 顶层板块可被拖拽
@@ -602,7 +600,6 @@ class EditableRoot extends React.Component {
   render() {
     // todo 下面留白便于锚点, 使用更加合理的解决方案。
     const rootDivStyle = Object.assign({ marginBottom: '100vh' }, this.props.style);
-    // console.log('rootDivStyle: ', this.props);
 
     return (
       <div id="EditableRoot">
@@ -748,11 +745,6 @@ class EditableRoot extends React.Component {
             className={""}>
             {/* <Test/> */}
             <div id="divInRootAfterLayout" style={rootDivStyle}>
-              {/* TODO
-              连接 relation[selfKey], 根据其渲染子组建
-              子组建连接 relation[selfKey]， 根据其渲染自身。 */}
-              {/* {this.props.children} */}
-
               {
                 this.props.relation && this.props.relation.map((x, index) =>
                   <EditRoot selfkey={x} key={index} />
@@ -773,5 +765,9 @@ EditableRoot.childContextTypes = {
 EditableRoot.contextTypes = {
   store: PropTypes.object
 };
+
+EditableRoot.propTypes = {
+  relation: PropTypes.array,
+}
 
 export default connect(mapStateToProps)(EditableRoot);
