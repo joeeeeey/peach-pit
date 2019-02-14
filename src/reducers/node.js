@@ -46,8 +46,6 @@ export default (state = null, action) => {
 
 const addNode = (node, payload) => {
   let { nodeData, targetKey, childKey } = payload;
-  console.log('childKey: ', childKey);
-  console.log('targetKey: ', targetKey);
 
   if (nodeData != null) {
     nodeOperation.addNode(node, targetKey, nodeData, childKey);

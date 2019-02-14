@@ -1,3 +1,6 @@
+/**
+ * @file Each component connects to self data in the node tree.
+ */
 import React from "react";
 import PropTypes from "prop-types";
 import EditableTextArea from "components/edit/textArea";
@@ -24,7 +27,7 @@ const mapStateToProps = (state, ownProps) => ({
   relation: state.node._relation[ownProps.selfkey] || null,
 });
 
-class EditRoot extends React.Component {
+class EditRoot extends React.PureComponent {
   getChildren = () => {
     if (this.props.relation) {
       return this.props.relation.map((x, index) =>
@@ -34,8 +37,14 @@ class EditRoot extends React.Component {
     return null
   }
 
+  componentWillUpdate(nextProps) {
+    console.log('componentWillUpdate props: ', JSON.stringify(this.props));
+    console.log('componentWillUpdate nextProps: ', JSON.stringify(nextProps));
+  }
+
   render = () => {
     const { node } = this.props;
+    console.log('EditRoot render: ', this.props.selfkey);
 
     let tagName = '';
     if (node.native) {

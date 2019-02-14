@@ -40,7 +40,7 @@ import SiteService from "services/siteService";
 import nodeOperation from "utils/nodeOperation";
 // import Test from '../../pages/test'
 import actionTypes from "constants/action-types";
-import EditRoot from "pages/site/edit2/editRoot";
+import EditRoot from "pages/site/edit/editRoot";
 
 const layoutService = new LayoutService();
 const templateService = new TemplateService();
@@ -600,6 +600,7 @@ class EditableRoot extends React.Component {
   render() {
     // todo 下面留白便于锚点, 使用更加合理的解决方案。
     const rootDivStyle = Object.assign({ marginBottom: '100vh' }, this.props.style);
+    console.log('rootDivStyle: ', rootDivStyle);
 
     return (
       <div id="EditableRoot">

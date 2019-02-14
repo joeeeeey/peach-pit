@@ -43,9 +43,10 @@
 
 // 规划
 // 先在 edit 中 以 /navbar.js 方式存在，后期放入 /edit/navbars/
-// 外层只有一个 navbar.js, navbar.js 中 import /navbars 里面的其他 navbar 并做样式转换。 Preview 同理
+// 外层只有一个 navbar.js(待定), navbar.js 中 import /navbars 里面的其他 navbar 并做样式转换。 Preview 同理
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from 'react-redux';
 import Scroll from "react-scroll";
 import NavBarAnchor from "../preview/anchors/anchor";
 
@@ -73,11 +74,12 @@ const container3Style = {
   margin: "auto"
 };
 
-export default class EditableNavBar extends React.Component {
-  constructor(props, context) {
-    super(props);
-  }
+const mapStateToProps = (state) => ({
+  navBarChildren: state.node[state.node._root].props.navBarChildren
+})
 
+
+class EditableNavBar extends React.Component {
   componentDidMount() {
     Events.scrollEvent.register("begin", function() {});
 
@@ -85,34 +87,15 @@ export default class EditableNavBar extends React.Component {
 
     scrollSpy.update();
   }
+
   componentWillUnmount() {
     Events.scrollEvent.remove("begin");
     Events.scrollEvent.remove("end");
   }
 
-  // 得到整个 node
-  wholeNode = () => {
-    return this.context.store.getState().node;
-  };
-
-  rootNode = () => {
-    if (this.wholeNode()) {
-      const rootKey = this.wholeNode()._root;
-      if (rootKey) {
-        return this.wholeNode()[rootKey];
-      }
-    }
-  };
-
-  navBarChildren = () => {
-    if (this.rootNode()) {
-      return this.rootNode().props.navBarChildren || [];
-    } else {
-      return [];
-    }
-  };
-
   render() {
+    const { navBarChildren } = this.props;
+
     return (
       <div name="navbar" style={{ borderColor: "#cdced0" }}>
         <div name="container2" style={container2Style}>
@@ -140,7 +123,7 @@ export default class EditableNavBar extends React.Component {
             <div
               name="nav-item"
               style={{ WebkitBoxFlex: "1", flexGrow: "1", textAlign: "right" }}>
-              {this.navBarChildren().map(child => (
+              {navBarChildren.map(child => (
                 <NavBarAnchor
                   affectRoot={this.props.affectRoot}
                   child={child}
@@ -163,3 +146,6 @@ export default class EditableNavBar extends React.Component {
 EditableNavBar.contextTypes = {
   store: PropTypes.object
 };
+
+const EditableNavBarWithRedux = connect(mapStateToProps)(EditableNavBar);
+export default EditableNavBarWithRedux;

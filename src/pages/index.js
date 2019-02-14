@@ -20,7 +20,7 @@ import AdminTemplateIndex from "pages/admin/templateIndexPage";
 import AdminLayoutIndex from "pages/admin/layoutIndexPage";
 import ChooseTmp from "pages/template/chooseTmp";
 
-import Edit from "pages/site/edit2/edit";
+import Edit from "pages/site/edit/edit";
 import Preview from "pages/site/preview";
 // import Test from './test'
 
