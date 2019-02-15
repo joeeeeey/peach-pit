@@ -319,7 +319,7 @@ function wrapRoot(block = null) {
 }
 
 // dom tree object 降维
-function flattenDomTree(nodeData, parentKey = "", flattenData = { _relation: {} }) {
+const flattenDomTree = (nodeData, parentKey = "", flattenData = { _relation: {} }) => {
   // 是根节点的情况
   if (!Array.isArray(nodeData) && nodeData !== null && typeof nodeData === "object") {
     let rootKey = null;
@@ -333,6 +333,8 @@ function flattenDomTree(nodeData, parentKey = "", flattenData = { _relation: {} 
     // 任意节点增加至少 props 为 {selfkey: xxx}
     if (!nodeData.props) {
       nodeData.props = { selfkey: rootKey };
+    } else if (nodeData.props && !nodeData.props.selfkey) {
+      nodeData.props.selfkey = rootKey;
     }
     flattenData._root = rootKey;
     let { children, ...value } = nodeData;

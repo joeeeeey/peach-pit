@@ -11,7 +11,7 @@ const mapStateToProps = (state, ownProps) => ({
   relation: state.node._relation[ownProps.selfkey] || null,
 });
 
-class EditRoot extends React.Component {
+class NodeWrapper extends React.Component {
   constructor(props){
     super(props);
     this.state = JSON.parse(JSON.stringify(props));
@@ -20,7 +20,7 @@ class EditRoot extends React.Component {
   getChildren = () => {
     if (this.state.relation) {
       return this.state.relation.map((selfkey) =>
-        <EditRootWithRedux selfkey={selfkey} key={selfkey}/>
+        <NodeWrapperWithRedux selfkey={selfkey} key={selfkey}/>
       )
     }
     return null
@@ -66,17 +66,17 @@ class EditRoot extends React.Component {
   }
 }
 
-EditRoot.contextTypes = {
+NodeWrapper.contextTypes = {
   store: PropTypes.object
 };
 
-EditRoot.propTypes = {
+NodeWrapper.propTypes = {
   flattenedNode: PropTypes.object
 };
 
-EditRoot.childContextTypes = {
+NodeWrapper.childContextTypes = {
   store: PropTypes.object
 };
 
-const EditRootWithRedux = connect(mapStateToProps)(EditRoot);
-export default EditRootWithRedux;
+const NodeWrapperWithRedux = connect(mapStateToProps)(NodeWrapper);
+export default NodeWrapperWithRedux;
