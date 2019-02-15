@@ -66,7 +66,7 @@ import AddImageDescriptionElementButton from "components/editTools/imageDescript
 import RemoveNodeSpirit from "components/editTools/layout/removeNodeSpirit";
 import ChangeLayoutButton from "components/editTools/imageDescription/changeLayoutButton";
 import actionTypes from "constants/action-types";
-import EditRoot from "pages/site/edit/editRoot";
+import EditRoot from "pages/site/edit/nodeWrapper";
 
 const RemoveNodeSpiritContainerStyle = {
   zIndex: 46,

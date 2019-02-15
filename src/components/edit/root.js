@@ -40,7 +40,7 @@ import SiteService from "services/siteService";
 import nodeOperation from "utils/nodeOperation";
 // import Test from '../../pages/test'
 import actionTypes from "constants/action-types";
-import EditRoot from "pages/site/edit/editRoot";
+import EditRoot from "pages/site/edit/nodeWrapper";
 
 const layoutService = new LayoutService();
 const templateService = new TemplateService();
