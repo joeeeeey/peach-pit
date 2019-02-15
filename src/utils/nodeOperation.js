@@ -486,7 +486,7 @@ const highDimensionalNode2Code = (node, action, code = "") => {
  * 
  * @param {object} flattenData 
  * @param {string} selfDomKey
- * @param {string} parentDomKey
+ * @param {string} parentDomKey useless, remove to save space of data?
  */
 const addSelfAndParentKey = (flattenData, selfDomKey = null, parentDomKey) => {
   if (flattenData === null) {
@@ -500,9 +500,9 @@ const addSelfAndParentKey = (flattenData, selfDomKey = null, parentDomKey) => {
   let props = data.props;
   if (props !== null && typeof props === "object" && !Array.isArray(props)) {
     props.selfkey = selfDomKey;
-    props.parentkey = parentDomKey;
+    // props.parentkey = parentDomKey;
   } else {
-    props = { selfkey: selfDomKey, parentkey: parentDomKey };
+    props = { selfkey: selfDomKey };
   }
 
   props = JSON.stringify(props);

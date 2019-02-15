@@ -422,7 +422,6 @@ class EditableRoot extends React.Component {
 
   // 得到整个 node
   wholeNode = () => {
-    // console.log('得到整个 node is: ', JSON.stringify(this.context.store.getState().node))
     return this.context.store.getState().node;
   };
 
