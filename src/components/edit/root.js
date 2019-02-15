@@ -600,7 +600,7 @@ class EditableRoot extends React.Component {
   render() {
     // todo 下面留白便于锚点, 使用更加合理的解决方案。
     const rootDivStyle = Object.assign({ marginBottom: '100vh' }, this.props.style);
-    console.log('rootDivStyle: ', rootDivStyle);
+    // console.log('rootDivStyle: ', this.props);
 
     return (
       <div id="EditableRoot">
@@ -747,8 +747,8 @@ class EditableRoot extends React.Component {
             {/* <Test/> */}
             <div id="divInRootAfterLayout" style={rootDivStyle}>
               {
-                this.props.relation && this.props.relation.map((x, index) =>
-                  <EditRoot selfkey={x} key={index} />
+                this.props.relation && this.props.relation.map((selfkey) =>
+                  <EditRoot selfkey={selfkey} key={selfkey}/>
                 )
               }
             </div>

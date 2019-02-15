@@ -5,7 +5,7 @@ import Grid from "material-ui/Grid";
 const buttonStyle = { minWidth: 10, justifyContent: "left" };
 
 export default class GridArrangementOptionLists extends React.Component {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
     this.positionStyle = this.props.positionStyle || {
       position: "absolute",

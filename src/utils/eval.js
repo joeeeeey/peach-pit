@@ -1,5 +1,5 @@
 /**
- * @file Helpers methods about `eval`.
+ * @file Helpers methods of `eval`.
  * 
  */
 

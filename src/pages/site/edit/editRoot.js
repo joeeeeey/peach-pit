@@ -3,49 +3,44 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import EditableTextArea from "components/edit/textArea";
-import EditableVerticalLayout from "components/edit/verticalLayout";
-import EditableVerticalGrid from "components/edit/verticalGrid";
-import EditableImageArea from "components/edit/imageArea";
-import EditableNavBar from "components/edit/navBar";
-import EditablePhotoGallery from "components/edit/photoGallery";
-import EditableImageDescription from "components/edit/imageDescription";
 import { connect } from 'react-redux';
-
-const widgets = {
-  EditableTextArea: EditableTextArea,
-  EditableVerticalGrid: EditableVerticalGrid,
-  EditableVerticalLayout: EditableVerticalLayout,
-  EditableImageArea: EditableImageArea,
-  EditableNavBar: EditableNavBar,
-  EditablePhotoGallery: EditablePhotoGallery,
-  EditableImageDescription: EditableImageDescription
-};
+import { widgets, stringifyProps } from "utils/nodeWrapper";
 
 const mapStateToProps = (state, ownProps) => ({
   node: state.node[ownProps.selfkey],
   relation: state.node._relation[ownProps.selfkey] || null,
 });
 
-class EditRoot extends React.PureComponent {
+class EditRoot extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = JSON.parse(JSON.stringify(props));
+  }
+
   getChildren = () => {
-    if (this.props.relation) {
-      return this.props.relation.map((x, index) =>
-        <EditRootWithRedux selfkey={x} key={index}/>
+    if (this.state.relation) {
+      return this.state.relation.map((selfkey) =>
+        <EditRootWithRedux selfkey={selfkey} key={selfkey}/>
       )
     }
     return null
   }
 
-  componentWillUpdate(nextProps) {
-    console.log('componentWillUpdate props: ', JSON.stringify(this.props));
-    console.log('componentWillUpdate nextProps: ', JSON.stringify(nextProps));
+
+  shouldComponentUpdate(nextProps) {
+    const stateStr = stringifyProps(this.state);
+    const nextPropsStr = stringifyProps(nextProps);
+    if (stateStr === nextPropsStr) {
+      return false;
+    }
+
+    this.setState(JSON.parse(nextPropsStr));
+
+    return true;
   }
 
   render = () => {
-    const { node } = this.props;
-    console.log('EditRoot render: ', this.props.selfkey);
-
+    const { node } = this.state;
     let tagName = '';
     if (node.native) {
       tagName = node.nodeName;

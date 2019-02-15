@@ -398,6 +398,9 @@ class EditableImageDescription extends React.Component {
                   // 子元素的子元素
                   const childRelationKey = [`relation_${child.props.selfkey}`];
                   const imKey = this.props[childRelationKey][0];
+                  if (!imKey) {
+                    return null;
+                  }
                   const imageProps = this.props[imKey].props;
                   const vlKey = this.props[childRelationKey][1];
                   const verticalLayoutProps = this.props[vlKey].props;
