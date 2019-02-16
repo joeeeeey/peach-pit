@@ -157,8 +157,8 @@ const addNode = (currentDom, parentKey, newNode, childKey = null) => {
   let nodeChildren = currentDom._relation[parentKey];
   
   // 传入时是个多层对象，需要降维
-  newNode = flattenDomTree(newNode);
-  newNode = addSelfAndParentKey(newNode, null, parentKey)
+  newNode = flattenDomTree(newNode, parentKey);
+  // newNode = addSelfAndParentKey(newNode, null, parentKey)
 
   let { _relation, _root, ...newNodeData } = newNode;
   // let newNodeRootKey = newNodes._relation._root
@@ -319,7 +319,7 @@ function wrapRoot(block = null) {
 }
 
 // dom tree object 降维
-const flattenDomTree = (nodeData, parentKey = "", flattenData = { _relation: {} }) => {
+const flattenDomTree = (nodeData, parentkey = "", flattenData = { _relation: {} }) => {
   // 是根节点的情况
   if (!Array.isArray(nodeData) && nodeData !== null && typeof nodeData === "object") {
     let rootKey = null;
@@ -332,9 +332,10 @@ const flattenDomTree = (nodeData, parentKey = "", flattenData = { _relation: {} 
     }
     // 任意节点增加至少 props 为 {selfkey: xxx}
     if (!nodeData.props) {
-      nodeData.props = { selfkey: rootKey };
+      nodeData.props = { selfkey: rootKey, parentkey };
     } else if (nodeData.props && !nodeData.props.selfkey) {
       nodeData.props.selfkey = rootKey;
+      nodeData.props.parentkey = parentkey;
     }
     flattenData._root = rootKey;
     let { children, ...value } = nodeData;
@@ -366,15 +367,23 @@ const flattenDomTree = (nodeData, parentKey = "", flattenData = { _relation: {} 
     }
 
     if (!node.props) {
-      node.props = { selfkey: key };
+      node.props = { selfkey: key, parentkey };
+    } else if (node.props) {
+      if (!node.props.selfkey) {
+        node.props.selfkey = key;
+      }
+      if (!node.props.parentkey) {
+        node.props.parentkey = parentkey;
+      }
+      // 兼容老数据中没有 parentKey 的情况
     }
 
-    if (parentKey !== "") {
-      let childrenKeys = flattenData._relation[parentKey];
+    if (parentkey !== "") {
+      let childrenKeys = flattenData._relation[parentkey];
       if (Array.isArray(childrenKeys) && childrenKeys.length > 0) {
         childrenKeys.push(key);
       } else {
-        flattenData._relation[parentKey] = [key];
+        flattenData._relation[parentkey] = [key];
       }
     }
     let { children, ...value } = node;
@@ -486,7 +495,7 @@ const highDimensionalNode2Code = (node, action, code = "") => {
  * 
  * @param {object} flattenData 
  * @param {string} selfDomKey
- * @param {string} parentDomKey useless, remove to save space of data?
+ * @param {string} parentDomKey
  */
 const addSelfAndParentKey = (flattenData, selfDomKey = null, parentDomKey) => {
   if (flattenData === null) {
@@ -500,9 +509,9 @@ const addSelfAndParentKey = (flattenData, selfDomKey = null, parentDomKey) => {
   let props = data.props;
   if (props !== null && typeof props === "object" && !Array.isArray(props)) {
     props.selfkey = selfDomKey;
-    // props.parentkey = parentDomKey;
+    props.parentkey = parentDomKey;
   } else {
-    props = { selfkey: selfDomKey };
+    props = { selfkey: selfDomKey, parentkey: parentDomKey };
   }
 
   props = JSON.stringify(props);

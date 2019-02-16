@@ -10,17 +10,16 @@
 // }
 
 // {"native":false,"nodeName":"ImageArea","props":{"src":"http://blog-src.b0.upaiyun.com/taohe/dev/editPage/administrator/1/layout/8/1a4729c10b66ea0d2b5b9f25f2ea7039"}}
+// 有编辑功能在加上
+// import EditImageDialog from 'components/editTools/image/editImageDialog'
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import Button from "material-ui/Button";
 import Measure from "react-measure";
 import ImageAreaSetting from "jssSettings/imageAreaSetting";
-
-// 有编辑功能在加上
-// import EditImageDialog from 'components/editTools/image/editImageDialog'
-
 import UploaderEntrance from "components/editTools/image/uploaderEntrance";
-import actionTypes from "constants/action-types";
+import * as nodeActions from "actions/node";
 
 const defaultImageStyle = { maxWidth: "100%", maxHeight: "100%" };
 const defaultImageContainerStyle = ImageAreaSetting.defaultImageContainerStyle();
@@ -45,7 +44,13 @@ const buttonStyle = {
   justifyContent: "center"
 };
 
-export default class EditableImageArea extends React.Component {
+const mapDispatchToProps = dispatch => ({
+  removeFlattenedNode: payload => {
+    dispatch(nodeActions.removeFlattenedNode(payload));
+  }
+});
+
+class EditableImageArea extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -69,16 +74,10 @@ export default class EditableImageArea extends React.Component {
     this.editImageDialog.handleClickOpen();
   };
 
-  getChildContext() {
-    return { store: this.context.store };
-  }
-
   removeImageArea = () => {
-    let { selfkey, parentkey } = this.props;
-    this.context.store.dispatch({
-      type: actionTypes.REMOVE_FLATTENED_NODE,
-      payload: { targetKey: selfkey, parentKey: parentkey },
-    });
+    let { selfkey, parentkey, removeFlattenedNode } = this.props;
+    const payload = {targetKey: selfkey, parentKey: parentkey};
+    removeFlattenedNode(payload);
   };
 
   // 获得图片原始大小，在网页布局中展示的大小
@@ -137,6 +136,8 @@ export default class EditableImageArea extends React.Component {
             删除
           </Button>
         )}
+
+        {/* TODO 图片编辑功能 */}
         {/* <EditImageDialog ref={(el) => { this.editImageDialog = el }} parentkey={this.props.parentkey} targetkey={this.props.selfkey} /> */}
       </div>
     );
@@ -236,14 +237,21 @@ export default class EditableImageArea extends React.Component {
   }
 }
 
-EditableImageArea.childContextTypes = {
-  store: PropTypes.object
-};
-
-EditableImageArea.contextTypes = {
-  store: PropTypes.object
-};
+EditableImageArea.propTypes = {
+  removeFlattenedNode: PropTypes.func,
+  src: PropTypes.string,
+  alt: PropTypes.string,
+  imageContainerStyle: PropTypes.object,
+}
 
 EditableImageArea.defaultProps = {
   imageContainerStyle: defaultImageContainerStyle,
+  removeFlattenedNode: () => {},
+  src: '',
+  alt: 'default',
 };
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(EditableImageArea);

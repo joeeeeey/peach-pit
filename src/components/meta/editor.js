@@ -1,12 +1,19 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import ReactQuill from "react-quill"; // ES6
 import EditorToolbar from "./editorToolBar";
-import actionTypes from "constants/action-types";
+import * as nodeActions from "actions/node";
 
 const randomStr = () => {
   return `${(Math.random() + Math.random()).toString()}`;
-}
+};
+
+const mapDispatchToProps = dispatch => ({
+  updateFlattenedNode: payload => {
+    dispatch(nodeActions.updateFlattenedNode(payload));
+  }
+});
 
 // props
 // deltaDeltaValue: []  数据
@@ -20,7 +27,6 @@ class Editor extends Component {
     super(props);
     this.state = {
       hoverEditor: false, // 控制样式
-      hidden: false,
       foucsEditor: false, // 控制 toolbar 显示
       showToolbar: false, // 控制 toolbar 显示
       hoverToolbar: false // 控制 toolbar 显示
@@ -70,11 +76,9 @@ class Editor extends Component {
     this.quillRef = this.reactQuillRef.getEditor();
   };
 
-  handleChange = html => {
+  handleChange = () => {
     if (this.quillRef) {
       // TODO 此处将 this.quillRef.editor.delta 报错
-      // this.changedDeltaValue
-
       if (this.saveTriggerTimer !== undefined) {
         clearTimeout(this.saveTriggerTimer);
       }
@@ -87,13 +91,11 @@ class Editor extends Component {
         // TODO 需要将value 中的文本内容中的 \ => \\
         // const re = /"\n"/gi;
         // nodeCode = nodeCode.replace(re, '"\\n"');
-        this.context.store.dispatch({
-          type: actionTypes.UPDATE_FLATTENED_NODE,
-          payload: {
-            nestedKey: nestedKey,
-            value: this.quillRef.editor.delta.ops
-          },
-        });
+        const payload = {
+          nestedKey: nestedKey,
+          value: this.quillRef.editor.delta.ops
+        };
+        this.props.updateFlattenedNode(payload);
       }, 2000);
     }
   };
@@ -148,37 +150,18 @@ class Editor extends Component {
   render() {
     // TODO 规定长度，在靠屏幕左边时候左对齐，否则右对齐
     // const overlayStyle = {position: 'absolute', bottom: 5, left: 0, zIndex: 1300 }
-    const {
-      toolbarOverlayStyle = { bottom: 5, left: 0 },
-      toolbarAbove = true,
-      toolbarStyle
-    } = this.props;
+    const { toolbarOverlayStyle = { bottom: 5, left: 0 }, toolbarAbove = true, toolbarStyle } = this.props;
 
     return (
       <div>
         {!this.readOnly && toolbarAbove && (
           <div style={{ position: "relative" }}>
-            <div
-              hidden={!this.state.showToolbar}
-              style={Object.assign(
-                { position: "absolute", zIndex: 300 },
-                toolbarOverlayStyle
-              )}
-            >
-              <EditorToolbar
-                formats={this.formats}
-                toolbarStyle={this.props.toolbarStyle}
-                id={this.quillId}
-                hoverToolbar={this.hoverToolbarHandler}
-              />
+            <div hidden={!this.state.showToolbar} style={Object.assign({ position: "absolute", zIndex: 300 }, toolbarOverlayStyle)}>
+              <EditorToolbar formats={this.formats} toolbarStyle={this.props.toolbarStyle} id={this.quillId} hoverToolbar={this.hoverToolbarHandler} />
             </div>
           </div>
         )}
-        <div
-          onMouseOver={this.onMouseOver}
-          onMouseOut={this.onMouseOut}
-          style={this.hovorStyle()}
-        >
+        <div onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} style={this.hovorStyle()}>
           <ReactQuill
             onChange={this.handleChange}
             modules={this.modules(this.quillId)}
@@ -196,18 +179,8 @@ class Editor extends Component {
         </div>
         {!this.readOnly && !toolbarAbove && (
           <div style={{ position: "relative" }}>
-            <div
-              hidden={!this.state.showToolbar}
-              style={Object.assign(
-                { position: "absolute", zIndex: 300 },
-                toolbarOverlayStyle
-              )}
-            >
-              <EditorToolbar
-                toolbarStyle={toolbarStyle}
-                id={this.quillId}
-                hoverToolbar={this.hoverToolbarHandler}
-              />
+            <div hidden={!this.state.showToolbar} style={Object.assign({ position: "absolute", zIndex: 300 }, toolbarOverlayStyle)}>
+              <EditorToolbar toolbarStyle={toolbarStyle} id={this.quillId} hoverToolbar={this.hoverToolbarHandler} />
             </div>
           </div>
         )}
@@ -216,8 +189,22 @@ class Editor extends Component {
   }
 }
 
-Editor.contextTypes = {
-  store: PropTypes.object
-};
+Editor.propTypes = {
+  updateFlattenedNode: PropTypes.func,
+  deltaDeltaValue: PropTypes.array,
+  readOnly: PropTypes.bool,
+  selfkey: PropTypes.string.isRequired,
+  toolbarStyle: PropTypes.object,
+}
 
-export default Editor;
+Editor.defaultProps = {
+  updateFlattenedNode: () => {},
+  deltaDeltaValue: [],
+  readOnly: false,
+  toolbarStyle: {},
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Editor);
